@@ -2,7 +2,10 @@
 package io.github.springwolf.addons.json_schema;
 
 import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersionDetector;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
@@ -275,10 +278,9 @@ class JsonSchemaGeneratorTest {
     }
 
     private void verifyValidJsonSchema(String content) throws JacksonException {
-        // TODO: add back when networknt json-schema-validator supports jackson 3
-        // https://github.com/networknt/json-schema-validator/issues/1207
+        // not supported in jackson 3 yet: https://github.com/networknt/json-schema-validator/issues/1207
 
-        //        JsonNode jsonNode = mapper.readTree(content);
-        //        JsonSchemaFactory.getInstance(SpecVersionDetector.detect(jsonNode));
+        JsonNode jsonNode = mapper.readTree(content);
+        JsonSchemaFactory.getInstance(SpecVersionDetector.detect(jsonNode));
     }
 }

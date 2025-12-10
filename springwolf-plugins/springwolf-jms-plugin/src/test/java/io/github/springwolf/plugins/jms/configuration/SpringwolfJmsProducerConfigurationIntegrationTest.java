@@ -10,12 +10,10 @@ import io.github.springwolf.plugins.jms.controller.SpringwolfJmsController;
 import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.StringValueResolver;
 
@@ -25,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringwolfJmsProducerConfigurationIntegrationTest {
 
-    @ExtendWith(SpringExtension.class)
     @SpringJUnitConfig(
             classes = {
                 SpringwolfJmsAutoConfiguration.class,
@@ -57,7 +54,6 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
         }
     }
 
-    @ExtendWith(SpringExtension.class)
     @SpringJUnitConfig(
             classes = {
                 SpringwolfJmsAutoConfiguration.class,
