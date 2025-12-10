@@ -34,13 +34,12 @@ dependencies {
 
     annotationProcessor libs.lombok
 
+    testImplementation libs.spring.beans
     testImplementation libs.assertj.core
     testImplementation libs.spring.boot.test
-    testImplementation libs.spring.test
-
-    testImplementation libs.spring.beans
-    testImplementation libs.spring.boot.kafka.test
     testImplementation libs.spring.boot.restclient.test
+    testImplementation libs.spring.kafka.test
+    testImplementation libs.spring.test
     testImplementation libs.spring.web
 
     testImplementation libs.jackson.core

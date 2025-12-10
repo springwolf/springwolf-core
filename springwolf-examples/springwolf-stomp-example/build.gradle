@@ -32,6 +32,7 @@ dependencies {
 
     implementation libs.swagger.annotations.jakarta
 
+    implementation libs.commons.logging
     implementation libs.slf4j.api
 
     testImplementation libs.assertj.core

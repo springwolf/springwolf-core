@@ -42,7 +42,7 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
-    implementation libs.spring.boot.kafka
+    implementation libs.spring.kafka
 
     implementation libs.spring.security.config
     implementation libs.spring.security.web
@@ -89,6 +89,8 @@ dependencies {
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    testImplementation libs.commons.io
 }
 
 docker {
