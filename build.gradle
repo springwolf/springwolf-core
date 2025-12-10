@@ -7,7 +7,6 @@ plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.spotless
     alias libs.plugins.docker.spring.boot apply false
-        id("org.openrewrite.rewrite") version("7.22.0") // TODO: remove
 }
 
 applyDotEnvFileAsGradleProperties()
@@ -39,21 +38,11 @@ var plugins = [
 
 // TODO: implementation platform("tools.jackson:jackson-bom:3.0.0")
 
-rewrite { // TODO: remove
-//        activeRecipe("org.openrewrite.java.spring.boot4.SpringBootProperties_4_0")
-    activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
-    setExportDatatables(true)
-}
-dependencies {
-    rewrite("org.openrewrite.recipe:rewrite-spring:6.20.0")
-}
-
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
     apply plugin: 'com.diffplug.spotless'
-    apply plugin: 'org.openrewrite.rewrite' // TODO: remove
 
     group 'io.github.springwolf'
     version System.getProperty("SPRINGWOLF_VERSION")

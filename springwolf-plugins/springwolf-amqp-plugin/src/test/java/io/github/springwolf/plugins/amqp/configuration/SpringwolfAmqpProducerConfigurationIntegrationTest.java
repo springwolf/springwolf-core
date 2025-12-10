@@ -11,12 +11,10 @@ import io.github.springwolf.plugins.amqp.controller.SpringwolfAmqpController;
 import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.StringValueResolver;
 
@@ -26,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringwolfAmqpProducerConfigurationIntegrationTest {
 
-    @ExtendWith(SpringExtension.class)
     @SpringJUnitConfig(
             classes = {
                 SpringwolfAmqpAutoConfiguration.class,
@@ -58,7 +55,6 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
         }
     }
 
-    @ExtendWith(SpringExtension.class)
     @SpringJUnitConfig(
             classes = {
                 SpringwolfAmqpAutoConfiguration.class,
