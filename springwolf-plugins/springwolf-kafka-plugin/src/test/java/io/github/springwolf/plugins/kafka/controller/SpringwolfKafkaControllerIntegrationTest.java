@@ -31,7 +31,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -92,7 +92,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Captor
-    private ArgumentCaptor<PayloadDto> payloadCaptor;
+    private ArgumentCaptor<Object> payloadCaptor;
 
     @Captor
     private ArgumentCaptor<Map<String, MessageDto.HeaderValue>> headerCaptor;
@@ -154,7 +154,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), eq(null));
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), isNull());
     }
 
     @Test

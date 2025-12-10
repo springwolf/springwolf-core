@@ -21,9 +21,9 @@ owasp-dependencycheck = "12.1.9"
 protobuf = "4.33.1"
 protobuf-plugin =  "0.9.5"
 spotless = "8.0.0"
-spring-boot-plugin = "3.5.7"
+spring-boot-plugin = "4.0.0"
 spring-cloud = "2025.1.0" # not managed by spring-boot-dependencies
-spring-cloud-stream = "4.3.0" # not managed by spring-boot-dependencies
+spring-cloud-stream = "5.0.0" # not managed by spring-boot-dependencies
 
 [libraries]
 activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
@@ -36,7 +36,6 @@ jackson-annotations = "com.fasterxml.jackson.core:jackson-annotations:2.20"
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-core" }
 jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.18"
 jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
@@ -71,26 +70,28 @@ spring-cloud-aws-starter-sqs = { module = "io.awspring.cloud:spring-cloud-aws-st
 spring-amqp = { module = "org.springframework.amqp:spring-amqp" }
 spring-rabbit = { module = "org.springframework.amqp:spring-rabbit" }
 spring-boot = { module = "org.springframework.boot:spring-boot" }
-spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator" }
+spring-boot-artemis = { module = "org.springframework.boot:spring-boot-artemis" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2" }
+spring-boot-jms = { module = "org.springframework.boot:spring-boot-jms" }
+spring-boot-kafka = { module = "org.springframework.boot:spring-boot-kafka" }
+spring-boot-kafka-test = { module = "org.springframework.boot:spring-boot-starter-kafka-test" } # TODO: simplify?
+spring-boot-restclient-test = { module = "org.springframework.boot:spring-boot-resttestclient" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
-spring-boot-starter-artemis = { module = "org.springframework.boot:spring-boot-starter-artemis" }
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
-spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
+spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" } # TODO: simplify?
+spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" } # TODO: simplify?
+spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" } # TODO: simplify?
 spring-boot-test = { module = "org.springframework.boot:spring-boot-test" }
 spring-boot-test-autoconfigure = { module = "org.springframework.boot:spring-boot-test-autoconfigure" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 spring-cloud-starter-stream-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka", version.ref = "spring-cloud-stream" }
 spring-cloud-stream = { module = "org.springframework.cloud:spring-cloud-stream", version.ref = "spring-cloud-stream" }
-spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
-spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
 spring-security-config = { module = "org.springframework.security:spring-security-config" }
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 spring-beans = { module = "org.springframework:spring-beans" }
 spring-context = { module = "org.springframework:spring-context" }
 spring-core = { module = "org.springframework:spring-core" }
-spring-jcl = { module = "org.springframework:spring-jcl" }
 spring-jms = { module = "org.springframework:spring-jms" }
 spring-messaging = { module = "org.springframework:spring-messaging" }
 spring-test = { module = "org.springframework:spring-test" }

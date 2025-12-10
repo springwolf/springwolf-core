@@ -35,7 +35,7 @@ dependencies {
 
     annotationProcessor libs.spring.boot.configuration.processor
 
-    testRuntimeOnly libs.spring.boot.starter.web
+    testRuntimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.jackson.annotations
 
@@ -44,6 +44,7 @@ dependencies {
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.beans
+    testImplementation libs.spring.boot.starter.webmvc.test
     testImplementation libs.spring.test
 
     testImplementation libs.spring.boot.test

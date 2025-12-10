@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class PublishingPayloadCreator {
     public Result createPayloadObject(MessageDto message) {
         String messageType = message.getType();
 
-        if (MessageDto.EMPTY.equals(message.getPayload())) {
+        if (message.getPayload() == null || Objects.equals(MessageDto.EMPTY, message.getPayload())) {
             return new Result(null, Optional.empty());
         }
 

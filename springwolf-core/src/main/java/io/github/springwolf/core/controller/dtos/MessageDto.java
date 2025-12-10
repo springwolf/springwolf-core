@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller.dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -42,7 +43,12 @@ public class MessageDto {
 
     @JsonDeserialize(using = HeaderValueDeserializer.class)
     @JsonSerialize(using = HeaderValueSerializer.class)
-    public record HeaderValue(String stringValue) {}
+    public record HeaderValue(String stringValue) {
+        @JsonCreator
+        public static HeaderValue fromString(String value) {
+            return new HeaderValue(value);
+        }
+    }
 
     public static class HeaderValueDeserializer extends JsonDeserializer<HeaderValue> {
         @Override

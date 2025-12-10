@@ -26,10 +26,12 @@ import lombok.extern.jackson.Jacksonized;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -68,6 +70,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             ModelConvertersProvider.class,
             JsonMapperTestConfiguration.class,
         })
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(
         properties = {
             "springwolf.docket.base-package=io.github.springwolf.plugins.jms",
@@ -89,7 +92,7 @@ class SpringwolfJmsControllerIntegrationTest {
     private SpringwolfJmsProducer springwolfJmsProducer;
 
     @Captor
-    private ArgumentCaptor<PayloadDto> payloadCaptor;
+    private ArgumentCaptor<Object> payloadCaptor;
 
     @Captor
     private ArgumentCaptor<Map<String, MessageDto.HeaderValue>> headerCaptor;
@@ -151,7 +154,7 @@ class SpringwolfJmsControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfJmsProducer).send(eq("test-topic"), isNull(), eq(null));
+        verify(springwolfJmsProducer).send(eq("test-topic"), isNull(), isNull());
     }
 
     @Test

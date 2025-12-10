@@ -4,8 +4,9 @@ package io.github.springwolf.examples.kafka;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             "springwolf.endpoint.actuator.enabled=true",
             "management.endpoints.web.exposure.include=springwolf"
         })
+@AutoConfigureTestRestTemplate
 public class ApiIntegrationWithActuatorIntegrationTest {
 
     @Autowired
