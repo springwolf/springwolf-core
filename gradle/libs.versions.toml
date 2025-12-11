@@ -22,7 +22,7 @@ protobuf = "4.33.1"
 protobuf-plugin =  "0.9.5"
 spotless = "8.0.0"
 spring-boot-plugin = "3.5.7"
-spring-cloud = "2025.0.0" # not managed by spring-boot-dependencies
+spring-cloud = "2025.1.0" # not managed by spring-boot-dependencies
 spring-cloud-stream = "4.3.0" # not managed by spring-boot-dependencies
 
 [libraries]
