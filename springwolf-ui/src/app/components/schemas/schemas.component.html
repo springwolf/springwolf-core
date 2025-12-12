@@ -1,60 +1,61 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <h2>Schemas</h2>
-@for(schema of schemas(); track schema) {
-<article appNavigationTarget [id]="schema.anchorIdentifier">
-  <mat-card>
-    <mat-card-header class="flex space-between align-items-baseline">
-      <mat-card-title>
-        {{ schema.title }}
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="table margin-vertical-1em">
-        <div class="table-row">
-          <span>Name</span>
-          <span class="text-console">{{ schema.name }}</span>
-        </div>
-        <div class="table-row">
-          <span>Type</span>
-          <span
-            ><div class="type-badge">{{ schema.type }}</div></span
-          >
-        </div>
-        @if (schema.description) {
-        <div class="table-row description">
-          <span>Description</span>
-          <markdown [data]="schema.description"></markdown>
-        </div>
-        } @if (schema.usedBy.length > 0) {
-        <div class="table-row">
-          <span>Used by</span>
-          <mat-chip-set>
-            @for (usageEl of schema.usedBy; track usageEl) {
-            <a [href]="usageEl.anchorUrl">
-              <mat-chip>
-                <mat-icon matChipAvatar>{{
-                  usageEl.type == "schema" ? "schema" : "swap_vert"
-                }}</mat-icon>
-                {{ usageEl.name }}
-              </mat-chip></a
+@for (schema of schemas(); track schema) {
+  <article appNavigationTarget [id]="schema.anchorIdentifier">
+    <mat-card>
+      <mat-card-header class="flex space-between align-items-baseline">
+        <mat-card-title>
+          {{ schema.title }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="table margin-vertical-1em">
+          <div class="table-row">
+            <span>Name</span>
+            <span class="text-console">{{ schema.name }}</span>
+          </div>
+          <div class="table-row">
+            <span>Type</span>
+            <span
+              ><div class="type-badge">{{ schema.type }}</div></span
             >
-            }
-          </mat-chip-set>
+          </div>
+          @if (schema.description) {
+            <div class="table-row description">
+              <span>Description</span>
+              <markdown [data]="schema.description"></markdown>
+            </div>
+          }
+          @if (schema.usedBy.length > 0) {
+            <div class="table-row">
+              <span>Used by</span>
+              <mat-chip-set>
+                @for (usageEl of schema.usedBy; track usageEl) {
+                  <a [href]="usageEl.anchorUrl">
+                    <mat-chip>
+                      <mat-icon matChipAvatar>{{
+                        usageEl.type == "schema" ? "schema" : "swap_vert"
+                      }}</mat-icon>
+                      {{ usageEl.name }}
+                    </mat-chip></a
+                  >
+                }
+              </mat-chip-set>
+            </div>
+          }
         </div>
-        }
-      </div>
 
-      <h6>Example</h6>
-      <div>
-        <app-json [data]="schema.example?.rawValue"></app-json>
-      </div>
+        <h6>Example</h6>
+        <div>
+          <app-json [data]="schema.example?.rawValue"></app-json>
+        </div>
 
-      <h6>Properties</h6>
-      <app-schema [schema]="schema"></app-schema>
-    </mat-card-content>
-  </mat-card>
-  @if (!$last) {
-  <br />
-  }
-</article>
+        <h6>Properties</h6>
+        <app-schema [schema]="schema"></app-schema>
+      </mat-card-content>
+    </mat-card>
+    @if (!$last) {
+      <br />
+    }
+  </article>
 }

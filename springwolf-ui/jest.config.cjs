@@ -13,7 +13,7 @@ const config = {
     "<rootDir>/build/"
   ],
   transformIgnorePatterns: [
-    `<rootDir>/node_modules/(?!.*\\.mjs$|${esModules.join('|')})`,
+    `<rootDir>/node_modules/.pnpm/(?!.*\\.mjs$|${esModules.join('|')})`,
   ],
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/setup-jest.ts', // any ts file

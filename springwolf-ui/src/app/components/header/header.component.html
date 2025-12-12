@@ -24,24 +24,24 @@
     </button>
     <mat-menu #settings="matMenu">
       @if (0 < groups().length) {
-      <button
-        mat-menu-item
-        [matMenuTriggerFor]="group"
-        data-testid="settings-group-menu"
-      >
-        Group
-      </button>
+        <button
+          mat-menu-item
+          [matMenuTriggerFor]="group"
+          data-testid="settings-group-menu"
+        >
+          Group
+        </button>
       }
       <mat-menu #group="matMenu">
         @for (group of groups(); track group) {
-        <button mat-menu-item (click)="changeGroup(group.value)">
-          <mat-icon>{{
-            isGroup() == group.value
-              ? "radio_button_checked"
-              : "radio_button_unchecked"
-          }}</mat-icon>
-          {{ group.viewValue }}
-        </button>
+          <button mat-menu-item (click)="changeGroup(group.value)">
+            <mat-icon>{{
+              isGroup() == group.value
+                ? "radio_button_checked"
+                : "radio_button_unchecked"
+            }}</mat-icon>
+            {{ group.viewValue }}
+          </button>
         }
       </mat-menu>
 
