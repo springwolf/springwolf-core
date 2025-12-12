@@ -24,8 +24,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueMessage = `Welcome to Springwolf. Thanks a lot for reporting your first issue. Please check out our [contributors guide](https://github.com/springwolf/springwolf-core/blob/master/CONTRIBUTING.md) and feel free to join us on discord.`;
-            const prMessage = `Welcome to Springwolf. Thanks a lot for creating your first pull request. Please check out our [contributors guide](https://github.com/springwolf/springwolf-core/blob/master/CONTRIBUTING.md) and feel free to join us on discord.`;
+            const issueMessage = `Welcome to Springwolf. Thanks a lot for reporting your first issue. Please check out our [contributors guide](https://github.com/springwolf/springwolf-core/blob/main/CONTRIBUTING.md) and feel free to join us on discord.`;
+            const prMessage = `Welcome to Springwolf. Thanks a lot for creating your first pull request. Please check out our [contributors guide](https://github.com/springwolf/springwolf-core/blob/main/CONTRIBUTING.md) and feel free to join us on discord.`;
             if (!issueMessage && !prMessage) {
                 throw new Error('Action must have at least one of issue-message or pr-message set');
             }

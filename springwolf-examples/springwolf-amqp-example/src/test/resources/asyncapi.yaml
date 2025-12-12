@@ -2,7 +2,7 @@ asyncapi: 3.0.0
 info:
   title: Springwolf example project - AMQP
   version: 1.0.0
-  description: "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-amqp-example)\
+  description: "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-amqp-example)\
     \ to demonstrate springwolfs abilities, including **markdown** support for descriptions."
   termsOfService: http://asyncapi.org/terms
   contact:

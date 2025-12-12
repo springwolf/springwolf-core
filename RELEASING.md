@@ -14,7 +14,7 @@ The following list describe the steps necessary to release a new version.
 3. Update `all-contributors` in [README.md](README.md#-contributors)
 4. Create a new branch `release/1.<minor-version-number>.X`, remove the `-SNAPHSOT` postfix in `.env`, commit & push
 5. Run GitHub `Publish releases` pipeline from the newly created release branch
-6. Update the version number in `.env` for next snapshot on branch `master`, commit & push
+6. Update the version number in `.env` for next snapshot on branch `main`, commit & push
 7. Update version number on website
 8. Publish the release notes on GitHub (https://github.com/springwolf/springwolf-core/releases)
 

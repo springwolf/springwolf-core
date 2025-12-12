@@ -38,5 +38,5 @@ If not, try the following endpoint: `localhost:8080/springwolf/docs`.
 
 ### Example Project
 
-See [springwolf-sqs-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-sqs-example)
+See [springwolf-sqs-example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-sqs-example)
 .

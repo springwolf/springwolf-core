@@ -2,7 +2,7 @@ asyncapi: 3.0.0
 info:
   title: Springwolf example project - Kafka
   version: 1.0.0
-  description: "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example)\
+  description: "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-kafka-example)\
     \ to demonstrate springwolfs abilities, including **markdown** support for descriptions."
   termsOfService: http://asyncapi.org/terms
   contact:
