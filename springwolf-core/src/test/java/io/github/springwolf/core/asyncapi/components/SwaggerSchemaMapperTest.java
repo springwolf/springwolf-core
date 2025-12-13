@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -639,6 +640,20 @@ class SwaggerSchemaMapperTest {
     @Nested
     class MapToSwagger {
         @Test
+        void mapNameAndTitle() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setTitle("title");
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema.getTitle()).isEqualTo(schema.getTitle());
+            assertThat(swaggerSchema.getName()).isEqualTo(schema.getTitle());
+        }
+
+        @Test
         void mapDescription() {
             // given
             SchemaObject schema = new SchemaObject();
@@ -649,6 +664,21 @@ class SwaggerSchemaMapperTest {
 
             // then
             assertThat(swaggerSchema.getDescription()).isEqualTo(schema.getDescription());
+        }
+
+        @Test
+        void mapFormat() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setType(SchemaType.STRING);
+            schema.setFormat("email");
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(swaggerSchema.getFormat()).isEqualTo("email");
         }
 
         @Test
@@ -703,6 +733,80 @@ class SwaggerSchemaMapperTest {
 
             // then
             assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+        }
+
+        @Test
+        void mapProperties() {
+            // given
+            SchemaObject property = new SchemaObject();
+            property.setType(SchemaType.STRING);
+
+            SchemaObject schema = new SchemaObject();
+            schema.setProperties(Map.of("property", ComponentSchema.of(property)));
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema.getProperties()).hasSize(1).containsKey("property");
+            assertThat((swaggerSchema.getProperties().get("property")).getType())
+                    .isEqualTo(SchemaType.STRING);
+        }
+
+        @Test
+        void mapComponentSchemaSchema() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setType(SchemaType.STRING);
+
+            MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
+            ComponentSchema componentSchema = ComponentSchema.of(multiFormatSchema);
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(componentSchema);
+
+            // then
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+        }
+
+        @Test
+        void mapMultiFormatSchema() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setType(SchemaType.STRING);
+
+            MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(multiFormatSchema);
+
+            // then
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+        }
+
+        @Test
+        void mapReference() {
+            // given
+            SchemaReference reference = new SchemaReference("#/components/schemas/MySchema");
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(reference);
+
+            // then
+            assertThat(swaggerSchema.get$ref()).isEqualTo(reference.getRef());
+        }
+
+        @Test
+        void doNotMapAlreadyMappedSchema() {
+            // given
+            Schema<?> schema = new Schema<>();
+            schema.setType(SchemaType.STRING);
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema).isSameAs(schema);
         }
     }
 }
