@@ -40,7 +40,7 @@ class SpringwolfStompExampleResponseIntegrationTest {
 
     @BeforeEach
     void setup() {
-        wsPath = String.format("ws://localhost:%d/%s", port, WEBSOCKET_ENDPOINT);
+        wsPath = "ws://localhost:%d/%s".formatted(port, WEBSOCKET_ENDPOINT);
         webSocketStompClient = new WebSocketStompClient(
                 new SockJsClient(List.of(new WebSocketTransport(new StandardWebSocketClient()))));
 

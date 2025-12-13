@@ -27,14 +27,14 @@ dependencies {
 
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-    runtimeOnly libs.spring.boot.starter.websocket
     annotationProcessor libs.spring.boot.configuration.processor
+    runtimeOnly libs.spring.websocket
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
     testAnnotationProcessor libs.lombok
 
-    testRuntimeOnly libs.spring.boot.starter.web
+    testRuntimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.mockito.core
 

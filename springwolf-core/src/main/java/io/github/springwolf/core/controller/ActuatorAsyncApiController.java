@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JacksonException;
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class ActuatorAsyncApiController {
     private final AsyncApiSerializerService serializer;
 
     @ReadOperation
-    public String asyncApiJson() throws JsonProcessingException {
+    public String asyncApiJson() throws JacksonException {
         return serializer.toJsonString(asyncApiService.getAsyncAPI());
     }
 }

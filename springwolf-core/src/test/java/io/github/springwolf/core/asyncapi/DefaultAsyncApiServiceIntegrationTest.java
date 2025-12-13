@@ -15,23 +15,20 @@ import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketServi
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(
+@SpringJUnitConfig(
         classes = {
             SpringwolfConfigProperties.class,
             DefaultAsyncApiDocketService.class,

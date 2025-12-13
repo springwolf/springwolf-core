@@ -10,12 +10,38 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.swagger.v3.core.util.ObjectMapperFactory;
+import lombok.Getter;
 
 public class DefaultAsyncApiSerializerService implements AsyncApiSerializerService {
 
+    @Getter
     private final ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
+
+    @Getter
     private final ObjectMapper yamlMapper = ObjectMapperFactory.createYaml31();
+
     private final PrettyPrinter printer = new CustomPrettyPrinter();
+
+    //     /**
+    //     *  Get the current JSON object mapper configuration.
+    //     */
+    //    @Getter
+    //    private final JsonMapper jsonMapper = JsonMapper.builder()
+    //            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+    //            .defaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT,
+    // JsonInclude.Include.NON_ABSENT))
+    //            .defaultPrettyPrinter(prettyPrinter)
+    //            .build();
+    //    /**
+    //     *  Get the current YAML object mapper configuration.
+    //     */
+    //    @Getter
+    //    private final YAMLMapper yamlMapper = YAMLMapper.builder()
+    //            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+    //            .defaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT,
+    // JsonInclude.Include.NON_ABSENT))
+    //            .defaultPrettyPrinter(prettyPrinter)
+    //            .build();
 
     public DefaultAsyncApiSerializerService() {
         jsonMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
@@ -29,20 +55,6 @@ public class DefaultAsyncApiSerializerService implements AsyncApiSerializerServi
 
     public String toYaml(Object object) throws JsonProcessingException {
         return yamlMapper.writer(printer).writeValueAsString(object);
-    }
-
-    /**
-     * Get the current JSON object mapper configuration.
-     */
-    public ObjectMapper getJsonObjectMapper() {
-        return jsonMapper;
-    }
-
-    /**
-     * Get the current YAML object mapper configuration.
-     */
-    public ObjectMapper getYamlObjectMapper() {
-        return yamlMapper;
     }
 
     private static class CustomPrettyPrinter extends DefaultPrettyPrinter {

@@ -2,7 +2,6 @@
 package io.github.springwolf.examples.stomp.config;
 
 import com.sun.security.auth.UserPrincipal;
-import lombok.val;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
@@ -18,7 +17,7 @@ public class WebSocketHandshake extends DefaultHandshakeHandler {
             ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         Principal principal = request.getPrincipal();
         if (principal == null) {
-            val uniqueName = UUID.randomUUID().toString();
+            final var uniqueName = UUID.randomUUID().toString();
 
             principal = new UserPrincipal(uniqueName);
             logger.debug("New user " + principal);

@@ -4,11 +4,7 @@ package io.github.springwolf.core.asyncapi.components;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
@@ -20,7 +16,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
-import io.swagger.v3.core.util.Json;
+import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -58,17 +54,15 @@ class DefaultJsonComponentsServiceIntegrationTest {
             new ModelConvertersProvider(springwolfConfigProperties, List.of(new SchemaTitleModelConverter())));
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
-    private static final ObjectMapper objectMapper =
-            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-    private static final PrettyPrinter printer =
-            new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;
 
     @Test
     void getSchemas() throws Exception {
         componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
         componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -79,7 +73,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
     void getDocumentedDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/documented-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -90,7 +85,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
     void getArrayDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/array-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -101,7 +97,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
     void getComplexDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/complex-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -112,7 +109,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
     void getListWrapperDefinitions() throws Exception {
         componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
 
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+        String actualDefinitions =
+                jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/generics-wrapper-definitions.json", actualDefinitions);
 
         System.out.println("Got: " + actualDefinitions);
@@ -235,7 +233,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
         void schemaWithOneOf() throws Exception {
             componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String actualDefinitions =
+                    jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/annotation-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);
@@ -314,7 +313,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
         void getJsonTypeDefinitions() throws Exception {
             componentsService.resolvePayloadSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
 
-            String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getSchemas());
+            String actualDefinitions =
+                    jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/json-type-definitions.json", actualDefinitions);
 
             System.out.println("Got: " + actualDefinitions);

@@ -45,9 +45,9 @@ public class TypeExtractor {
             Integer index = extractableClassToArgumentIndex.get(typeName);
             type = typeParameterized.getActualTypeArguments()[index];
 
-            if (type instanceof WildcardType) {
-                Type[] upperBounds = ((WildcardType) type).getUpperBounds();
-                Type[] lowerBounds = ((WildcardType) type).getLowerBounds();
+            if (type instanceof WildcardType wildcardType) {
+                Type[] upperBounds = wildcardType.getUpperBounds();
+                Type[] lowerBounds = wildcardType.getLowerBounds();
                 if (upperBounds.length > 0 && upperBounds[0] != Object.class) {
                     type = upperBounds[0];
                 }

@@ -20,8 +20,8 @@ public final class ClasspathUtil {
 
     public static JsonNode parseYamlFile(String resourceName) throws IOException {
         try (InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName)) {
-            ObjectMapper objectMapper = new DefaultAsyncApiSerializerService().getYamlObjectMapper();
-            return objectMapper.readTree(inputStream);
+            ObjectMapper yamlMapper = new DefaultAsyncApiSerializerService().getYamlMapper();
+            return yamlMapper.readTree(inputStream);
         }
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers.yaml;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
@@ -49,7 +49,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
             }
 
             return exampleYamlValueSerializer.writeDocumentAsYamlString(exampleObject);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             log.error("Serialize {}", name, e);
             return null;
         }

@@ -3,7 +3,7 @@ package io.github.springwolf.plugins.kafka.asyncapi.components.header;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import org.springframework.kafka.support.mapping.AbstractJavaTypeMapper;
+import org.springframework.kafka.support.mapping.DefaultJacksonJavaTypeMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
 
     public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId, List<String> types) {
         return this.withHeader(
-                AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME, types, exampleTypeId, "Spring Type Id Header");
+                DefaultJacksonJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME, types, exampleTypeId, "Spring Type Id Header");
     }
 
     private AsyncHeadersForSpringKafkaBuilder withHeader(

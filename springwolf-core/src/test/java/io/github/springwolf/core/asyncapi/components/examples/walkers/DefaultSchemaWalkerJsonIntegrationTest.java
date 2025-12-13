@@ -2,9 +2,9 @@
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.swagger.v3.core.util.Json;
+import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -36,7 +36,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     private final DefaultSchemaWalker<JsonNode, JsonNode> jsonSchemaWalker =
             new DefaultSchemaWalker<>(exampleJsonValueGenerator);
 
-    private final ObjectMapper jsonMapper = Json.mapper();
+    private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;
 
     @Nested
     class CanHandle {

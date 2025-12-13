@@ -29,8 +29,7 @@ public abstract class ClassScannerUtil {
                 .flatMap(basePackage -> provider.findCandidateComponents(basePackage).stream()
                         .map(BeanDefinition::getBeanClassName)
                         .map(ClassScannerUtil::getClass)
-                        .filter(Optional::isPresent)
-                        .map(Optional::get))
+                        .flatMap(Optional::stream))
                 .collect(toList());
     }
 

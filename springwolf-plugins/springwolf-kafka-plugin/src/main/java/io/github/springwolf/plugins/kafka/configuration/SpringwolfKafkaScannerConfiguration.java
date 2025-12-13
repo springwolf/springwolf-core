@@ -23,7 +23,6 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
-import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -78,13 +77,13 @@ public class SpringwolfKafkaScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        val springAnnotationMessagesService = new SpringAnnotationMessagesService<>(
+        final var springAnnotationMessagesService = new SpringAnnotationMessagesService<>(
                 kafkaBindingFactory,
                 asyncHeadersForKafkaBuilder,
                 payloadMethodParameterService,
                 headerClassExtractor,
                 componentsService);
-        val springAnnotationChannelService = new SpringAnnotationChannelService<>(kafkaBindingFactory);
+        final var springAnnotationChannelService = new SpringAnnotationChannelService<>(kafkaBindingFactory);
         SpringAnnotationClassLevelChannelsScanner<KafkaListener, KafkaHandler> strategy =
                 new SpringAnnotationClassLevelChannelsScanner<>(
                         KafkaListener.class,
@@ -110,7 +109,7 @@ public class SpringwolfKafkaScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        val springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
+        final var springAnnotationOperationsService = new SpringAnnotationOperationsService<>(
                 kafkaBindingFactory,
                 new SpringAnnotationMessagesService<>(
                         kafkaBindingFactory,
@@ -142,8 +141,8 @@ public class SpringwolfKafkaScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        val springAnnotationChannelService = new SpringAnnotationChannelService<>(kafkaBindingFactory);
-        val springAnnotationMessageService = new SpringAnnotationMessageService<>(
+        final var springAnnotationChannelService = new SpringAnnotationChannelService<>(kafkaBindingFactory);
+        final var springAnnotationMessageService = new SpringAnnotationMessageService<>(
                 kafkaBindingFactory, asyncHeadersForKafkaBuilder, componentsService);
         SpringAnnotationMethodLevelChannelsScanner<KafkaListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
@@ -170,7 +169,7 @@ public class SpringwolfKafkaScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        val springAnnotationOperationService = new SpringAnnotationOperationService<>(
+        final var springAnnotationOperationService = new SpringAnnotationOperationService<>(
                 kafkaBindingFactory,
                 new SpringAnnotationMessageService<>(
                         kafkaBindingFactory, asyncHeadersForKafkaBuilder, componentsService));

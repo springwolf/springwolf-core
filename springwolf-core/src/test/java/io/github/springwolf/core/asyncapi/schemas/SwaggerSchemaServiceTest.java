@@ -5,8 +5,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
@@ -35,10 +34,10 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 class SwaggerSchemaServiceTest {
 
-    private static final ObjectMapper objectMapper =
-            Json.mapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
     private static final PrettyPrinter printer =
             new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private static final JsonMapper jsonMapper =
+            JsonMapper.builder().defaultPrettyPrinter(printer).build();
 
     private final SchemasPostProcessor schemasPostProcessor = mock();
     private final SchemasPostProcessor schemasPostProcessor2 = mock();
@@ -87,7 +86,7 @@ class SwaggerSchemaServiceTest {
         Map<String, ComponentSchema> schemas = schemaServiceWithFqn
                 .resolveSchema(clazz, "content-type-not-relevant")
                 .referencedSchemas();
-        String actualDefinitions = objectMapper.writer(printer).writeValueAsString(schemas);
+        String actualDefinitions = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemas);
 
         // then
         System.out.println("Got: " + actualDefinitions);

@@ -80,15 +80,15 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
             Map<String, Server> asyncApiServers =
                     this.asyncApiDocketService.getAsyncApiDocket().getServers();
             if (asyncApiServers == null || asyncApiServers.isEmpty()) {
-                throw new IllegalArgumentException(String.format(
-                        "Operation '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI.",
-                        operationId, serversFromOperation));
+                throw new IllegalArgumentException(
+                        "Operation '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI."
+                                .formatted(operationId, serversFromOperation));
             }
             for (String server : serversFromOperation) {
                 if (!asyncApiServers.containsKey(server)) {
-                    throw new IllegalArgumentException(String.format(
-                            "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s",
-                            operationId, server, asyncApiServers.keySet()));
+                    throw new IllegalArgumentException(
+                            "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s"
+                                    .formatted(operationId, server, asyncApiServers.keySet()));
                 }
             }
         }

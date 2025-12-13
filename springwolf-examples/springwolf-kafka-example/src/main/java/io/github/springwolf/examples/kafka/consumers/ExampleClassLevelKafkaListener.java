@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.money.MonetaryAmount;
 
 import static io.github.springwolf.examples.kafka.consumers.ExampleClassLevelKafkaListener.TOPIC;
-import static org.springframework.kafka.support.mapping.AbstractJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
+import static org.springframework.kafka.support.mapping.DefaultJacksonJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 @Component
 @Slf4j

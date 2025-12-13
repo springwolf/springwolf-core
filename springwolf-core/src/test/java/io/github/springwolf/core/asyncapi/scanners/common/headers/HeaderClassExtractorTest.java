@@ -8,7 +8,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaO
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
@@ -70,7 +69,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -91,7 +90,7 @@ class HeaderClassExtractorTest {
 
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
