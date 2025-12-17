@@ -11,8 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 class OpenApiSchemaAnnotationComplianceTest {
@@ -73,6 +73,5 @@ class OpenApiSchemaAnnotationComplianceTest {
         return new DisallowedField(attribute, pattern);
     }
 
-    private record DisallowedField(String attribute, Pattern pattern) {
-    }
+    private record DisallowedField(String attribute, Pattern pattern) {}
 }
