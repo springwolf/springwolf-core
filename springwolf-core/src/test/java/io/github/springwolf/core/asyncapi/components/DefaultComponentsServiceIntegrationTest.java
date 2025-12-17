@@ -218,10 +218,8 @@ class DefaultComponentsServiceIntegrationTest {
         private static class NumberFoo {
             @Schema(
                     multipleOf = 1,
-                    maximum = "5", // is combined into exclusiveMaximum
-                    exclusiveMaximum = true,
-                    minimum = "1", // is combined into exclusiveMinimum
-                    exclusiveMinimum = true,
+                    exclusiveMaximumValue = "5",
+                    exclusiveMinimumValue = "1",
                     allowableValues = {"2", "3", "4"})
             private Double number;
         }
