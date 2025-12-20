@@ -4,16 +4,16 @@ package io.github.springwolf.core.asyncapi.controller.dtos;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import io.github.springwolf.core.controller.dtos.MessageDto;
-import io.swagger.v3.core.util.Json;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MessageDtoTest {
-    private static final ObjectMapper objectMapper = Json.mapper();
+    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
 
     @Test
     void canBeSerialized() throws Exception {
@@ -22,7 +22,7 @@ class MessageDtoTest {
                 + "\"type\": \""
                 + MessageDto.class.getCanonicalName() + "\"" + "}";
 
-        MessageDto value = objectMapper.readValue(content, MessageDto.class);
+        MessageDto value = jsonMapper.readValue(content, MessageDto.class);
 
         assertThat(value).isNotNull();
         assertThat(value.getHeaders())
@@ -42,8 +42,8 @@ class MessageDtoTest {
                 .type(MessageDto.class.getCanonicalName())
                 .build();
 
-        String expected = objectMapper.writeValueAsString(messageDto);
-        String actual = objectMapper
+        String expected = jsonMapper.writeValueAsString(messageDto);
+        String actual = jsonMapper
                 .copy()
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .writeValueAsString(messageDto);
@@ -57,7 +57,7 @@ class MessageDtoTest {
         String content = "\"12345\"";
 
         // when
-        MessageDto.HeaderValue value = objectMapper.readValue(content, MessageDto.HeaderValue.class);
+        MessageDto.HeaderValue value = jsonMapper.readValue(content, MessageDto.HeaderValue.class);
 
         // then
         assertThat(value).isEqualTo(new MessageDto.HeaderValue("12345"));
@@ -69,7 +69,7 @@ class MessageDtoTest {
         String content = "12345";
 
         // when
-        MessageDto.HeaderValue value = objectMapper.readValue(content, MessageDto.HeaderValue.class);
+        MessageDto.HeaderValue value = jsonMapper.readValue(content, MessageDto.HeaderValue.class);
 
         // then
         assertThat(value).isEqualTo(new MessageDto.HeaderValue("12345"));
@@ -81,7 +81,7 @@ class MessageDtoTest {
         MessageDto.HeaderValue headerValue = new MessageDto.HeaderValue("12345");
 
         // when
-        JsonNode json = objectMapper.valueToTree(headerValue);
+        JsonNode json = jsonMapper.valueToTree(headerValue);
 
         // then
         assertThat(json.getNodeType()).isEqualTo(JsonNodeType.NUMBER);
