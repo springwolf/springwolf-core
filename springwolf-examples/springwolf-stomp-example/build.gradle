@@ -47,7 +47,6 @@ dependencies {
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
-    testImplementation libs.spring.core
     testImplementation libs.spring.web
 
     testImplementation libs.testcontainers
@@ -55,7 +54,8 @@ dependencies {
 
     testImplementation libs.jackson.core
     permitTestUnusedDeclared libs.jackson.core
-    testImplementation libs.jakarta.annotation.api
+
+    testImplementation libs.jspecify
 
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok

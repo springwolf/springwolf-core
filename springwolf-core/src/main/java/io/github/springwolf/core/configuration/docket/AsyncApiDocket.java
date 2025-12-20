@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.Singular;
 import org.springframework.http.MediaType;
 
@@ -27,7 +26,6 @@ public class AsyncApiDocket {
      *
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#infoObject">Info specification</a>
      */
-    @NonNull
     private final Info info;
 
     /**
