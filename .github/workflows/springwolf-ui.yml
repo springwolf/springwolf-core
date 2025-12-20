@@ -50,6 +50,8 @@ jobs:
         run: ls -la ${{ env.project }}/build/test-results
       - name: Debugging
         run: ls -la ${{ env.project }}/build/test-results/test/
+      - name: Debugging
+        run: tree ${{ env.project }}
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: success() || failure()
