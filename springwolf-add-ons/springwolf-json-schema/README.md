@@ -38,7 +38,7 @@ Example:
   "MonetaryAmount-Header": {
     "...": "",
     "x-json-schema": {
-      "$schema": "https://json-schema.org/draft-04/schema#",
+      "$schema": "https://json-schema.org/draft-07/schema#",
       "name": "MonetaryAmount-Header",
       "properties": {
         "__TypeId__": {

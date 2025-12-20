@@ -25,7 +25,7 @@ public class JsonSchemaGenerator {
 
     public Object fromSchema(ComponentSchema schema, Map<String, ComponentSchema> definitions) throws JacksonException {
         ObjectNode node = fromSchemaInternal(schema, definitions, new HashSet<>());
-        node.put("$schema", "https://json-schema.org/draft-04/schema#");
+        node.put("$schema", "https://json-schema.org/draft-07/schema#");
 
         return jsonMapper.readValue(node.toString(), Object.class);
     }
