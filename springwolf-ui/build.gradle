@@ -72,6 +72,7 @@ tasks.register('pnpm_run_test', PnpmTask) {
   inputs.file 'angular.json'
   inputs.file 'package.json'
   inputs.file 'pnpm-lock.yaml'
+  outputs.upToDateWhen { true }
 }
 
 tasks.register('buildPages', PnpmTask) {
@@ -136,10 +137,10 @@ spotless {
 sourcesJar.dependsOn(pnpm_run_build)
 
 tasks.named('assemble').configure {
-  it.dependsOn 'pnpm_run_build'
+  it.dependsOn('pnpm_run_build')
 }
 tasks.named('test').configure {
-  it.dependsOn 'pnpm_run_test', 'pnpm_run_lint_fix'
+  it.dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
 }
 tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
@@ -158,16 +159,6 @@ publishing {
         name = 'springwolf-ui'
         description = 'Web UI for Springwolf'
       }
-    }
-  }
-}
-
-gradle.taskGraph.whenReady {taskGraph ->
-  println "Tasks"
-  taskGraph.getAllTasks().eachWithIndex{ task, n ->
-    println "${n + 1} $task"
-    task.dependsOn.eachWithIndex{ depObj, m ->
-      println "  ${ m + 1 } $depObj"
     }
   }
 }

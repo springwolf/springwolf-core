@@ -42,23 +42,13 @@ jobs:
 
       - name: Test
         run: ./gradlew -p ${{ env.project }} test
-      - name: Debugging
-        run: ls -la ${{ env.project }} || true
-      - name: Debugging
-        run: ls -la ${{ env.project }}/build || true
-      - name: Debugging
-        run: ls -la ${{ env.project }}/build/test-results || true
-      - name: Debugging
-        run: ls -la ${{ env.project }}/build/test-results/test/ || true
-      - name: Debugging
-        run: tree ${{ env.project }} || true
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: success() || failure()
         with:
           check_name: test-ui-jest
           require_tests: true
-          report_paths: '${{ env.project }}/build/test-results/junit.xml'
+          report_paths: '**/build/test-results/junit.xml'
 
       - name: Build
         run: ./gradlew -p ${{ env.project }} build

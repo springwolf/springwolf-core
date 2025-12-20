@@ -9,7 +9,7 @@
     "lint": "prettier --check \"src/**/*.(js|ts|tsx|json|html|css)\"",
     "lint:fix": "prettier --list-different --write \"src/**/*.(js|ts|tsx|json|html|css)\"",
     "watch": "ng build --watch",
-    "test": "jest --ci --reporters=default --reporters=jest-junit",
+    "test": "jest --no-cache",
     "update": "ng update | awk -v re='@[[:alnum:]]' '$0 ~ re {printf $1 \" \"}' | xargs ng update"
   },
   "private": true,
