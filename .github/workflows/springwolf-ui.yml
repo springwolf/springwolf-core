@@ -48,7 +48,7 @@ jobs:
         with:
           check_name: test-ui-jest
           require_tests: true
-          report_paths: '**/build/test-results/test/*.xml'
+          report_paths: '**/build/test-results/junit.xml'
 
       - name: Build
         run: ./gradlew -p ${{ env.project }} build
