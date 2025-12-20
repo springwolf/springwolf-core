@@ -10,12 +10,10 @@ import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Optional;
@@ -24,13 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
-    @ExtendWith(SpringExtension.class)
     @Nested
-    @ContextConfiguration(
+    @SpringJUnitConfig(
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class,
+                JsonMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {
@@ -56,13 +53,12 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         }
     }
 
-    @ExtendWith(SpringExtension.class)
     @Nested
-    @ContextConfiguration(
+    @SpringJUnitConfig(
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
                 PublishingPayloadCreator.class,
-                ObjectMapperTestConfiguration.class,
+                JsonMapperTestConfiguration.class,
             })
     @TestPropertySource(
             properties = {

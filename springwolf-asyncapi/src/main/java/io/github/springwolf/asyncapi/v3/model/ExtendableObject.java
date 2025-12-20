@@ -35,7 +35,7 @@ public class ExtendableObject {
 
             extensionFields.put(name, value);
         } else {
-            throw new IllegalArgumentException(String.format("\"%s\" is not valid extension property", name));
+            throw new IllegalArgumentException("\"%s\" is not valid extension property".formatted(name));
         }
     }
 }

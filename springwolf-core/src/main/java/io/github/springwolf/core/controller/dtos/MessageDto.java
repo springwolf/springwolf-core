@@ -1,21 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller.dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Data
@@ -35,26 +30,18 @@ public class MessageDto {
     @Builder.Default
     private final String payload = EMPTY;
 
-    @JsonDeserialize(using = HeaderValueDeserializer.class)
     @JsonSerialize(using = HeaderValueSerializer.class)
-    public record HeaderValue(String stringValue) {}
-
-    public static class HeaderValueDeserializer extends JsonDeserializer<HeaderValue> {
-        @Override
-        public HeaderValue deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            JsonNode node = p.getCodec().readTree(p);
-            if (node.isNumber()) {
-                return new HeaderValue(node.numberValue().toString());
-            } else if (node.isTextual()) {
-                return new HeaderValue(node.textValue());
-            }
-            return new HeaderValue(node.toString());
+    public record HeaderValue(String stringValue) {
+        @JsonCreator
+        public static HeaderValue from(Object value) {
+            return new HeaderValue(String.valueOf(value));
         }
     }
 
     public static class HeaderValueSerializer extends JsonSerializer<HeaderValue> {
         @Override
-        public void serialize(HeaderValue value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(HeaderValue value, JsonGenerator gen, SerializerProvider serializers)
+                throws java.io.IOException {
             String stringValue = value.stringValue();
             try {
                 double number = Double.parseDouble(stringValue);

@@ -11,7 +11,6 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverters;
-import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.handler.annotation.Header;
@@ -50,7 +49,7 @@ class HeaderClassExtractorIntegrationTest {
     void getNoDocumentedHeaders() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithoutHeadersAnnotation", String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
@@ -60,7 +59,7 @@ class HeaderClassExtractorIntegrationTest {
     void getHeaderWithSingleHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithSingleHeaderAnnotation", String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -77,7 +76,7 @@ class HeaderClassExtractorIntegrationTest {
     void getHeaderWithMultipleHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithMultipleHeaderAnnotation", String.class, String.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -95,7 +94,7 @@ class HeaderClassExtractorIntegrationTest {
     void getHeaderWithObjectHeaderAnnotation() throws Exception {
         // when
         Method m = TestClass.class.getDeclaredMethod("consumeWithObjectHeaderAnnotation", TestClass.MyHeader.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
@@ -121,7 +120,7 @@ class HeaderClassExtractorIntegrationTest {
         // when
         Method m = TestClass.class.getDeclaredMethod(
                 "consumeWithNestedObjectHeaderAnnotation", TestClass.MyNestedHeader.class);
-        val result = headerClassExtractor.extractHeader(m, payloadSchemaName);
+        final var result = headerClassExtractor.extractHeader(m, payloadSchemaName);
 
         // then
         assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED); // currently not supported

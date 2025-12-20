@@ -11,11 +11,11 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
 
+    implementation libs.jakarta.annotation.api
+
     implementation libs.jackson.core
     implementation libs.jackson.databind
-    implementation libs.spring.core
 
-    testImplementation libs.swagger.core.jakarta
     testImplementation libs.swagger.models.jakarta
 
     implementation libs.slf4j.api

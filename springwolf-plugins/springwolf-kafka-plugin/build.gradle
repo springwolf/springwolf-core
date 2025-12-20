@@ -24,12 +24,13 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
     implementation libs.spring.core
+    implementation libs.spring.kafka
     implementation libs.spring.web
 
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
-    implementation libs.spring.kafka
+    implementation libs.spring.boot.kafka
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
@@ -39,18 +40,17 @@ dependencies {
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
 
-    testRuntimeOnly libs.spring.boot.starter.web
-
+    testImplementation libs.jakarta.servlet.api
+    permitTestUnusedDeclared libs.jakarta.servlet.api
     testImplementation libs.jackson.annotations
     testImplementation libs.jackson.databind
 
     testImplementation libs.mockito.core
     testImplementation libs.mockito.junit.jupiter
 
-    testImplementation libs.spring.boot.test.autoconfigure
-    testImplementation libs.spring.boot.test
-
     testImplementation libs.spring.beans
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.webmvc.test
     testImplementation libs.spring.test
 
     testImplementation libs.assertj.core

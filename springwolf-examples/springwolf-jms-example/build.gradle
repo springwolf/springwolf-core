@@ -34,21 +34,22 @@ dependencies {
     implementation libs.spring.jms
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-
-    runtimeOnly libs.spring.boot.starter.web
-    runtimeOnly libs.spring.boot.starter.artemis
+    runtimeOnly libs.spring.boot.starter.webmvc
+    runtimeOnly libs.spring.boot.artemis
+    runtimeOnly libs.spring.boot.jms
 
     testImplementation libs.assertj.core
 
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.web
     testImplementation libs.spring.test
 
     testImplementation libs.jackson.core
-    permitTestUsedUndeclared libs.jackson.core
+    permitTestUnusedDeclared libs.jackson.core
 
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter

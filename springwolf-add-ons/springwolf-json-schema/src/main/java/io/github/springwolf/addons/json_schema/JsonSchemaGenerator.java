@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.json_schema;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
@@ -11,8 +12,8 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -20,14 +21,13 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 public class JsonSchemaGenerator {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper jsonMapper = JsonMapper.builder().build();
 
-    public Object fromSchema(ComponentSchema schema, Map<String, ComponentSchema> definitions)
-            throws JsonProcessingException {
+    public Object fromSchema(ComponentSchema schema, Map<String, ComponentSchema> definitions) throws JacksonException {
         ObjectNode node = fromSchemaInternal(schema, definitions, new HashSet<>());
         node.put("$schema", "https://json-schema.org/draft-04/schema#");
 
-        return objectMapper.readValue(node.toString(), Object.class);
+        return jsonMapper.readValue(node.toString(), Object.class);
     }
 
     private ObjectNode fromSchemaInternal(
@@ -37,12 +37,12 @@ public class JsonSchemaGenerator {
 
             return mapToJsonSchema(schema, definitions, visited);
         }
-        return objectMapper.createObjectNode();
+        return jsonMapper.createObjectNode();
     }
 
     private ObjectNode mapToJsonSchema(
             ComponentSchema componentSchema, Map<String, ComponentSchema> definitions, Set<ComponentSchema> visited) {
-        ObjectNode node = objectMapper.createObjectNode();
+        ObjectNode node = jsonMapper.createObjectNode();
 
         SchemaObject schema = getSchemaObject(componentSchema, definitions);
         if (schema == null) {
@@ -50,7 +50,7 @@ public class JsonSchemaGenerator {
         }
 
         if (schema.getAnyOf() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
+            ArrayNode arrayNode = jsonMapper.createArrayNode();
             for (ComponentSchema ofSchema : schema.getAnyOf()) {
                 ComponentSchema resolvedSchemaObject = resolveSchemaRef(ofSchema, definitions);
                 arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
@@ -58,7 +58,7 @@ public class JsonSchemaGenerator {
             node.set("anyOf", arrayNode);
         }
         if (schema.getAllOf() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
+            ArrayNode arrayNode = jsonMapper.createArrayNode();
             for (ComponentSchema allSchema : schema.getAllOf()) {
                 ComponentSchema resolvedSchemaObject = resolveSchemaRef(allSchema, definitions);
                 arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
@@ -72,7 +72,7 @@ public class JsonSchemaGenerator {
             node.put("description", schema.getDescription());
         }
         if (schema.getEnumValues() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
+            ArrayNode arrayNode = jsonMapper.createArrayNode();
             for (Object property : schema.getEnumValues()) {
                 arrayNode.add(property == null ? null : property.toString());
             }
@@ -117,7 +117,7 @@ public class JsonSchemaGenerator {
             node.set("not", fromSchemaInternal(resolvedSchemaObject, definitions, visited));
         }
         if (schema.getOneOf() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
+            ArrayNode arrayNode = jsonMapper.createArrayNode();
             for (ComponentSchema ofSchema : schema.getOneOf()) {
                 ComponentSchema resolvedSchemaObject = resolveSchemaRef(ofSchema, definitions);
                 arrayNode.add(fromSchemaInternal(resolvedSchemaObject, definitions, visited));
@@ -131,7 +131,7 @@ public class JsonSchemaGenerator {
             node.set("properties", buildProperties(schema, definitions, visited));
         }
         if (schema.getRequired() != null) {
-            ArrayNode arrayNode = objectMapper.createArrayNode();
+            ArrayNode arrayNode = jsonMapper.createArrayNode();
             for (String property : schema.getRequired()) {
                 arrayNode.add(property);
             }
@@ -144,7 +144,7 @@ public class JsonSchemaGenerator {
             if (schema.getType().size() == 1) {
                 node.put("type", schema.getType().iterator().next());
             } else if (schema.getType().size() > 1) {
-                ArrayNode arrayNode = objectMapper.createArrayNode();
+                ArrayNode arrayNode = jsonMapper.createArrayNode();
                 schema.getType().forEach(arrayNode::add);
                 node.set("type", arrayNode);
             }
@@ -158,7 +158,7 @@ public class JsonSchemaGenerator {
 
     private JsonNode buildProperties(
             SchemaObject schema, Map<String, ComponentSchema> definitions, Set<ComponentSchema> visited) {
-        ObjectNode node = objectMapper.createObjectNode();
+        ObjectNode node = jsonMapper.createObjectNode();
 
         for (Map.Entry<String, Object> propertySchemaSet :
                 schema.getProperties().entrySet()) {

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.kotlinx_serialization_model_converter.converter;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -17,8 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KotlinxSerializationTypeConverterTest {
 
-    ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
-    private final PrettyPrinter printer = new DefaultPrettyPrinter();
+    private static final ObjectMapper jsonMapper = ObjectMapperFactory.createJson31();
 
     private ModelConverters modelConverters;
 
@@ -37,7 +34,8 @@ class KotlinxSerializationTypeConverterTest {
         var media = converters.readAll(new AnnotatedType(SampleEvent.class));
 
         String example = ClasspathUtil.readAsString("/simple.json");
-        assertThatJson(jsonMapper.writer(printer).writeValueAsString(media)).isEqualTo(example);
+        assertThatJson(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(media))
+                .isEqualTo(example);
     }
 
     @Test
@@ -49,7 +47,8 @@ class KotlinxSerializationTypeConverterTest {
         var media = converters.readAll(new AnnotatedType(SampleEvent.class));
 
         String example = ClasspathUtil.readAsString("/fqn.json");
-        assertThatJson(jsonMapper.writer(printer).writeValueAsString(media)).isEqualTo(example);
+        assertThatJson(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(media))
+                .isEqualTo(example);
     }
 
     @Nested

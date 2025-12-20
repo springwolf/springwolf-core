@@ -22,8 +22,6 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    runtimeOnly libs.spring.boot.starter.web
-
     implementation libs.slf4j.api
     implementation libs.swagger.annotations.jakarta
 
@@ -35,8 +33,10 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.context
     implementation libs.spring.messaging
+    runtimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.web
     testImplementation libs.spring.test
@@ -44,7 +44,7 @@ dependencies {
     testImplementation libs.assertj.core
 
     testImplementation libs.jackson.core
-    permitTestUsedUndeclared libs.jackson.core
+    permitTestUnusedDeclared libs.jackson.core
 
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter

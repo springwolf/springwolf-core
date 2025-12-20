@@ -19,7 +19,6 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Operat
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
-import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -56,8 +55,8 @@ public class SpringwolfJmsScannerConfiguration {
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService) {
-        val springAnnotationChannelService = new SpringAnnotationChannelService<>(jmsBindingFactory);
-        val springAnnotationMessageService = new SpringAnnotationMessageService<>(
+        final var springAnnotationChannelService = new SpringAnnotationChannelService<>(jmsBindingFactory);
+        final var springAnnotationMessageService = new SpringAnnotationMessageService<>(
                 jmsBindingFactory, new AsyncHeadersNotDocumented(), componentsService);
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
@@ -81,7 +80,7 @@ public class SpringwolfJmsScannerConfiguration {
             HeaderClassExtractor headerClassExtractor,
             ComponentsService componentsService,
             List<OperationCustomizer> operationCustomizers) {
-        val springAnnotationOperationService = new SpringAnnotationOperationService<>(
+        final var springAnnotationOperationService = new SpringAnnotationOperationService<>(
                 jmsBindingFactory,
                 new SpringAnnotationMessageService<>(
                         jmsBindingFactory, new AsyncHeadersNotDocumented(), componentsService));

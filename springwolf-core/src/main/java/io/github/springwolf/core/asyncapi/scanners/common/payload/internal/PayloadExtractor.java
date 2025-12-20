@@ -18,7 +18,7 @@ public class PayloadExtractor {
     private final TypeExtractor typeExtractor;
 
     public Optional<Type> extractFrom(Method method) {
-        String methodName = String.format("%s::%s", method.getDeclaringClass().getSimpleName(), method.getName());
+        String methodName = "%s::%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
         log.debug("Finding payload type for {}", methodName);
 
         return getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName)

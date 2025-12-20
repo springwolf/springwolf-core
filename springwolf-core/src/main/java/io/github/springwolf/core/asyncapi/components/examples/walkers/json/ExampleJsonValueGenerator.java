@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.examples.walkers.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyExample;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     private static final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/json");
 
-    private static final ObjectMapper objectMapper = Json.mapper();
+    private static final YAMLMapper yamlMapper = YAMLMapper.builder().build();
 
     @Override
     public boolean canHandle(String contentType) {
@@ -76,7 +75,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public JsonNode createArrayExample(Optional<String> name, JsonNode arrayItem) {
-        ArrayNode array = objectMapper.createArrayNode();
+        ArrayNode array = yamlMapper.createArrayNode();
         array.add(arrayItem);
         return array;
     }
@@ -89,8 +88,8 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     @Override
     public JsonNode createRaw(Object exampleValue) {
         try {
-            return objectMapper.readTree(exampleValue.toString());
-        } catch (JsonProcessingException e) {
+            return yamlMapper.readTree(exampleValue.toString());
+        } catch (JacksonException e) {
             log.info("Unable to parse example to JsonNode: {}", exampleValue, e);
             return null;
         }
@@ -98,8 +97,8 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public JsonNode getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
-        if (example instanceof JsonNode) {
-            return (JsonNode) example;
+        if (example instanceof JsonNode node) {
+            return node;
         }
 
         return null;
@@ -107,7 +106,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public JsonNode startObject(Optional<String> name) {
-        return objectMapper.createObjectNode();
+        return yamlMapper.createObjectNode();
     }
 
     @Override
@@ -125,6 +124,6 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
 
     @Override
     public Optional<JsonNode> createEmptyObjectExample() {
-        return Optional.of(objectMapper.createObjectNode());
+        return Optional.of(yamlMapper.createObjectNode());
     }
 }

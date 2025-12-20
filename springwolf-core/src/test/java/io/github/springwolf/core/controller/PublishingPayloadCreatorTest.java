@@ -2,7 +2,7 @@
 package io.github.springwolf.core.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
@@ -27,7 +27,7 @@ class PublishingPayloadCreatorTest {
     private ComponentsService componentsService;
 
     @Mock
-    private ObjectMapper objectMapper;
+    private JsonMapper jsonMapper;
 
     @InjectMocks
     private PublishingPayloadCreator publishingPayloadCreator;
@@ -61,7 +61,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.BOOLEAN).build())));
-        when(objectMapper.readValue(payload, Boolean.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, Boolean.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -85,7 +85,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.INTEGER).build())));
-        when(objectMapper.readValue(payload, Long.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -109,7 +109,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.INTEGER).build())));
-        when(objectMapper.readValue(payload, Long.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -133,7 +133,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.NUMBER).build())));
-        when(objectMapper.readValue(payload, Double.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -157,7 +157,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.NUMBER).build())));
-        when(objectMapper.readValue(payload, Double.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -181,7 +181,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
-        when(objectMapper.readValue(payload, ObjectClass.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, ObjectClass.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -205,7 +205,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.STRING).build())));
-        when(objectMapper.readValue(payload, String.class)).thenReturn(typed);
+        when(jsonMapper.readValue(payload, String.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -251,7 +251,7 @@ class PublishingPayloadCreatorTest {
                         type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
-        when(objectMapper.readValue(payload, ObjectClass.class))
+        when(jsonMapper.readValue(payload, ObjectClass.class))
                 .thenThrow(new JsonProcessingException("invalid json") {});
 
         // when

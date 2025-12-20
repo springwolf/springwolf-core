@@ -41,7 +41,7 @@ public class ApiSystemTest {
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
         int port = environment.getServicePort(APP_NAME, APP_PORT);
-        return String.format("http://%s:%d", host, port);
+        return "http://%s:%d".formatted(host, port);
     }
 
     @Test

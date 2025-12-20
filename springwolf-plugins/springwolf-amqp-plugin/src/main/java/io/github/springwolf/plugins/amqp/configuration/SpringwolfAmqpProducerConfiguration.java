@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class SpringwolfAmqpProducerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SpringwolfAmqpProducer springwolfAmqpProducer(
-            AsyncApiService asyncApiService, @NonNull List<RabbitTemplate> rabbitTemplates) {
+            AsyncApiService asyncApiService, List<RabbitTemplate> rabbitTemplates) {
         return new SpringwolfAmqpProducer(asyncApiService, rabbitTemplates);
     }
 

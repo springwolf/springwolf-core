@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.plugins.kafka.configuration.JsonMapperTestConfiguration;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,14 +26,16 @@ import lombok.extern.jackson.Jacksonized;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
@@ -49,7 +52,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SpringwolfKafkaController.class)
-@ContextConfiguration(
+@SpringJUnitConfig(
         classes = {
             SpringwolfKafkaController.class,
             PublishingPayloadCreator.class,
@@ -64,8 +67,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersProvider.class,
+            JsonMapperTestConfiguration.class,
         })
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(
         properties = {
             "springwolf.docket.base-package=io.github.springwolf.plugins.kafka",
@@ -87,7 +92,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private SpringwolfKafkaProducer springwolfKafkaProducer;
 
     @Captor
-    private ArgumentCaptor<PayloadDto> payloadCaptor;
+    private ArgumentCaptor<Object> payloadCaptor;
 
     @Captor
     private ArgumentCaptor<Map<String, MessageDto.HeaderValue>> headerCaptor;
@@ -149,7 +154,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), eq(null));
+        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), isNull());
     }
 
     @Test

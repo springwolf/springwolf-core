@@ -117,8 +117,7 @@ public class AsyncAnnotationUtil {
             Method method, List<OperationBindingProcessor> operationBindingProcessors) {
         return operationBindingProcessors.stream()
                 .map(operationBindingProcessor -> operationBindingProcessor.process(method))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
                         ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding, (e1, e2) -> e1));
     }
@@ -127,8 +126,7 @@ public class AsyncAnnotationUtil {
             AnnotatedElement annotatedElement, List<MessageBindingProcessor> messageBindingProcessors) {
         return messageBindingProcessors.stream()
                 .map(messageBindingProcessor -> messageBindingProcessor.process(annotatedElement))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
                         ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding, (e1, e2) -> e1));
     }
@@ -181,8 +179,7 @@ public class AsyncAnnotationUtil {
             AnnotatedElement annotatedElement, List<ChannelBindingProcessor> channelBindingProcessors) {
         return channelBindingProcessors.stream()
                 .map(channelBindingProcessor -> channelBindingProcessor.process(annotatedElement))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
                         ProcessedChannelBinding::getType, ProcessedChannelBinding::getBinding, (e1, e2) -> e1));
     }

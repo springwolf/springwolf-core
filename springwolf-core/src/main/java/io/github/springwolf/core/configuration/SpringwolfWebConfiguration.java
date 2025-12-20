@@ -38,8 +38,8 @@ public class SpringwolfWebConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PublishingPayloadCreator publishingPayloadCreator(
-            ComponentsService componentsService, ObjectMapper objectMapper) {
-        return new PublishingPayloadCreator(componentsService, objectMapper);
+            ComponentsService componentsService, ObjectMapper jsonMapper) {
+        return new PublishingPayloadCreator(componentsService, jsonMapper);
     }
 
     @Bean

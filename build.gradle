@@ -32,7 +32,7 @@ var plugins = [
         'springwolf-jms',
         'springwolf-kafka',
         'springwolf-sns',
-        'springwolf-sqs',
+//        'springwolf-sqs', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
         'springwolf-stomp'
 ]
 
@@ -106,7 +106,7 @@ allprojects {
 
         useJUnitPlatform()
         testLogging {
-            showStandardStreams = true
+            // showStandardStreams = true
 
             events "skipped", "failed"
             exceptionFormat = 'full'

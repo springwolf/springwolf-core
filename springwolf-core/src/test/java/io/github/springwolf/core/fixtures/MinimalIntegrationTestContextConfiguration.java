@@ -11,7 +11,7 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
-@ContextConfiguration(classes = {SpringwolfAutoConfiguration.class, ObjectMapperTestConfiguration.class})
+@ContextConfiguration(classes = {SpringwolfAutoConfiguration.class, JsonMapperTestConfiguration.class})
 @EnableConfigurationProperties
 @TestPropertySource(
         properties = {

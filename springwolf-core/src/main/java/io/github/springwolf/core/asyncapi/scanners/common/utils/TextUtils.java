@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.util.Arrays;
 
@@ -36,7 +37,7 @@ public class TextUtils {
                 .reduce((a, b) -> a + newLine + b)
                 .orElse(StringUtils.EMPTY);
 
-        if (StringUtils.endsWith(text, "\n")) {
+        if (Strings.CS.endsWith(text, "\n")) {
             result = result.concat(newLine);
         }
 

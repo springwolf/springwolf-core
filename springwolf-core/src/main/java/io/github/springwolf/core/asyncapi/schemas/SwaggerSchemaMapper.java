@@ -152,8 +152,8 @@ public class SwaggerSchemaMapper {
         }
 
         Object additionalProperties = swaggerSchema.getAdditionalProperties();
-        if (additionalProperties instanceof Schema) {
-            builder.additionalProperties(mapSchemaOrRef((Schema<?>) additionalProperties));
+        if (additionalProperties instanceof Schema<?> schema) {
+            builder.additionalProperties(mapSchemaOrRef(schema));
         }
 
         builder.required(swaggerSchema.getRequired());

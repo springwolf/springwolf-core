@@ -28,23 +28,20 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    runtimeOnly libs.spring.boot.starter.web
-
     runtimeOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.beans
-    implementation libs.spring.context
-    implementation libs.spring.core
-    implementation libs.spring.messaging
-    implementation libs.spring.web
-
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-
+    implementation libs.spring.boot.jackson2
+    implementation libs.spring.context
+    implementation libs.spring.core
     implementation libs.spring.kafka
-
+    implementation libs.spring.messaging
     implementation libs.spring.security.config
     implementation libs.spring.security.web
+    implementation libs.spring.web
+    runtimeOnly libs.spring.boot.starter.webmvc
 
     implementation libs.avro
     implementation libs.kafka.avro.serializer
@@ -72,6 +69,7 @@ dependencies {
     testImplementation libs.assertj.core
     testImplementation libs.awaitility
 
+    testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.core
     testImplementation libs.spring.test
@@ -87,6 +85,8 @@ dependencies {
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    testImplementation libs.commons.io
 }
 
 docker {
