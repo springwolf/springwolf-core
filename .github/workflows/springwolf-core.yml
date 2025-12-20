@@ -47,6 +47,7 @@ jobs:
           check_name: test-core
           require_tests: true
           report_paths: '**/build/test-results/test/TEST-*.xml'
+          annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
 
       - name: Publish package
         if: github.ref == 'refs/heads/master'

@@ -49,6 +49,7 @@ jobs:
           check_name: test-ui-jest
           require_tests: true
           report_paths: '**/build/test-results/junit.xml'
+          annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
 
       - name: Build
         run: ./gradlew -p ${{ env.project }} build
