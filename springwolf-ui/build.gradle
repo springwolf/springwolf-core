@@ -116,14 +116,6 @@ spotless {
     endWithNewline()
   }
 
-  format 'json', {
-    target 'src/**/*.json'
-    targetExclude '**/*.actual.json'
-
-    trimTrailingWhitespace()
-    endWithNewline()
-  }
-
   format 'styling', {
     target 'src/**/*.ts', 'src/**/*.js', 'src/**/*.css' // , 'src/**/*.scss' currently broken
 
@@ -142,13 +134,10 @@ tasks.named('assemble').configure {
 tasks.named('test').configure {
   it.dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
 }
-tasks.named('spotlessStyling').configure {
-  it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
-}
 tasks.named('spotlessHtml').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
-tasks.named('spotlessJson').configure {
+tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
 
