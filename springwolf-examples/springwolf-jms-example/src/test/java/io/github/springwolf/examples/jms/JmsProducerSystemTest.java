@@ -46,7 +46,7 @@ public class JmsProducerSystemTest {
     @MockitoSpyBean
     ExampleConsumer exampleConsumer;
 
-    @Value("${spring.activemq.broker-url}")
+    @Value("${spring.artemis.broker-url}")
     String brokerUrl;
 
     @Container
@@ -61,7 +61,7 @@ public class JmsProducerSystemTest {
 
     @DynamicPropertySource
     static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
-        registry.add("spring.activemq.broker-url", () -> "tcp://%s:%s"
+        registry.add("spring.artemis.broker-url", () -> "tcp://%s:%s"
                 .formatted(environment.getServiceHost(APP_JMS, 61616), environment.getServicePort(APP_JMS, 61616)));
     }
 
