@@ -159,7 +159,7 @@ export class ChannelOperationComponent implements OnInit {
 
   publish(): void {
     const example = this.defaultExample().value;
-    const payloadType = this.operation().message.payload.name;
+    const type = this.operation().message.payload.name;
     const headers = this.headersExample.value;
     const bindings = this.messageBindingExampleString;
     try {
@@ -183,7 +183,7 @@ export class ChannelOperationComponent implements OnInit {
           this.operation().protocol || "not-supported-protocol",
           this.channelName(),
           example,
-          payloadType,
+          type,
           headersJson,
           bindingsJson
         )

@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller.dtos;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,12 +30,13 @@ public class MessageDto {
     private final Map<String, HeaderValue> headers;
 
     @Builder.Default
-    private final String payloadType = String.class.getCanonicalName();
+    private final String type = String.class.getCanonicalName();
 
     @Builder.Default
     private final String payload = EMPTY;
 
     @JsonDeserialize(using = HeaderValueDeserializer.class)
+    @JsonSerialize(using = HeaderValueSerializer.class)
     public record HeaderValue(String stringValue) {}
 
     public static class HeaderValueDeserializer extends JsonDeserializer<HeaderValue> {
@@ -44,6 +49,19 @@ public class MessageDto {
                 return new HeaderValue(node.textValue());
             }
             return new HeaderValue(node.toString());
+        }
+    }
+
+    public static class HeaderValueSerializer extends JsonSerializer<HeaderValue> {
+        @Override
+        public void serialize(HeaderValue value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            String stringValue = value.stringValue();
+            try {
+                double number = Double.parseDouble(stringValue);
+                gen.writeNumber(number);
+            } catch (NumberFormatException e) {
+                gen.writeString(stringValue);
+            }
         }
     }
 }

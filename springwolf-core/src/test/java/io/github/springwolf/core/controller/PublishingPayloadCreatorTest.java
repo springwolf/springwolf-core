@@ -35,9 +35,9 @@ class PublishingPayloadCreatorTest {
     @Test
     void shouldResolveEmptyPayload() {
         // given
-        String payloadType = ObjectClass.class.getName();
+        String type = ObjectClass.class.getName();
         String payload = "";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -51,181 +51,181 @@ class PublishingPayloadCreatorTest {
     @Test
     void shouldResolveBooleanPayload() throws Exception {
         // given
-        String payloadType = Boolean.class.getName();
+        String type = Boolean.class.getName();
         String payload = "true";
-        Boolean payloadTyped = true;
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        Boolean typed = true;
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.BOOLEAN).build())));
-        when(objectMapper.readValue(payload, Boolean.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, Boolean.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveIntegerPayload() throws Exception {
         // given
-        String payloadType = Integer.class.getName();
+        String type = Integer.class.getName();
         String payload = "12345678";
-        Long payloadTyped = 12345678L;
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        Long typed = 12345678L;
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.INTEGER).build())));
-        when(objectMapper.readValue(payload, Long.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveLongPayload() throws Exception {
         // given
-        String payloadType = Long.class.getName();
+        String type = Long.class.getName();
         String payload = Long.valueOf(Long.MAX_VALUE).toString();
-        Long payloadTyped = Long.MAX_VALUE;
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        Long typed = Long.MAX_VALUE;
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.INTEGER).build())));
-        when(objectMapper.readValue(payload, Long.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveFloatPayload() throws Exception {
         // given
-        String payloadType = Float.class.getName();
+        String type = Float.class.getName();
         String payload = "12345678.123";
-        Double payloadTyped = 12345678.123;
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        Double typed = 12345678.123;
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.NUMBER).build())));
-        when(objectMapper.readValue(payload, Double.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveDoublePayload() throws Exception {
         // given
-        String payloadType = Double.class.getName();
+        String type = Double.class.getName();
         String payload = Double.valueOf(Double.MAX_VALUE).toString();
-        Double payloadTyped = Double.MAX_VALUE;
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        Double typed = Double.MAX_VALUE;
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.NUMBER).build())));
-        when(objectMapper.readValue(payload, Double.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveObjectPayload() throws Exception {
         // given
-        String payloadType = ObjectClass.class.getName();
+        String type = ObjectClass.class.getName();
         String payload = "{\"value\":\"test\"}";
-        ObjectClass payloadTyped = new ObjectClass("test");
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        ObjectClass typed = new ObjectClass("test");
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
-        when(objectMapper.readValue(payload, ObjectClass.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, ObjectClass.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldResolveStringPayload() throws Exception {
         // given
-        String payloadType = String.class.getName();
+        String type = String.class.getName();
         String payload = "\"test\"";
-        String payloadTyped = "test";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        String typed = "test";
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.STRING).build())));
-        when(objectMapper.readValue(payload, String.class)).thenReturn(payloadTyped);
+        when(objectMapper.readValue(payload, String.class)).thenReturn(typed);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.payload()).isEqualTo(payloadTyped);
+        assertThat(result.payload()).isEqualTo(typed);
         assertThat(result.errorMessage()).isEqualTo(Optional.empty());
     }
 
     @Test
     void shouldReturnEmptyPayloadForUnknownClass() {
         // given
-        String payloadType = "MyUnknownClass";
+        String type = "MyUnknownClass";
         String payload = "payload-data";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
 
@@ -242,13 +242,13 @@ class PublishingPayloadCreatorTest {
     @Test
     void shouldReturnEmptyPayloadForInvalidJson() throws Exception {
         // given
-        String payloadType = ObjectClass.class.getName();
+        String type = ObjectClass.class.getName();
         String payload = "---invalid-json---";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.OBJECT).build())));
         when(objectMapper.readValue(payload, ObjectClass.class))
@@ -269,13 +269,13 @@ class PublishingPayloadCreatorTest {
     @Test
     void shouldReturnEmptyPayloadForUnsupportedSchemaType() {
         // given
-        String payloadType = ObjectClass.class.getName();
+        String type = ObjectClass.class.getName();
         String payload = "{}";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
-                        payloadType,
+                        type,
                         ComponentSchema.of(
                                 SchemaObject.builder().type(SchemaType.ARRAY).build())));
 
@@ -292,11 +292,11 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldReturnEmptyPayloadForUnmatchedPayloadType() {
+    void shouldReturnEmptyPayloadForUnmatchedType() {
         // given
-        String payloadType = String.class.getName();
+        String type = String.class.getName();
         String payload = "{\"value\":\"test\"}";
-        MessageDto message = new MessageDto(Map.of(), Map.of(), payloadType, payload);
+        MessageDto message = new MessageDto(Map.of(), Map.of(), type, payload);
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -305,8 +305,7 @@ class PublishingPayloadCreatorTest {
         assertThat(result).isNotNull();
         assertThat(result.payload()).isNull();
         assertThat(result.errorMessage())
-                .isEqualTo(
-                        Optional.of("Specified payloadType java.lang.String is not a registered springwolf schema."));
+                .isEqualTo(Optional.of("Specified type java.lang.String is not a registered springwolf schema."));
     }
 
     record ObjectClass(String value) {}

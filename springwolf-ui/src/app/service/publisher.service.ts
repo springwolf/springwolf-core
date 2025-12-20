@@ -28,7 +28,7 @@ export class PublisherService {
     protocol: string,
     topic: string,
     payload: string,
-    payloadType: string,
+    type: string,
     headers: object,
     bindings: object
   ): Observable<unknown> {
@@ -36,7 +36,7 @@ export class PublisherService {
     const params = new HttpParams().set("topic", topic);
     const body = {
       payload,
-      payloadType,
+      type,
       headers,
       bindings,
     };
