@@ -57,4 +57,4 @@ If not, try the following endpoint: `localhost:8080/springwolf/docs`.
 
 ### Example Project
 
-See [springwolf-kafka-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-kafka-example).
+See [springwolf-kafka-example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-kafka-example).

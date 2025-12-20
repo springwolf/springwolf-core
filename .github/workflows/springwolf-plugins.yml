@@ -3,7 +3,7 @@ name: springwolf-plugins
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
   workflow_dispatch:
@@ -90,7 +90,7 @@ jobs:
           retention-days: 14
 
       - name: Publish docker image
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.example }} dockerBuildImage dockerPushImage
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
@@ -99,7 +99,7 @@ jobs:
           ORG_GRADLE_PROJECT_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Publish package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.plugin }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true

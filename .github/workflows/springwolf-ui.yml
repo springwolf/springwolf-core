@@ -3,7 +3,7 @@ name: springwolf-ui
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ opened, synchronize, ready_for_review ]
   workflow_dispatch:
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: [build]
     permissions:
       contents: write
@@ -81,7 +81,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Publish package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.project }} publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
@@ -93,10 +93,10 @@ jobs:
           ORG_GRADLE_PROJECT_MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
       - name: Build gh-pages
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.project }} buildPages
       - name: Deploy to gh pages 🚀
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ${{ env.project }}/dist/springwolf-ui/

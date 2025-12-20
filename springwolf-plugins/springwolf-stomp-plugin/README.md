@@ -50,4 +50,4 @@ If not, try the following endpoint: `localhost:8080/springwolf/docs`.
 
 ### Example Project
 
-See [springwolf-stomp-example](https://github.com/springwolf/springwolf-core/tree/master/springwolf-examples/springwolf-stomp-example).
+See [springwolf-stomp-example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-stomp-example).
