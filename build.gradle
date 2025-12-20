@@ -32,11 +32,9 @@ var plugins = [
         'springwolf-jms',
         'springwolf-kafka',
         'springwolf-sns',
-        'springwolf-sqs',
+//        'springwolf-sqs', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
         'springwolf-stomp'
 ]
-
-// TODO: implementation platform("tools.jackson:jackson-bom:3.0.0")
 
 allprojects {
     apply plugin: 'java'

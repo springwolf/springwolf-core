@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [ "amqp", "cloud-stream", "jms", "kafka", "sns", "sqs", "stomp" ]
+        plugin: [ "amqp", "cloud-stream", "jms", "kafka", "sns", "stomp" ] # "sqs" , re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
 
     env:
       plugin: springwolf-plugins/springwolf-${{ matrix.plugin }}-plugin
