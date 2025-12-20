@@ -68,6 +68,7 @@ jobs:
           check_name: test-plugin-${{ matrix.plugin }}-junit
           require_tests: true
           report_paths: '**/build/test-results/test/TEST-*.xml'
+          annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
 
       - name: Run e2e tests
         run: ./gradlew -p springwolf-examples/e2e pnpm_run_install_deps test
@@ -80,6 +81,7 @@ jobs:
           check_name: test-plugin-${{ matrix.plugin }}-e2e
           require_tests: true
           report_paths: '**/test-results/junit.xml'
+          annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
       - uses: actions/upload-artifact@v5
         if: always()
         with:
