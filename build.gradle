@@ -106,7 +106,7 @@ allprojects {
 
         useJUnitPlatform()
         testLogging {
-            showStandardStreams = true
+            // showStandardStreams = true
 
             events "skipped", "failed"
             exceptionFormat = 'full'
