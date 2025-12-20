@@ -50,7 +50,7 @@
   },
   "jest-junit": {
     "ancestorSeparator": " › ",
-    "outputDirectory": "build/test-results/test",
+    "outputDirectory": "build/test-results",
     "uniqueOutputName": "false",
     "suiteNameTemplate": "{filepath}",
     "classNameTemplate": "{classname}",
