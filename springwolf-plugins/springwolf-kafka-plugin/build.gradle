@@ -40,7 +40,8 @@ dependencies {
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
 
-
+    testImplementation libs.jakarta.servlet.api
+    permitTestUnusedDeclared libs.jakarta.servlet.api
     testImplementation libs.jackson.annotations
     testImplementation libs.jackson.databind
 

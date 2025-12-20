@@ -21,14 +21,21 @@ dependencies {
     testAnnotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation libs.spring.web
-    implementation libs.spring.websocket
+    implementation libs.jakarta.servlet.api
+    permitUnusedDeclared libs.jakarta.servlet.api
+    implementation libs.jakarta.websocket.api
+    permitUnusedDeclared libs.jakarta.websocket.api
+    implementation libs.jakarta.websocket.client.api
+    permitUnusedDeclared libs.jakarta.websocket.client.api
 
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    runtimeOnly libs.spring.boot.starter.webmvc
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
     implementation libs.spring.context
     implementation libs.spring.messaging
+    implementation libs.spring.web
+    implementation libs.spring.websocket
 
     implementation libs.swagger.annotations.jakarta
 
@@ -47,7 +54,7 @@ dependencies {
     testImplementation libs.testcontainers.junit.jupiter
 
     testImplementation libs.jackson.core
-    permitTestUsedUndeclared libs.jackson.core
+    permitTestUnusedDeclared libs.jackson.core
     testImplementation libs.jakarta.annotation.api
 
     testAnnotationProcessor libs.lombok

@@ -41,7 +41,10 @@ jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-d
 jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.9.18"
 jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
+jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 jakarta-validation-api = "jakarta.validation:jakarta.validation-api:3.1.1"
+jakarta-websocket-api = "jakarta.websocket:jakarta.websocket-api:2.2.0"
+jakarta-websocket-client-api = "jakarta.websocket:jakarta.websocket-client-api:2.2.0"
 jakarta-xml-bind-api = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.4"
 jetbrains-annotations = "org.jetbrains:annotations:26.0.2"
 json-schema-validator = "com.networknt:json-schema-validator:1.5.9"
@@ -80,6 +83,7 @@ spring-boot-jms = { module = "org.springframework.boot:spring-boot-jms" }
 spring-boot-kafka = { module = "org.springframework.boot:spring-boot-kafka" }
 spring-boot-restclient-test = { module = "org.springframework.boot:spring-boot-resttestclient" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
 spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
 spring-boot-test = { module = "org.springframework.boot:spring-boot-test" }
 spring-boot-webmvc = { module = "org.springframework.boot:spring-boot-webmvc" }

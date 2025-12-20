@@ -13,28 +13,26 @@ dependencies {
     api project(":springwolf-bindings:springwolf-stomp-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
 
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+
     runtimeOnly libs.swagger.models.jakarta
 
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor libs.spring.boot.configuration.processor
+
     runtimeOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
-    implementation libs.spring.core
-    implementation libs.spring.messaging
-
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-    annotationProcessor libs.spring.boot.configuration.processor
-    runtimeOnly libs.spring.websocket
-
-    annotationProcessor libs.lombok
-    compileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-
     testRuntimeOnly libs.spring.boot.starter.webmvc
+    implementation libs.spring.core
+    implementation libs.spring.messaging
 
     testImplementation libs.mockito.core
 

@@ -13,6 +13,9 @@ dependencies {
     api project(":springwolf-bindings:springwolf-jms-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-jms-binding")
 
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+
     implementation libs.jakarta.jms.api
 
     implementation libs.jakarta.annotation.api
@@ -21,20 +24,15 @@ dependencies {
     runtimeOnly libs.activemq.broker
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor libs.spring.boot.configuration.processor
+
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.spring.boot
+    implementation libs.spring.boot.autoconfigure
     implementation libs.spring.context
     implementation libs.spring.core
     implementation libs.spring.jms
     implementation libs.spring.web
-
-    implementation libs.spring.boot
-    implementation libs.spring.boot.autoconfigure
-
-    annotationProcessor libs.lombok
-    compileOnly libs.lombok
-
-    annotationProcessor libs.spring.boot.configuration.processor
-
     testRuntimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.jackson.annotations
