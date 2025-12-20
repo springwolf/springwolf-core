@@ -78,7 +78,7 @@ public class KafkaProducerSystemTest {
                 + "        \"kafka_offset\": 0,\n" //
                 + "        \"kafka_receivedMessageKey\": \"string\"\n" //
                 + "    },\n"
-                + "    \"payloadType\": \"io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto\",\n"
+                + "    \"type\": \"io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto\",\n"
                 + "    \"payload\": \"" + payloadAsString + "\"\n"
                 + "}";
 
@@ -111,7 +111,7 @@ public class KafkaProducerSystemTest {
         String message = "{\n" //
                 + "    \"bindings\": {},\n"
                 + "    \"headers\": {},\n"
-                + "    \"payloadType\": \"io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto\",\n"
+                + "    \"type\": \"io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto\",\n"
                 + "    \"payload\": \"" + payloadAsString.replaceAll("\"", "\\\\\"") + "\"\n"
                 + "}";
 

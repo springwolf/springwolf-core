@@ -30,7 +30,7 @@ public class PublishingPayloadCreator {
     private final ObjectMapper objectMapper;
 
     public Result createPayloadObject(MessageDto message) {
-        String messagePayloadType = message.getPayloadType();
+        String messageType = message.getType();
 
         if (MessageDto.EMPTY.equals(message.getPayload())) {
             return new Result(null, Optional.empty());
@@ -44,7 +44,7 @@ public class PublishingPayloadCreator {
             SchemaObject schema = componentSchema.getSchema();
 
             // security: match against user input, but always use our controlled data from the DefaultSchemaService
-            if (schemaName != null && schemaName.equals(messagePayloadType)) {
+            if (schemaName != null && schemaName.equals(messageType)) {
                 try {
                     Object payload = resolveActualPayload(message, schema, schemaName);
                     return new Result(payload, Optional.empty());
@@ -57,10 +57,10 @@ public class PublishingPayloadCreator {
             }
         }
 
-        String errorMessage = MessageFormat.format(
-                "Specified payloadType {0} is not a registered springwolf schema.", messagePayloadType);
+        String errorMessage =
+                MessageFormat.format("Specified type {0} is not a registered springwolf schema.", messageType);
         String knownPayloadsMessage =
-                MessageFormat.format(" Known payloadTypes: [{0}]", StringUtils.join(knownSchemaNames, ", "));
+                MessageFormat.format(" Known types: [{0}]", StringUtils.join(knownSchemaNames, ", "));
         log.info("{}{}", errorMessage, knownPayloadsMessage);
         return new Result(null, Optional.of(errorMessage));
     }

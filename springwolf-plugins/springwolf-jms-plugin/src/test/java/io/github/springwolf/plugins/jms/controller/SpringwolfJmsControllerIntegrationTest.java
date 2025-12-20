@@ -179,7 +179,7 @@ class SpringwolfJmsControllerIntegrationTest {
                           "bindings": null,
                           "headers": null,
                           "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                          "payloadType": "io.github.springwolf.plugins.jms.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
+                          "type": "io.github.springwolf.plugins.jms.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
                         }""";
 
         mvc.perform(post("/springwolf/jms/publish")
@@ -205,7 +205,7 @@ class SpringwolfJmsControllerIntegrationTest {
                             "some-header-key": "some-header-value"
                           },
                           "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }",
-                          "payloadType": "io.github.springwolf.plugins.jms.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
+                          "type": "io.github.springwolf.plugins.jms.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
                         }
                         """;
 
