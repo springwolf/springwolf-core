@@ -149,7 +149,7 @@ components:
       examples:
         - {}
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: "There can be headers, but they are not explicitly documented."
         title: HeadersNotDocumented
         type: object
@@ -161,7 +161,7 @@ components:
       examples:
         - {}
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: No headers are present.
         title: HeadersNotUsed
         type: object
@@ -173,7 +173,7 @@ components:
       examples:
         - {}
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: No payload specified
         title: PayloadNotUsed
         type: object
@@ -256,7 +256,7 @@ components:
           ce_type: NestedPayloadDto.v1
           content-type: application/json
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: Spring __TypeId__ and CloudEvent Headers
         properties:
           __TypeId__:
@@ -324,7 +324,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -349,7 +349,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -376,7 +376,7 @@ components:
         - __TypeId__: string
           my_uuid_field: 3fa85f64-5717-4562-b3fc-2c963f66afa6
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Type ID
@@ -421,7 +421,7 @@ components:
           kafka_offset: 0
           kafka_receivedMessageKey: string
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -454,7 +454,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -479,7 +479,7 @@ components:
       examples:
         - __TypeId__: javax.money.MonetaryAmount
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -504,7 +504,7 @@ components:
       examples:
         - __TypeId__: PayloadNotUsed
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -529,7 +529,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -554,7 +554,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -579,7 +579,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -604,7 +604,7 @@ components:
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -629,7 +629,7 @@ components:
       examples:
         - __TypeId__: java.lang.Integer
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -654,7 +654,7 @@ components:
       examples:
         - __TypeId__: java.lang.String
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
             description: Spring Type Id Header
@@ -672,7 +672,7 @@ components:
       examples:
         - '"string"'
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: Payload description using @Schema annotation and @AsyncApiPayload
           within envelope class
         maxLength: 100
@@ -695,7 +695,7 @@ components:
             someString: string
           someEnum: FOO1
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           examplePayloadAvroDto:
             properties:
@@ -727,7 +727,7 @@ components:
         - someLong: 0
           someString: string
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           someLong:
             format: int64
@@ -757,7 +757,7 @@ components:
           someLong: 0
           someString: string
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           someEnum:
             enum:
@@ -795,7 +795,7 @@ components:
       required:
         - example
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: Another payload model
         properties:
           example:
@@ -891,7 +891,7 @@ components:
         - someEnum
         - someString
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: |
           Example payload model demonstrating markdown text styling:
           **bold**, *cursive* and <u>underlined</u>
@@ -953,7 +953,7 @@ components:
           someStrings:
             - some string value
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: Payload model with nested complex types
         properties:
           examplePayloads:
@@ -1045,7 +1045,7 @@ components:
         - requiredButNullableField
         - requiredField
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: "Demonstrate required and nullable. Note, @Schema is only descriptive\
           \ without nullability check"
         properties:
@@ -1100,7 +1100,7 @@ components:
       examples:
         - <io.github.springwolf.examples.kafka.dtos.XmlPayloadDto someAttribute="string"><someEnum>FOO1</someEnum><someLong>0</someLong><someString>string</someString></io.github.springwolf.examples.kafka.dtos.XmlPayloadDto>
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           someAttribute: {}
           someEnum:
@@ -1137,7 +1137,7 @@ components:
           someLong: 0
           someString: string
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           someEnum:
             enum:
@@ -1166,7 +1166,7 @@ components:
         - hp: 0
           torque: 0
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           hp:
             format: int32
@@ -1203,7 +1203,7 @@ components:
         - $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto"
         - $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto"
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         description: Demonstrates the use of discriminator for polymorphic deserialization
           (not publishable)
         oneOf:
@@ -1260,7 +1260,7 @@ components:
               type: integer
               format: int32
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         allOf:
           - description: Demonstrates the use of discriminator for polymorphic deserialization
               (not publishable)
@@ -1313,7 +1313,7 @@ components:
               type: integer
               format: int32
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         allOf:
           - description: Demonstrates the use of discriminator for polymorphic deserialization
               (not publishable)
@@ -1353,7 +1353,7 @@ components:
       examples:
         - 0
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         format: int32
         type: integer
     java.lang.String:
@@ -1361,7 +1361,7 @@ components:
       examples:
         - '"string"'
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         type: string
     javax.money.MonetaryAmount:
       type: object
@@ -1379,7 +1379,7 @@ components:
         - amount: 99.99
           currency: USD
       x-json-schema:
-        $schema: https://json-schema.org/draft-04/schema#
+        $schema: https://json-schema.org/draft-07/schema#
         properties:
           amount:
             exclusiveMinimum: 0.01

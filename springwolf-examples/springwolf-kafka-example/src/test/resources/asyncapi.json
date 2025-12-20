@@ -227,7 +227,7 @@
           { }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "There can be headers, but they are not explicitly documented.",
           "title": "HeadersNotDocumented",
           "type": "object"
@@ -242,7 +242,7 @@
           { }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "No headers are present.",
           "title": "HeadersNotUsed",
           "type": "object"
@@ -257,7 +257,7 @@
           { }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "No payload specified",
           "title": "PayloadNotUsed",
           "type": "object"
@@ -370,7 +370,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Spring __TypeId__ and CloudEvent Headers",
           "properties": {
             "__TypeId__": {
@@ -464,7 +464,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -501,7 +501,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -539,7 +539,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Type ID",
@@ -602,7 +602,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -650,7 +650,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -687,7 +687,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -724,7 +724,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -761,7 +761,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -798,7 +798,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -835,7 +835,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -872,7 +872,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -909,7 +909,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -946,7 +946,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -969,7 +969,7 @@
           "\"string\""
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Payload description using @Schema annotation and @AsyncApiPayload within envelope class",
           "maxLength": 100,
           "type": "string"
@@ -1001,7 +1001,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "examplePayloadAvroDto": {
               "properties": {
@@ -1048,7 +1048,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "someLong": {
               "format": "int64",
@@ -1091,7 +1091,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "someEnum": {
               "enum": [
@@ -1145,7 +1145,7 @@
           "example"
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Another payload model",
           "properties": {
             "example": {
@@ -1237,7 +1237,7 @@
           "someString"
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Example payload model demonstrating markdown text styling:\n**bold**, *cursive* and <u>underlined</u>\n",
           "properties": {
             "someEnum": {
@@ -1306,7 +1306,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Payload model with nested complex types",
           "properties": {
             "examplePayloads": {
@@ -1410,7 +1410,7 @@
           "requiredField"
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Demonstrate required and nullable. Note, @Schema is only descriptive without nullability check",
           "properties": {
             "enumField": {
@@ -1484,7 +1484,7 @@
           "<io.github.springwolf.examples.kafka.dtos.XmlPayloadDto someAttribute=\"string\"><someEnum>FOO1</someEnum><someLong>0</someLong><someString>string</someString></io.github.springwolf.examples.kafka.dtos.XmlPayloadDto>"
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "someAttribute": { },
             "someEnum": {
@@ -1531,7 +1531,7 @@
           "someEnum: FOO1\nsomeLong: 0\nsomeString: string\n"
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "someEnum": {
               "enum": [
@@ -1573,7 +1573,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "hp": {
               "format": "int32",
@@ -1627,7 +1627,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
           "oneOf": [
             {
@@ -1715,7 +1715,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "allOf": [
             {
               "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
@@ -1798,7 +1798,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "allOf": [
             {
               "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
@@ -1858,7 +1858,7 @@
           0
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "format": "int32",
           "type": "integer"
         }
@@ -1869,7 +1869,7 @@
           "\"string\""
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "type": "string"
         }
       },
@@ -1897,7 +1897,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "amount": {
               "exclusiveMinimum": 0.01,

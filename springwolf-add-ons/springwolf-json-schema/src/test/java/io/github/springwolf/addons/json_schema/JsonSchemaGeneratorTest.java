@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.addons.json_schema;
 
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersionDetector;
+import com.networknt.schema.InputFormat;
+import com.networknt.schema.SchemaLocation;
+import com.networknt.schema.SchemaRegistry;
+import com.networknt.schema.dialect.Dialect;
+import com.networknt.schema.dialect.Dialects;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
@@ -37,6 +38,10 @@ class JsonSchemaGeneratorTest {
     private final JsonMapper mapper = JsonMapper.builder().build();
     private final SwaggerSchemaMapper swaggerSchemaMapper = new SwaggerSchemaMapper(new SpringwolfConfigProperties());
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator();
+
+    private final Dialect dialect = Dialects.getDraft7();
+    private final SchemaRegistry schemaRegistry = SchemaRegistry.withDefaultDialect(dialect);
+    private final com.networknt.schema.Schema schema = schemaRegistry.getSchema(SchemaLocation.of(dialect.getId()));
 
     @ParameterizedTest
     @MethodSource
@@ -80,25 +85,25 @@ class JsonSchemaGeneratorTest {
         return Stream.of(
                 // types
                 Arguments.of(
-                        "{\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) NumberSchema::new),
                 Arguments.of(
-                        "{\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) StringSchema::new),
                 Arguments.of(
-                        "{\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) ArraySchema::new),
                 Arguments.of(
-                        "{\"type\":\"boolean\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"boolean\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) BooleanSchema::new),
                 Arguments.of(
-                        "{\"format\":\"email\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"format\":\"email\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) EmailSchema::new),
                 Arguments.of(
-                        "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) MapSchema::new),
                 Arguments.of(
-                        "{\"properties\": { \"id\": {\"type\": \"number\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"properties\": { \"id\": {\"type\": \"number\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setProperties(Map.of("id", new NumberSchema()));
@@ -106,42 +111,42 @@ class JsonSchemaGeneratorTest {
                         }),
                 // fields
                 Arguments.of(
-                        "{\"anyOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"anyOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setAnyOf(List.of(new NumberSchema()));
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"allOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"allOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setAllOf(List.of(new NumberSchema()));
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"const\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"const\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setConst("test");
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"description\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"description\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setDescription("test");
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"enum\": [\"test\", \"value2\"],\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"enum\": [\"test\", \"value2\"],\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setEnum(List.of("test", "value2"));
                             return schema;
                         }),
                 Arguments.of( // uses OpenAPI 3.1 for enum + null
-                        "{\"enum\": [\"test\", \"value2\", null],\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"enum\": [\"test\", \"value2\", null],\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setEnum(List.of("test", "value2"));
@@ -149,7 +154,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"exclusiveMinimum\": 1,\"exclusiveMaximum\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"exclusiveMinimum\": 1,\"exclusiveMaximum\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             NumberSchema schema = new NumberSchema();
                             schema.setExclusiveMinimumValue(new BigDecimal(1));
@@ -157,28 +162,28 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"format\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"format\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setFormat("test");
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":[\"string\",\"null\"],\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setNullable(true);
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"items\": {\"type\":\"number\"},\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"items\": {\"type\":\"number\"},\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ArraySchema schema = new ArraySchema();
                             schema.setItems(new NumberSchema());
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"maximum\": 10,\"minimum\": 1,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"maximum\": 10,\"minimum\": 1,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             NumberSchema schema = new NumberSchema();
                             schema.setMaximum(new BigDecimal(10));
@@ -186,7 +191,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"maxItems\": 10,\"minItems\": 1,\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"maxItems\": 10,\"minItems\": 1,\"type\":\"array\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ArraySchema schema = new ArraySchema();
                             schema.setMaxItems(10);
@@ -194,7 +199,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"maxLength\": 10,\"minLength\": 1,\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"maxLength\": 10,\"minLength\": 1,\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
                             schema.setMaxLength(10);
@@ -202,35 +207,35 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"multipleOf\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"multipleOf\": 10,\"type\":\"number\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             NumberSchema schema = new NumberSchema();
                             schema.setMultipleOf(new BigDecimal(10));
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"not\": {\"type\":\"number\"},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"not\": {\"type\":\"number\"},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setNot(new NumberSchema());
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"oneOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"oneOf\": [{\"type\": \"number\"}],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setOneOf(List.of(new NumberSchema()));
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"pattern\":\"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"pattern\":\"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setPattern("test");
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"properties\": {\"field1\": {\"type\": \"number\"}, \"field2\": {\"type\": \"string\"}}, \"required\":[\"field1\"],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"properties\": {\"field1\": {\"type\": \"number\"}, \"field2\": {\"type\": \"string\"}}, \"required\":[\"field1\"],\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setProperties(
@@ -239,14 +244,14 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"title\": \"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"title\": \"test\",\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema schema = new ObjectSchema();
                             schema.setTitle("test");
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"type\":\"array\",\"uniqueItems\": true,\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"type\":\"array\",\"uniqueItems\": true,\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ArraySchema schema = new ArraySchema();
                             schema.setUniqueItems(true);
@@ -254,7 +259,7 @@ class JsonSchemaGeneratorTest {
                         }),
                 // ref
                 Arguments.of(
-                        "{\"properties\":{\"field\": {\"type\":\"string\"}}, \"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"properties\":{\"field\": {\"type\":\"string\"}}, \"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema refField = new ObjectSchema();
                             refField.set$ref("StringRef");
@@ -264,7 +269,7 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
-                        "{\"properties\":{\"field\":{\"properties\":{\"pingfield\":{\"properties\":{\"pongField\":{}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-04/schema#\"}",
+                        "{\"properties\":{\"field\":{\"properties\":{\"pingfield\":{\"properties\":{\"pongField\":{}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             ObjectSchema refField = new ObjectSchema();
                             refField.set$ref("PingSchema");
@@ -277,10 +282,11 @@ class JsonSchemaGeneratorTest {
                 );
     }
 
-    private void verifyValidJsonSchema(String content) throws JacksonException {
-        // not supported in jackson 3 yet: https://github.com/networknt/json-schema-validator/issues/1207
+    private void verifyValidJsonSchema(String content) {
+        // when
+        List<com.networknt.schema.Error> errors = schema.validate(content, InputFormat.JSON);
 
-        JsonNode jsonNode = mapper.readTree(content);
-        JsonSchemaFactory.getInstance(SpecVersionDetector.detect(jsonNode));
+        // then
+        assertThat(errors).isEmpty();
     }
 }

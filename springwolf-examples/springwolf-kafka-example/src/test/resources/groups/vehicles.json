@@ -62,7 +62,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
               "description": "Spring Type Id Header",
@@ -97,7 +97,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "hp": {
               "format": "int32",
@@ -151,7 +151,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
           "oneOf": [
             {
@@ -239,7 +239,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "allOf": [
             {
               "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
@@ -322,7 +322,7 @@
           }
         ],
         "x-json-schema": {
-          "$schema": "https://json-schema.org/draft-04/schema#",
+          "$schema": "https://json-schema.org/draft-07/schema#",
           "allOf": [
             {
               "description": "Demonstrates the use of discriminator for polymorphic deserialization (not publishable)",
