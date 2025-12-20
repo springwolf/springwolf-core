@@ -75,7 +75,6 @@ tasks.register('pnpm_run_test', PnpmTask) {
   inputs.file 'pnpm-lock.yaml'
   outputs.upToDateWhen { true }
 }
-test.dependsOn('pnpm_run_test')
 
 tasks.register('buildPages', PnpmTask) {
   group = "pnpm"
@@ -138,8 +137,8 @@ spotless {
 
 sourcesJar.dependsOn(pnpm_run_build)
 
-tasks.test.configure {
-  dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
+tasks.named('test').configure {
+  it.dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
 }
 tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
