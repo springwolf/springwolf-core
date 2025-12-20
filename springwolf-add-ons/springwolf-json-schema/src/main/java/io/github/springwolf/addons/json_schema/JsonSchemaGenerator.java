@@ -12,8 +12,8 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
