@@ -35,7 +35,7 @@ public class AnnotationScannerUtil {
                 .filter(it -> AnnotationScannerUtil.isClassRelevant(it, classAnnotationClass))
                 .flatMap(it -> AnnotationScannerUtil.findAnnotatedMethods(it, methodAnnotationClass))
                 .peek(it -> log.debug(
-                        "Mapping class method {}#{}",
+                        "Detected class method {}#{}",
                         clazz.getName(),
                         it.method().getName()))
                 .collect(Collectors.toSet());
@@ -61,12 +61,12 @@ public class AnnotationScannerUtil {
                 .filter(AnnotationScannerUtil::isNotHidden);
 
         if (methodAnnotationClass == AllMethods.class) {
-            return methods.peek(method -> log.debug("Mapping (all) method {}#{}", clazz.getName(), method.getName()))
+            return methods.peek(method -> log.debug("Detected (all) method {}#{}", clazz.getName(), method.getName()))
                     .map(method -> new MethodAndAnnotation<>(method, null));
         }
 
         return methods.filter(method -> AnnotationUtil.findFirstAnnotation(methodAnnotationClass, method) != null)
-                .peek(method -> log.debug("Mapping method {}#{}", clazz.getName(), method.getName()))
+                .peek(method -> log.debug("Detected method {}#{}", clazz.getName(), method.getName()))
                 .flatMap(method -> AnnotationUtil.findAnnotations(methodAnnotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }
