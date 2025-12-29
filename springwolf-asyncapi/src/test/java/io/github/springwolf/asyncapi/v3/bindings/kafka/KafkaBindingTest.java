@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -52,11 +53,11 @@ class KafkaBindingTest {
                                         "kafka",
                                         KafkaOperationBinding.builder()
                                                 .groupId(SchemaObject.builder()
-                                                        .type(SchemaType.STRING)
+                                                        .type(Set.of(SchemaType.STRING))
                                                         .enumValues(List.of("myGroupId"))
                                                         .build())
                                                 .clientId(SchemaObject.builder()
-                                                        .type(SchemaType.STRING)
+                                                        .type(Set.of(SchemaType.STRING))
                                                         .enumValues(List.of("myClientId"))
                                                         .build())
                                                 .build()))
@@ -140,7 +141,7 @@ class KafkaBindingTest {
                                                         KafkaMessageBinding.builder()
                                                                 .key(
                                                                         SchemaObject.builder()
-                                                                                .type(SchemaType.STRING)
+                                                                                .type(Set.of(SchemaType.STRING))
                                                                                 .enumValues(List.of("myKey"))
                                                                                 .build())
                                                                 .schemaIdLocation("payload")

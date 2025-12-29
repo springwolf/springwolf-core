@@ -18,6 +18,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -114,7 +115,7 @@ class KafkaListenerUtilTest {
             // given
             SchemaObject headerSchema = new SchemaObject();
             SchemaObject keySchema =
-                    SchemaObject.builder().type(SchemaType.STRING).build();
+                    SchemaObject.builder().type(Set.of(SchemaType.STRING)).build();
             headerSchema.setProperties(Map.of(KafkaHeaders.RECEIVED_KEY, keySchema));
 
             // when

@@ -42,7 +42,7 @@ class CustomPathConfigurationIntegrationTest {
 
     @Test
     void canPublish() {
-        String url = "/my-custom/springwolf/endpoint/test/sqs/publish";
+        String url = "/my-custom/springwolf/endpoint/test/plugin/sqs/publish";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

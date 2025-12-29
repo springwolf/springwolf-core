@@ -37,7 +37,7 @@ public class SwaggerSchemaMapper {
     /**
      * creates a {@link ComponentSchema} from the given Swagger schema. If the given Swagger schema represents a
      * Reference, the resulting {@link ComponentSchema} will contain a corresponding {@link SchemaReference} to the
-     * referenced location. Otherwise, the given Swagger schema is converted to an AsnycApi {@link SchemaObject} and
+     * referenced location. Otherwise, the given Swagger schema is converted to an AsyncAPI {@link SchemaObject} and
      * put into the resulting {@link ComponentSchema}
      *
      * @param swaggerSchema the Swagger schema to convert
@@ -60,7 +60,7 @@ public class SwaggerSchemaMapper {
      *
      * @param
      * @param swaggerSchema the given Swagger schema instance
-     * @return the resulting AsnycApi SchemaObject
+     * @return the resulting AsyncAPI SchemaObject
      */
     public ComponentSchema mapSchema(Schema swaggerSchema) {
         PayloadSchemaFormat payloadSchemaFormat =
@@ -197,12 +197,13 @@ public class SwaggerSchemaMapper {
     }
 
     private static void assignType(Schema swaggerSchema, SchemaObject.SchemaObjectBuilder builder, boolean isNullable) {
-        Set<String> types =
-                swaggerSchema.getTypes() == null ? new HashSet<>() : new HashSet<String>(swaggerSchema.getTypes());
-        if (!types.contains(swaggerSchema.getType())) {
-            // contradicting types; prefer type for backward compatibility
-            // maintainer note: remove condition in next major release
-            builder.type(swaggerSchema.getType());
+        Set<String> schemaTypes = swaggerSchema.getTypes();
+        Set<String> types = schemaTypes == null ? new HashSet<>() : new HashSet<>(schemaTypes);
+
+        String schemaType = swaggerSchema.getType();
+        if (!types.contains(schemaType)) {
+            // required while swagger v2 does not populate types
+            builder.type(Set.of(schemaType));
             return;
         }
 
@@ -238,7 +239,7 @@ public class SwaggerSchemaMapper {
     }
 
     /**
-     * tries to transform the given schema object to a Swagger Schema. 'schema' may be an asnycapi {@link SchemaObject}
+     * tries to transform the given schema object to a Swagger Schema. 'schema' may be an AsyncAPI {@link SchemaObject}
      * or an {@link ComponentSchema} object. If schema is a {@link ComponentSchema} it may contain:
      * <ul>
      *     <li>a {@link SchemaObject} which is handled the same way a directly provided {@link SchemaObject} is handled</li>

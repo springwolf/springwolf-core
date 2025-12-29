@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.util.List;
+import java.util.Set;
 
 public class KafkaOperationBindingProcessor extends AbstractOperationBindingProcessor<KafkaAsyncOperationBinding> {
 
@@ -42,7 +43,7 @@ public class KafkaOperationBindingProcessor extends AbstractOperationBindingProc
         if (value != null && !value.isEmpty()) {
             SchemaObject schema = new SchemaObject();
             schema.setEnumValues(List.of(value));
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
             return schema;
         }
         return null;

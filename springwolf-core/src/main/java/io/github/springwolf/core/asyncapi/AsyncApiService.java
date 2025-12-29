@@ -9,12 +9,5 @@ public interface AsyncApiService {
 
     AsyncAPI getAsyncAPI();
 
-    /**
-     * Default implementation was added to avoid breaking (compiler) change.
-     * <p>
-     * Maintainer note: remove default implementation
-     */
-    default Optional<AsyncAPI> getForGroupName(String groupName) {
-        return Optional.ofNullable(getAsyncAPI());
-    }
+    Optional<AsyncAPI> getForGroupName(String groupName);
 }

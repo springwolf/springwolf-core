@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -41,16 +42,16 @@ class AsyncAPITest {
         var userSignUpMessage = MessageObject.builder()
                 .messageId("UserSignedUp")
                 .payload(MessagePayload.of(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .properties(Map.of(
                                 "displayName",
                                 SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .description("Name of the user")
                                         .build(),
                                 "email",
                                 SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .format("email")
                                         .description("Email of the user")
                                         .build()))
@@ -285,11 +286,11 @@ class AsyncAPITest {
                         .schemas(Map.of(
                                 "lightMeasuredPayload",
                                 ComponentSchema.of(SchemaObject.builder()
-                                        .type(SchemaType.OBJECT)
+                                        .type(Set.of(SchemaType.OBJECT))
                                         .properties(Map.of(
                                                 "lumens",
                                                 SchemaObject.builder()
-                                                        .type(SchemaType.INTEGER)
+                                                        .type(Set.of(SchemaType.INTEGER))
                                                         .minimum(BigDecimal.ZERO)
                                                         .description("Light intensity measured in lumens.")
                                                         .build(),
@@ -298,11 +299,11 @@ class AsyncAPITest {
                                         .build()),
                                 "turnOnOffPayload",
                                 ComponentSchema.of(SchemaObject.builder()
-                                        .type(SchemaType.OBJECT)
+                                        .type(Set.of(SchemaType.OBJECT))
                                         .properties(Map.of(
                                                 "command",
                                                 SchemaObject.builder()
-                                                        .type(SchemaType.STRING)
+                                                        .type(Set.of(SchemaType.STRING))
                                                         .enumValues(List.of("on", "off"))
                                                         .description("Whether to turn on or off the light.")
                                                         .build(),
@@ -311,11 +312,11 @@ class AsyncAPITest {
                                         .build()),
                                 "dimLightPayload",
                                 ComponentSchema.of(SchemaObject.builder()
-                                        .type(SchemaType.OBJECT)
+                                        .type(Set.of(SchemaType.OBJECT))
                                         .properties(Map.of(
                                                 "percentage",
                                                 SchemaObject.builder()
-                                                        .type(SchemaType.INTEGER)
+                                                        .type(Set.of(SchemaType.INTEGER))
                                                         .description(
                                                                 "Percentage to which the light should be dimmed to.")
                                                         .minimum(BigDecimal.ZERO)
@@ -326,7 +327,7 @@ class AsyncAPITest {
                                         .build()),
                                 "sentAt",
                                 ComponentSchema.of(SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .format("date-time")
                                         .description("Date and time when the message was sent.")
                                         .build())))
@@ -350,11 +351,11 @@ class AsyncAPITest {
                                 "commonHeaders",
                                 MessageTrait.builder()
                                         .headers(MessageHeaders.of(SchemaObject.builder()
-                                                .type(SchemaType.OBJECT)
+                                                .type(Set.of(SchemaType.OBJECT))
                                                 .properties(Map.of(
                                                         "my-app-header",
                                                         SchemaObject.builder()
-                                                                .type(SchemaType.INTEGER)
+                                                                .type(Set.of(SchemaType.INTEGER))
                                                                 .minimum(BigDecimal.ZERO)
                                                                 .maximum(new BigDecimal("100"))
                                                                 .build()))
@@ -367,7 +368,7 @@ class AsyncAPITest {
                                                 "kafka",
                                                 KafkaOperationBinding.builder()
                                                         .clientId(SchemaObject.builder()
-                                                                .type(SchemaType.STRING)
+                                                                .type(Set.of(SchemaType.STRING))
                                                                 .enumValues(List.of("my-app-id"))
                                                                 .build())
                                                         .build()))

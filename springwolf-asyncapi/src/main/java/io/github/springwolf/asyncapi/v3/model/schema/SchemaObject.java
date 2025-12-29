@@ -142,30 +142,4 @@ public class SchemaObject extends ExtendableObject implements Schema {
 
     @JsonProperty(value = "maxItems")
     private Integer maxItems;
-
-    public void setType(String type) {
-        // maintainer note: review with OpenAPI 3.1
-        this.type = Set.of(type);
-    }
-
-    public void setTypes(Set<String> types) {
-        // maintainer note: review with OpenAPI 3.1
-        this.type = types;
-    }
-
-    public static class SchemaObjectBuilder {
-        // maintainer note: remove custom builder in next major release and use Lomboks provided version
-
-        public SchemaObjectBuilder type(Set<String> type) {
-            this.type = type;
-            return this;
-        }
-
-        public SchemaObjectBuilder type(String type) {
-            if (type != null) {
-                this.type = Set.of(type);
-            }
-            return this;
-        }
-    }
 }

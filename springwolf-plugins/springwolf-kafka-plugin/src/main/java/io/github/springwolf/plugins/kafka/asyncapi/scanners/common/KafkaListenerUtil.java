@@ -19,6 +19,7 @@ import org.springframework.util.StringValueResolver;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -82,7 +83,7 @@ public class KafkaListenerUtil {
         if (value != null && !value.isEmpty()) {
             SchemaObject schema = new SchemaObject();
             schema.setEnumValues(List.of(value));
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
             return schema;
         }
         return null;
