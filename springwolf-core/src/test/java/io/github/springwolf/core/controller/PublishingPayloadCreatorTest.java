@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -59,8 +60,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.BOOLEAN).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.BOOLEAN))
+                                .build())));
         when(jsonMapper.readValue(payload, Boolean.class)).thenReturn(typed);
 
         // when
@@ -83,8 +85,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.INTEGER).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.INTEGER))
+                                .build())));
         when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
@@ -107,8 +110,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.INTEGER).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.INTEGER))
+                                .build())));
         when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
         // when
@@ -131,8 +135,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.NUMBER).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.NUMBER))
+                                .build())));
         when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
@@ -155,8 +160,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.NUMBER).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.NUMBER))
+                                .build())));
         when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
         // when
@@ -179,8 +185,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.OBJECT).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.OBJECT))
+                                .build())));
         when(jsonMapper.readValue(payload, ObjectClass.class)).thenReturn(typed);
 
         // when
@@ -203,8 +210,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.STRING).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())));
         when(jsonMapper.readValue(payload, String.class)).thenReturn(typed);
 
         // when
@@ -226,8 +234,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.OBJECT).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.OBJECT))
+                                .build())));
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);
@@ -249,8 +258,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.OBJECT).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.OBJECT))
+                                .build())));
         when(jsonMapper.readValue(payload, ObjectClass.class))
                 .thenThrow(new JsonProcessingException("invalid json") {});
 
@@ -276,8 +286,9 @@ class PublishingPayloadCreatorTest {
         when(componentsService.getSchemas())
                 .thenReturn(Map.of(
                         type,
-                        ComponentSchema.of(
-                                SchemaObject.builder().type(SchemaType.ARRAY).build())));
+                        ComponentSchema.of(SchemaObject.builder()
+                                .type(Set.of(SchemaType.ARRAY))
+                                .build())));
 
         // when
         PublishingPayloadCreator.Result result = publishingPayloadCreator.createPayloadObject(message);

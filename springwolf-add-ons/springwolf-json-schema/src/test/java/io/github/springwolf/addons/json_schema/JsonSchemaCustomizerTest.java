@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +45,7 @@ class JsonSchemaCustomizerTest {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
         SchemaObject schemaObject = new SchemaObject();
-        schemaObject.setType(SchemaType.OBJECT);
+        schemaObject.setType(Set.of(SchemaType.OBJECT));
         asyncAPI.getComponents().setSchemas(Map.of("schema", ComponentSchema.of(schemaObject)));
 
         when(jsonSchemaGenerator.fromSchema(any(), any())).thenReturn("mock-string");

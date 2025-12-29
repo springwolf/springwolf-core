@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,11 +54,11 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .properties(Map.of(
                                     "s",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.STRING)
+                                            .type(Set.of(SchemaType.STRING))
                                             .minLength(1)
                                             .maxLength(10)
                                             .examples(List.of("\"example\""))
@@ -81,13 +82,13 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .properties(Map.of(
                                     "array",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.ARRAY)
+                                            .type(Set.of(SchemaType.ARRAY))
                                             .items(ComponentSchema.of(SchemaObject.builder()
-                                                    .type(SchemaType.STRING)
+                                                    .type(Set.of(SchemaType.STRING))
                                                     .description("items description")
                                                     .build()))
                                             .maxItems(10)
@@ -109,22 +110,22 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .properties(Map.of(
                                     "ref",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.OBJECT)
+                                            .type(Set.of(SchemaType.OBJECT))
                                             .not(ComponentSchema.of(SchemaObject.builder()
-                                                    .type(SchemaType.OBJECT)
+                                                    .type(Set.of(SchemaType.OBJECT))
                                                     .build()))
                                             .oneOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type(SchemaType.STRING)
+                                                    .type(Set.of(SchemaType.STRING))
                                                     .build())))
                                             .anyOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type(SchemaType.STRING)
+                                                    .type(Set.of(SchemaType.STRING))
                                                     .build())))
                                             .allOf(List.of(ComponentSchema.of(SchemaObject.builder()
-                                                    .type(SchemaType.STRING)
+                                                    .type(Set.of(SchemaType.STRING))
                                                     .build())))
                                             .build())))
                             .build());
@@ -142,11 +143,11 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .properties(Map.of(
                                     "number",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.NUMBER)
+                                            .type(Set.of(SchemaType.NUMBER))
                                             .format("double")
                                             .multipleOf(BigDecimal.ONE)
                                             .exclusiveMaximum(BigDecimal.valueOf(5))
@@ -168,7 +169,7 @@ class DefaultComponentsServiceIntegrationTest {
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
                             .title("title")
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .build());
         }
 
@@ -262,7 +263,7 @@ class DefaultComponentsServiceIntegrationTest {
                     schemas.get(StringEnvelop.class.getName().replace("$", "."));
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
-                            .type(SchemaType.STRING)
+                            .type(Set.of(SchemaType.STRING))
                             .description("The payload in the envelop")
                             .maxLength(10)
                             .build());
@@ -282,17 +283,17 @@ class DefaultComponentsServiceIntegrationTest {
                     .replace("$", "."));
             assertThat(componentSchema.getSchema())
                     .isEqualTo(SchemaObject.builder()
-                            .type(SchemaType.OBJECT)
+                            .type(Set.of(SchemaType.OBJECT))
                             .title("EnvelopWithMultipleAsyncApiPayloadAnnotations")
                             .properties(Map.of(
                                     "otherField",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.INTEGER)
+                                            .type(Set.of(SchemaType.INTEGER))
                                             .format("int32")
                                             .build()),
                                     "payload",
                                     ComponentSchema.of(SchemaObject.builder()
-                                            .type(SchemaType.STRING)
+                                            .type(Set.of(SchemaType.STRING))
                                             .description("The payload in the envelop")
                                             .maxLength(10)
                                             .build())))

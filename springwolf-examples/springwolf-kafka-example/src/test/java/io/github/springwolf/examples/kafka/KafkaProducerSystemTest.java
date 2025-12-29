@@ -83,7 +83,7 @@ public class KafkaProducerSystemTest {
                 + "    \"payload\": \"" + payloadAsString + "\"\n"
                 + "}";
 
-        String url = baseUrl() + "/springwolf/kafka/publish?topic=" + topic;
+        String url = baseUrl() + "/springwolf/plugin/kafka/publish?topic=" + topic;
         HttpEntity<String> request = new HttpEntity<>(message, headers);
 
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
@@ -117,7 +117,7 @@ public class KafkaProducerSystemTest {
                 + "}";
 
         String topic = "avro-topic";
-        String url = baseUrl() + "/springwolf/kafka/publish?topic=" + topic;
+        String url = baseUrl() + "/springwolf/plugin/kafka/publish?topic=" + topic;
         HttpEntity<String> request = new HttpEntity<>(message, headers);
 
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {

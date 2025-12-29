@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class HeaderSchemaObjectMerger {
 
@@ -22,7 +23,7 @@ public class HeaderSchemaObjectMerger {
         }
 
         SchemaObject.SchemaObjectBuilder headerSchemaBuilder =
-                SchemaObject.builder().type(SchemaType.OBJECT);
+                SchemaObject.builder().type(Set.of(SchemaType.OBJECT));
 
         String description = initial.getDescription();
         Map<String, Object> headerProperties = new HashMap<>(initial.getProperties());

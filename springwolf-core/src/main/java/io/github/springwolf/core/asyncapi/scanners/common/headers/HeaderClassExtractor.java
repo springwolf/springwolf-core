@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class HeaderClassExtractor {
         log.trace("Extract header for {}", methodName);
 
         SchemaObject headers = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .title(payload.name() + "Headers")
                 .properties(new HashMap<>())
                 .build();
