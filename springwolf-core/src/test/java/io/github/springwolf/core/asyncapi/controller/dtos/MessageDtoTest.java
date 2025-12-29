@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.controller.dtos;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
@@ -28,8 +27,7 @@ class MessageDtoTest {
         assertThat(value.getHeaders())
                 .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));
         assertThat(value.getPayload())
-                .isEqualTo(
-                        new ObjectMapper().writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
+                .isEqualTo(jsonMapper.writeValueAsString(singletonMap("some-payload-key", "some-payload-value")));
         assertThat(value.getType()).isEqualTo("io.github.springwolf.core.controller.dtos.MessageDto");
     }
 
@@ -76,7 +74,7 @@ class MessageDtoTest {
     }
 
     @Test
-    void canSerializeNumericHeaderValue() throws Exception {
+    void canSerializeNumericHeaderValue() {
         // given
         MessageDto.HeaderValue headerValue = new MessageDto.HeaderValue("12345");
 
