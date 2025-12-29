@@ -50,7 +50,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .title("AsyncAPI Sample App")
                 .version("1.0.1")
                 .description("This is a sample server.")
-                .termsOfService("http://asyncapi.org/terms/")
+                .termsOfService("https://asyncapi.org/terms/")
                 .contact(Contact.builder()
                         .name("API Support")
                         .url("http://www.asyncapi.org/support")

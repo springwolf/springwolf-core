@@ -21,8 +21,6 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    implementation libs.jackson.databind
-
     implementation libs.spring.rabbit
     implementation libs.amqp.client
 
