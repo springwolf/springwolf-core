@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Import;
 
 /**
- * Spring Boot auto-configuration which loads all spring-beans for springwolf core module.
+ * Spring Boot autoconfiguration which loads all spring-beans for springwolf core module.
  * <p>
  * To disable springwolf support, set the environment property {@code springwolf.enabled=false}.
  */

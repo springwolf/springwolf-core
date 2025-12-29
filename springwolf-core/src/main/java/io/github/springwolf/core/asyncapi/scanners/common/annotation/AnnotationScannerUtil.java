@@ -22,7 +22,7 @@ public class AnnotationScannerUtil {
 
     /**
      * Find all annotated methods on an annotated class
-     *
+     * <p>
      * Transform is only called if methods are found
      */
     public static <C extends Annotation, M extends Annotation, R> Stream<R> findAnnotatedMethods(

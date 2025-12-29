@@ -20,8 +20,8 @@ class SqsMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("sqs");
-        assertThat(binding.getBinding()).isEqualTo(new SQSMessageBinding());
+        assertThat(binding.type()).isEqualTo("sqs");
+        assertThat(binding.binding()).isEqualTo(new SQSMessageBinding());
     }
 
     @Test

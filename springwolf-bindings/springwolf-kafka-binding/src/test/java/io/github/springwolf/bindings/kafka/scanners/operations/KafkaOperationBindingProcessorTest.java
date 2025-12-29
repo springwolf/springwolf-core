@@ -22,8 +22,8 @@ class KafkaOperationBindingProcessorTest {
 
         ProcessedOperationBinding binding = processor.mapToOperationBinding(annotation);
 
-        assertThat(binding.getType()).isEqualTo("kafka");
-        assertThat(binding.getBinding()).isEqualTo(new KafkaOperationBinding());
+        assertThat(binding.type()).isEqualTo("kafka");
+        assertThat(binding.binding()).isEqualTo(new KafkaOperationBinding());
     }
 
     @KafkaAsyncOperationBinding

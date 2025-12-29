@@ -39,10 +39,10 @@ class AsyncGenericOperationBindingProcessorTest {
         // then
         assertThat(result).hasSize(1);
         ProcessedOperationBinding processedOperationBinding = result.get(0);
-        assertThat(processedOperationBinding.getType()).isEqualTo("test-binding");
+        assertThat(processedOperationBinding.type()).isEqualTo("test-binding");
         AsyncGenericOperationBindingProcessor.DefaultAsyncGenerialOperationBinding binding =
                 (AsyncGenericOperationBindingProcessor.DefaultAsyncGenerialOperationBinding)
-                        processedOperationBinding.getBinding();
+                        processedOperationBinding.binding();
         assertThat(binding.getExtensionFields()).isEqualTo(Map.of("binding", Map.of("field", "1"), "field", "true"));
     }
 

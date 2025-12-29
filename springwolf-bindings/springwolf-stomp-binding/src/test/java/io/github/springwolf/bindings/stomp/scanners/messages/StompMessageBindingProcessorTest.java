@@ -20,8 +20,8 @@ class StompMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("stomp");
-        assertThat(binding.getBinding()).isEqualTo(new StompMessageBinding());
+        assertThat(binding.type()).isEqualTo("stomp");
+        assertThat(binding.binding()).isEqualTo(new StompMessageBinding());
     }
 
     @Test

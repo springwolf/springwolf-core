@@ -74,9 +74,8 @@ class OperationMergerTest {
                 OperationMerger.mergeOperations(Arrays.asList(senderOperation, receiverOperation));
 
         // then
-        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
-            assertThat(it.getAction()).isEqualTo(OperationAction.SEND);
-        });
+        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> assertThat(it.getAction())
+                .isEqualTo(OperationAction.SEND));
     }
 
     @Test
@@ -125,9 +124,8 @@ class OperationMergerTest {
 
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
-        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> {
-            assertThat(it.getMessages()).containsExactly(messageRef2, messageRef1);
-        });
+        assertThat(mergedOperations).hasSize(1).hasEntrySatisfying(operationId, it -> assertThat(it.getMessages())
+                .containsExactly(messageRef2, messageRef1));
     }
 
     @Test

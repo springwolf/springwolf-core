@@ -39,8 +39,17 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.jms.publishing.enabled=true"
             })
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                JmsTemplate.class
+            })
     @Nested
-    class JmsProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
+    class JmsProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfJmsProducer> springwolfJmsProducer;
 
@@ -70,8 +79,17 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.jms.publishing.enabled=false"
             })
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                JmsTemplate.class
+            })
     @Nested
-    class JmsProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
+    class JmsProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfJmsProducer> springwolfJmsProducer;
 
@@ -83,30 +101,5 @@ public class SpringwolfJmsProducerConfigurationIntegrationTest {
             assertThat(springwolfJmsProducer).isNotPresent();
             assertThat(springwolfJmsController).isNotPresent();
         }
-    }
-
-    /**
-     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
-     *
-     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
-     */
-    class MockBeanConfiguration {
-        @MockitoBean
-        private SpringwolfClassScanner springwolfClassScanner;
-
-        @MockitoBean
-        private ComponentsService componentsService;
-
-        @MockitoBean
-        private HeaderClassExtractor headerClassExtractor;
-
-        @MockitoBean
-        private PayloadMethodParameterService payloadMethodParameterService;
-
-        @MockitoBean
-        private StringValueResolver stringValueResolver;
-
-        @MockitoBean
-        private JmsTemplate jmsTemplate;
     }
 }

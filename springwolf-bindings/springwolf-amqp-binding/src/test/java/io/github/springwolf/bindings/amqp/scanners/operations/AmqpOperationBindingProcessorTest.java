@@ -37,8 +37,8 @@ class AmqpOperationBindingProcessorTest {
 
             ProcessedOperationBinding binding = processor.mapToOperationBinding(annotation);
 
-            assertThat(binding.getType()).isEqualTo("amqp");
-            assertThat(binding.getBinding())
+            assertThat(binding.type()).isEqualTo("amqp");
+            assertThat(binding.binding())
                     .isEqualTo(AMQPOperationBinding.builder()
                             .cc(List.of())
                             .bcc(List.of())
@@ -64,8 +64,8 @@ class AmqpOperationBindingProcessorTest {
 
             ProcessedOperationBinding binding = processor.mapToOperationBinding(annotation);
 
-            assertThat(binding.getType()).isEqualTo("amqp");
-            assertThat(binding.getBinding())
+            assertThat(binding.type()).isEqualTo("amqp");
+            assertThat(binding.binding())
                     .isEqualTo(AMQPOperationBinding.builder()
                             .expiration(1)
                             .userId("userId")

@@ -42,7 +42,7 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
 
         ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
         List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, stringValueResolver);
-        if (servers != null && !servers.isEmpty()) {
+        if (!servers.isEmpty()) {
             Operation operation = asyncAnnotationOperationService.buildOperation(
                     operationAnnotation, Set.of(methodAndAnnotation.method()));
             validateServers(servers, operation.getTitle());
@@ -58,13 +58,12 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
         Map<String, ChannelBinding> channelBindings = AsyncAnnotationUtil.processChannelBindingFromAnnotation(
                 methodAndAnnotation.method(), channelBindingProcessors);
 
-        ChannelObject channel = channelBuilder
+        return channelBuilder
                 .channelId(channelId)
                 .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(channelBindings)
                 .build();
-        return channel;
     }
 
     /**

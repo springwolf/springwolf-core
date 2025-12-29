@@ -35,8 +35,8 @@ class SnsOperationBindingProcessorTest {
                         .build()))
                 .build();
 
-        assertThat(binding.getType()).isEqualTo("sns");
-        assertThat(binding.getBinding()).isEqualTo(expectedOperation);
+        assertThat(binding.type()).isEqualTo("sns");
+        assertThat(binding.binding()).isEqualTo(expectedOperation);
     }
 
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())

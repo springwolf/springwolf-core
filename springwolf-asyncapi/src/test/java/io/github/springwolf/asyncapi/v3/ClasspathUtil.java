@@ -2,7 +2,6 @@
 package io.github.springwolf.asyncapi.v3;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public final class ClasspathUtil {
 
     public static JsonNode parseYamlFile(String resourceName) throws IOException {
         try (InputStream inputStream = ClasspathUtil.class.getResourceAsStream(resourceName)) {
-            ObjectMapper yamlMapper = new DefaultAsyncApiSerializerService().getYamlMapper();
+            final var yamlMapper = new DefaultAsyncApiSerializerService().getYamlMapper();
             return yamlMapper.readTree(inputStream);
         }
     }

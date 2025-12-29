@@ -50,7 +50,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .title("AsyncAPI Sample App")
                 .version("1.0.1")
                 .description("This is a sample server.")
-                .termsOfService("http://asyncapi.org/terms/")
+                .termsOfService("https://asyncapi.org/terms/")
                 .contact(Contact.builder()
                         .name("API Support")
                         .url("http://www.asyncapi.org/support")
@@ -111,7 +111,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         Map<String, ComponentSchema> schemas = createPayloadSchema(schemaFormat);
 
-        AsyncAPI asyncapi = AsyncAPI.builder()
+        return AsyncAPI.builder()
                 .info(info)
                 .defaultContentType("application/json")
                 .servers(Map.of("production", productionServer))
@@ -120,8 +120,6 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         Components.builder().schemas(schemas).messages(messages).build())
                 .operations(Map.of("new-user_listenerMethod_subscribe", newUserOperation))
                 .build();
-
-        return asyncapi;
     }
 
     private Map<String, ComponentSchema> createPayloadSchema(SchemaFormat schemaFormat) {

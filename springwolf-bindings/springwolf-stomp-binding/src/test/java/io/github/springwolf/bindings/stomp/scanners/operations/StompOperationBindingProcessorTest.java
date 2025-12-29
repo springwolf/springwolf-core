@@ -24,8 +24,8 @@ class StompOperationBindingProcessorTest {
 
         var expectedOperation = StompOperationBinding.builder().build();
 
-        assertThat(binding.getType()).isEqualTo("stomp");
-        assertThat(binding.getBinding()).isEqualTo(expectedOperation);
+        assertThat(binding.type()).isEqualTo("stomp");
+        assertThat(binding.binding()).isEqualTo(expectedOperation);
     }
 
     @StompAsyncOperationBinding()

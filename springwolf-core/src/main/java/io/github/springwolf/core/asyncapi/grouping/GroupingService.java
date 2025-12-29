@@ -66,7 +66,8 @@ public class GroupingService {
 
                     markOperationsInChannel(fullAsyncApi, markingContext, channel);
 
-                    channel.getMessages().keySet().forEach(markingContext.markedComponentMessageIds::add);
+                    markingContext.markedComponentMessageIds.addAll(
+                            channel.getMessages().keySet());
                 });
     }
 
@@ -209,8 +210,8 @@ public class GroupingService {
      */
     private static Set<String> findUnmarkedNestedSchemas(
             MarkingContext markingContext, ComponentSchema componentSchema) {
-        // ComponentSchema can contain an AsnycApi SchemaObject instance or an MultiformatSchema, which in turn contains
-        // an schema.
+        // ComponentSchema can contain an AsyncApi SchemaObject instance or an MultiformatSchema, which in turn contains
+        // a schema.
         if (componentSchema.getSchema() != null) {
             return findUnmarkedNestedSchemasForAsyncAPISchema(markingContext, componentSchema.getSchema());
         }
@@ -218,7 +219,7 @@ public class GroupingService {
             MultiFormatSchema multiFormatSchema = componentSchema.getMultiFormatSchema();
 
             // Currently we support async_api and open_api v3 and v3.1 format.
-            // The concrete schemaformat mediatype can contain json/yaml postfix, so we check wether the begin of the
+            // The concrete schemaformat mediatype can contain json/yaml postfix, so we check whether the begin of the
             // media type matches.
             String schemaFormat = multiFormatSchema.getSchemaFormat();
             if (schemaFormat.startsWith(SchemaFormat.ASYNCAPI_V3.toString())

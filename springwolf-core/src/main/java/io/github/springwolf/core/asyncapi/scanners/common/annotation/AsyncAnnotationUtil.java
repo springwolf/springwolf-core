@@ -119,7 +119,7 @@ public class AsyncAnnotationUtil {
                 .map(operationBindingProcessor -> operationBindingProcessor.process(method))
                 .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
-                        ProcessedOperationBinding::getType, ProcessedOperationBinding::getBinding, (e1, e2) -> e1));
+                        ProcessedOperationBinding::type, ProcessedOperationBinding::binding, (e1, e2) -> e1));
     }
 
     public static Map<String, MessageBinding> processMessageBindingFromAnnotation(
@@ -128,7 +128,7 @@ public class AsyncAnnotationUtil {
                 .map(messageBindingProcessor -> messageBindingProcessor.process(annotatedElement))
                 .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
-                        ProcessedMessageBinding::getType, ProcessedMessageBinding::getBinding, (e1, e2) -> e1));
+                        ProcessedMessageBinding::type, ProcessedMessageBinding::binding, (e1, e2) -> e1));
     }
 
     public static void processAsyncMessageAnnotation(
@@ -181,6 +181,6 @@ public class AsyncAnnotationUtil {
                 .map(channelBindingProcessor -> channelBindingProcessor.process(annotatedElement))
                 .flatMap(Optional::stream)
                 .collect(Collectors.toMap(
-                        ProcessedChannelBinding::getType, ProcessedChannelBinding::getBinding, (e1, e2) -> e1));
+                        ProcessedChannelBinding::type, ProcessedChannelBinding::binding, (e1, e2) -> e1));
     }
 }

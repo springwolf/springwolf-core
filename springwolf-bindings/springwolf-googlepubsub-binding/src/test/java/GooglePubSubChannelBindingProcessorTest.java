@@ -27,8 +27,8 @@ public class GooglePubSubChannelBindingProcessorTest {
         ProcessedChannelBinding binding = processor.process(method).get();
 
         // then
-        assertThat(binding.getType()).isEqualTo("googlepubsub");
-        assertThat(binding.getBinding())
+        assertThat(binding.type()).isEqualTo("googlepubsub");
+        assertThat(binding.binding())
                 .isEqualTo(new GooglePubSubChannelBinding(
                         null,
                         "messageRetentionDuration",

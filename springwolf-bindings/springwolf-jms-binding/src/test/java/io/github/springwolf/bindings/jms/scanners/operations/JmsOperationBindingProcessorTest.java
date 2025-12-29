@@ -22,8 +22,8 @@ class JmsOperationBindingProcessorTest {
 
         ProcessedOperationBinding binding = processor.mapToOperationBinding(annotation);
 
-        assertThat(binding.getType()).isEqualTo("jms");
-        assertThat(binding.getBinding()).isEqualTo(new JMSOperationBinding());
+        assertThat(binding.type()).isEqualTo("jms");
+        assertThat(binding.binding()).isEqualTo(new JMSOperationBinding());
     }
 
     @JmsAsyncOperationBinding

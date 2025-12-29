@@ -3,7 +3,6 @@ package io.github.springwolf.addons.json_schema;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -21,7 +20,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 public class JsonSchemaGenerator {
-    private static final ObjectMapper jsonMapper = JsonMapper.builder().build();
+    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
 
     public Object fromSchema(ComponentSchema schema, Map<String, ComponentSchema> definitions) throws JacksonException {
         ObjectNode node = fromSchemaInternal(schema, definitions, new HashSet<>());
@@ -176,8 +175,6 @@ public class JsonSchemaGenerator {
      * checks if the given componentSchema contains a schema reference and resolve the reference with the
      * concrete {@link ComponentSchema} found in the given definitions map.
      *
-     * @param componentSchema
-     * @param definitions
      * @return the resolved schema reference or the given componentSchema instance.
      */
     private ComponentSchema resolveSchemaRef(

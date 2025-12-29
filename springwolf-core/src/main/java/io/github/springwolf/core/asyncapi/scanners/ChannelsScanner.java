@@ -9,7 +9,7 @@ public interface ChannelsScanner {
 
     /**
      * @return A mapping of channel names to their respective channel object for a given protocol.
-     *
+     * <p>
      * Maintainer note: Use {@link ChannelObject#getChannelId()} as the key for the map.
      */
     Map<String, ChannelObject> scan();

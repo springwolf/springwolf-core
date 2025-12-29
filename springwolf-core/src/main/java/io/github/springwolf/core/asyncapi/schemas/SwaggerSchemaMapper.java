@@ -164,17 +164,17 @@ public class SwaggerSchemaMapper {
 
         List<Schema> allOf = swaggerSchema.getAllOf();
         if (allOf != null) {
-            builder.allOf(allOf.stream().map(schema -> mapSchemaOrRef(schema)).collect(Collectors.toList()));
+            builder.allOf(allOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
         List<Schema> oneOf = swaggerSchema.getOneOf();
         if (oneOf != null) {
-            builder.oneOf(oneOf.stream().map(schema -> mapSchemaOrRef(schema)).collect(Collectors.toList()));
+            builder.oneOf(oneOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
         List<Schema> anyOf = swaggerSchema.getAnyOf();
         if (anyOf != null) {
-            builder.anyOf(anyOf.stream().map(schema -> mapSchemaOrRef(schema)).collect(Collectors.toList()));
+            builder.anyOf(anyOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
         builder.constValue(swaggerSchema.getConst());
@@ -214,7 +214,7 @@ public class SwaggerSchemaMapper {
     }
 
     /**
-     * expects an object representing an schema and tries to unwrap this schema, if it is a
+     * expects an object representing a schema and tries to unwrap this schema, if it is a
      * ComponentSchema or MultiFormatSchema. The method works recursive on unwrapped Objects.
      *
      * @param schema
@@ -238,7 +238,7 @@ public class SwaggerSchemaMapper {
     }
 
     /**
-     * tries to transforms the given schema object to a Swagger Schema. 'schema' may be an asnycapi {@link SchemaObject}
+     * tries to transform the given schema object to a Swagger Schema. 'schema' may be an asnycapi {@link SchemaObject}
      * or an {@link ComponentSchema} object. If schema is a {@link ComponentSchema} it may contain:
      * <ul>
      *     <li>a {@link SchemaObject} which is handled the same way a directly provided {@link SchemaObject} is handled</li>
@@ -247,7 +247,7 @@ public class SwaggerSchemaMapper {
      * </ul>
      * if no type is matching, a Runtime Exception is thrown.
      *
-     * @param schema Object representing an schema.
+     * @param schema Object representing a schema.
      * @return the resulting Schema
      */
     public Schema<?> mapToSwagger(Object schema) {
@@ -271,7 +271,7 @@ public class SwaggerSchemaMapper {
      * transforms the given asyncApiSchema {@link SchemaObject} to a Swagger schema object.
      * <p>Note</p>
      * This method does not perform a 'deep' transformation, only the root attributes of asyncApiSchema
-     * are mapped to the Swagger schema (best effort).
+     * are mapped to the Swagger schema (best-effort).
      *
      * @param asyncApiSchema
      * @return swagger Schema

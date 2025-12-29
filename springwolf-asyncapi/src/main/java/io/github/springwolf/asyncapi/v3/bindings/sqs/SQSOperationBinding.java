@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * SQS Point-To-Point
  * </p>
- * Because we have defined Queue as part of the Channel Binding Binding object, we do not require Binding information
+ * Because we have defined Queue as part of the Channel Binding object, we do not require Binding information
  * for the publish Operation Object of the subscribe Operation Object. You can use an empty Queue object ({}) to denote
  * the Binding on the Operation Object, if you want to indicate the protocol used to send or receive for generation
  * purposes such as Infrastructure As Code.

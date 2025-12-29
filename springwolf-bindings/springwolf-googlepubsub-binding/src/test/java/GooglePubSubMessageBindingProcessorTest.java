@@ -24,8 +24,8 @@ public class GooglePubSubMessageBindingProcessorTest {
         ProcessedMessageBinding binding = processor.process(method).get();
 
         // then
-        assertThat(binding.getType()).isEqualTo("googlepubsub");
-        assertThat(binding.getBinding())
+        assertThat(binding.type()).isEqualTo("googlepubsub");
+        assertThat(binding.binding())
                 .isEqualTo(
                         new GooglePubSubMessageBinding(null, "key", new GooglePubSubSchema("project/test"), "0.2.0"));
     }

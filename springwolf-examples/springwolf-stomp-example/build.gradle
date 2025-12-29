@@ -74,8 +74,8 @@ docker {
     }
 
     registryCredentials {
-        username = project.findProperty('DOCKERHUB_USERNAME') ?: ''
-        password = project.findProperty('DOCKERHUB_TOKEN') ?: ''
+        username = project.findProperty('DOCKERHUB_USERNAME') as String ?: ''
+        password = project.findProperty('DOCKERHUB_TOKEN') as String ?: ''
     }
 }
 

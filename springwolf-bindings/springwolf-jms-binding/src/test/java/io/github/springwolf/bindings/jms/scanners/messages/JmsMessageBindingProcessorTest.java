@@ -20,8 +20,8 @@ class JmsMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("jms");
-        assertThat(binding.getBinding()).isEqualTo(new JMSMessageBinding());
+        assertThat(binding.type()).isEqualTo("jms");
+        assertThat(binding.binding()).isEqualTo(new JMSMessageBinding());
     }
 
     @Test

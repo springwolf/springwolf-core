@@ -9,7 +9,6 @@ import io.github.springwolf.core.standalone.StandaloneApplication;
 import io.github.springwolf.examples.amqp.configuration.RabbitConfiguration;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -53,7 +52,7 @@ class StandaloneTest {
      */
     @SneakyThrows
     String removeDifferencesDueToAmqpSpringBeans(AsyncApiSerializerService serializerService, String str) {
-        JsonNode node = JsonKeyRemover.removeKeys(str, List.of("components", "messages"));
+        final var node = JsonKeyRemover.removeKeys(str, List.of("components", "messages"));
         return serializerService.toJsonString(node);
     }
 }
