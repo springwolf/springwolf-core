@@ -40,8 +40,18 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.amqp.publishing.enabled=true"
             })
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                AsyncApiService.class,
+                RabbitTemplate.class
+            })
     @Nested
-    class AmqpProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
+    class AmqpProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
 
@@ -71,8 +81,18 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.amqp.publishing.enabled=false"
             })
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                AsyncApiService.class,
+                RabbitTemplate.class
+            })
     @Nested
-    class AmqpProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
+    class AmqpProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfAmqpProducer> springwolfAmqpProducer;
 
@@ -84,33 +104,5 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             assertThat(springwolfAmqpProducer).isNotPresent();
             assertThat(springwolfAmqpController).isNotPresent();
         }
-    }
-
-    /**
-     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
-     *
-     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
-     */
-    class MockBeanConfiguration {
-        @MockitoBean
-        private SpringwolfClassScanner springwolfClassScanner;
-
-        @MockitoBean
-        private ComponentsService componentsService;
-
-        @MockitoBean
-        private HeaderClassExtractor headerClassExtractor;
-
-        @MockitoBean
-        private PayloadMethodParameterService payloadMethodParameterService;
-
-        @MockitoBean
-        private StringValueResolver stringValueResolver;
-
-        @MockitoBean
-        private AsyncApiService asyncApiService;
-
-        @MockitoBean
-        private RabbitTemplate rabbitTemplate;
     }
 }

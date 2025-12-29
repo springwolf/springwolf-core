@@ -39,8 +39,9 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.sqs.publishing.enabled=true"
             })
+    @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
     @Nested
-    class SqsProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
+    class SqsProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfSqsProducer> springwolfSqsProducer;
 
@@ -70,8 +71,9 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.sqs.publishing.enabled=false"
             })
+    @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
     @Nested
-    class SqsProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
+    class SqsProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfSqsProducer> springwolfSqsProducer;
 
@@ -85,28 +87,4 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
         }
     }
 
-    /**
-     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
-     *
-     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
-     */
-    class MockBeanConfiguration {
-        @MockitoBean
-        private SpringwolfClassScanner springwolfClassScanner;
-
-        @MockitoBean
-        private ComponentsService componentsService;
-
-        @MockitoBean
-        private HeaderClassExtractor headerClassExtractor;
-
-        @MockitoBean
-        private PayloadMethodParameterService payloadMethodParameterService;
-
-        @MockitoBean
-        private StringValueResolver stringValueResolver;
-
-        @MockitoBean
-        private SqsTemplate sqsTemplate;
-    }
 }

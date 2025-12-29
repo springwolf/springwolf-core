@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringwolfKafkaProducerConfigurationIntegrationTest {
 
-    @Nested
     @SpringJUnitConfig(
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
@@ -39,7 +38,16 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=true"
             })
-    class KafkaProducerWillBeCreatedIfEnabledTest extends MockBeanConfiguration {
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class
+            })
+    @Nested
+    class KafkaProducerWillBeCreatedIfEnabledTest {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -53,7 +61,6 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
         }
     }
 
-    @Nested
     @SpringJUnitConfig(
             classes = {
                 SpringwolfKafkaAutoConfiguration.class,
@@ -70,7 +77,16 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=false"
             })
-    class KafkaProducerWillNotBeCreatedIfDisabledTest extends MockBeanConfiguration {
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class
+            })
+    @Nested
+    class KafkaProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
         private Optional<SpringwolfKafkaProducer> springwolfKafkaProducer;
 
@@ -82,27 +98,5 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             assertThat(springwolfKafkaProducer).isNotPresent();
             assertThat(springwolfKafkaController).isNotPresent();
         }
-    }
-
-    /**
-     * Introduced due to migration of spring boot 3.3 -> 3.4 and @MockBean deprecation
-     *
-     * feature request: https://github.com/spring-projects/spring-framework/issues/33925
-     */
-    class MockBeanConfiguration {
-        @MockitoBean
-        private SpringwolfClassScanner springwolfClassScanner;
-
-        @MockitoBean
-        private ComponentsService componentsService;
-
-        @MockitoBean
-        private HeaderClassExtractor headerClassExtractor;
-
-        @MockitoBean
-        private PayloadMethodParameterService payloadMethodParameterService;
-
-        @MockitoBean
-        private StringValueResolver stringValueResolver;
     }
 }
