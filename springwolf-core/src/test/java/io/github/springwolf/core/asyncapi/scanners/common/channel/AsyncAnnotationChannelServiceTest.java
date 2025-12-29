@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.asyncapi.v3.model.server.ServerReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
@@ -111,7 +112,7 @@ class AsyncAnnotationChannelServiceTest {
     }
 
     @Nested
-    class Server {
+    class ServersField {
         @Test
         void scan() throws Exception {
             // given
@@ -124,7 +125,7 @@ class AsyncAnnotationChannelServiceTest {
                     .thenReturn(Operation.builder().title("operationId").build());
             AsyncApiDocket docket = AsyncApiDocket.builder()
                     .info(Info.builder().build())
-                    .server("server1", null)
+                    .servers(Map.of("server1", Server.builder().build()))
                     .build();
             when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
 
@@ -158,8 +159,11 @@ class AsyncAnnotationChannelServiceTest {
                     .thenReturn(Operation.builder().title("operationId").build());
             AsyncApiDocket docket = AsyncApiDocket.builder()
                     .info(Info.builder().build())
-                    .server("server1", null)
-                    .server("server2", null)
+                    .servers(Map.of(
+                            "server1",
+                            Server.builder().build(),
+                            "server2",
+                            Server.builder().build()))
                     .build();
             when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
 

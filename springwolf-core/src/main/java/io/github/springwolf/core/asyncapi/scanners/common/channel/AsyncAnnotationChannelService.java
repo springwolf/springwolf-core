@@ -87,7 +87,12 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
                 if (!asyncApiServers.containsKey(server)) {
                     throw new IllegalArgumentException(
                             "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s"
-                                    .formatted(operationId, server, asyncApiServers.keySet()));
+                                    .formatted(
+                                            operationId,
+                                            server,
+                                            asyncApiServers.keySet().stream()
+                                                    .sorted()
+                                                    .toList()));
                 }
             }
         }

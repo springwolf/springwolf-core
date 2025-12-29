@@ -134,7 +134,9 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
 
     private String getProtocolName() {
         AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
-        if (docket.getServers().size() > 1) {
+        if (docket.getServers() == null || docket.getServers().isEmpty()) {
+            throw new IllegalStateException("There must be at least one server define in the Springwolf configuration");
+        } else if (docket.getServers().size() > 1) {
             log.warn(
                     "More than one server has been defined - the channels protocol will be determined by the first one");
         }

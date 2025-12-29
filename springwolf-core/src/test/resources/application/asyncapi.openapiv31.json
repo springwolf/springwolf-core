@@ -7,12 +7,6 @@
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
-  "servers": {
-    "test-protocol": {
-      "host": "some-property-server:1234",
-      "protocol": "property-protocol"
-    }
-  },
   "channels": {
     "listener-channel": {
       "address": "listener-channel",

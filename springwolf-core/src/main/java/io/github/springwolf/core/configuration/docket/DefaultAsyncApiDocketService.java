@@ -42,9 +42,10 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
 
         AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
                 .basePackage(configProperties.getDocket().getBasePackage())
-                .info(buildInfo(configProperties.getDocket().getInfo()))
-                .servers(buildServers(configProperties.getDocket().getServers()));
-
+                .info(buildInfo(configProperties.getDocket().getInfo()));
+        if (configProperties.getDocket().getServers() != null) {
+            builder.servers(buildServers(configProperties.getDocket().getServers()));
+        }
         if (configProperties.getDocket().getId() != null) {
             builder.id(configProperties.getDocket().getId());
         }
@@ -68,10 +69,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     }
 
     private static Map<String, Server> buildServers(Map<String, Server> servers) {
-        if (servers == null || servers.isEmpty()) {
-            throw new IllegalArgumentException("No server has been defined in application.properties "
-                    + "with path prefix " + SPRINGWOLF_CONFIG_PREFIX);
-        } else {
+        if (servers != null) {
             servers.forEach((serverName, server) -> {
                 if (!StringUtils.hasText(server.getProtocol()) || !StringUtils.hasText(server.getHost())) {
                     throw new IllegalArgumentException(

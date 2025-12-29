@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.util.Maps.newHashMap;
 
 class DefaultAsyncApiDocketServiceTest {
 
@@ -27,10 +26,6 @@ class DefaultAsyncApiDocketServiceTest {
         configDocket.setBasePackage("test-base-package");
 
         configDocket.setDefaultContentType("application/json");
-
-        Server server =
-                Server.builder().protocol("some-protocol").host("some-url").build();
-        configDocket.setServers(newHashMap("some-protocol", server));
 
         ConfigDocket.Info info = new ConfigDocket.Info();
         info.setTitle("some-title");
@@ -78,10 +73,6 @@ class DefaultAsyncApiDocketServiceTest {
         info.setVersion("some-version");
         configDocket.setInfo(info);
 
-        Server server =
-                Server.builder().protocol("some-protocol").host("some-url").build();
-        configDocket.setServers(newHashMap("some-protocol", server));
-
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
         configProperties.setDocket(configDocket);
 
@@ -105,10 +96,6 @@ class DefaultAsyncApiDocketServiceTest {
         void setUp() {
             validDocket = new ConfigDocket();
             validDocket.setBasePackage("test-base-package");
-
-            Server server =
-                    Server.builder().protocol("some-protocol").host("some-url").build();
-            validDocket.setServers(newHashMap("some-protocol", server));
 
             ConfigDocket.Info info = new ConfigDocket.Info();
             info.setTitle("some-title");
@@ -164,25 +151,15 @@ class DefaultAsyncApiDocketServiceTest {
                             "One or more required fields of the info object (title, version) in application.properties with path prefix springwolf is not set.");
         }
 
-        @Test
-        void missingServers() {
-            // given
-            validDocket.getServers().clear();
-
-            // when
-            assertThatThrownBy(docketService::getAsyncApiDocket)
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining(
-                            "No server has been defined in application.properties with path prefix springwolf");
-        }
-
         @ParameterizedTest
         @CsvSource(
                 value = {"''", "null"},
                 nullValues = {"null"})
         void missingServerProtocol(String value) {
             // given
-            validDocket.getServers().forEach((k, v) -> v.setProtocol(value));
+            validDocket.setServers(Map.of(
+                    "some-protocol",
+                    Server.builder().protocol(value).host("some-url").build()));
 
             // when
             assertThatThrownBy(docketService::getAsyncApiDocket)
@@ -197,7 +174,9 @@ class DefaultAsyncApiDocketServiceTest {
                 nullValues = {"null"})
         void missingServerHost(String value) {
             // given
-            validDocket.getServers().forEach((k, v) -> v.setHost(value));
+            validDocket.setServers(Map.of(
+                    "some-protocol",
+                    Server.builder().protocol("some-protocol").host(value).build()));
 
             // when
             assertThatThrownBy(docketService::getAsyncApiDocket)

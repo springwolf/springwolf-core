@@ -76,8 +76,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.base-package=io.github.springwolf.plugins.jms",
             "springwolf.docket.info.title=Title",
             "springwolf.docket.info.version=1.0",
-            "springwolf.docket.servers.jms.protocol=jms",
-            "springwolf.docket.servers.jms.host=127.0.0.1",
             "springwolf.plugin.jms.publishing.enabled=true",
         })
 class SpringwolfJmsControllerIntegrationTest {

@@ -35,8 +35,6 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.examples",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.sqs.publishing.enabled=true"
             })
     @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
@@ -67,8 +65,6 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.examples",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.sqs.publishing.enabled=false"
             })
     @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
