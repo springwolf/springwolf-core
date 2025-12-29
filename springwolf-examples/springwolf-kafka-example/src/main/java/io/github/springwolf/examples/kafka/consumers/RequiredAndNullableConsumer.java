@@ -15,6 +15,6 @@ public class RequiredAndNullableConsumer {
     @KafkaListener(topics = "nullable-topic")
     @KafkaAsyncOperationBinding
     public void receiveNullablePayload(RequiredAndNullablePayloadDto payloads) {
-        log.info("Received new message in nullable-topic: {}", payloads.toString());
+        log.debug("Received new message in nullable-topic: {}", payloads.toString());
     }
 }

@@ -76,7 +76,7 @@ public class JmsProducerSystemTest {
         // Awaitility is used, because message sent before amqp is ready are lost
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // when
-            log.info("Waiting for message in {} on {}", exampleConsumer, brokerUrl);
+            log.debug("Waiting for message in {} on {}", exampleConsumer, brokerUrl);
             springwolfJmsProducer.send("example-queue", Map.of(), payload);
 
             // then

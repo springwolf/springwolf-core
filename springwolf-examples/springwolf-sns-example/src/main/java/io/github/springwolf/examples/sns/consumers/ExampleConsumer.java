@@ -21,7 +21,7 @@ public class ExampleConsumer {
     @AsyncListener(operation = @AsyncOperation(channelName = "example-topic"))
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-topic: {}", payload.toString());
+        log.debug("Received new message in example-topic: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -33,6 +33,6 @@ public class ExampleConsumer {
     @AsyncListener(operation = @AsyncOperation(channelName = "another-topic"))
     @SnsAsyncOperationBinding(protocol = "sqs", endpoint = @SnsAsyncOperationBindingIdentifier())
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        log.info("Received new message in another-topic: {}", payload.toString());
+        log.debug("Received new message in another-topic: {}", payload.toString());
     }
 }

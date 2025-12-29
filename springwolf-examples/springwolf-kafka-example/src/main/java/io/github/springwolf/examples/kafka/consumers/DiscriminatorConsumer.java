@@ -14,6 +14,6 @@ public class DiscriminatorConsumer {
 
     @KafkaListener(topics = "vehicle-topic")
     public void receiveExamplePayload(VehicleBase payload) {
-        log.info("Received new message in vehicle-topic: {}", payload.toString());
+        log.debug("Received new message in vehicle-topic: {}", payload.toString());
     }
 }

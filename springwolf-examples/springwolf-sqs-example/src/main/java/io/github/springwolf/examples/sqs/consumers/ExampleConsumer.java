@@ -21,7 +21,7 @@ public class ExampleConsumer {
 
     @SqsListener("example-queue")
     public void receiveExamplePayload(@Payload ExamplePayloadDto payload, @Headers Map<String, Object> headers) {
-        log.info("Received new message in example-queue: {}, with headers: {}", payload.toString(), headers);
+        log.debug("Received new message in example-queue: {}, with headers: {}", payload.toString(), headers);
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -32,6 +32,6 @@ public class ExampleConsumer {
 
     @SqsListener("another-queue")
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        log.info("Received new message in another-queue: {}", payload.toString());
+        log.debug("Received new message in another-queue: {}", payload.toString());
     }
 }

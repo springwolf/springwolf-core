@@ -33,7 +33,7 @@ public class StringConsumer {
                             headers = @AsyncOperation.Headers(notUsed = true)))
     @KafkaAsyncOperationBinding
     public void receiveStringPayload(String stringPayload) {
-        log.info("Received new message in {}: {}", TOPIC, stringPayload);
+        log.debug("Received new message in {}: {}", TOPIC, stringPayload);
     }
 
     @Data

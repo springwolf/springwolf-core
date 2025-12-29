@@ -13,6 +13,6 @@ public class ConsumerClass implements Consumer<ExamplePayloadDto> {
 
     @Override
     public void accept(ExamplePayloadDto payload) {
-        log.info("Called with payload: {}", payload);
+        log.debug("Called with payload: {}", payload);
     }
 }
