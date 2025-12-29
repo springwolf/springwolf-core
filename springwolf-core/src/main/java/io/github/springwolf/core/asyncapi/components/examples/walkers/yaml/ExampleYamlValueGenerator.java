@@ -50,7 +50,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
 
             return exampleYamlValueSerializer.writeDocumentAsYamlString(exampleObject);
         } catch (JacksonException e) {
-            log.error("Serialize {}", name, e);
+            log.warn("Serialize {}", name, e);
             return null;
         }
     }
