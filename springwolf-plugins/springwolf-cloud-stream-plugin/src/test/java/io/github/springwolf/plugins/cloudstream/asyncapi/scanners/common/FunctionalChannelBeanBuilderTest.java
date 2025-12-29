@@ -487,9 +487,7 @@ class FunctionalChannelBeanBuilderTest {
             AnnotatedType annotatedType = mock(AnnotatedType.class);
 
             // when
-            assertThatThrownBy(() -> {
-                        functionalChannelBeanBuilder.build(annotatedType);
-                    })
+            assertThatThrownBy(() -> functionalChannelBeanBuilder.build(annotatedType))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Must be a Method or Class");
         }

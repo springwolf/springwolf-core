@@ -11,7 +11,7 @@ public interface AsyncApiService {
 
     /**
      * Default implementation was added to avoid breaking (compiler) change.
-     *
+     * <p>
      * Maintainer note: remove default implementation
      */
     default Optional<AsyncAPI> getForGroupName(String groupName) {

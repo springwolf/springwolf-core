@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.classes;
 
-import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +12,5 @@ public class TestBeanConfiguration {
         return new TestBean("foo");
     }
 
-    @Value
-    public static class TestBean {
-        String value;
-    }
+    public record TestBean(String value) {}
 }

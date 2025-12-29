@@ -111,7 +111,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         Map<String, ComponentSchema> schemas = createPayloadSchema(schemaFormat);
 
-        AsyncAPI asyncapi = AsyncAPI.builder()
+        return AsyncAPI.builder()
                 .info(info)
                 .defaultContentType("application/json")
                 .servers(Map.of("production", productionServer))
@@ -120,8 +120,6 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         Components.builder().schemas(schemas).messages(messages).build())
                 .operations(Map.of("new-user_listenerMethod_subscribe", newUserOperation))
                 .build();
-
-        return asyncapi;
     }
 
     private Map<String, ComponentSchema> createPayloadSchema(SchemaFormat schemaFormat) {

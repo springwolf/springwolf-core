@@ -33,22 +33,22 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     private static final SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
+    private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
-    String DEFAULT_MAP_KEY_EXAMPLE = "key";
-    String DEFAULT_STRING_EXAMPLE = "string";
-    Integer DEFAULT_INTEGER_EXAMPLE = 0;
-    Double DEFAULT_NUMBER_EXAMPLE = 1.1;
+    private static final String DEFAULT_MAP_KEY_EXAMPLE = "key";
+    private static final String DEFAULT_STRING_EXAMPLE = "string";
+    private static final Integer DEFAULT_INTEGER_EXAMPLE = 0;
+    private static final Double DEFAULT_NUMBER_EXAMPLE = 1.1;
 
-    String DEFAULT_DATE_EXAMPLE = "2015-07-20";
-    String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
-    String DEFAULT_PASSWORD_EXAMPLE = "string-password";
-    String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
-    String DEFAULT_BINARY_EXAMPLE =
+    private static final String DEFAULT_DATE_EXAMPLE = "2015-07-20";
+    private static final String DEFAULT_DATE_TIME_EXAMPLE = "2015-07-20T15:49:04-07:00";
+    private static final String DEFAULT_PASSWORD_EXAMPLE = "string-password";
+    private static final String DEFAULT_BYTE_EXAMPLE = "YmFzZTY0LWV4YW1wbGU=";
+    private static final String DEFAULT_BINARY_EXAMPLE =
             "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001";
 
-    String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
-    String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+    private static final String DEFAULT_EMAIL_EXAMPLE = "example@example.com";
+    private static final String DEFAULT_UUID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
     private final ExampleValueGenerator<T, R> exampleValueGenerator;
 

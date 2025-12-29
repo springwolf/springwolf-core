@@ -25,7 +25,7 @@ public class SchemaEnumAsRefApplication {
         @Schema(enumAsRef = true)
         public enum MyEnumObject {
             DOG,
-            CAT;
+            CAT,
         }
     }
 }

@@ -23,8 +23,8 @@ class KafkaMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("kafka");
-        assertThat(binding.getBinding()).isEqualTo(new KafkaMessageBinding());
+        assertThat(binding.type()).isEqualTo("kafka");
+        assertThat(binding.binding()).isEqualTo(new KafkaMessageBinding());
     }
 
     @Test

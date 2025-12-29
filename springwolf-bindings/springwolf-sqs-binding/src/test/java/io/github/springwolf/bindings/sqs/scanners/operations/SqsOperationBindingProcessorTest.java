@@ -33,8 +33,8 @@ class SqsOperationBindingProcessorTest {
                         .build()))
                 .build();
 
-        assertThat(binding.getType()).isEqualTo("sqs");
-        assertThat(binding.getBinding()).isEqualTo(expectedOperation);
+        assertThat(binding.type()).isEqualTo("sqs");
+        assertThat(binding.binding()).isEqualTo(expectedOperation);
     }
 
     @SqsAsyncOperationBinding(queues = {@SqsAsyncQueueBinding(name = "queue-name")})

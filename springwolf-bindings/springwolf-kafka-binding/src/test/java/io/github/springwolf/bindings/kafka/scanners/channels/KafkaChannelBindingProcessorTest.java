@@ -27,8 +27,8 @@ class KafkaChannelBindingProcessorTest {
 
         ProcessedChannelBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("kafka");
-        assertThat(binding.getBinding()).isEqualTo(new KafkaChannelBinding());
+        assertThat(binding.type()).isEqualTo("kafka");
+        assertThat(binding.binding()).isEqualTo(new KafkaChannelBinding());
     }
 
     @Test
@@ -48,8 +48,8 @@ class KafkaChannelBindingProcessorTest {
 
         ProcessedChannelBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("kafka");
-        assertThat(binding.getBinding())
+        assertThat(binding.type()).isEqualTo("kafka");
+        assertThat(binding.binding())
                 .isEqualTo(KafkaChannelBinding.builder()
                         .topic("resolved-test-topic")
                         .partitions(3)

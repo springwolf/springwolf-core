@@ -7,7 +7,6 @@
 - [About](#about)
 - [Usage](#usage)
     - [Dependencies](#dependencies)
-    - [Configuration class](#configuration-class)
 - [Verify](#verify)
 - [Example Project](#example-project)
 

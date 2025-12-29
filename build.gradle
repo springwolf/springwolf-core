@@ -231,8 +231,8 @@ allprojects {
 
     signing {
         required { gradle.taskGraph.hasTask("publish") }
-        def signingKey = project.findProperty("SIGNINGKEY")
-        def signingPassword = project.findProperty("SIGNINGPASSWORD")
+        def signingKey = project.findProperty("SIGNINGKEY") as String
+        def signingPassword = project.findProperty("SIGNINGPASSWORD") as String
         useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.mavenJava
     }
@@ -243,8 +243,8 @@ nexusPublishing {
         MavenRepository {
             nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
             snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
-            username = project.findProperty('MAVEN_USERNAME') ?: ''
-            password = project.findProperty('MAVEN_PASSWORD') ?: ''
+            username = project.findProperty('MAVEN_USERNAME') as String ?: ''
+            password = project.findProperty('MAVEN_PASSWORD') as String ?: ''
         }
     }
 }
@@ -252,7 +252,7 @@ nexusPublishing {
 dependencyCheck {
     outputDirectory = "${rootProject.layout.buildDirectory.get().asFile}/reports/owasp-dependency-check"
     formats = [ReportGenerator.Format.SARIF.toString()]
-    nvd.apiKey = project.findProperty("OWASP_API_KEY")
+    nvd.apiKey = project.findProperty("OWASP_API_KEY") as String ?: ''
     analyzers.ossIndex.warnOnlyOnRemoteErrors = true
     analyzers.assemblyEnabled = false
     analyzers.nodeEnabled = false

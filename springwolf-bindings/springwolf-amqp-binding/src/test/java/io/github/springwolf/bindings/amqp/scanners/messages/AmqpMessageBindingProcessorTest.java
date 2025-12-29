@@ -20,8 +20,8 @@ class AmqpMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("amqp");
-        assertThat(binding.getBinding()).isEqualTo(new AMQPMessageBinding());
+        assertThat(binding.type()).isEqualTo("amqp");
+        assertThat(binding.binding()).isEqualTo(new AMQPMessageBinding());
     }
 
     @Test

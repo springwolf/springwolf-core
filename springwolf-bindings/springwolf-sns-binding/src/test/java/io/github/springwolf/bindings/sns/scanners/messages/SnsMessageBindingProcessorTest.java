@@ -21,8 +21,8 @@ class SnsMessageBindingProcessorTest {
 
         ProcessedMessageBinding binding = processor.process(method).get();
 
-        assertThat(binding.getType()).isEqualTo("sns");
-        assertThat(binding.getBinding()).isEqualTo(new SNSMessageBinding());
+        assertThat(binding.type()).isEqualTo("sns");
+        assertThat(binding.binding()).isEqualTo(new SNSMessageBinding());
     }
 
     @Test
