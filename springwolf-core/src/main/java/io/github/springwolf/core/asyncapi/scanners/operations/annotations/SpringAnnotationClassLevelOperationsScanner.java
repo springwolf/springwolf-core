@@ -6,6 +6,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationS
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationsService;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
