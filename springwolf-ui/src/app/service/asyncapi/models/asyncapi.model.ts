@@ -9,7 +9,7 @@ export interface ServerAsyncApi {
   asyncapi: string;
   info: ServerAsyncApiInfo;
   defaultContentType: string;
-  servers: ServerServers;
+  servers: ServerServers | undefined;
   channels: ServerChannels;
   operations: ServerOperations;
   components: ServerComponents;

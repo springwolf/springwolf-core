@@ -34,8 +34,6 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.plugins.kafka",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=true"
             })
     @MockitoBean(
@@ -73,8 +71,6 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.plugins.kafka",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.kafka.publishing.enabled=false"
             })
     @MockitoBean(

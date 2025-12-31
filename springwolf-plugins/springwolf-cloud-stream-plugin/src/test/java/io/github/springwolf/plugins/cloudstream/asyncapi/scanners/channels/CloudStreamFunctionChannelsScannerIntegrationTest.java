@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyMessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.EmptyOperationBinding;
+import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
@@ -108,7 +109,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     @Autowired
     private ComponentsService componentsService;
 
-    private Map<String, EmptyMessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
+    private Map<String, MessageBinding> messageBinding = Map.of("kafka", new EmptyMessageBinding());
     private Map<String, OperationBinding> operationBinding = Map.of("kafka", new EmptyOperationBinding());
     private Map<String, ChannelBinding> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
@@ -140,7 +141,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -186,7 +187,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -233,7 +234,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation expectedOperation = Operation.builder()
@@ -287,7 +288,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -315,7 +316,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
@@ -371,7 +372,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -399,7 +400,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
@@ -455,7 +456,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -486,7 +487,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation publishOperation = Operation.builder()
@@ -543,7 +544,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
 
         Operation subscribeOperation = Operation.builder()
@@ -566,7 +567,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(Map.of("kafka", new EmptyMessageBinding()))
+                .bindings(messageBinding)
                 .build();
         Operation publishOperation = Operation.builder()
                 .operationId("test-topic_send_testFunction")
