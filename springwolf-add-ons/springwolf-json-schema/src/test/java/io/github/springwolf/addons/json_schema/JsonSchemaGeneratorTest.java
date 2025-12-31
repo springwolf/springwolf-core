@@ -28,6 +28,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -54,14 +55,14 @@ class JsonSchemaGeneratorTest {
 
         // ref cycle ping -> pingField -> pong -> pongField -> ping (repeat)
         SchemaObject pingSchema = new SchemaObject();
-        pingSchema.setType(SchemaType.OBJECT);
+        pingSchema.setType(Set.of(SchemaType.OBJECT));
         pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(SchemaReference.toSchema("PongSchema"))));
         SchemaObject pongSchema = new SchemaObject();
-        pongSchema.setType(SchemaType.OBJECT);
+        pongSchema.setType(Set.of(SchemaType.OBJECT));
         pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(SchemaReference.toSchema("PingSchema"))));
 
         SchemaObject stringSchema = new SchemaObject();
-        stringSchema.setType(SchemaType.STRING);
+        stringSchema.setType(Set.of(SchemaType.STRING));
 
         Map<String, ComponentSchema> definitions = Map.of(
                 "StringRef",

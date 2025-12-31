@@ -111,7 +111,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     class CanPublish {
         @Test
         void controllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
-            mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
+            mvc.perform(get("/springwolf/plugin/kafka/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful());
         }
 
@@ -119,7 +119,7 @@ class SpringwolfKafkaControllerIntegrationTest {
         void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
             when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
 
-            mvc.perform(get("/springwolf/kafka/publish").contentType(MediaType.APPLICATION_JSON))
+            mvc.perform(get("/springwolf/plugin/kafka/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is4xxClientError());
         }
     }
@@ -133,7 +133,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                               "headers": null,
                               "payload": ""
                             }""";
-        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
@@ -149,7 +149,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                               "bindings": null,
                               "headers": null
                             }""";
-        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
@@ -168,7 +168,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                           "headers": null,
                           "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
                         }""";
-        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isNotFound());
@@ -187,7 +187,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                           "type": "io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
                         }""";
 
-        mvc.perform(post("/springwolf/kafka/publish")
+        mvc.perform(post("/springwolf/plugin/kafka/publish")
                         .param("topic", "test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -214,7 +214,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         }
                         """;
 
-        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());
@@ -244,7 +244,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                           "type": "io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaControllerIntegrationTest$PayloadDto"
                         }""";
 
-        mvc.perform(post("/springwolf/kafka/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/kafka/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());

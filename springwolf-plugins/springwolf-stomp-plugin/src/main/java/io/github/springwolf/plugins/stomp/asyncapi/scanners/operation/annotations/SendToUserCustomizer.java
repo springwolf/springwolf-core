@@ -7,7 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindingSendToUserFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.annotation.SendToUser;

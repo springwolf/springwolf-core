@@ -210,8 +210,8 @@ public class GroupingService {
      */
     private static Set<String> findUnmarkedNestedSchemas(
             MarkingContext markingContext, ComponentSchema componentSchema) {
-        // ComponentSchema can contain an AsyncApi SchemaObject instance or an MultiformatSchema, which in turn contains
-        // a schema.
+        // ComponentSchema can contain an AsyncAPI SchemaObject instance or an MultiformatSchema, which in turn contains
+        // an schema.
         if (componentSchema.getSchema() != null) {
             return findUnmarkedNestedSchemasForAsyncAPISchema(markingContext, componentSchema.getSchema());
         }

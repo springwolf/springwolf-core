@@ -53,6 +53,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -136,7 +137,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .name(String.class.getName())
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .schema(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -182,7 +185,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .name(String.class.getName())
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .schema(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -229,7 +234,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .name(String.class.getName())
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .schema(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -451,7 +458,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .name(String.class.getName())
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .schema(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -480,7 +489,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(SchemaType.INTEGER)
+                                .type(Set.of(SchemaType.INTEGER))
                                 .format("int32")
                                 .build())
                         .build()))
@@ -539,7 +548,9 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .name(String.class.getName())
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
-                        .schema(SchemaObject.builder().type(SchemaType.STRING).build())
+                        .schema(SchemaObject.builder()
+                                .type(Set.of(SchemaType.STRING))
+                                .build())
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
@@ -560,7 +571,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(SchemaType.INTEGER)
+                                .type(Set.of(SchemaType.INTEGER))
                                 .format("int32")
                                 .build())
                         .build()))

@@ -15,6 +15,6 @@ export class EndpointService {
   }
 
   public static getPublishEndpoint(protocol: string): string {
-    return EndpointService.contextPath + `/${protocol}/publish`;
+    return EndpointService.contextPath + `/plugin/${protocol}/publish`;
   }
 }

@@ -477,7 +477,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
 
             assertThat(componentSchema.getSchema().getDiscriminator()).isEqualTo("name");
@@ -495,7 +495,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
 
             assertThat((componentSchema.getSchema().getAllOf().get(0).getSchema()).getType())
@@ -514,7 +514,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
 
             assertThat((componentSchema.getSchema().getOneOf().get(0).getSchema()).getType())
@@ -533,7 +533,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat((componentSchema.getSchema().getAnyOf().get(0).getSchema()).getType())
                     .containsExactly(anyOf.getType());
@@ -549,7 +549,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat(componentSchema.getSchema().getConstValue()).isEqualTo(schema.getConst());
         }
@@ -566,7 +566,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat((componentSchema.getSchema().getNot().getSchema()).getType())
                     .containsExactly(not.getType());
@@ -585,7 +585,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat((componentSchema.getSchema().getItems().getSchema()).getType())
                     .containsExactly(item.getType());
@@ -601,7 +601,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat(componentSchema.getSchema().getUniqueItems()).isEqualTo(schema.getUniqueItems());
         }
@@ -616,7 +616,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat(componentSchema.getSchema().getMinItems()).isEqualTo(schema.getMinItems());
         }
@@ -631,7 +631,7 @@ class SwaggerSchemaMapperTest {
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
             // then
-            // ensure that componentSchema contains an AsnycApi SchemaObjekt.
+            // ensure that componentSchema contains an AsyncAPI SchemaObject.
             assertThat(componentSchema.getSchema()).isNotNull();
             assertThat(componentSchema.getSchema().getMaxItems()).isEqualTo(schema.getMaxItems());
         }
@@ -670,7 +670,7 @@ class SwaggerSchemaMapperTest {
         void mapFormat() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
             schema.setFormat("email");
 
             // when
@@ -712,7 +712,7 @@ class SwaggerSchemaMapperTest {
             // given
             SchemaObject schema = new SchemaObject();
             schema.setEnumValues(Stream.of("enum1", "enum2", null).toList());
-            schema.setTypes(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
+            schema.setType(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
@@ -726,7 +726,7 @@ class SwaggerSchemaMapperTest {
         void mapType() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
@@ -739,7 +739,7 @@ class SwaggerSchemaMapperTest {
         void mapProperties() {
             // given
             SchemaObject property = new SchemaObject();
-            property.setType(SchemaType.STRING);
+            property.setType(Set.of(SchemaType.STRING));
 
             SchemaObject schema = new SchemaObject();
             schema.setProperties(Map.of("property", ComponentSchema.of(property)));
@@ -757,7 +757,7 @@ class SwaggerSchemaMapperTest {
         void mapComponentSchemaSchema() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
 
             MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
             ComponentSchema componentSchema = ComponentSchema.of(multiFormatSchema);
@@ -773,7 +773,7 @@ class SwaggerSchemaMapperTest {
         void mapMultiFormatSchema() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(SchemaType.STRING);
+            schema.setType(Set.of(SchemaType.STRING));
 
             MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
 

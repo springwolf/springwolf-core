@@ -16,6 +16,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -29,9 +30,9 @@ class HeaderClassExtractorTest {
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(
             "payloadSchemaName", String.class.getSimpleName(), ComponentSchema.of(new SchemaObject()));
     private final SchemaObject stringSchema =
-            SchemaObject.builder().type(SchemaType.STRING).build();
-    private final ComponentSchema stringSwaggerSchema =
-            ComponentSchema.of(SchemaObject.builder().type(SchemaType.STRING).build());
+            SchemaObject.builder().type(Set.of(SchemaType.STRING)).build();
+    private final ComponentSchema stringSwaggerSchema = ComponentSchema.of(
+            SchemaObject.builder().type(Set.of(SchemaType.STRING)).build());
 
     private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
 
@@ -73,7 +74,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -94,7 +95,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -58,12 +59,12 @@ class MQTTBindingTest {
                                         "mqtt",
                                         MQTTServerBinding.builder()
                                                 .sessionExpiryInterval(SchemaObject.builder()
-                                                        .type(SchemaType.INTEGER)
+                                                        .type(Set.of(SchemaType.INTEGER))
                                                         .minimum(new BigDecimal("30"))
                                                         .maximum(new BigDecimal("1200"))
                                                         .build())
                                                 .maximumPacketSize(SchemaObject.builder()
-                                                        .type(SchemaType.INTEGER)
+                                                        .type(Set.of(SchemaType.INTEGER))
                                                         .minimum(new BigDecimal("256"))
                                                         .build())
                                                 .build()))

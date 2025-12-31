@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -80,7 +81,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         KafkaMessageBinding.builder()
                                 // FIXME: We should have a SchemaString (Schema<String>)
                                 .key(SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .build())
                                 .build()))
                 .build();
@@ -88,7 +89,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         SchemaObject groupId = new SchemaObject();
         groupId.setEnumValues(List.of("myGroupId"));
-        groupId.setType(SchemaType.STRING);
+        groupId.setType(Set.of(SchemaType.STRING));
 
         OperationBinding operationBinding =
                 KafkaOperationBinding.builder().groupId(groupId).build();
@@ -126,9 +127,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         switch (schemaFormat) {
             case DEFAULT: {
                 SchemaObject examplePayloadSchema = new SchemaObject();
-                examplePayloadSchema.setType(SchemaType.OBJECT);
+                examplePayloadSchema.setType(Set.of(SchemaType.OBJECT));
                 SchemaObject stringSchema = new SchemaObject();
-                stringSchema.setType(SchemaType.STRING);
+                stringSchema.setType(Set.of(SchemaType.STRING));
                 examplePayloadSchema.setProperties(Map.of("s", stringSchema));
                 return Map.of("ExamplePayload", ComponentSchema.of(examplePayloadSchema));
             }

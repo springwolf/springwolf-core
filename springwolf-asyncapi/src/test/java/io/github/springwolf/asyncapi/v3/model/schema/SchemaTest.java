@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -16,8 +17,10 @@ class SchemaTest {
 
     @Test
     void shouldSerializePrimitiveSample() throws Exception {
-        var schema =
-                SchemaObject.builder().type(SchemaType.STRING).format("email").build();
+        var schema = SchemaObject.builder()
+                .type(Set.of(SchemaType.STRING))
+                .format("email")
+                .build();
 
         String example =
                 """
@@ -32,14 +35,17 @@ class SchemaTest {
     @Test
     void shouldSerializeSimpleModel() throws Exception {
         var schema = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .required(List.of("name"))
                 .properties(Map.of(
-                        "name", SchemaObject.builder().type(SchemaType.STRING).build(),
+                        "name",
+                                SchemaObject.builder()
+                                        .type(Set.of(SchemaType.STRING))
+                                        .build(),
                         "address", SchemaReference.toSchema("Address"),
                         "age",
                                 SchemaObject.builder()
-                                        .type(SchemaType.INTEGER)
+                                        .type(Set.of(SchemaType.INTEGER))
                                         .format("int32")
                                         .minimum(BigDecimal.ZERO)
                                         .build()))
@@ -73,9 +79,9 @@ class SchemaTest {
     @Test
     void shouldSerializeStringToStringMapping() throws Exception {
         var schema = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .additionalProperties(ComponentSchema.of(
-                        SchemaObject.builder().type(SchemaType.STRING).build()))
+                        SchemaObject.builder().type(Set.of(SchemaType.STRING)).build()))
                 .build();
 
         var example =
@@ -93,7 +99,7 @@ class SchemaTest {
     @Test
     void shouldSerializeModelMapping() throws Exception {
         var schema = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .additionalProperties(ComponentSchema.of(SchemaReference.toSchema("ComplexModel")))
                 .build();
 
@@ -112,14 +118,17 @@ class SchemaTest {
     @Test
     void shouldSerializeModelWithExample() throws Exception {
         var schema = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .properties(Map.of(
                         "id",
                                 SchemaObject.builder()
-                                        .type(SchemaType.INTEGER)
+                                        .type(Set.of(SchemaType.INTEGER))
                                         .format("int64")
                                         .build(),
-                        "name", SchemaObject.builder().type(SchemaType.STRING).build()))
+                        "name",
+                                SchemaObject.builder()
+                                        .type(Set.of(SchemaType.STRING))
+                                        .build()))
                 .required(List.of("name"))
                 .examples(List.of(Map.of("name", "Puma", "id", 1)))
                 .build();
@@ -154,7 +163,7 @@ class SchemaTest {
     @Test
     void shouldSerializeModelWithBooleans() throws Exception {
         var schema = SchemaObject.builder()
-                .type(SchemaType.OBJECT)
+                .type(Set.of(SchemaType.OBJECT))
                 .properties(Map.of(
                         "anySchema", true,
                         "cannotBeDefined", false))
@@ -184,16 +193,16 @@ class SchemaTest {
                 Map.of(
                         "ErrorModel",
                         SchemaObject.builder()
-                                .type(SchemaType.OBJECT)
+                                .type(Set.of(SchemaType.OBJECT))
                                 .required(List.of("message", "code"))
                                 .properties(Map.of(
                                         "message",
                                                 SchemaObject.builder()
-                                                        .type(SchemaType.STRING)
+                                                        .type(Set.of(SchemaType.STRING))
                                                         .build(),
                                         "code",
                                                 SchemaObject.builder()
-                                                        .type(SchemaType.INTEGER)
+                                                        .type(Set.of(SchemaType.INTEGER))
                                                         .minimum(new BigDecimal("100"))
                                                         .maximum(new BigDecimal("600"))
                                                         .build()))
@@ -203,12 +212,12 @@ class SchemaTest {
                                 .allOf(List.of(
                                         ComponentSchema.of(SchemaReference.toSchema("ErrorModel")),
                                         ComponentSchema.of(SchemaObject.builder()
-                                                .type(SchemaType.OBJECT)
+                                                .type(Set.of(SchemaType.OBJECT))
                                                 .required(List.of("rootCause"))
                                                 .properties(Map.of(
                                                         "rootCause",
                                                         SchemaObject.builder()
-                                                                .type(SchemaType.STRING)
+                                                                .type(Set.of(SchemaType.STRING))
                                                                 .build()))
                                                 .build())))
                                 .build()));
@@ -265,16 +274,16 @@ class SchemaTest {
                 Map.of(
                         "Pet",
                         SchemaObject.builder()
-                                .type(SchemaType.OBJECT)
+                                .type(Set.of(SchemaType.OBJECT))
                                 .discriminator("petType")
                                 .properties(Map.of(
                                         "name",
                                         SchemaObject.builder()
-                                                .type(SchemaType.STRING)
+                                                .type(Set.of(SchemaType.STRING))
                                                 .build(),
                                         "petType",
                                         SchemaObject.builder()
-                                                .type(SchemaType.STRING)
+                                                .type(Set.of(SchemaType.STRING))
                                                 .build()))
                                 .required(List.of("name", "petType"))
                                 .build(),
@@ -285,11 +294,11 @@ class SchemaTest {
                                 .allOf(List.of(
                                         ComponentSchema.of(SchemaReference.toSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
-                                                .type(SchemaType.OBJECT)
+                                                .type(Set.of(SchemaType.OBJECT))
                                                 .properties(Map.of(
                                                         "huntingSkill",
                                                         SchemaObject.builder()
-                                                                .type(SchemaType.STRING)
+                                                                .type(Set.of(SchemaType.STRING))
                                                                 .description("The measured skill for hunting")
                                                                 .enumValues(
                                                                         List.of(
@@ -308,11 +317,11 @@ class SchemaTest {
                                 .allOf(List.of(
                                         ComponentSchema.of(SchemaReference.toSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
-                                                .type(SchemaType.OBJECT)
+                                                .type(Set.of(SchemaType.OBJECT))
                                                 .properties(Map.of(
                                                         "packSize",
                                                         SchemaObject.builder()
-                                                                .type(SchemaType.INTEGER)
+                                                                .type(Set.of(SchemaType.INTEGER))
                                                                 .format("int32")
                                                                 .description("the size of the pack the dog is from")
                                                                 .minimum(BigDecimal.ZERO)
@@ -327,7 +336,7 @@ class SchemaTest {
                                 .allOf(List.of(
                                         ComponentSchema.of(SchemaReference.toSchema("Pet")),
                                         ComponentSchema.of(SchemaObject.builder()
-                                                .type(SchemaType.OBJECT)
+                                                .type(Set.of(SchemaType.OBJECT))
                                                 .properties(Map.of(
                                                         "petType",
                                                         SchemaObject.builder()
@@ -335,7 +344,7 @@ class SchemaTest {
                                                                 .build(),
                                                         "color",
                                                         SchemaObject.builder()
-                                                                .type(SchemaType.STRING)
+                                                                .type(Set.of(SchemaType.STRING))
                                                                 .build()))
                                                 .required(List.of("color"))
                                                 .build())))

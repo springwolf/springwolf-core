@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger.generateHeaderSchemaName;
@@ -54,7 +55,7 @@ public class AsyncAnnotationUtil {
                 : null;
 
         SchemaObject headerSchema = new SchemaObject();
-        headerSchema.setType(SchemaType.OBJECT);
+        headerSchema.setType(Set.of(SchemaType.OBJECT));
         headerSchema.setTitle(headerSchemaTitle);
         headerSchema.setDescription(headerDescription);
         headerSchema.setProperties(new HashMap<>());
@@ -65,7 +66,7 @@ public class AsyncAnnotationUtil {
                     String propertyName = stringValueResolver.resolveStringValue(headerName);
 
                     SchemaObject property = new SchemaObject();
-                    property.setType(SchemaType.STRING);
+                    property.setType(Set.of(SchemaType.STRING));
 
                     property.setTitle(propertyName);
                     property.setDescription(getDescription(headersValues, stringValueResolver));

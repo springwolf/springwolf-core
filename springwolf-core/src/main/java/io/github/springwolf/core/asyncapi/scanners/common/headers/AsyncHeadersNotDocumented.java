@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 
 import java.util.Map;
+import java.util.Set;
 
 public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
     /**
@@ -13,7 +14,7 @@ public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
      * There can be headers, but don't have to be.
      */
     public static final SchemaObject NOT_DOCUMENTED = SchemaObject.builder()
-            .type(SchemaType.OBJECT)
+            .type(Set.of(SchemaType.OBJECT))
             .title("HeadersNotDocumented")
             .description("There can be headers, but they are not explicitly documented.")
             .properties(Map.of())

@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,8 +48,13 @@ class ApiIntegrationTest {
 
     @Test
     void asyncApiResourceArtifactYamlTest() throws Exception {
-        String url = "/springwolf/docs.yaml";
-        String actual = restTemplate.getForObject(url, String.class);
+        String url = "/springwolf/docs";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_YAML));
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String actual =
+                restTemplate.exchange(url, HttpMethod.GET, entity, String.class).getBody();
         // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
         String actualPatched = actual.replace(bootstrapServers, "kafka:29092").trim();
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.yaml"), actualPatched);

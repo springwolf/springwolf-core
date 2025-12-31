@@ -16,6 +16,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class KafkaMessageBindingProcessor implements MessageBindingProcessor {
@@ -56,7 +57,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor {
                 break;
             case STRING_KEY:
                 schemaDefinition = SchemaObject.builder()
-                        .type(SchemaType.STRING)
+                        .type(Set.of(SchemaType.STRING))
                         .examples(List.of(messageBinding.key().example()))
                         .description(resolveOrNull(messageBinding.key().description()))
                         .build();

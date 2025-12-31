@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class PayloadService {
             PAYLOAD_NOT_USED_KEY,
             PAYLOAD_NOT_USED_KEY,
             ComponentSchema.of(SchemaObject.builder()
-                    .type(SchemaType.OBJECT)
+                    .type(Set.of(SchemaType.OBJECT))
                     .title(PAYLOAD_NOT_USED_KEY)
                     .description("No payload specified")
                     .properties(Map.of())

@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -99,12 +100,12 @@ class AsyncAnnotationUtilTest {
         // then
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .title("Headers-1585401221")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .title("headerResolved")
                                         .description("descriptionResolved")
                                         .format(null)
@@ -126,12 +127,12 @@ class AsyncAnnotationUtilTest {
         // then
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .title("Headers-1612438838")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .title("headerResolved")
                                         .description("descriptionResolved")
                                         .format(null)
@@ -153,12 +154,12 @@ class AsyncAnnotationUtilTest {
         // then
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .title("Headers-1701213112")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
-                                        .type(SchemaType.STRING)
+                                        .type(Set.of(SchemaType.STRING))
                                         .format("int32Resolved")
                                         .title("headerResolved")
                                         .description("descriptionResolved")

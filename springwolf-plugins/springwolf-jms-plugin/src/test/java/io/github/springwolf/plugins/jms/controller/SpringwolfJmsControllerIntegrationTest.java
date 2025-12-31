@@ -111,7 +111,7 @@ class SpringwolfJmsControllerIntegrationTest {
     class CanPublish {
         @Test
         void controllerShouldReturnOkWhenPublishingIsEnabled() throws Exception {
-            mvc.perform(get("/springwolf/jms/publish").contentType(MediaType.APPLICATION_JSON))
+            mvc.perform(get("/springwolf/plugin/jms/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful());
         }
 
@@ -119,7 +119,7 @@ class SpringwolfJmsControllerIntegrationTest {
         void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
             when(springwolfJmsProducer.isEnabled()).thenReturn(false);
 
-            mvc.perform(get("/springwolf/jms/publish").contentType(MediaType.APPLICATION_JSON))
+            mvc.perform(get("/springwolf/plugin/jms/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is4xxClientError());
         }
     }
@@ -133,7 +133,7 @@ class SpringwolfJmsControllerIntegrationTest {
                               "headers": null,
                               "payload": ""
                             }""";
-        mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
@@ -149,7 +149,7 @@ class SpringwolfJmsControllerIntegrationTest {
                               "bindings": null,
                               "headers": null
                             }""";
-        mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
@@ -168,7 +168,7 @@ class SpringwolfJmsControllerIntegrationTest {
                           "headers": null,
                           "payload": "{ \\"some-payload-key\\" : \\"some-payload-value\\" }"
                         }""";
-        mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isNotFound());
@@ -187,7 +187,7 @@ class SpringwolfJmsControllerIntegrationTest {
                           "type": "io.github.springwolf.plugins.jms.controller.SpringwolfJmsControllerIntegrationTest$PayloadDto"
                         }""";
 
-        mvc.perform(post("/springwolf/jms/publish")
+        mvc.perform(post("/springwolf/plugin/jms/publish")
                         .param("topic", "test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
@@ -214,7 +214,7 @@ class SpringwolfJmsControllerIntegrationTest {
                         }
                         """;
 
-        mvc.perform(post("/springwolf/jms/publish?topic=test-topic")
+        mvc.perform(post("/springwolf/plugin/jms/publish?topic=test-topic")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());

@@ -24,11 +24,7 @@ public class AsyncApiController {
 
     @GetMapping(
             path = {
-                "${springwolf.paths.docs:/springwolf/docs}", // maintainer note: remove, path.base instead
-                "${springwolf.paths.docs:/springwolf/docs}.json", // maintainer note: remove, path.base instead
                 "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}",
-                "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}.json", // maintainer note: remove, use
-                // accept header instead
                 "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}/{group}"
             },
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,11 +34,7 @@ public class AsyncApiController {
 
     @GetMapping(
             path = {
-                "${springwolf.paths.docs:/springwolf/docs}", // maintainer note: remove, path.base instead
-                "${springwolf.paths.docs:/springwolf/docs}.yaml", // maintainer note: remove, path.base instead
                 "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}",
-                "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}.yaml", // maintainer note: remove, use
-                // accept header instead
                 "${springwolf.path.base:/springwolf}${springwolf.path.docs:/docs}/{group}",
             },
             produces = "application/yaml")

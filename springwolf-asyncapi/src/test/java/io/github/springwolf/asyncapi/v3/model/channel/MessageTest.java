@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -35,22 +36,22 @@ class MessageTest {
                         Tag.builder().name("signup").build(),
                         Tag.builder().name("register").build()))
                 .headers(MessageHeaders.of(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .properties(Map.of(
                                 "correlationId",
                                         SchemaObject.builder()
                                                 .description("Correlation ID set by application")
-                                                .type(SchemaType.STRING)
+                                                .type(Set.of(SchemaType.STRING))
                                                 .build(),
                                 "applicationInstanceId",
                                         SchemaObject.builder()
                                                 .description(
                                                         "Unique identifier for a given instance of the publishing application")
-                                                .type(SchemaType.STRING)
+                                                .type(Set.of(SchemaType.STRING))
                                                 .build()))
                         .build()))
                 .payload(MessagePayload.of(SchemaObject.builder()
-                        .type(SchemaType.OBJECT)
+                        .type(Set.of(SchemaType.OBJECT))
                         .properties(Map.of(
                                 "user", SchemaReference.toSchema("userCreate"),
                                 "signup", SchemaReference.toSchema("signup")))

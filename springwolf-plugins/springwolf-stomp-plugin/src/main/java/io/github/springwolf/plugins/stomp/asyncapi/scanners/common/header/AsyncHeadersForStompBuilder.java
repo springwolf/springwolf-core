@@ -7,11 +7,12 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBu
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 
 import java.util.Map;
+import java.util.Set;
 
 public class AsyncHeadersForStompBuilder implements AsyncHeadersBuilder {
 
     private static final SchemaObject headers = SchemaObject.builder()
-            .type(SchemaType.OBJECT)
+            .type(Set.of(SchemaType.OBJECT))
             .title("SpringStompDefaultHeaders")
             .properties(Map.of())
             .build();

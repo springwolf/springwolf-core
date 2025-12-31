@@ -76,7 +76,7 @@ export default defineConfig({
   webServer: {
     cwd: '../springwolf-' + getExampleProject() + '-example',
     command: 'docker compose down -v && docker compose up',
-    url: 'http://127.0.0.1:8080/springwolf/docs.json',
+    url: 'http://127.0.0.1:8080/springwolf/docs',
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -8,6 +8,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
