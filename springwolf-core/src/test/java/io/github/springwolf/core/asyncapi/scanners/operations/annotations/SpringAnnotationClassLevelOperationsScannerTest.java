@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationsService;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Retention;
