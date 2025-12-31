@@ -82,6 +82,7 @@ spring-boot-configuration-processor = { module = "org.springframework.boot:sprin
 spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2", version.ref = "spring-boot-plugin" }
 spring-boot-jms = { module = "org.springframework.boot:spring-boot-jms" }
 spring-boot-kafka = { module = "org.springframework.boot:spring-boot-kafka" }
+spring-boot-restclient = { module = "org.springframework.boot:spring-boot-restclient" }
 spring-boot-restclient-test = { module = "org.springframework.boot:spring-boot-resttestclient" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
