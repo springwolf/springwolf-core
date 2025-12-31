@@ -22,6 +22,7 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.util.StringValueResolver;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -612,6 +613,10 @@ class RabbitListenerUtilTest {
     }
 
     private static RabbitListener getAnnotation(Class<?> clazz) {
-        return clazz.getDeclaredMethods()[0].getAnnotation(RabbitListener.class);
+        return Arrays.stream(clazz.getDeclaredMethods())
+                .filter(it -> !it.isSynthetic())
+                .findFirst()
+                .get()
+                .getAnnotation(RabbitListener.class);
     }
 }

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.util.StringValueResolver;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,6 +90,10 @@ class JmsListenerUtilTest {
     }
 
     private static JmsListener getAnnotation(Class<?> clazz) {
-        return clazz.getDeclaredMethods()[0].getAnnotation(JmsListener.class);
+        return Arrays.stream(clazz.getDeclaredMethods())
+                .filter(method -> !method.isSynthetic())
+                .findFirst()
+                .get()
+                .getAnnotation(JmsListener.class);
     }
 }

@@ -67,7 +67,9 @@ class AsyncAnnotationOperationServiceTest {
         Class<?> clazz = ClassWithTestListenerAnnotation.class;
         AsyncOperation asyncOperation =
                 clazz.getAnnotation(TestMethodListener.class).operation();
-        Set<Method> methods = Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toSet());
+        Set<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
+                .filter(method -> !method.isSynthetic())
+                .collect(Collectors.toSet());
 
         when(asyncAnnotationProvider.getAsyncOperation(any())).thenReturn(asyncOperation);
         when(asyncAnnotationMessageService.buildMessage(any(), any()))
@@ -97,7 +99,9 @@ class AsyncAnnotationOperationServiceTest {
         Class<?> clazz = ClassWithMultipleTestListenerAnnotation.class;
         AsyncOperation asyncOperation =
                 clazz.getAnnotation(TestMethodListener.class).operation();
-        Set<Method> methods = Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toSet());
+        Set<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
+                .filter(method -> !method.isSynthetic())
+                .collect(Collectors.toSet());
 
         when(asyncAnnotationProvider.getAsyncOperation(any())).thenReturn(asyncOperation);
         when(asyncAnnotationMessageService.buildMessage(any(), any()))

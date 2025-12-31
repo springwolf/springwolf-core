@@ -7,6 +7,7 @@ plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.spotless
     alias libs.plugins.docker.spring.boot apply false
+    alias libs.plugins.sonarqube
 }
 
 applyDotEnvFileAsGradleProperties()
@@ -38,6 +39,7 @@ var plugins = [
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
     apply plugin: 'com.diffplug.spotless'
@@ -170,6 +172,16 @@ allprojects {
         }
     }
 
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+        }
+    }
+    tasks.withType(org.sonarqube.gradle.SonarTask).configureEach {
+        dependsOn jacocoTestReport
+    }
+
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
             project.name == 'springwolf-core' ||
@@ -264,6 +276,14 @@ dependencyCheck {
     analyzers.nodeEnabled = false
     analyzers.nodeAudit.enabled = false
     analyzers.nodeAudit.yarnEnabled = false
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "timonback_springwolf"
+        property "sonar.organization", "timonback"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+    }
 }
 
 def static readEnvFile(path = ".env") {
