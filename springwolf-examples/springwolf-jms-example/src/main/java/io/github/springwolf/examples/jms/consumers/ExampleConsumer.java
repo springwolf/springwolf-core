@@ -17,7 +17,7 @@ public class ExampleConsumer {
 
     @JmsListener(destination = "example-queue")
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.debug("Received new message in example-queue: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -28,6 +28,6 @@ public class ExampleConsumer {
 
     @JmsListener(destination = "another-queue")
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        log.info("Received new message in another-queue: {}", payload.toString());
+        log.debug("Received new message in another-queue: {}", payload.toString());
     }
 }

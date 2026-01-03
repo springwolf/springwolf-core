@@ -28,7 +28,7 @@ public class ExampleConsumer {
             @Header(KafkaHeaders.OFFSET) Integer offset,
             @Header(KafkaHeaders.RECORD_METADATA) ConsumerRecordMetadata meta,
             @Payload ExamplePayloadDto payload) {
-        log.info("Received new message in example-topic: {}", payload.toString());
+        log.debug("Received new message in example-topic: {}", payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -39,6 +39,6 @@ public class ExampleConsumer {
 
     @KafkaListener(topicPattern = "another-topic", groupId = "example-group-id", batch = "true")
     public void receiveAnotherPayloadBatched(List<AnotherPayloadDto> payloads) {
-        log.info("Received new message in another-topic: {}", payloads.toString());
+        log.debug("Received new message in another-topic: {}", payloads.toString());
     }
 }

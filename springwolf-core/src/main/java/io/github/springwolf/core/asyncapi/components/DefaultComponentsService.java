@@ -72,7 +72,7 @@ public class DefaultComponentsService implements ComponentsService {
      */
     @Override
     public String registerSchema(SchemaObject schemaWithoutRef) {
-        log.debug("Registering schema for {}", schemaWithoutRef.getTitle());
+        log.trace("Registering schema for {}", schemaWithoutRef.getTitle());
 
         ComponentSchema processedSchema = schemaService.postProcessSchemaWithoutRef(schemaWithoutRef);
         this.schemas.putIfAbsent(schemaWithoutRef.getTitle(), processedSchema);
@@ -98,7 +98,7 @@ public class DefaultComponentsService implements ComponentsService {
      */
     @Override
     public MessageReference registerMessage(MessageObject message) {
-        log.debug("Registering message for {}", message.getMessageId());
+        log.trace("Registering message for {}", message.getMessageId());
 
         messages.putIfAbsent(message.getMessageId(), message);
 

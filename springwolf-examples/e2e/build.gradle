@@ -20,6 +20,17 @@ tasks.register('pnpm_run_install_deps', PnpmTask) {
   inputs.file 'pnpm-lock.yaml'
   outputs.upToDateWhen { true }
 }
+tasks.register('pnpmStart', PnpmTask) {
+  group = "pnpm"
+  dependsOn pnpmInstall
+
+  args = ['start']
+
+  inputs.file 'playwright.config.ts'
+  inputs.file 'package.json'
+  inputs.file 'pnpm-lock.yaml'
+  outputs.upToDateWhen { true }
+}
 
 tasks.register('pnpm_run_lint', PnpmTask) {
   group = "pnpm"

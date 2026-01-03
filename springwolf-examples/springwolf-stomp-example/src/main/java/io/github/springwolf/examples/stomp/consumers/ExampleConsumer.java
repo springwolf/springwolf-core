@@ -26,7 +26,7 @@ public class ExampleConsumer {
 
     @MessageMapping(EXAMPLE_QUEUE)
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", EXAMPLE_QUEUE, payload.toString());
+        log.debug("Received new message in {}: {}", EXAMPLE_QUEUE, payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -38,7 +38,7 @@ public class ExampleConsumer {
     @MessageMapping(SENDTO_QUEUE)
     @SendTo(SENDTO_RESPONSE_QUEUE)
     public ExamplePayloadDto receiveExamplePayloadSendTo(ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", SENDTO_QUEUE, payload.toString());
+        log.debug("Received new message in {}: {}", SENDTO_QUEUE, payload.toString());
 
         return payload;
     }
@@ -46,7 +46,7 @@ public class ExampleConsumer {
     @MessageMapping(SENDTOUSER_QUEUE)
     @SendToUser(SENDTOUSER_RESPONSE_QUEUE)
     public ExamplePayloadDto receiveExamplePayloadSendToUser(ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", SENDTOUSER_QUEUE, payload.toString());
+        log.debug("Received new message in {}: {}", SENDTOUSER_QUEUE, payload.toString());
 
         return payload;
     }

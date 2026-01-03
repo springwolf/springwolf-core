@@ -24,9 +24,9 @@ public class CloudstreamConfiguration {
     @Bean
     public Function<ExamplePayloadDto, AnotherPayloadDto> process() {
         return input -> {
-            log.info("Received new message in example-topic: {}", input);
+            log.debug("Received new message in example-topic: {}", input);
             AnotherPayloadDto output = new AnotherPayloadDto("foo", input);
-            log.info("Publishing output: {}", output);
+            log.debug("Publishing output: {}", output);
             return output;
         };
     }
@@ -34,22 +34,22 @@ public class CloudstreamConfiguration {
     @Bean
     public BiFunction<ExamplePayloadDto, Map<String, Object>, AnotherPayloadDto> biProcess() {
         return (input, headers) -> {
-            log.info("Received new message in bifunction-topic: {}. Headers: {}", input, headers);
+            log.debug("Received new message in bifunction-topic: {}. Headers: {}", input, headers);
             AnotherPayloadDto output = new AnotherPayloadDto("foo", input);
-            log.info("Publishing output: {}", output);
+            log.debug("Publishing output: {}", output);
             return output;
         };
     }
 
     @Bean
     public Consumer<AnotherPayloadDto> consumerMethod() {
-        return input -> log.info("Received new message in another-topic: {}", input.toString());
+        return input -> log.debug("Received new message in another-topic: {}", input.toString());
     }
 
     @Bean
     public BiConsumer<AnotherPayloadDto, Map<String, Object>> biConsumerMethod() {
         return (input, headers) ->
-                log.info("Received new message in biconsumer-topic: {}. Headers {}.", input.toString(), headers);
+                log.debug("Received new message in biconsumer-topic: {}. Headers {}.", input.toString(), headers);
     }
 
     @GooglePubSubAsyncChannelBinding(
@@ -57,6 +57,6 @@ public class CloudstreamConfiguration {
     @GooglePubSubAsyncMessageBinding(schema = @GooglePubSubAsyncMessageSchema(name = "project/test"))
     @Bean
     public Consumer<GooglePubSubPayloadDto> googlePubSubConsumerMethod() {
-        return input -> log.info("Received new message in google-pubsub-topic: {}", input.toString());
+        return input -> log.debug("Received new message in google-pubsub-topic: {}", input.toString());
     }
 }

@@ -33,7 +33,7 @@ public class KafkaListenerUtil {
         List<String> resolvedTopics =
                 topicName.map(stringValueResolver::resolveStringValue).collect(toList());
 
-        log.debug("Found topics: {}", String.join(", ", resolvedTopics));
+        log.trace("Found topics: {}", String.join(", ", resolvedTopics));
         return resolvedTopics.get(0);
     }
 
@@ -56,9 +56,9 @@ public class KafkaListenerUtil {
         SchemaObject schema = createStringSchema(clientId);
 
         if (schema != null) {
-            log.debug("Found client id: {}", clientId);
+            log.trace("Found client id: {}", clientId);
         } else {
-            log.debug("No client id found for this listener");
+            log.trace("No client id found for this listener");
         }
 
         return schema;
@@ -69,9 +69,9 @@ public class KafkaListenerUtil {
         SchemaObject schema = createStringSchema(groupId);
 
         if (schema != null) {
-            log.debug("Found group id: {}", groupId);
+            log.trace("Found group id: {}", groupId);
         } else {
-            log.debug("No group id found for this listener");
+            log.trace("No group id found for this listener");
         }
 
         return schema;

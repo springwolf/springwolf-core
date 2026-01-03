@@ -27,6 +27,6 @@ public class YamlConsumer {
     @KafkaAsyncOperationBinding
     @KafkaListener(topics = "yaml-topic")
     public void receiveExamplePayload(YamlPayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.debug("Received new message in example-queue: {}", payload.toString());
     }
 }

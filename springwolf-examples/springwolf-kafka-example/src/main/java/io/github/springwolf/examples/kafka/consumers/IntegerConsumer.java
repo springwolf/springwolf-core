@@ -14,6 +14,6 @@ public class IntegerConsumer {
 
     @KafkaListener(topics = TOPIC)
     public void receiveIntegerPayload(Integer integerPayload) {
-        log.info("Received new message in {}: {}", TOPIC, integerPayload);
+        log.debug("Received new message in {}: {}", TOPIC, integerPayload);
     }
 }

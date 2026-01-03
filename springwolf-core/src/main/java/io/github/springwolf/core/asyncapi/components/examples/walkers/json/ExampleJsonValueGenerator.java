@@ -90,7 +90,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
         try {
             return yamlMapper.readTree(exampleValue.toString());
         } catch (JacksonException e) {
-            log.info("Unable to parse example to JsonNode: {}", exampleValue, e);
+            log.debug("Unable to parse example to JsonNode: {}", exampleValue, e);
             return null;
         }
     }

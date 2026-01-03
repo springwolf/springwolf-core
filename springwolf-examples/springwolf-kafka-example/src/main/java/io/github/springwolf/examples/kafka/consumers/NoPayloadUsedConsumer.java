@@ -13,6 +13,6 @@ public class NoPayloadUsedConsumer {
 
     @KafkaListener(topics = "no-payload-used-topic")
     public void receiveExamplePayload() {
-        log.info("Received new message in no-payload-used-topic");
+        log.debug("Received new message in no-payload-used-topic");
     }
 }

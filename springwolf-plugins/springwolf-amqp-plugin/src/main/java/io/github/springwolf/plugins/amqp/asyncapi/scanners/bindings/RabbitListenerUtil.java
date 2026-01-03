@@ -276,7 +276,7 @@ public class RabbitListenerUtil {
     private static String resolveFirstValue(Stream<String> values, StringValueResolver resolver, String valueType) {
         return values.map(resolver::resolveStringValue)
                 .filter(Objects::nonNull)
-                .peek(value -> log.debug("Resolved {}: {}", valueType, value))
+                .peek(value -> log.trace("Resolved {}: {}", valueType, value))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No " + valueType
                         + " was found in @RabbitListener annotation (neither in queues nor bindings property)"));

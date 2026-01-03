@@ -26,7 +26,7 @@ public class SendToUserUtil {
         List<String> resolvedDestinations =
                 destinations.map(stringValueResolver::resolveStringValue).collect(toList());
 
-        log.debug("Found destinations: {}", String.join(", ", resolvedDestinations));
+        log.trace("Found destinations: {}", String.join(", ", resolvedDestinations));
         return resolvedDestinations.get(0);
     }
 

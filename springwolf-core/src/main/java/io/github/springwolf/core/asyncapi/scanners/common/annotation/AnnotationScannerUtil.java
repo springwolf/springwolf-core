@@ -30,11 +30,14 @@ public class AnnotationScannerUtil {
             Class<C> classAnnotationClass,
             Class<M> methodAnnotationClass,
             BiFunction<Class<?>, Set<MethodAndAnnotation<M>>, Stream<R>> transformer) {
-        log.debug("Scanning class \"{}\" for @\"{}\" annotation", clazz.getName(), classAnnotationClass.getName());
+        log.trace("Scanning class {} for @{} annotation", clazz.getName(), classAnnotationClass.getName());
         Set<MethodAndAnnotation<M>> methods = Stream.of(clazz)
                 .filter(it -> AnnotationScannerUtil.isClassRelevant(it, classAnnotationClass))
-                .peek(it -> log.debug("Mapping class \"{}\"", it.getName()))
                 .flatMap(it -> AnnotationScannerUtil.findAnnotatedMethods(it, methodAnnotationClass))
+                .peek(it -> log.debug(
+                        "Detected class method {}#{}",
+                        clazz.getName(),
+                        it.method().getName()))
                 .collect(Collectors.toSet());
 
         if (methods.isEmpty()) {
@@ -51,22 +54,19 @@ public class AnnotationScannerUtil {
 
     public static <A extends Annotation> Stream<MethodAndAnnotation<A>> findAnnotatedMethods(
             Class<?> clazz, Class<A> methodAnnotationClass) {
-        log.debug(
-                "Scanning class \"{}\" for @\"{}\" annotated methods",
-                clazz.getName(),
-                methodAnnotationClass.getName());
+        log.trace("Scanning class {} for @{} annotated methods", clazz.getName(), methodAnnotationClass.getName());
 
         Stream<Method> methods = Arrays.stream(ReflectionUtils.getAllDeclaredMethods(clazz))
                 .filter(ReflectionUtils.USER_DECLARED_METHODS::matches)
                 .filter(AnnotationScannerUtil::isNotHidden);
 
         if (methodAnnotationClass == AllMethods.class) {
-            return methods.peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
+            return methods.peek(method -> log.debug("Detected (all) method {}#{}", clazz.getName(), method.getName()))
                     .map(method -> new MethodAndAnnotation<>(method, null));
         }
 
         return methods.filter(method -> AnnotationUtil.findFirstAnnotation(methodAnnotationClass, method) != null)
-                .peek(method -> log.debug("Mapping method \"{}\"", method.getName()))
+                .peek(method -> log.debug("Detected method {}#{}", clazz.getName(), method.getName()))
                 .flatMap(method -> AnnotationUtil.findAnnotations(methodAnnotationClass, method).stream()
                         .map(annotation -> new MethodAndAnnotation<>(method, annotation)));
     }

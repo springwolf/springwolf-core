@@ -32,6 +32,6 @@ public class AvroConsumer {
                                     "Requires a running kafka-schema-registry. See docker-compose.yml to start it"))
     @KafkaAsyncOperationBinding
     public void receiveExampleAvroPayload(AnotherPayloadAvroDto payloads) {
-        log.info("Received new message in avro-topic: {}", payloads.toString());
+        log.debug("Received new message in avro-topic: {}", payloads.toString());
     }
 }
