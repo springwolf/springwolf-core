@@ -36,6 +36,8 @@ dependencies {
     runtimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.boot.restclient
+    permitTestUnusedDeclared libs.spring.boot.restclient
     testImplementation libs.spring.boot.restclient.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.web

@@ -21,7 +21,7 @@ owasp-dependencycheck = "12.1.9"
 protobuf = "4.33.2"
 protobuf-plugin =  "0.9.6"
 spotless = "8.0.0"
-spring-boot-plugin = "4.0.0"
+spring-boot-plugin = "4.0.1"
 spring-cloud = "2025.1.0" # not managed by spring-boot-dependencies
 spring-cloud-stream = "5.0.0" # not managed by spring-boot-dependencies
 
@@ -82,6 +82,7 @@ spring-boot-configuration-processor = { module = "org.springframework.boot:sprin
 spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2", version.ref = "spring-boot-plugin" }
 spring-boot-jms = { module = "org.springframework.boot:spring-boot-jms" }
 spring-boot-kafka = { module = "org.springframework.boot:spring-boot-kafka" }
+spring-boot-restclient = { module = "org.springframework.boot:spring-boot-restclient", version.ref = "spring-boot-plugin" }
 spring-boot-restclient-test = { module = "org.springframework.boot:spring-boot-resttestclient" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
