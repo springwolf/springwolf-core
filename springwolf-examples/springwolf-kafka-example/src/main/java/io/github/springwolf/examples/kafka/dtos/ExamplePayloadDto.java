@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-@Schema(
-        description =
-                """
+@Schema(description = """
                         Example payload model demonstrating markdown text styling:
                         **bold**, *cursive* and <u>underlined</u>
                         """)
@@ -19,9 +17,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExamplePayloadDto {
-    @Schema(
-            description =
-                    """
+    @Schema(description = """
                             ###  Some string field with Markdown
 
                             - **bold**
@@ -34,9 +30,7 @@ public class ExamplePayloadDto {
                                 "key2":"value2"
                               }
                               ```
-                            """,
-            example = "some string value",
-            requiredMode = REQUIRED)
+                            """, example = "some string value", requiredMode = REQUIRED)
     private String someString;
 
     @Schema(description = "Some long field", example = "5", minimum = "0")

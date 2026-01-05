@@ -126,8 +126,7 @@ class SpringwolfJmsControllerIntegrationTest {
 
     @Test
     void controllerShouldReturnBadRequestIfPayloadIsEmpty() throws Exception {
-        String content =
-                """
+        String content = """
                             {
                               "bindings": null,
                               "headers": null,
@@ -143,8 +142,7 @@ class SpringwolfJmsControllerIntegrationTest {
 
     @Test
     void controllerShouldAcceptIfPayloadIsNotSet() throws Exception {
-        String content =
-                """
+        String content = """
                             {
                               "bindings": null,
                               "headers": null
@@ -161,8 +159,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void controllerShouldReturnNotFoundIfNoJmsProducerIsEnabled() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(false);
 
-        String content =
-                """
+        String content = """
                         {
                           "bindings": null,
                           "headers": null,
@@ -178,8 +175,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void controllerShouldCallJmsProducerIfOnlyPayloadIsSend() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        String content =
-                """
+        String content = """
                         {
                           "bindings": null,
                           "headers": null,
@@ -202,8 +198,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void controllerShouldCallJmsProducerIfPayloadAndHeadersAreSend() throws Exception {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        String content =
-                """
+        String content = """
                         {
                           "bindings": null,
                           "headers": {
