@@ -37,8 +37,7 @@ class DefaultComponentsServiceTest {
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getMessages());
-        String expected =
-                """
+        String expected = """
                         {
                           "messageName1" : {
                             "name" : "messageName1"
@@ -46,8 +45,7 @@ class DefaultComponentsServiceTest {
                           "messageName2" : {
                             "name" : "messageName2"
                           }
-                        }"""
-                        .stripIndent();
+                        }""".stripIndent();
 
         System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);

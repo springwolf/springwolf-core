@@ -33,8 +33,7 @@ class TextUtilsTest {
 
     @Test
     void removeIndent() {
-        var description =
-                """
+        var description = """
                     This is a string
                     with two lines
                 """;
@@ -54,8 +53,7 @@ class TextUtilsTest {
 
     @Test
     void removeEmptyLinesUntilTextIsFound() {
-        var description =
-                """
+        var description = """
 
                     This is a string
 

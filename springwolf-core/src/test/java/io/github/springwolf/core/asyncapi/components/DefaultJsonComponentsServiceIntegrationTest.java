@@ -323,7 +323,8 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
         @Schema(description = "Json Type Info Payload Dto model")
         public record JsonTypeInfoPayloadDto(
-                @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED) JsonTypeInfoInterface jsonTypeInfoInterface) {}
+                @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                JsonTypeInfoInterface jsonTypeInfoInterface) {}
 
         @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, property = "type")
         @JsonSubTypes({
@@ -337,20 +338,20 @@ class DefaultJsonComponentsServiceIntegrationTest {
         @Schema(description = "Json Type Info Example Two model")
         public record JsonTypeInfoExampleTwo(
                 @Schema(
-                                description = "Boo field",
-                                example = "booValue",
-                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-                        String boo)
+                        description = "Boo field",
+                        example = "booValue",
+                        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                String boo)
                 implements JsonTypeInfoInterface {}
 
         @JsonTypeName("exampleOne")
         @Schema(description = "Json Type Info Example One model")
         public record JsonTypeInfoExampleOne(
                 @Schema(
-                                description = "Foo field",
-                                example = "fooValue",
-                                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-                        String foo)
+                        description = "Foo field",
+                        example = "fooValue",
+                        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                String foo)
                 implements JsonTypeInfoInterface {}
     }
 }

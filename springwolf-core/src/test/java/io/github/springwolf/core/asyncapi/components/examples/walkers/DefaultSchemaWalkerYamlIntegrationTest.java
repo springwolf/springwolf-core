@@ -304,9 +304,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo(
-                            """
+            assertThat(actualString).isEqualTo("""
                             "0111010001100101011100110111010000101101011000100110100101101110011000010110010001111001"
                             """);
         }
@@ -330,8 +328,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo("""
+            assertThat(actualString).isEqualTo("""
                     2015-07-20T15:49:04-07:00
                     """);
         }
@@ -367,8 +364,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo("""
+            assertThat(actualString).isEqualTo("""
                     3fa85f64-5717-4562-b3fc-2c963f66afa6
                     """);
         }
@@ -381,8 +377,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo("""
+            assertThat(actualString).isEqualTo("""
                     "unknown string schema format: unknown"
                     """);
         }
@@ -400,8 +395,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo("""
+            assertThat(actualString).isEqualTo("""
                     "unknown schema type: test-schema"
                     """);
         }
@@ -434,9 +428,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo(
-                            """
+            assertThat(actualString).isEqualTo("""
                     - b: true
                       s: string
                     """);
@@ -451,8 +443,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, emptyMap());
 
-            assertThat(actualString)
-                    .isEqualTo("""
+            assertThat(actualString).isEqualTo("""
                     b: true
                     s: string
                     """);
@@ -473,9 +464,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
             nestedSchema.addProperty("b", new BooleanSchema());
             String actualString = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", nestedSchema));
 
-            assertThat(actualString)
-                    .isEqualTo(
-                            """
+            assertThat(actualString).isEqualTo("""
                     f:
                       b: true
                       s: string
@@ -532,9 +521,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(compositeSchema, Map.of("Nested", propertySchema));
 
-            assertThat(actualString)
-                    .isEqualTo(
-                            """
+            assertThat(actualString).isEqualTo("""
                     allOfField:
                       field1: string
                       field2: 1.1
@@ -581,9 +568,7 @@ class DefaultSchemaWalkerYamlIntegrationTest {
 
             String actualString = jsonSchemaWalker.fromSchema(schema, Map.of());
 
-            assertThat(actualString)
-                    .isEqualTo(
-                            """
+            assertThat(actualString).isEqualTo("""
                             Text with special character /\\\\'\\b\\f\\t\\r\\n.
                             """);
         }
