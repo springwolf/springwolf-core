@@ -17,7 +17,7 @@ permissions:
 jobs:
   welcome:
     name: Post welcome message
-    if: ${{ !contains(fromJson('["dependabot[bot]", "dependabot-preview[bot]", "allcontributors[bot]"]'), github.actor) }}
+    if: ${{ !(github.event.pull_request.user.login in ['dependabot[bot]', 'dependabot-preview[bot]', 'allcontributors[bot]']) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v8
