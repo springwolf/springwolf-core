@@ -184,7 +184,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
 
             return xml;
         } catch (TransformerException | DOMException e) {
-            log.error("Unable to serialize example for schema {}", schema.getName(), e);
+            log.warn("Unable to serialize example for schema {}", schema.getName(), e);
             return null;
         }
     }

@@ -23,6 +23,6 @@ public class ProtobufConsumer {
                 "spring.deserializer.value.delegate.class=io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer"
             })
     public void receiveExampleProtobufPayload(ExamplePayloadProtobufDto.Message payload) {
-        log.info("Received new message in protobuf-topic: {}", payload.toString());
+        log.debug("Received new message in protobuf-topic: {}", payload.toString());
     }
 }

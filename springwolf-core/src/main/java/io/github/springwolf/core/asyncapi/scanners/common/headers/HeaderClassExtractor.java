@@ -21,7 +21,7 @@ public class HeaderClassExtractor {
 
     public SchemaObject extractHeader(Method method, PayloadSchemaObject payload) {
         String methodName = "%s::%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
-        log.debug("Extract header for {}", methodName);
+        log.trace("Extract header for {}", methodName);
 
         SchemaObject headers = SchemaObject.builder()
                 .type(SchemaType.OBJECT)

@@ -35,7 +35,7 @@ public abstract class ClassScannerUtil {
 
     private static Optional<Class<?>> getClass(String className) {
         try {
-            log.debug("Found candidate class: {}", className);
+            log.trace("Found candidate class: {}", className);
             return Optional.of(Class.forName(className));
         } catch (ClassNotFoundException e) {
             log.warn("Failed to get class for name: {}", className);

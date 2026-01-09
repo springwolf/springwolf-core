@@ -76,7 +76,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     private Optional<T> buildExample(
             Optional<String> name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        log.debug("Building example for schema {}", schema);
+        log.trace("Building example for schema {}", schema);
 
         Optional<T> exampleValue = getExampleFromSchemaAnnotation(name, schema);
         if (exampleValue.isPresent()) {

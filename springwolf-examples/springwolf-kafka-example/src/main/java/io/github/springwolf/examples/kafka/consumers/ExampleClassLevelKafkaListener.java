@@ -35,12 +35,12 @@ public class ExampleClassLevelKafkaListener {
             @Header(KafkaHeaders.OFFSET) Integer offset,
             @Header(KafkaHeaders.RECORD_METADATA) ConsumerRecordMetadata meta,
             @Payload ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", TOPIC, payload.toString());
+        log.debug("Received new message in {}: {}", TOPIC, payload.toString());
     }
 
     @KafkaHandler
     public void receiveAnotherPayload(ConsumerRecord<Void, AnotherPayloadDto> payload) {
-        log.info("Received new message in {}: {}", TOPIC, payload.value().toString());
+        log.debug("Received new message in {}: {}", TOPIC, payload.value().toString());
     }
 
     @KafkaHandler
@@ -80,6 +80,6 @@ public class ExampleClassLevelKafkaListener {
                                             description = "Kafka Consumer Message Key",
                                             example = "example-key")))
     public void receiveMonetaryAmount(MonetaryAmount payload) {
-        log.info("Received new message in {}: {}", TOPIC, payload.toString());
+        log.debug("Received new message in {}: {}", TOPIC, payload.toString());
     }
 }

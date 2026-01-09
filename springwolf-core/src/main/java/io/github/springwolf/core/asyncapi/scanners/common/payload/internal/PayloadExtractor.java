@@ -19,7 +19,7 @@ public class PayloadExtractor {
 
     public Optional<Type> extractFrom(Method method) {
         String methodName = "%s::%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
-        log.debug("Finding payload type for {}", methodName);
+        log.trace("Finding payload type for {}", methodName);
 
         return getPayloadParameterIndex(method.getParameterTypes(), method.getParameterAnnotations(), methodName)
                 .map((parameterPayloadIndex) -> method.getGenericParameterTypes()[parameterPayloadIndex])

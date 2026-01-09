@@ -39,7 +39,7 @@ public abstract class PublishingBaseController implements InitializingBean {
         if (!isEnabled()) {
             String errorMessage = "Publishing using %s is not enabled - message will not be published"
                     .formatted(this.getClass().getSimpleName());
-            log.warn(errorMessage);
+            log.info(errorMessage);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }
 

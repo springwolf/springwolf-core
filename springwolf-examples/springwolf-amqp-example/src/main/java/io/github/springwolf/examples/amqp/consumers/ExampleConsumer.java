@@ -26,7 +26,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queues = AmqpConstants.QUEUE_EXAMPLE_QUEUE)
     public void receiveExamplePayload(ExamplePayloadDto payload) {
-        log.info("Received new message in {}: {}", AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload.toString());
+        log.debug("Received new message in {}: {}", AmqpConstants.QUEUE_EXAMPLE_QUEUE, payload.toString());
 
         AnotherPayloadDto example = new AnotherPayloadDto();
         example.setExample(payload);
@@ -37,7 +37,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queues = AmqpConstants.QUEUE_ANOTHER_QUEUE)
     public void receiveAnotherPayload(AnotherPayloadDto payload) {
-        log.info("Received new message in {}: {}", AmqpConstants.QUEUE_ANOTHER_QUEUE, payload.toString());
+        log.debug("Received new message in {}: {}", AmqpConstants.QUEUE_ANOTHER_QUEUE, payload.toString());
     }
 
     @RabbitListener(
@@ -56,7 +56,7 @@ public class ExampleConsumer {
                         key = AmqpConstants.ROUTING_KEY_EXAMPLE_TOPIC_ROUTING_KEY)
             })
     public void bindingsExample(ExamplePayloadDto payload) {
-        log.info(
+        log.debug(
                 "Received new message in {}" + " through exchange {}" + " using routing key {}: {}",
                 AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE,
                 AmqpConstants.EXCHANGE_EXAMPLE_TOPIC_EXCHANGE,
@@ -66,7 +66,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queues = AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE)
     public void bindingsBeanExample(AnotherPayloadDto payload) {
-        log.info(
+        log.debug(
                 "Received new message in {} (AnotherPayloadDto): {}",
                 AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE,
                 payload.toString());
@@ -74,7 +74,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queues = AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE)
     public void bindingsBeanExample(ExamplePayloadDto payload) {
-        log.info(
+        log.debug(
                 "Received new message in {} (ExamplePayloadDto): {}",
                 AmqpConstants.QUEUE_MULTI_PAYLOAD_QUEUE,
                 payload.toString());
@@ -82,7 +82,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_CREATE, autoDelete = "false", durable = "true"))
     public void queuesToDeclareCreate(Message message, @Payload GenericPayloadDto<String> payload) {
-        log.info(
+        log.debug(
                 "Received new message {} in {} (GenericPayloadDto<String>): {}",
                 message,
                 AmqpConstants.QUEUE_CREATE,
@@ -91,7 +91,7 @@ public class ExampleConsumer {
 
     @RabbitListener(queuesToDeclare = @Queue(name = AmqpConstants.QUEUE_DELETE, autoDelete = "false", durable = "true"))
     public void queuesToDeclareDelete(Message message, @Payload GenericPayloadDto<Long> payload) {
-        log.info(
+        log.debug(
                 "Received new message {} in {} (GenericPayloadDto<Long>): {}",
                 message,
                 AmqpConstants.QUEUE_DELETE,
@@ -109,7 +109,7 @@ public class ExampleConsumer {
                             key = AmqpConstants.ROUTING_KEY_ALL_MESSAGES,
                             value = @Queue(name = AmqpConstants.QUEUE_UPDATE, durable = "true", autoDelete = "false")))
     public void bindingsUpdate(Message message, @Payload GenericPayloadDto<ExamplePayloadDto> payload) {
-        log.info(
+        log.debug(
                 "Received new message {} in {} (GenericPayloadDto<ExamplePayloadDto>): {}",
                 message,
                 AmqpConstants.EXCHANGE_CRUD_TOPIC_EXCHANGE_1,
@@ -127,7 +127,7 @@ public class ExampleConsumer {
                             key = AmqpConstants.ROUTING_KEY_ALL_MESSAGES,
                             value = @Queue(name = AmqpConstants.QUEUE_READ, durable = "false", autoDelete = "false")))
     public void bindingsRead(Message message, @Payload ExamplePayloadDto payload) {
-        log.info(
+        log.debug(
                 "Received new message {} in {} (ExamplePayloadDto): {}",
                 message,
                 AmqpConstants.EXCHANGE_CRUD_TOPIC_EXCHANGE_2,

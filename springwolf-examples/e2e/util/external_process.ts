@@ -56,12 +56,14 @@ export function verifyNoErrorLogs(dockerLogs: MonitorDockerLogsResponse) {
     .filter((message) => message.includes("i.g.s")) // io.github.springwolf
     .filter(
       (message) =>
+        message.includes("FATAL") ||
         message.includes("ERROR") ||
         message.includes("WARN") ||
+        message.includes("INFO") ||
         message.includes("Failed")
     );
 
   expect(errorMessages, {
-    message: "expect: No Springwolf ERROR or WARN log messages found",
+    message: "expect: No Springwolf FATAL, ERROR, WARN or INFO log messages found",
   }).toHaveLength(0);
 }

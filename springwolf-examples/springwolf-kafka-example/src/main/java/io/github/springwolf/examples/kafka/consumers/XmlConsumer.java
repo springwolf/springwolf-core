@@ -27,6 +27,6 @@ public class XmlConsumer {
     @KafkaAsyncOperationBinding
     @KafkaListener(topics = "xml-topic")
     public void receiveExamplePayload(XmlPayloadDto payload) {
-        log.info("Received new message in example-queue: {}", payload.toString());
+        log.debug("Received new message in example-queue: {}", payload.toString());
     }
 }
