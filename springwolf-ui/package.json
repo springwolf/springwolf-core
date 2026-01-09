@@ -35,7 +35,7 @@
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.6",
     "@asyncapi/parser": "^3.4.0",
-    "@testing-library/angular": "^18.1.1",
+    "@testing-library/angular": "^19.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",
     "angular-in-memory-web-api": "^0.21.0",
