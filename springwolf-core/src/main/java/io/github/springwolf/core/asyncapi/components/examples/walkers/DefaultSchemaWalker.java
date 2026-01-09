@@ -228,7 +228,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             case "byte" -> exampleValueGenerator.createStringExample(DEFAULT_BYTE_EXAMPLE, schema);
             case "binary" -> exampleValueGenerator.createStringExample(DEFAULT_BINARY_EXAMPLE, schema);
             case "uuid" -> exampleValueGenerator.createStringExample(DEFAULT_UUID_EXAMPLE, schema);
-            default -> exampleValueGenerator.createUnknownSchemaStringFormatExample(format);
+            default -> getFallbackExampleSchemaStringForFormat(format, schema);
         };
     }
 
@@ -241,6 +241,16 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             }
         }
         return null;
+    }
+
+    private Optional<T> getFallbackExampleSchemaStringForFormat(String schemaFormat, Schema schema) {
+        return switch (schemaFormat) {
+            case "int32", "int64" ->
+                exampleValueGenerator.createStringExample(DEFAULT_INTEGER_EXAMPLE.toString(), schema);
+            case "float", "double" ->
+                exampleValueGenerator.createStringExample(DEFAULT_NUMBER_EXAMPLE.toString(), schema);
+            default -> exampleValueGenerator.createUnknownSchemaStringFormatExample(schemaFormat);
+        };
     }
 
     /**

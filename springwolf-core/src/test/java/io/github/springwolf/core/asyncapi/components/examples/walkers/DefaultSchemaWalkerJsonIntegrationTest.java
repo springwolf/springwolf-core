@@ -348,6 +348,54 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
+        void type_string_format_int32(TestInfo testInfo) throws Exception {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setFormat("int32");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"0\"");
+        }
+
+        @Test
+        void type_string_format_int64(TestInfo testInfo) throws Exception {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setFormat("int32");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"0\"");
+        }
+
+        @Test
+        void type_string_format_float(TestInfo testInfo) throws Exception {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setFormat("float");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"1.1\"");
+        }
+
+        @Test
+        void type_string_format_double(TestInfo testInfo) throws Exception {
+            StringSchema schema = new StringSchema();
+            schema.setName(testInfo.getDisplayName());
+            schema.setFormat("double");
+
+            JsonNode actual = jsonSchemaWalker.fromSchema(schema, emptyMap());
+            String actualString = jsonMapper.writeValueAsString(actual);
+
+            assertThat(actualString).isEqualTo("\"1.1\"");
+        }
+
+        @Test
         void type_string_format_unknown(TestInfo testInfo) throws Exception {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
