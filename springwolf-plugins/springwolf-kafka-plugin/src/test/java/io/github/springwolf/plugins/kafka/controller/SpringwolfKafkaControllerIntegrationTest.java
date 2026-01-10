@@ -76,8 +76,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "springwolf.docket.base-package=io.github.springwolf.plugins.kafka",
             "springwolf.docket.info.title=Title",
             "springwolf.docket.info.version=1.0",
-            "springwolf.docket.servers.kafka.protocol=kafka",
-            "springwolf.docket.servers.kafka.host=127.0.0.1",
             "springwolf.plugin.kafka.publishing.enabled=true",
         })
 class SpringwolfKafkaControllerIntegrationTest {

@@ -8,12 +8,6 @@
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",
-  "servers": {
-    "test-protocol": {
-      "host": "some-server:1234",
-      "protocol": "test"
-    }
-  },
   "channels": {
     "enum-channel": {
       "address": "enum-channel",

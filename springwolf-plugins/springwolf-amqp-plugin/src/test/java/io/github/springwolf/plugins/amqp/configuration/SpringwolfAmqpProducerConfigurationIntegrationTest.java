@@ -36,8 +36,6 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.examples",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.amqp.publishing.enabled=true"
             })
     @MockitoBean(
@@ -77,8 +75,6 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
                 "springwolf.docket.info.title=Info title was loaded from spring properties",
                 "springwolf.docket.info.version=1.0.0",
                 "springwolf.docket.base-package=io.github.springwolf.examples",
-                "springwolf.docket.servers.test-protocol.protocol=test",
-                "springwolf.docket.servers.test-protocol.host=some-server:1234",
                 "springwolf.plugin.amqp.publishing.enabled=false"
             })
     @MockitoBean(
