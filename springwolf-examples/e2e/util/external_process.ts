@@ -64,6 +64,7 @@ export function verifyNoErrorLogs(dockerLogs: MonitorDockerLogsResponse) {
     );
 
   expect(errorMessages, {
-    message: "expect: No Springwolf FATAL, ERROR, WARN or INFO log messages found",
+    message:
+      "expect: No Springwolf FATAL, ERROR, WARN or INFO log messages found",
   }).toHaveLength(0);
 }

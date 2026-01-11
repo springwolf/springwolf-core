@@ -154,10 +154,16 @@ allprojects {
 
         doLast { // ensure that the code is not executed as part of a gradle refresh
             plugins.forEach {
-                project.fileTree(dir: project.projectDir, include: '**/src/test/resources/**/*.actual.json').forEach { file ->
+                project.fileTree(
+                        dir: project.projectDir,
+                        exclude: '**/node_modules/**',
+                        include: '**/src/test/resources/**/*.actual.json').forEach { file ->
                     file.renameTo(file.path.replace('.actual.json', '.json'))
                 }
-                project.fileTree(dir: project.projectDir, include: '**/src/test/resources/**/*.actual.yaml').forEach { file ->
+                project.fileTree(
+                        dir: project.projectDir,
+                        exclude: '**/node_modules/**',
+                        include: '**/src/test/resources/**/*.actual.yaml').forEach { file ->
                     file.renameTo(file.path.replace('.actual.yaml', '.yaml'))
                 }
             }

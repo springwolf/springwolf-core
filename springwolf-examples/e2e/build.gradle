@@ -91,6 +91,9 @@ spotless {
 tasks.named('test').configure {
   it.dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
 }
+tasks.named('spotlessApply').configure {
+  it.dependsOn('pnpm_run_lint_fix')
+}
 tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
