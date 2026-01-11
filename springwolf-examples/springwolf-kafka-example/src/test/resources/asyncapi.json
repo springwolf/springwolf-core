@@ -1961,6 +1961,7 @@
             "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
           }
         },
+        "contentType": "application/avro",
         "name": "io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto",
         "title": "AnotherPayloadAvroDto",
         "bindings": {

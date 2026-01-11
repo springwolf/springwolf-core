@@ -65,7 +65,6 @@ function testPublishingEveryChannelItem() {
       const payloadName = messageName;
 
       if (
-        messageTitle === "AnotherPayloadAvroDto" || // Avro publishing is not supported
         messageTitle === "XmlPayloadDto" || // Unable to create correct xml payload
         messageTitle === "YamlPayloadDto" || // Unable to create correct yaml payload
         messageTitle === "MonetaryAmount" || // Issue with either MonetaryAmount of ModelConverters

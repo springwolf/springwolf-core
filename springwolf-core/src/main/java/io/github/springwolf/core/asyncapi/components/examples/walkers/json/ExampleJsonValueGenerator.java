@@ -15,6 +15,7 @@ import io.github.springwolf.core.asyncapi.components.examples.walkers.PropertyEx
 import io.swagger.v3.oas.models.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,8 @@ import java.util.Set;
 @Slf4j
 public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode, JsonNode> {
 
-    private static final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/json");
+    private static final Set<String> SUPPORTED_CONTENT_TYPES =
+            Set.of(MediaType.APPLICATION_JSON_VALUE, "application/avro");
 
     private static final YAMLMapper yamlMapper = YAMLMapper.builder().build();
 

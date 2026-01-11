@@ -47,9 +47,13 @@ export class ChannelOperationComponent implements OnInit {
   defaultSchema = signal<Schema>(initSchema);
   defaultExample = signal<Example>(initExample);
   originalDefaultExample = signal<Example>(initExample);
-  exampleContentType = computed(
-    () => this.operation().message.contentType.split("/").pop() || "json"
-  );
+  exampleLanguage = computed(() => {
+    const contentType = this.operation().message.contentType;
+    if (contentType.includes("avro")) {
+      return "json";
+    }
+    return contentType.split("/").pop() || "json";
+  });
 
   headers = signal<Schema>(initSchema);
   headersExample = initExample;

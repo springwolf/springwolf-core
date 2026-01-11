@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.awaitility.Awaitility;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.springframework.http.HttpEntity;
@@ -39,7 +38,7 @@ public class KafkaProducerSystemTest {
     private static final String KAFKA_NAME = "kafka";
     private static final String topic = "example-topic";
 
-    private static final boolean USE_SCHEMA_REGISTRY = false;
+    private static final boolean USE_SCHEMA_REGISTRY = true;
 
     @Container
     public static ComposeContainer environment = new ComposeContainer(new File("docker-compose.yml"))
@@ -98,7 +97,6 @@ public class KafkaProducerSystemTest {
     }
 
     @Test
-    @Disabled("Publishing AVRO is not supported")
     @DisabledIf(
             value = "withoutSchemaRegistry",
             disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
@@ -108,7 +106,7 @@ public class KafkaProducerSystemTest {
         headers.put("Content-Type", List.of("application/json"));
 
         String payloadAsString =
-                "{\"someEnum\": \"FOO1\", \"ExamplePayloadAvroDto\": {\"someString\": \"string\", \"someLong\": 0}}";
+                "{\"someEnum\": \"FOO1\", \"examplePayloadAvroDto\": {\"someString\": \"string\", \"someLong\": 0}}";
         String message = "{\n" //
                 + "    \"bindings\": {},\n"
                 + "    \"headers\": {},\n"
