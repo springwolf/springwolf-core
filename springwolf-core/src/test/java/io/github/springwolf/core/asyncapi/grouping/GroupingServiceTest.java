@@ -88,6 +88,7 @@ class GroupingServiceTest {
             .build();
 
     private final AsyncAPI simpleApi = AsyncAPI.builder()
+            .info(Info.builder().build())
             .channels(Map.of(channel2.getChannelId(), channel2))
             .operations(Map.of("receive", receiveOperation))
             .components(Components.builder()
@@ -96,6 +97,7 @@ class GroupingServiceTest {
                     .build())
             .build();
     private final AsyncAPI fullApi = AsyncAPI.builder()
+            .info(Info.builder().build())
             .channels(Map.of(channel1.getChannelId(), channel1, channel2.getChannelId(), channel2))
             .operations(Map.of("send", sendOperation, "receive", receiveOperation))
             .components(Components.builder()
@@ -125,6 +127,7 @@ class GroupingServiceTest {
     void shouldCreateNewAsyncApi() {
         // given
         AsyncAPI full = AsyncAPI.builder()
+                .info(Info.builder().build())
                 .channels(simpleApi.getChannels())
                 .operations(simpleApi.getOperations())
                 .components(simpleApi.getComponents())
@@ -152,7 +155,36 @@ class GroupingServiceTest {
         AsyncAPI grouped = groupingService.groupAPI(full, noFilterGroup);
 
         // then
-        assertThat(grouped.getInfo()).isSameAs(info);
+        assertThat(grouped.getInfo()).isEqualTo(info);
+    }
+
+    @Test
+    void shouldCustomizeInfoObjectWithGroup() {
+        // given
+        Info originalInfo = Info.builder()
+                .description("description-original")
+                .title("title-original")
+                .build();
+        AsyncAPI full = AsyncAPI.builder()
+                .info(originalInfo)
+                .channels(simpleApi.getChannels())
+                .operations(simpleApi.getOperations())
+                .components(simpleApi.getComponents())
+                .build();
+
+        Info groupInfo = Info.builder()
+                .version("1.2.3")
+                .description("description-override")
+                .build();
+
+        // when
+        AsyncAPI grouped = groupingService.groupAPI(
+                full, AsyncApiGroup.builder().groupInfo(groupInfo).build());
+
+        // then
+        assertThat(grouped.getInfo().getVersion()).isEqualTo("1.2.3");
+        assertThat(grouped.getInfo().getDescription()).isEqualTo("description-override");
+        assertThat(grouped.getInfo().getTitle()).isEqualTo("title-original");
     }
 
     @Test
@@ -160,6 +192,7 @@ class GroupingServiceTest {
         // given
         AsyncAPI full = AsyncAPI.builder()
                 .id("id")
+                .info(Info.builder().build())
                 .channels(simpleApi.getChannels())
                 .operations(simpleApi.getOperations())
                 .components(simpleApi.getComponents())
@@ -177,6 +210,7 @@ class GroupingServiceTest {
         // given
         AsyncAPI full = AsyncAPI.builder()
                 .defaultContentType("application/json")
+                .info(Info.builder().build())
                 .channels(simpleApi.getChannels())
                 .operations(simpleApi.getOperations())
                 .components(simpleApi.getComponents())
@@ -194,6 +228,7 @@ class GroupingServiceTest {
         // given
         AsyncAPI full = AsyncAPI.builder()
                 .servers(Map.of("server", Server.builder().build()))
+                .info(Info.builder().build())
                 .channels(simpleApi.getChannels())
                 .operations(simpleApi.getOperations())
                 .components(simpleApi.getComponents())
@@ -229,6 +264,7 @@ class GroupingServiceTest {
                 .build();
 
         AsyncAPI api = AsyncAPI.builder()
+                .info(Info.builder().build())
                 .channels(Map.of())
                 .operations(Map.of())
                 .components(Components.builder()

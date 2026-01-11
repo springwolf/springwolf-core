@@ -48,6 +48,7 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -140,8 +141,9 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AsyncApiDocketService asyncApiDocketService(SpringwolfConfigProperties springwolfConfigProperties) {
-        return new DefaultAsyncApiDocketService(springwolfConfigProperties);
+    public AsyncApiDocketService asyncApiDocketService(
+            SpringwolfConfigProperties springwolfConfigProperties, ApplicationContext applicationContext) {
+        return new DefaultAsyncApiDocketService(springwolfConfigProperties, applicationContext);
     }
 
     @Bean

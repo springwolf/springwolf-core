@@ -135,8 +135,7 @@ public class SpringwolfConfigProperties {
          *
          * @see Info
          */
-        @Nullable
-        private Info info;
+        private Info info = new Info();
 
         @Getter
         @Setter
@@ -158,7 +157,7 @@ public class SpringwolfConfigProperties {
              * @see io.github.springwolf.asyncapi.v3.model.info.Info#getVersion()
              */
             @Nullable
-            private String version;
+            private String version = "1.0.0";
 
             /**
              * A short description of the application. CommonMark syntax can be used for rich text representation.

@@ -2,7 +2,7 @@
 package io.github.springwolf.core;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.springwolf.core.fixtures.SpringwolfApplicationIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@MinimalIntegrationTestContextConfiguration
+@SpringwolfApplicationIntegrationTest
 class SpringContextIntegrationTest {
     @Autowired
     private ApplicationContext context;
@@ -26,8 +26,8 @@ class SpringContextIntegrationTest {
 
         assertThat(asyncApiService.getAsyncAPI()).isNotNull();
         assertThat(asyncApiService.getAsyncAPI().getInfo().getTitle())
-                .isEqualTo("Info title was loaded from spring properties");
+                .isEqualTo("Info title was loaded from integration test annotation");
         assertThat(asyncApiService.getAsyncAPI().getDefaultContentType()).isEqualTo("application/json");
-        assertThat(asyncApiService.getAsyncAPI().getId()).isEqualTo("urn:io:github:springwolf:example");
+        assertThat(asyncApiService.getAsyncAPI().getId()).isEqualTo("urn:io:github:springwolf:core:fixture");
     }
 }

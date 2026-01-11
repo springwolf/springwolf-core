@@ -81,8 +81,7 @@ public class DefaultStandaloneApplication implements StandaloneApplication {
 
         public Builder setScanPackages(List<String> scanPackages) {
             this.scanPackages.clear();
-            this.scanPackages.addAll(scanPackages);
-            return this;
+            return addScanPackages(scanPackages);
         }
 
         public DefaultStandaloneApplication buildAndStart() {

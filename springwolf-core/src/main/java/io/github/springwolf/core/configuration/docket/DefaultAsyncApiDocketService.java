@@ -7,8 +7,11 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mapInfo;
@@ -18,6 +21,7 @@ import static io.github.springwolf.core.configuration.properties.SpringwolfConfi
 @RequiredArgsConstructor
 public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     private final SpringwolfConfigProperties configProperties;
+    private final ApplicationContext applicationContext;
 
     /**
      * lazily initialized AsyncApiDocket instance.
@@ -34,14 +38,8 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     }
 
     private AsyncApiDocket createDocket() {
-        if (configProperties.getDocket() == null
-                || !StringUtils.hasText(configProperties.getDocket().getBasePackage())) {
-            throw new IllegalArgumentException("One or more required fields (docket, basePackage) "
-                    + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX + " is not set.");
-        }
-
         AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
-                .basePackage(configProperties.getDocket().getBasePackage())
+                .basePackage(resolveBasePackage(configProperties.getDocket()))
                 .info(buildInfo(configProperties.getDocket().getInfo()));
         if (configProperties.getDocket().getServers() != null) {
             builder.servers(buildServers(configProperties.getDocket().getServers()));
@@ -56,19 +54,23 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         return builder.build();
     }
 
-    private static Info buildInfo(@Nullable SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
-        if (configDocketInfo == null
-                || !StringUtils.hasText(configDocketInfo.getVersion())
-                || !StringUtils.hasText(configDocketInfo.getTitle())) {
+    private Info buildInfo(SpringwolfConfigProperties.ConfigDocket.Info configDocketInfo) {
+        Info info = mapInfo(configDocketInfo);
+
+        if (!StringUtils.hasText(info.getTitle())) {
+            info.setTitle(applicationContext.getEnvironment().getProperty("spring.application.name"));
+        }
+
+        if (!StringUtils.hasText(info.getVersion()) || !StringUtils.hasText(info.getTitle())) {
             throw new IllegalArgumentException("One or more required fields of the info object (title, version) "
                     + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX
                     + " is not set.");
         }
 
-        return mapInfo(configDocketInfo);
+        return info;
     }
 
-    private static Map<String, Server> buildServers(Map<String, Server> servers) {
+    private Map<String, Server> buildServers(Map<String, Server> servers) {
         if (servers != null) {
             servers.forEach((serverName, server) -> {
                 if (!StringUtils.hasText(server.getProtocol()) || !StringUtils.hasText(server.getHost())) {
@@ -81,5 +83,21 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         }
 
         return servers;
+    }
+
+    public String resolveBasePackage(SpringwolfConfigProperties.ConfigDocket docket) {
+        if (docket != null && StringUtils.hasText(docket.getBasePackage())) {
+            return docket.getBasePackage();
+        }
+
+        Collection<Object> applications = applicationContext
+                .getBeansWithAnnotation(SpringBootApplication.class)
+                .values();
+        if (applications.size() == 1) {
+            return applications.iterator().next().getClass().getPackageName();
+        }
+
+        throw new IllegalArgumentException("One or more required fields (docket, basePackage) "
+                + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX + " is not set.");
     }
 }

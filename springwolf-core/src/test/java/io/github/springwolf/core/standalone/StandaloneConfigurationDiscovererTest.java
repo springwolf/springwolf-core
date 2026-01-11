@@ -25,6 +25,7 @@ class StandaloneConfigurationDiscovererTest {
         // then
         assertThat(classes)
                 .containsExactlyInAnyOrder( //
+                        "io.github.springwolf.core.integrationtests.application.configuration.CustomizerMarkerConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfCoreConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfPropertiesConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfScannerConfiguration",
@@ -54,6 +55,7 @@ class StandaloneConfigurationDiscovererTest {
         // then
         assertThat(classes)
                 .containsExactlyInAnyOrder(
+                        "io.github.springwolf.core.integrationtests.application.configuration.CustomizerMarkerConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfCoreConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfPropertiesConfiguration",
                         "io.github.springwolf.core.configuration.SpringwolfScannerConfiguration");

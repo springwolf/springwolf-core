@@ -43,10 +43,8 @@ import static org.mockito.Mockito.when;
         properties = {
             "springwolf.enabled=true",
             "springwolf.docket.info.title=Info title was loaded from spring properties",
-            "springwolf.docket.info.version=1.0.0",
-            "springwolf.docket.id=urn:io:github:springwolf:example",
-            "springwolf.docket.default-content-type=application/json",
-            "springwolf.docket.base-package=io.github.springwolf.core.example",
+            "springwolf.docket.info.version=2.2.2",
+            "springwolf.docket.base-package=does.not.matter",
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
@@ -88,7 +86,7 @@ class DefaultAsyncApiServiceIntegrationTest {
         Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
 
         assertThat(actualInfo.getTitle()).isEqualTo("Info title was loaded from spring properties");
-        assertThat(actualInfo.getVersion()).isEqualTo("1.0.0");
+        assertThat(actualInfo.getVersion()).isEqualTo("2.2.2");
         assertThat(actualInfo.getDescription()).isEqualTo("AsyncApiInfoDescriptionCustomizer2");
     }
 

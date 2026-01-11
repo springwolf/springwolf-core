@@ -11,11 +11,18 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.StandardEnvironment;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DefaultAsyncApiDocketServiceTest {
 
@@ -40,7 +47,8 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setDocket(configDocket);
 
-        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(properties);
+        AsyncApiDocketService docketService =
+                new DefaultAsyncApiDocketService(properties, mock(ApplicationContext.class));
 
         // when
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
@@ -76,7 +84,8 @@ class DefaultAsyncApiDocketServiceTest {
         SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
         configProperties.setDocket(configDocket);
 
-        AsyncApiDocketService docketService = new DefaultAsyncApiDocketService(configProperties);
+        AsyncApiDocketService docketService =
+                new DefaultAsyncApiDocketService(configProperties, mock(ApplicationContext.class));
 
         // when
         AsyncApiDocket asyncApiDocket = docketService.getAsyncApiDocket();
@@ -91,9 +100,13 @@ class DefaultAsyncApiDocketServiceTest {
 
         private ConfigDocket validDocket;
         private AsyncApiDocketService docketService;
+        private ApplicationContext applicationContext;
 
         @BeforeEach
         void setUp() {
+            applicationContext = mock(ApplicationContext.class);
+            when(applicationContext.getEnvironment()).thenReturn(new StandardEnvironment());
+
             validDocket = new ConfigDocket();
             validDocket.setBasePackage("test-base-package");
 
@@ -104,7 +117,7 @@ class DefaultAsyncApiDocketServiceTest {
 
             SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
             properties.setDocket(validDocket);
-            docketService = new DefaultAsyncApiDocketService(properties);
+            docketService = new DefaultAsyncApiDocketService(properties, applicationContext);
         }
 
         @ParameterizedTest
@@ -121,6 +134,23 @@ class DefaultAsyncApiDocketServiceTest {
                     .hasMessageContaining("One or more required fields (docket, basePackage)");
         }
 
+        @Test
+        void missingBasePackageResolvesSpringBootApplicationPackage() {
+            // given
+            validDocket.setBasePackage(null);
+
+            DefaultAsyncApiDocketServiceTest springBootAppClass = new DefaultAsyncApiDocketServiceTest();
+            when(applicationContext.getBeansWithAnnotation(SpringBootApplication.class))
+                    .thenReturn(Map.of("bean-name", springBootAppClass));
+
+            // when
+            AsyncApiDocket docket = docketService.getAsyncApiDocket();
+
+            // then
+            assertThat(docket.getBasePackage())
+                    .isEqualTo(springBootAppClass.getClass().getPackage().getName());
+        }
+
         @ParameterizedTest
         @CsvSource(
                 value = {"''", "null"},
@@ -134,6 +164,24 @@ class DefaultAsyncApiDocketServiceTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining(
                             "One or more required fields of the info object (title, version) in application.properties with path prefix springwolf is not set.");
+        }
+
+        @Test
+        void missingInfoTitleUsesApplicationNameFallback() {
+            // given
+            validDocket.getInfo().setTitle(null);
+            ConfigurableEnvironment environment = new StandardEnvironment();
+            environment
+                    .getPropertySources()
+                    .addFirst(new MapPropertySource(
+                            "spring.application.name", Map.of("spring.application.name", "my-app-name")));
+            when(applicationContext.getEnvironment()).thenReturn(environment);
+
+            // when
+            AsyncApiDocket docket = docketService.getAsyncApiDocket();
+
+            // then
+            assertThat(docket.getInfo().getTitle()).isEqualTo("my-app-name");
         }
 
         @ParameterizedTest

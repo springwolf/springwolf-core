@@ -2,13 +2,11 @@
 package io.github.springwolf.core.integrationtests;
 
 import io.github.springwolf.core.controller.AsyncApiController;
-import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
-import io.github.springwolf.core.integrationtests.application.basic.TestApplication;
+import io.github.springwolf.core.fixtures.SpringwolfApplicationIntegrationTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,8 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AutoConfigurationIntegrationTest {
 
     @Nested
-    @SpringBootTest(classes = TestApplication.class)
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfApplicationIntegrationTest
     class TestSpringwolfEnabled {
         @Autowired
         private AsyncApiController asyncApiController;
@@ -32,9 +29,8 @@ public class AutoConfigurationIntegrationTest {
     }
 
     @Nested
-    @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfApplicationIntegrationTest
     class TestSpringwolfDisabled {
 
         @Autowired

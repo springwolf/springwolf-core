@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mergeInfo;
+
 @AllArgsConstructor
 public class GroupingService {
 
@@ -44,7 +46,7 @@ public class GroupingService {
         markSchemasInMessageIds(fullAsyncApi, markingContext);
 
         return AsyncAPI.builder()
-                .info(fullAsyncApi.getInfo())
+                .info(mergeInfo(fullAsyncApi.getInfo(), asyncApiGroup.getGroupInfo()))
                 .id(fullAsyncApi.getId())
                 .defaultContentType(fullAsyncApi.getDefaultContentType())
                 .servers(fullAsyncApi.getServers())
