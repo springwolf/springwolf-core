@@ -13,12 +13,12 @@ import org.springframework.util.CollectionUtils;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -235,9 +235,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     private String getFirstEnumValue(Schema schema) {
         List<String> enums = schema.getEnum();
         if (enums != null) {
-            Optional<String> firstEnumEntry = enums.stream().findFirst();
-            if (firstEnumEntry.isPresent()) {
-                return firstEnumEntry.get();
+            if (!enums.isEmpty()) {
+                return enums.get(0);
             }
         }
         return null;
@@ -349,36 +348,41 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchema(
             Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
-        return properties.entrySet().stream()
-                .map(propertySchema -> {
-                    // There can be instances where the schema has no name and only the property is named
-                    // in this case we se the key as schema name
-                    String propertyKey = exampleValueGenerator
-                            .lookupSchemaName(propertySchema.getValue())
-                            .orElse(propertySchema.getKey());
+        List<PropertyExample<T>> result = new ArrayList<>(properties.size());
+        for (Map.Entry<String, Schema> propertySchema : properties.entrySet()) {
+            // There can be instances where the schema has no name and only the property is named
+            // in this case we se the key as schema name
+            String propertyKey = exampleValueGenerator
+                    .lookupSchemaName(propertySchema.getValue())
+                    .orElse(propertySchema.getKey());
 
-                    Optional<T> propertyValue =
-                            buildExample(Optional.of(propertyKey), propertySchema.getValue(), definitions, visited);
+            Optional<T> propertyValue =
+                    buildExample(Optional.of(propertyKey), propertySchema.getValue(), definitions, visited);
 
-                    return propertyValue
-                            .map(optionalElem -> new PropertyExample<>(propertyKey, optionalElem))
-                            .orElse(null);
-                })
-                .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(PropertyExample::name))
-                .toList();
+            if (propertyValue.isPresent()) {
+                result.add(new PropertyExample<>(propertyKey, propertyValue.get()));
+            }
+        }
+        result.sort(Comparator.comparing(PropertyExample::name));
+
+        return result;
     }
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchemas(
             List<Schema> schemas, Map<String, Schema> definitions, Set<Schema> visited) {
-        return schemas.stream()
-                .map(schema -> resolveSchemaFromRef(schema, definitions).orElse(schema))
-                .map(Schema::getProperties)
-                .filter(Objects::nonNull)
-                .flatMap(propertiesFromSchema ->
-                        buildPropertyExampleListFromSchema(propertiesFromSchema, definitions, visited).stream())
-                .sorted(Comparator.comparing(PropertyExample::name))
-                .toList();
+        List<PropertyExample<T>> result = new ArrayList<>(schemas.size());
+        for (Schema schema : schemas) {
+            Schema<?> resolvedSchema = resolveSchemaFromRef(schema, definitions).orElse(schema);
+            Map<String, Schema> propertiesFromSchema = resolvedSchema.getProperties();
+            if (propertiesFromSchema != null) {
+                List<PropertyExample<T>> propertyExamples =
+                        buildPropertyExampleListFromSchema(propertiesFromSchema, definitions, visited);
+                result.addAll(propertyExamples);
+            }
+        }
+        result.sort(Comparator.comparing(PropertyExample::name));
+
+        return result;
     }
 
     private Optional<Schema<?>> resolveSchemaFromRef(Schema schema, Map<String, Schema> definitions) {
