@@ -47,7 +47,7 @@ publishing {
         mavenJava(MavenPublication) {
             pom {
                 name = 'springwolf-asyncapi'
-                description = 'Springwolf implementation of the AsyncApi specification'
+                description = 'Springwolf implementation of the AsyncAPI specification'
             }
         }
     }

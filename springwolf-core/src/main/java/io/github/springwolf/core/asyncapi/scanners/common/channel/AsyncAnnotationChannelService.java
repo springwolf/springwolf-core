@@ -68,11 +68,11 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
 
     /**
      * validates the given list of server names (for a specific operation) with the servers defined in the 'servers' part of
-     * the current AsyncApi.
+     * the current AsyncAPI.
      *
      * @param serversFromOperation the server names defined for the current operation
      * @param operationId          operationId of the current operation - used for exception messages
-     * @throws IllegalArgumentException if server from operation is not present in AsyncApi's servers definition.
+     * @throws IllegalArgumentException if server from operation is not present in AsyncAPI's servers definition.
      */
     void validateServers(List<String> serversFromOperation, String operationId) {
         if (!serversFromOperation.isEmpty()) {

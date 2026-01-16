@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Utils class providing services to map between Swagger schemas and AsyncApi schemas.
+ * Utils class providing services to map between Swagger schemas and AsyncAPI schemas.
  */
 @RequiredArgsConstructor
 public class SwaggerSchemaMapper {

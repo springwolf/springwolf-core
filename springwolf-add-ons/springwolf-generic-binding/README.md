@@ -11,7 +11,7 @@
 
 This module allows to document any binding in a generic way.
 
-It is intended to document fields that are not yet support by Springwolf and/or AsyncApi.
+It is intended to document fields that are not yet support by Springwolf and/or AsyncAPI.
 It can also be used to document vendor-specific protocols or properties.
 
 There exists no validation on key or value names.
