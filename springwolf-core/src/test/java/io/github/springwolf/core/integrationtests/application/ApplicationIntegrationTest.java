@@ -7,7 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
-import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.fqn.FqnApplication;
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
@@ -17,7 +17,6 @@ import io.github.springwolf.core.standalone.DefaultStandaloneApplication;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.TestPropertySource;
@@ -32,15 +31,12 @@ public class ApplicationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = ListenerApplication.class)
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     @TestPropertySource(
             properties = {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.listener",
             })
     class ListenerAnnotationTest {
-        @Value("${springwolf.docket.base-package}")
-        private String basePackage;
-
         @Autowired
         private ConfigurableEnvironment environment;
 
@@ -68,7 +64,8 @@ public class ApplicationIntegrationTest {
         @Test
         void ensureThatStandaloneResultIsIdentical() {
             // given
-            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+            AsyncApiService asyncApiService =
+                    createStandaloneAsyncApiService(environment, ListenerApplication.class.getPackageName());
 
             // when
             AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
@@ -80,15 +77,12 @@ public class ApplicationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = PublisherApplication.class)
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     @TestPropertySource(
             properties = {
                 "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.publisher",
             })
     class PublisherAnnotationTest {
-        @Value("${springwolf.docket.base-package}")
-        private String basePackage;
-
         @Autowired
         private ConfigurableEnvironment environment;
 
@@ -116,7 +110,8 @@ public class ApplicationIntegrationTest {
         @Test
         void ensureThatStandaloneResultIsIdentical() {
             // given
-            AsyncApiService asyncApiService = createStandaloneAsyncApiService(environment, basePackage);
+            AsyncApiService asyncApiService =
+                    createStandaloneAsyncApiService(environment, PublisherApplication.class.getPackageName());
 
             // when
             AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
@@ -128,10 +123,9 @@ public class ApplicationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = FqnApplication.class)
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     @TestPropertySource(
             properties = {
-                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.fqn",
                 "springwolf.use-fqn=false",
             })
     class FqnTest {
@@ -176,11 +170,7 @@ public class ApplicationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = PolymorphicPayloadApplication.class)
-    @MinimalIntegrationTestContextConfiguration
-    @TestPropertySource(
-            properties = {
-                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.polymorphic",
-            })
+    @SpringwolfIntegrationTest
     class PolymorphicPayloadTest {
         @Autowired
         private AsyncApiService asyncApiService;
@@ -266,11 +256,7 @@ public class ApplicationIntegrationTest {
 
     @Nested
     @SpringBootTest(classes = SchemaEnumAsRefApplication.class)
-    @MinimalIntegrationTestContextConfiguration
-    @TestPropertySource(
-            properties = {
-                "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.ref",
-            })
+    @SpringwolfIntegrationTest
     class SchemaAsRefTest {
         @Autowired
         private AsyncApiService asyncApiService;

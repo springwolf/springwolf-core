@@ -171,31 +171,4 @@ class AsyncApiGroupServiceTest {
         Pattern actualPattern = capturedGroup.getMessageNamesToKeep().get(0);
         assertThat(actualPattern.pattern()).isEqualTo(messages.get(0));
     }
-
-    @Test
-    void shouldCustomizeInfoObject() {
-        // given
-        SpringwolfConfigProperties.ConfigDocket.Info groupInfo = new SpringwolfConfigProperties.ConfigDocket.Info();
-        groupInfo.setVersion("1.2.3");
-        groupInfo.setDescription("description-override");
-        SpringwolfConfigProperties.ConfigDocket.Group group = new SpringwolfConfigProperties.ConfigDocket.Group();
-        group.setGroup("group1");
-        group.setInfo(groupInfo);
-        when(configDocket.getGroupConfigs()).thenReturn(List.of(group));
-
-        Info originalInfo = new Info();
-        originalInfo.setDescription("description-original");
-        originalInfo.setTitle("title-original");
-        when(groupedAsyncApi.getInfo()).thenReturn(originalInfo);
-
-        // when
-        asyncApiGroupService.group(asyncAPI);
-
-        // then
-        ArgumentCaptor<Info> expectedInfoCaptor = ArgumentCaptor.forClass(Info.class);
-        verify(groupedAsyncApi).setInfo(expectedInfoCaptor.capture());
-        assertThat(expectedInfoCaptor.getValue().getVersion()).isEqualTo("1.2.3");
-        assertThat(expectedInfoCaptor.getValue().getDescription()).isEqualTo("description-override");
-        assertThat(expectedInfoCaptor.getValue().getTitle()).isEqualTo("title-original");
-    }
 }

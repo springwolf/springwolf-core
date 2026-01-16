@@ -1,10 +1,8 @@
 {
   "asyncapi": "3.0.0",
-  "id": "urn:io:github:springwolf:example",
   "info": {
-    "title": "Info title was loaded from spring properties",
+    "title": "springwolf-core-integration-test",
     "version": "1.0.0",
-    "description": "Springwolf core integration test",
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",

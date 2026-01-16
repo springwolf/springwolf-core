@@ -3,7 +3,7 @@ package io.github.springwolf.core.integrationtests;
 
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
 import io.github.springwolf.core.controller.AsyncApiController;
-import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.basic.TestApplication;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class InitModeIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.init-mode=fail_fast"})
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     class TestInitModeFailFast {
 
         @Autowired
@@ -43,7 +43,7 @@ public class InitModeIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.init-mode=background"})
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     class TestInitModeBackground {
 
         @Autowired
@@ -65,7 +65,7 @@ public class InitModeIntegrationTest {
         @Test
         void applicationShouldNotStart() {
             // using title=empty to trigger a validation exception during startup
-            String[] args = new String[] {"--springwolf.docket.info.title="};
+            String[] args = new String[] {"--springwolf.docket.info.version="};
 
             try {
                 SpringApplication.run(TestApplication.class, args);
@@ -79,7 +79,7 @@ public class InitModeIntegrationTest {
     @Nested
     @SpringBootTest(classes = TestApplication.class)
     @TestPropertySource(properties = {"springwolf.enabled=false"})
-    @MinimalIntegrationTestContextConfiguration
+    @SpringwolfIntegrationTest
     class TestSpringwolfDisabled {
 
         @Autowired(required = false)

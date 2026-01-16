@@ -1,9 +1,8 @@
 {
   "asyncapi": "3.0.0",
   "info": {
-    "title": "Springwolf-core",
+    "title": "springwolf-core-test-properties-file",
     "version": "1.0.0",
-    "description": "Springwolf core integration test",
     "x-generator": "springwolf"
   },
   "defaultContentType": "application/json",

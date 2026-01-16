@@ -5,7 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
-import io.github.springwolf.core.fixtures.MinimalIntegrationTestContextConfiguration;
+import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Nested
 @SpringBootTest(classes = ListenerApplication.class)
-@MinimalIntegrationTestContextConfiguration
+@SpringwolfIntegrationTest
 @TestPropertySource(
         properties = {
-            "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.listener",
             "springwolf.docket.group-configs[0].group=FooMessage",
             "springwolf.docket.group-configs[0].action-to-match=",
             "springwolf.docket.group-configs[0].channel-name-to-match=",

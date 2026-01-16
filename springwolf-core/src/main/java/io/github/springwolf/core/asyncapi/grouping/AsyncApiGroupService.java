@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mapInfo;
-import static io.github.springwolf.core.configuration.docket.AsyncApiInfoMapper.mergeInfo;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,11 +24,7 @@ public class AsyncApiGroupService {
 
     public Map<String, AsyncAPI> group(AsyncAPI asyncAPI) {
         return getAsyncApiGroups()
-                .map(group -> {
-                    AsyncAPI groupedApi = groupingService.groupAPI(asyncAPI, group);
-                    groupedApi.setInfo(mergeInfo(groupedApi.getInfo(), group.getGroupInfo()));
-                    return Map.entry(group.getGroupName(), groupedApi);
-                })
+                .map(group -> Map.entry(group.getGroupName(), groupingService.groupAPI(asyncAPI, group)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
