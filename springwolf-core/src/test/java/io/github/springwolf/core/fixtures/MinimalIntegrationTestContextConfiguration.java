@@ -21,7 +21,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
             "springwolf.docket.id=urn:io:github:springwolf:example",
             "springwolf.docket.default-content-type=application/json",
             "springwolf.docket.base-package=io.github.springwolf.core.integrationtests.application.basic",
-            "springwolf.docket.servers.test-protocol.protocol=test",
-            "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
 public @interface MinimalIntegrationTestContextConfiguration {}

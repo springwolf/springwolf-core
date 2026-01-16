@@ -93,17 +93,19 @@ export class AsyncApiMapperService {
     };
   }
 
-  private mapServers(servers: ServerServers): Map<string, Server> {
+  private mapServers(servers: ServerAsyncApi["servers"]): Map<string, Server> {
     const s = new Map<string, Server>();
-    Object.entries(servers).forEach(([k, v]) => {
-      const server: Server = {
-        host: v.host,
-        protocol: v.protocol,
-        anchorIdentifier: SERVER_ANCHOR_PREFIX + k,
-        anchorUrl: AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + k,
-      };
-      s.set(k, server);
-    });
+    if (servers) {
+      for (const k in servers) {
+        const v = servers[k];
+        s.set(k, {
+          host: v.host,
+          protocol: v.protocol,
+          anchorIdentifier: SERVER_ANCHOR_PREFIX + k,
+          anchorUrl: AsyncApiMapperService.BASE_URL + SERVER_ANCHOR_PREFIX + k,
+        });
+      }
+    }
     return s;
   }
 
@@ -112,7 +114,7 @@ export class AsyncApiMapperService {
     operations: ServerOperations,
     messages: ServerComponents["messages"],
     schemas: ServerComponents["schemas"],
-    servers: ServerServers,
+    servers: ServerAsyncApi["servers"],
     defaultContentType: string
   ): Channel[] {
     const mappedChannels: { [key: string]: Channel } = {};
@@ -205,11 +207,12 @@ export class AsyncApiMapperService {
     channels: ServerChannels,
     operation: ServerOperation,
     message: Message,
-    servers: ServerServers
+    servers: ServerAsyncApi["servers"]
   ): ChannelOperation {
     const serverIds =
       channel?.servers?.map((server) => this.resolveRefId(server.$ref)) ||
-      Object.keys(servers);
+      (servers && Object.keys(servers)) ||
+      [];
     const mappedOperationServers: OperationServer[] = serverIds.map(
       (serverId) => {
         return {

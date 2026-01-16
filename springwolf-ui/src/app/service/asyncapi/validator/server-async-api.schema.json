@@ -31,7 +31,6 @@
         "asyncapi",
         "info",
         "defaultContentType",
-        "servers",
         "channels",
         "operations",
         "components"
