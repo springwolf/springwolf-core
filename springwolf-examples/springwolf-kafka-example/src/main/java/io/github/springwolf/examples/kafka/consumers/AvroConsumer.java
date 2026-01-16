@@ -3,6 +3,7 @@ package io.github.springwolf.examples.kafka.consumers;
 
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class AvroConsumer {
                     @AsyncOperation(
                             channelName = "avro-topic",
                             description =
-                                    "Requires a running kafka-schema-registry. See docker-compose.yml to start it"))
+                                    "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
+                            message = @AsyncMessage(contentType = "application/avro")))
     @KafkaAsyncOperationBinding
     public void receiveExampleAvroPayload(AnotherPayloadAvroDto payloads) {
         log.debug("Received new message in avro-topic: {}", payloads.toString());

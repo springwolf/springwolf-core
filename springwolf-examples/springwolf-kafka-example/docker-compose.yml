@@ -12,6 +12,7 @@ services:
       - "8080:8080"
     depends_on:
       - kafka
+      - kafka-schema-registry
 
   kafka:
     image: confluentinc/cp-kafka:8.1.1
@@ -40,8 +41,6 @@ services:
     image: confluentinc/cp-schema-registry:latest
     ports:
       - "8081:8081"
-    profiles:
-      - test # avoid starting (and pulling) this container by default
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
       SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry

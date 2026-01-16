@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode, String> {
 
-    private final Set<String> SUPPORTED_CONTENT_TYPES = Set.of("application/yaml");
+    private final Set<String> SUPPORTED_CONTENT_TYPES = Set.of(MediaType.APPLICATION_YAML_VALUE);
     private final Schema<String> OVERRIDE_SCHEMA = new StringSchema();
 
     private final ExampleJsonValueGenerator exampleJsonValueGenerator;

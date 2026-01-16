@@ -17,7 +17,7 @@
             "default": "FOO1"
         },
         {
-            "name": "ExamplePayloadAvroDto",
+            "name": "examplePayloadAvroDto",
             "type": {
                 "type": "record",
                 "name": "ExamplePayloadAvroDto",
