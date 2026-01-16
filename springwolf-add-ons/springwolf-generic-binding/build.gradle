@@ -47,7 +47,7 @@ publishing {
         mavenJava(MavenPublication) {
             pom {
                 name = 'springwolf-generic-binding'
-                description = 'Document any AsyncApi binding in Springwolf using a generic way'
+                description = 'Document any AsyncAPI binding in Springwolf using a generic way'
             }
         }
     }

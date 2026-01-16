@@ -62,7 +62,7 @@ public class SpringwolfConfigProperties {
     private boolean useFqn = true;
 
     /**
-     * Feature toggle to enable/disable all workarounds for <a href="https://studio.asyncapi.com/">AsyncApi Studio</a>
+     * Feature toggle to enable/disable all workarounds for <a href="https://studio.asyncapi.com/">AsyncAPI Studio</a>
      * to ensure a best-effort out-of-the-box experience.
      */
     private boolean studioCompatibility = true;

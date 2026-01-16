@@ -17,7 +17,7 @@ import java.util.Map;
  * ComponentsService provides services to resolve schemas or schema names from given types.
  * Additionally, this is a registry for all schemas and messages which are detected during the
  * scan process. Theses collected schemas and messages will provide to the content of the 'components' block
- * in the resulting AsyncApi object.
+ * in the resulting AsyncAPI object.
  */
 public interface ComponentsService {
 

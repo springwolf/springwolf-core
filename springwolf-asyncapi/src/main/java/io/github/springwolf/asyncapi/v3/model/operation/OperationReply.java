@@ -19,7 +19,7 @@ import java.util.List;
  * Describes the reply part that MAY be applied to an Operation Object. If an operation implements the request/reply
  * pattern, the reply object represents the response message.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#operationReplyObject">AsyncApi</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#operationReplyObject">AsyncAPI</a>
  */
 @Data
 @Builder

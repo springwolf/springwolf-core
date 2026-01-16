@@ -47,7 +47,7 @@ public class SwaggerSchemaService {
      * *Swagger* schemas, this method converts the given {@link SchemaObject} to a Swagger schema, invokes all
      * postprocessors and converts the result back to a {@link SchemaObject}
      * <p>NOTE</p>
-     * The conversion between the AsyncApi {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
+     * The conversion between the AsyncAPI {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
      * root attributes of the schema and the first level of properties are converted. Providing {@link SchemaObject}s with deep
      * property hierarchy will result in a corrupted result.
      * <br/>
@@ -63,7 +63,7 @@ public class SwaggerSchemaService {
         Map<String, Schema> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
         postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
-        // convert Swagger schema back to an AsyncApi SchemaObject
+        // convert Swagger schema back to an AsyncAPI SchemaObject
         return swaggerSchemaMapper.mapSchema(headerSchema);
     }
 
