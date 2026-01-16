@@ -45,8 +45,8 @@ importers:
         specifier: ^21.0.1
         version: 21.0.1(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.0.8(@angular/animations@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.2)(zone.js@0.15.1)))(marked@16.4.2)(rxjs@7.8.2)(zone.js@0.15.1)
       prism-code-editor:
-        specifier: ^4.2.0
-        version: 4.2.0
+        specifier: ^5.0.0
+        version: 5.0.0
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -4277,8 +4277,8 @@ packages:
     resolution: {integrity: sha512-9uBdv/B4EefsuAL+pWqueZyZS2Ba+LxfFeQ9DN14HU4bN8bhaxKdkpjpB6fs9+pSjIBu+FXQHImEg8j/Lw0+vA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  prism-code-editor@4.2.0:
-    resolution: {integrity: sha512-0BFNP0ju4IXZe6Wrxtw9bDdhG2s4TBpWFVRZ6a0yyL71aQhSblqprld+dq/bpWowlRNhWCLdA6lJ3BHA9geEOQ==}
+  prism-code-editor@5.0.0:
+    resolution: {integrity: sha512-rHEAwnHbjkEe8obDvPzZkit2IDYKJLy4612mzENAHbeFCiHy6hbUG7ZSFgdJjiK7FZTytySN2OXv2FgC4G2YeQ==}
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -9788,7 +9788,7 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  prism-code-editor@4.2.0: {}
+  prism-code-editor@5.0.0: {}
 
   prismjs@1.30.0:
     optional: true
