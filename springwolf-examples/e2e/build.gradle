@@ -61,7 +61,7 @@ tasks.register('pnpm_run_lint_fix', PnpmTask) {
 
 tasks.register('pnpm_run_test', PnpmTask) {
   group = "pnpm"
-  dependsOn pnpmInstall
+  dependsOn pnpmInstall, pnpm_run_install_deps
   def springwolfExample = System.getenv("SPRINGWOLF_EXAMPLE") ?: "kafka"
   dependsOn(":springwolf-examples:springwolf-$springwolfExample-example:dockerBuildImage")
 

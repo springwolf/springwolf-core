@@ -71,7 +71,7 @@ jobs:
           annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
 
       - name: Run e2e tests
-        run: ./gradlew -p springwolf-examples/e2e pnpm_run_install_deps test
+        run: ./gradlew -p springwolf-examples/e2e test
         env:
           SPRINGWOLF_EXAMPLE: ${{ matrix.plugin }}
       - name: Publish Test Report (e2e)
