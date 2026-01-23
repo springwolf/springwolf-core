@@ -19,6 +19,13 @@ public class SchemaType {
 
     private SchemaType() {}
 
+    public static boolean isPartOfSpec(String type) {
+        return switch (type) {
+            case NULL, BOOLEAN, OBJECT, ARRAY, NUMBER, STRING, INTEGER -> true;
+            default -> false;
+        };
+    }
+
     public static class Serializer extends JsonSerializer<Object> {
 
         public Serializer() {}

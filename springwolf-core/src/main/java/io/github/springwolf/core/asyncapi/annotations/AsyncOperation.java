@@ -57,6 +57,12 @@ public @interface AsyncOperation {
             String value() default "";
 
             /**
+             * The schema type of the header value according to AsyncAPI specification.
+             * Only simples types are supported
+             */
+            String type() default "";
+
+            /**
              * The format of the header value according to AsyncAPI specification.
              * <p>
              * Common formats include:
