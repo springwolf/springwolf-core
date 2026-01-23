@@ -25,7 +25,7 @@ public class HeaderClassExtractor {
         log.trace("Extract header for {}", methodName);
 
         SchemaObject headers = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title(payload.name() + "Headers")
                 .properties(new HashMap<>())
                 .build();

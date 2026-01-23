@@ -68,25 +68,26 @@ public class PublishingPayloadCreator {
 
     private Object resolveActualPayload(MessageDto message, SchemaObject schema, String schemaName)
             throws ClassNotFoundException, JacksonException, IllegalArgumentException {
-        String firstNonNullType = schema.getType().stream()
-                .filter(type -> !type.equals(SchemaType.NULL))
+        SchemaType firstNonNullType = schema.getType().stream()
+                .filter(type -> !Objects.equals(type, SchemaType.NULL.getValue()))
                 .findFirst()
+                .map(SchemaType::fromValue)
                 .orElseThrow(() -> new IllegalArgumentException("Unsupported schema type: null"));
         switch (firstNonNullType) {
-            case SchemaType.BOOLEAN -> {
+            case BOOLEAN -> {
                 return jsonMapper.readValue(message.getPayload(), Boolean.class);
             }
-            case SchemaType.INTEGER -> {
+            case INTEGER -> {
                 return jsonMapper.readValue(message.getPayload(), Long.class);
             }
-            case SchemaType.NUMBER -> {
+            case NUMBER -> {
                 return jsonMapper.readValue(message.getPayload(), Double.class);
             }
-            case SchemaType.OBJECT -> {
+            case OBJECT -> {
                 Class<?> payloadClass = Class.forName(schemaName);
                 return jsonMapper.readValue(message.getPayload(), payloadClass);
             }
-            case SchemaType.STRING -> {
+            case STRING -> {
                 return jsonMapper.readValue(message.getPayload(), String.class);
             }
             default -> throw new IllegalArgumentException("Unsupported schema type: " + firstNonNullType);

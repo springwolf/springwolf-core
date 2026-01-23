@@ -13,7 +13,7 @@ public class AsyncHeadersNotUsed implements AsyncHeadersBuilder {
      * Explicitly document that no headers are used.
      */
     public static final SchemaObject NOT_USED = SchemaObject.builder()
-            .type(Set.of(SchemaType.OBJECT))
+            .type(Set.of(SchemaType.OBJECT.getValue()))
             .title("HeadersNotUsed")
             .description("No headers are present.")
             .properties(Map.of())

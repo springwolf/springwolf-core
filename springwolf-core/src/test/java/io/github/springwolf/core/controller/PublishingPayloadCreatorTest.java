@@ -61,7 +61,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.BOOLEAN))
+                                .type(Set.of(SchemaType.BOOLEAN.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, Boolean.class)).thenReturn(typed);
 
@@ -86,7 +86,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.INTEGER))
+                                .type(Set.of(SchemaType.INTEGER.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
@@ -111,7 +111,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.INTEGER))
+                                .type(Set.of(SchemaType.INTEGER.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, Long.class)).thenReturn(typed);
 
@@ -136,7 +136,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.NUMBER))
+                                .type(Set.of(SchemaType.NUMBER.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
@@ -161,7 +161,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.NUMBER))
+                                .type(Set.of(SchemaType.NUMBER.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, Double.class)).thenReturn(typed);
 
@@ -186,7 +186,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.OBJECT))
+                                .type(Set.of(SchemaType.OBJECT.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, ObjectClass.class)).thenReturn(typed);
 
@@ -211,7 +211,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, String.class)).thenReturn(typed);
 
@@ -235,7 +235,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.OBJECT))
+                                .type(Set.of(SchemaType.OBJECT.getValue()))
                                 .build())));
 
         // when
@@ -259,7 +259,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.OBJECT))
+                                .type(Set.of(SchemaType.OBJECT.getValue()))
                                 .build())));
         when(jsonMapper.readValue(payload, ObjectClass.class))
                 .thenThrow(new JsonProcessingException("invalid json") {});
@@ -287,7 +287,7 @@ class PublishingPayloadCreatorTest {
                 .thenReturn(Map.of(
                         type,
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.ARRAY))
+                                .type(Set.of(SchemaType.ARRAY.getValue()))
                                 .build())));
 
         // when

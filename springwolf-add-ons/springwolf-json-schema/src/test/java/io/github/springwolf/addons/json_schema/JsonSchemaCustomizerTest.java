@@ -45,7 +45,7 @@ class JsonSchemaCustomizerTest {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
         SchemaObject schemaObject = new SchemaObject();
-        schemaObject.setType(Set.of(SchemaType.OBJECT));
+        schemaObject.setType(Set.of(SchemaType.OBJECT.getValue()));
         asyncAPI.getComponents().setSchemas(Map.of("schema", ComponentSchema.of(schemaObject)));
 
         when(jsonSchemaGenerator.fromSchema(any(), any())).thenReturn("mock-string");

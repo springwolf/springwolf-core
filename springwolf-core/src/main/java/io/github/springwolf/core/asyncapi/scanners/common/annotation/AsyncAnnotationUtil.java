@@ -55,7 +55,7 @@ public class AsyncAnnotationUtil {
                 : null;
 
         SchemaObject headerSchema = new SchemaObject();
-        headerSchema.setType(Set.of(SchemaType.OBJECT));
+        headerSchema.setType(Set.of(SchemaType.OBJECT.getValue()));
         headerSchema.setTitle(headerSchemaTitle);
         headerSchema.setDescription(headerDescription);
         headerSchema.setProperties(new HashMap<>());
@@ -85,14 +85,13 @@ public class AsyncAnnotationUtil {
     private static Set<String> getHeadersType(List<AsyncOperation.Headers.Header> value) {
         Set<String> types = value.stream()
                 .map(AsyncOperation.Headers.Header::type)
-                .filter(StringUtils::hasText)
-                .filter(SchemaType::isPartOfSpec)
+                .map(SchemaType::getValue)
                 .collect(Collectors.toSet());
         if (!types.isEmpty()) {
             return types;
         }
 
-        return Set.of(SchemaType.STRING);
+        return Set.of(SchemaType.STRING.getValue());
     }
 
     private static List<String> getHeaderValues(

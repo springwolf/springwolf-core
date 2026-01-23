@@ -114,8 +114,9 @@ class KafkaListenerUtilTest {
         void includeKafkaKeyHeader() {
             // given
             SchemaObject headerSchema = new SchemaObject();
-            SchemaObject keySchema =
-                    SchemaObject.builder().type(Set.of(SchemaType.STRING)).build();
+            SchemaObject keySchema = SchemaObject.builder()
+                    .type(Set.of(SchemaType.STRING.getValue()))
+                    .build();
             headerSchema.setProperties(Map.of(KafkaHeaders.RECEIVED_KEY, keySchema));
 
             // when

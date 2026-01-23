@@ -4,30 +4,35 @@ package io.github.springwolf.asyncapi.v3.model.schema;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.Collection;
 
-public class SchemaType {
-    public static final String NULL = "null";
-    public static final String BOOLEAN = "boolean";
-    public static final String OBJECT = "object";
-    public static final String ARRAY = "array";
-    public static final String NUMBER = "number";
-    public static final String STRING = "string";
-    public static final String INTEGER = "integer";
+@Getter
+@RequiredArgsConstructor
+public enum SchemaType {
+    NULL("null"),
+    BOOLEAN("boolean"),
+    OBJECT("object"),
+    ARRAY("array"),
+    NUMBER("number"),
+    STRING("string"),
+    INTEGER("integer");
 
-    private SchemaType() {}
+    private final String value;
 
-    public static boolean isPartOfSpec(String type) {
-        return switch (type) {
-            case NULL, BOOLEAN, OBJECT, ARRAY, NUMBER, STRING, INTEGER -> true;
-            default -> false;
-        };
+    public static SchemaType fromValue(String value) {
+        for (SchemaType b : SchemaType.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
 
     public static class Serializer extends JsonSerializer<Object> {
-
         public Serializer() {}
 
         @Override
@@ -37,20 +42,24 @@ public class SchemaType {
                 return;
             }
 
-            if (value instanceof String) {
-                gen.writeString(value.toString());
+            if (value instanceof SchemaType schemaType) {
+                gen.writeString(schemaType.getValue());
+                return;
+            }
+
+            if (value instanceof String str) {
+                gen.writeString(str);
                 return;
             }
 
             if (value instanceof Collection<?> collection) {
                 var stringValues = collection.stream()
-                        .filter(v -> v instanceof String)
-                        .map(v -> (String) v)
+                        .map(v -> v instanceof SchemaType st ? st.getValue() : v.toString())
                         .toList();
                 if (stringValues.size() == 1) {
                     gen.writeString(stringValues.iterator().next());
                 } else {
-                    gen.writeArray(stringValues.toArray(new String[0]), 0, collection.size());
+                    gen.writeArray(stringValues.toArray(new String[0]), 0, stringValues.size());
                 }
             }
         }

@@ -48,7 +48,7 @@ class SwaggerSchemaMapperTest {
             configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3);
 
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
             ExternalDocumentation externalDocs = new ExternalDocumentation();
             externalDocs.setDescription("description");
             externalDocs.setUrl("url");
@@ -71,7 +71,7 @@ class SwaggerSchemaMapperTest {
             configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
 
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
             ExternalDocumentation externalDocs = new ExternalDocumentation();
             externalDocs.setDescription("description");
             externalDocs.setUrl("url");
@@ -107,13 +107,13 @@ class SwaggerSchemaMapperTest {
         void mapSchema() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
 
             // when
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchemaOrRef(schema);
 
             // then
-            assertThat(componentSchema.getSchema().getType()).containsExactly(SchemaType.STRING);
+            assertThat(componentSchema.getSchema().getType()).containsExactly(SchemaType.STRING.getValue());
         }
     }
 
@@ -126,7 +126,7 @@ class SwaggerSchemaMapperTest {
             configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3);
 
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
             ExternalDocumentation externalDocs = new ExternalDocumentation();
             externalDocs.setDescription("description");
             externalDocs.setUrl("url");
@@ -149,7 +149,7 @@ class SwaggerSchemaMapperTest {
             configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
 
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
             ExternalDocumentation externalDocs = new ExternalDocumentation();
             externalDocs.setDescription("description");
             externalDocs.setUrl("url");
@@ -214,7 +214,7 @@ class SwaggerSchemaMapperTest {
         void mapType() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
 
             // when
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
@@ -228,7 +228,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema property = new ObjectSchema();
-            property.setType(SchemaType.STRING);
+            property.setType(SchemaType.STRING.getValue());
             schema.addProperty("property", property);
 
             // when
@@ -437,7 +437,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema additionalProperties = new ObjectSchema();
-            additionalProperties.setType(SchemaType.STRING);
+            additionalProperties.setType(SchemaType.STRING.getValue());
             schema.setAdditionalProperties(additionalProperties);
 
             // when
@@ -488,7 +488,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema allOf = new ObjectSchema();
-            allOf.setType(SchemaType.STRING);
+            allOf.setType(SchemaType.STRING.getValue());
             schema.addAllOfItem(allOf);
 
             // when
@@ -507,7 +507,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema oneOf = new ObjectSchema();
-            oneOf.setType(SchemaType.STRING);
+            oneOf.setType(SchemaType.STRING.getValue());
             schema.addOneOfItem(oneOf);
 
             // when
@@ -526,7 +526,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema anyOf = new ObjectSchema();
-            anyOf.setType(SchemaType.STRING);
+            anyOf.setType(SchemaType.STRING.getValue());
             schema.addAnyOfItem(anyOf);
 
             // when
@@ -559,7 +559,7 @@ class SwaggerSchemaMapperTest {
             // given
             ObjectSchema schema = new ObjectSchema();
             ObjectSchema not = new ObjectSchema();
-            not.setType(SchemaType.STRING);
+            not.setType(SchemaType.STRING.getValue());
             schema.setNot(not);
 
             // when
@@ -576,9 +576,9 @@ class SwaggerSchemaMapperTest {
         void mapItems() {
             // given
             ObjectSchema schema = new ObjectSchema();
-            schema.type(SchemaType.ARRAY);
+            schema.type(SchemaType.ARRAY.getValue());
             ObjectSchema item = new ObjectSchema();
-            item.setType(SchemaType.STRING);
+            item.setType(SchemaType.STRING.getValue());
             schema.setItems(item);
 
             // when
@@ -670,14 +670,14 @@ class SwaggerSchemaMapperTest {
         void mapFormat() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(Set.of(SchemaType.STRING));
+            schema.setType(Set.of(SchemaType.STRING.getValue()));
             schema.setFormat("email");
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
-            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING.getValue());
             assertThat(swaggerSchema.getFormat()).isEqualTo("email");
         }
 
@@ -712,7 +712,7 @@ class SwaggerSchemaMapperTest {
             // given
             SchemaObject schema = new SchemaObject();
             schema.setEnumValues(Stream.of("enum1", "enum2", null).toList());
-            schema.setType(Set.of(SchemaType.STRING, SchemaType.NULL)); // nullable
+            schema.setType(Set.of(SchemaType.STRING.getValue(), SchemaType.NULL.getValue())); // nullable
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
@@ -726,20 +726,20 @@ class SwaggerSchemaMapperTest {
         void mapType() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(Set.of(SchemaType.STRING));
+            schema.setType(Set.of(SchemaType.STRING.getValue()));
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
 
             // then
-            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING.getValue());
         }
 
         @Test
         void mapProperties() {
             // given
             SchemaObject property = new SchemaObject();
-            property.setType(Set.of(SchemaType.STRING));
+            property.setType(Set.of(SchemaType.STRING.getValue()));
 
             SchemaObject schema = new SchemaObject();
             schema.setProperties(Map.of("property", ComponentSchema.of(property)));
@@ -750,14 +750,14 @@ class SwaggerSchemaMapperTest {
             // then
             assertThat(swaggerSchema.getProperties()).hasSize(1).containsKey("property");
             assertThat((swaggerSchema.getProperties().get("property")).getType())
-                    .isEqualTo(SchemaType.STRING);
+                    .isEqualTo(SchemaType.STRING.getValue());
         }
 
         @Test
         void mapComponentSchemaSchema() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(Set.of(SchemaType.STRING));
+            schema.setType(Set.of(SchemaType.STRING.getValue()));
 
             MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
             ComponentSchema componentSchema = ComponentSchema.of(multiFormatSchema);
@@ -766,14 +766,14 @@ class SwaggerSchemaMapperTest {
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(componentSchema);
 
             // then
-            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING.getValue());
         }
 
         @Test
         void mapMultiFormatSchema() {
             // given
             SchemaObject schema = new SchemaObject();
-            schema.setType(Set.of(SchemaType.STRING));
+            schema.setType(Set.of(SchemaType.STRING.getValue()));
 
             MultiFormatSchema multiFormatSchema = new MultiFormatSchema(SchemaFormat.DEFAULT.toString(), schema);
 
@@ -781,7 +781,7 @@ class SwaggerSchemaMapperTest {
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(multiFormatSchema);
 
             // then
-            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING);
+            assertThat(swaggerSchema.getType()).isEqualTo(SchemaType.STRING.getValue());
         }
 
         @Test
@@ -800,7 +800,7 @@ class SwaggerSchemaMapperTest {
         void doNotMapAlreadyMappedSchema() {
             // given
             Schema<?> schema = new Schema<>();
-            schema.setType(SchemaType.STRING);
+            schema.setType(SchemaType.STRING.getValue());
 
             // when
             Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);

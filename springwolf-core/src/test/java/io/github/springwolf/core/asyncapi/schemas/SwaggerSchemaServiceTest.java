@@ -137,7 +137,7 @@ class SwaggerSchemaServiceTest {
                 .containsKey(ModelConverterNativeClass.class.getName().replace("$", "."));
         assertThat(schema.referencedSchemas()
                         .get(ModelConverterNativeClass.class.getName().replace("$", ".")))
-                .satisfies((el) -> assertThat(el.getSchema().getType()).containsExactly(SchemaType.OBJECT))
+                .satisfies((el) -> assertThat(el.getSchema().getType()).containsExactly(SchemaType.OBJECT.getValue()))
                 .satisfies((el) -> assertThat(el.getSchema().getProperties()).containsOnlyKeys("actual"));
     }
 

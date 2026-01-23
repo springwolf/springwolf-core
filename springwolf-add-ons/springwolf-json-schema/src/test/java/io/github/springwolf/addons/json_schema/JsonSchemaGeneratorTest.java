@@ -55,14 +55,14 @@ class JsonSchemaGeneratorTest {
 
         // ref cycle ping -> pingField -> pong -> pongField -> ping (repeat)
         SchemaObject pingSchema = new SchemaObject();
-        pingSchema.setType(Set.of(SchemaType.OBJECT));
+        pingSchema.setType(Set.of(SchemaType.OBJECT.getValue()));
         pingSchema.setProperties(Map.of("pingfield", ComponentSchema.of(SchemaReference.toSchema("PongSchema"))));
         SchemaObject pongSchema = new SchemaObject();
-        pongSchema.setType(Set.of(SchemaType.OBJECT));
+        pongSchema.setType(Set.of(SchemaType.OBJECT.getValue()));
         pongSchema.setProperties(Map.of("pongField", ComponentSchema.of(SchemaReference.toSchema("PingSchema"))));
 
         SchemaObject stringSchema = new SchemaObject();
-        stringSchema.setType(Set.of(SchemaType.STRING));
+        stringSchema.setType(Set.of(SchemaType.STRING.getValue()));
 
         Map<String, ComponentSchema> definitions = Map.of(
                 "StringRef",

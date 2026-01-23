@@ -57,7 +57,7 @@ public class KafkaMessageBindingProcessor implements MessageBindingProcessor {
                 break;
             case STRING_KEY:
                 schemaDefinition = SchemaObject.builder()
-                        .type(Set.of(SchemaType.STRING))
+                        .type(Set.of(SchemaType.STRING.getValue()))
                         .examples(List.of(messageBinding.key().example()))
                         .description(resolveOrNull(messageBinding.key().description()))
                         .build();
