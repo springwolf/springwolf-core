@@ -11,8 +11,8 @@ assignees: ''
 _A clear and concise description of what the bug is._
 
 **Dependencies and versions used**
-- [x] `springwolf-kafka` version `1.X.0`
-- [ ] `springwolf-ui` version `1.X.0`
+- [x] `springwolf-kafka` version `2.X.0`
+- [ ] `springwolf-ui` version `2.X.0`
 - [ ] ...
 
 **Code example**

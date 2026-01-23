@@ -24,7 +24,7 @@ jobs:
           The change is staged for release and will be part of the next release.
 
           If you want to try and verify it in your application today,
-          use the latest 1.X.0-SNAPSHOT build as described in our [README.md > Testing SNAPSHOT version](https://github.com/springwolf/springwolf-core)
+          use the latest 2.X.0-SNAPSHOT build as described in our [README.md > Testing SNAPSHOT version](https://github.com/springwolf/springwolf-core)
 
           Thank you for the report/contribution!
           EOF
