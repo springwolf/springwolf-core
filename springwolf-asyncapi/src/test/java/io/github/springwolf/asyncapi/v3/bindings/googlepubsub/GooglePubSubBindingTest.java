@@ -59,8 +59,7 @@ class GooglePubSubBindingTest {
                                         .name("MessageProto")
                                         .payload(MessagePayload.of(MultiFormatSchema.builder()
                                                 .schemaFormat("application/vnd.google.protobuf;version=3")
-                                                .schema(
-                                                        """
+                                                .schema("""
                                                         syntax = "proto3";
 
                                                         message Message {

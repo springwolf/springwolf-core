@@ -43,8 +43,7 @@ class DefaultComponentsServiceTest {
                 MessageObject.builder().name("messageName2").build());
 
         String actualDefinitions = objectMapper.writer(printer).writeValueAsString(componentsService.getMessages());
-        String expected =
-                """
+        String expected = """
                         {
                           "messageName1" : {
                             "name" : "messageName1"
@@ -52,8 +51,7 @@ class DefaultComponentsServiceTest {
                           "messageName2" : {
                             "name" : "messageName2"
                           }
-                        }"""
-                        .stripIndent();
+                        }""".stripIndent();
 
         System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);

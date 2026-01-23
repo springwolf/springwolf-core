@@ -12,7 +12,8 @@ import jakarta.annotation.Nullable;
  * @param simpleSchemaName
  * @param schema The SchemaObject.
  */
-public record PayloadSchemaObject(String name, String simpleSchemaName, @Nullable ComponentSchema schema) {
+public record PayloadSchemaObject(
+        String name, String simpleSchemaName, @Nullable ComponentSchema schema) {
     public String title() {
         return (simpleSchemaName() != null) ? simpleSchemaName() : name();
     }

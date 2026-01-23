@@ -19,8 +19,7 @@ class SchemaTest {
         var schema =
                 SchemaObject.builder().type(SchemaType.STRING).format("email").build();
 
-        String example =
-                """
+        String example = """
                 {
                   "type": "string",
                   "format": "email"
@@ -45,8 +44,7 @@ class SchemaTest {
                                         .build()))
                 .build();
 
-        String example =
-                """
+        String example = """
                 {
                   "type": "object",
                   "required": [
@@ -78,8 +76,7 @@ class SchemaTest {
                         SchemaObject.builder().type(SchemaType.STRING).build()))
                 .build();
 
-        var example =
-                """
+        var example = """
                 {
                   "type": "object",
                   "additionalProperties": {
@@ -97,8 +94,7 @@ class SchemaTest {
                 .additionalProperties(ComponentSchema.of(SchemaReference.toSchema("ComplexModel")))
                 .build();
 
-        var example =
-                """
+        var example = """
                 {
                   "type": "object",
                   "additionalProperties": {
@@ -124,8 +120,7 @@ class SchemaTest {
                 .examples(List.of(Map.of("name", "Puma", "id", 1)))
                 .build();
 
-        var example =
-                """
+        var example = """
                 {
                   "type": "object",
                   "properties": {
@@ -161,8 +156,7 @@ class SchemaTest {
                 .required(List.of("anySchema"))
                 .build();
 
-        var example =
-                """
+        var example = """
                 {
                   "type": "object",
                   "required": [
@@ -213,8 +207,7 @@ class SchemaTest {
                                                 .build())))
                                 .build()));
 
-        var example =
-                """
+        var example = """
                 {
                   "schemas": {
                     "ErrorModel": {
@@ -340,8 +333,7 @@ class SchemaTest {
                                                 .required(List.of("color"))
                                                 .build())))
                                 .build()));
-        var example =
-                """
+        var example = """
                 {
                   "schemas": {
                     "Pet": {

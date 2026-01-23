@@ -66,8 +66,8 @@ public class SwaggerSchemaMapper {
         PayloadSchemaFormat payloadSchemaFormat =
                 springwolfConfigProperties.getDocket().getPayloadSchemaFormat();
         return switch (payloadSchemaFormat) {
-            case OPENAPI_V3, OPENAPI_V3_1 -> ComponentSchema.of(
-                    new MultiFormatSchema(payloadSchemaFormat.getSchemaFormat().value, swaggerSchema));
+            case OPENAPI_V3, OPENAPI_V3_1 ->
+                ComponentSchema.of(new MultiFormatSchema(payloadSchemaFormat.getSchemaFormat().value, swaggerSchema));
             case ASYNCAPI_V3 -> ComponentSchema.of(mapSwaggerSchemaToAsyncApiSchema(swaggerSchema));
         };
     }
