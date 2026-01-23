@@ -14,7 +14,7 @@ public class AsyncHeadersNotDocumented implements AsyncHeadersBuilder {
      * There can be headers, but don't have to be.
      */
     public static final SchemaObject NOT_DOCUMENTED = SchemaObject.builder()
-            .type(Set.of(SchemaType.OBJECT))
+            .type(Set.of(SchemaType.OBJECT.getValue()))
             .title("HeadersNotDocumented")
             .description("There can be headers, but they are not explicitly documented.")
             .properties(Map.of())

@@ -83,7 +83,7 @@ public class KafkaListenerUtil {
         if (value != null && !value.isEmpty()) {
             SchemaObject schema = new SchemaObject();
             schema.setEnumValues(List.of(value));
-            schema.setType(Set.of(SchemaType.STRING));
+            schema.setType(Set.of(SchemaType.STRING.getValue()));
             return schema;
         }
         return null;

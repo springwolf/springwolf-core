@@ -12,7 +12,7 @@ import java.util.Set;
 public class AsyncHeadersForAmqpBuilder implements AsyncHeadersBuilder {
 
     private static final SchemaObject headers = SchemaObject.builder()
-            .type(Set.of(SchemaType.OBJECT))
+            .type(Set.of(SchemaType.OBJECT.getValue()))
             .title("SpringRabbitListenerDefaultHeaders")
             .properties(Map.of())
             .build();

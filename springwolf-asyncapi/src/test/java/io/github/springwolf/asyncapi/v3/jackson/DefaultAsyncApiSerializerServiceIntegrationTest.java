@@ -81,7 +81,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                         KafkaMessageBinding.builder()
                                 // FIXME: We should have a SchemaString (Schema<String>)
                                 .key(SchemaObject.builder()
-                                        .type(Set.of(SchemaType.STRING))
+                                        .type(Set.of(SchemaType.STRING.getValue()))
                                         .build())
                                 .build()))
                 .build();
@@ -89,7 +89,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
 
         SchemaObject groupId = new SchemaObject();
         groupId.setEnumValues(List.of("myGroupId"));
-        groupId.setType(Set.of(SchemaType.STRING));
+        groupId.setType(Set.of(SchemaType.STRING.getValue()));
 
         OperationBinding operationBinding =
                 KafkaOperationBinding.builder().groupId(groupId).build();
@@ -127,9 +127,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         switch (schemaFormat) {
             case DEFAULT: {
                 SchemaObject examplePayloadSchema = new SchemaObject();
-                examplePayloadSchema.setType(Set.of(SchemaType.OBJECT));
+                examplePayloadSchema.setType(Set.of(SchemaType.OBJECT.getValue()));
                 SchemaObject stringSchema = new SchemaObject();
-                stringSchema.setType(Set.of(SchemaType.STRING));
+                stringSchema.setType(Set.of(SchemaType.STRING.getValue()));
                 examplePayloadSchema.setProperties(Map.of("s", stringSchema));
                 return Map.of("ExamplePayload", ComponentSchema.of(examplePayloadSchema));
             }

@@ -18,7 +18,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
 
     public AsyncHeadersForSpringKafkaBuilder(String schemaName) {
         this.headers = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title(schemaName)
                 .properties(new HashMap<>())
                 .build();
@@ -36,7 +36,7 @@ public class AsyncHeadersForSpringKafkaBuilder {
     private AsyncHeadersForSpringKafkaBuilder withHeader(
             String headerName, List<String> types, String exampleType, String description) {
         SchemaObject header = new SchemaObject();
-        header.setType(Set.of(SchemaType.STRING));
+        header.setType(Set.of(SchemaType.STRING.getValue()));
         header.setTitle(headerName);
         header.setDescription(description);
         header.setExamples(List.of(exampleType));

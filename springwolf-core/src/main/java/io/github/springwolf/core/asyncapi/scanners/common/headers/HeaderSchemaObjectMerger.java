@@ -23,7 +23,7 @@ public class HeaderSchemaObjectMerger {
         }
 
         SchemaObject.SchemaObjectBuilder headerSchemaBuilder =
-                SchemaObject.builder().type(Set.of(SchemaType.OBJECT));
+                SchemaObject.builder().type(Set.of(SchemaType.OBJECT.getValue()));
 
         String description = initial.getDescription();
         Map<String, Object> headerProperties = new HashMap<>(initial.getProperties());

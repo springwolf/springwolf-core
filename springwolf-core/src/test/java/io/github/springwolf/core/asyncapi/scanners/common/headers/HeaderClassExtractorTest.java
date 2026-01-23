@@ -30,9 +30,9 @@ class HeaderClassExtractorTest {
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(
             "payloadSchemaName", String.class.getSimpleName(), ComponentSchema.of(new SchemaObject()));
     private final SchemaObject stringSchema =
-            SchemaObject.builder().type(Set.of(SchemaType.STRING)).build();
+            SchemaObject.builder().type(Set.of(SchemaType.STRING.getValue())).build();
     private final ComponentSchema stringSwaggerSchema = ComponentSchema.of(
-            SchemaObject.builder().type(Set.of(SchemaType.STRING)).build());
+            SchemaObject.builder().type(Set.of(SchemaType.STRING.getValue())).build());
 
     private static final SchemaTitleModelConverter titleModelConverter = new SchemaTitleModelConverter();
 
@@ -74,7 +74,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -95,7 +95,7 @@ class HeaderClassExtractorTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();

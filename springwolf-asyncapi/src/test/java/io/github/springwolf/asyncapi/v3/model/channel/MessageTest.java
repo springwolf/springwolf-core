@@ -36,22 +36,22 @@ class MessageTest {
                         Tag.builder().name("signup").build(),
                         Tag.builder().name("register").build()))
                 .headers(MessageHeaders.of(SchemaObject.builder()
-                        .type(Set.of(SchemaType.OBJECT))
+                        .type(Set.of(SchemaType.OBJECT.getValue()))
                         .properties(Map.of(
                                 "correlationId",
                                         SchemaObject.builder()
                                                 .description("Correlation ID set by application")
-                                                .type(Set.of(SchemaType.STRING))
+                                                .type(Set.of(SchemaType.STRING.getValue()))
                                                 .build(),
                                 "applicationInstanceId",
                                         SchemaObject.builder()
                                                 .description(
                                                         "Unique identifier for a given instance of the publishing application")
-                                                .type(Set.of(SchemaType.STRING))
+                                                .type(Set.of(SchemaType.STRING.getValue()))
                                                 .build()))
                         .build()))
                 .payload(MessagePayload.of(SchemaObject.builder()
-                        .type(Set.of(SchemaType.OBJECT))
+                        .type(Set.of(SchemaType.OBJECT.getValue()))
                         .properties(Map.of(
                                 "user", SchemaReference.toSchema("userCreate"),
                                 "signup", SchemaReference.toSchema("signup")))

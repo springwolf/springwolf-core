@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.annotations;
 
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -58,9 +60,8 @@ public @interface AsyncOperation {
 
             /**
              * The schema type of the header value according to AsyncAPI specification.
-             * Only simples types are supported
              */
-            String type() default "";
+            SchemaType type() default SchemaType.STRING;
 
             /**
              * The format of the header value according to AsyncAPI specification.

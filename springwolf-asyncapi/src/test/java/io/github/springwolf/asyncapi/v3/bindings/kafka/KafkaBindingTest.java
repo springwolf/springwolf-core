@@ -53,11 +53,11 @@ class KafkaBindingTest {
                                         "kafka",
                                         KafkaOperationBinding.builder()
                                                 .groupId(SchemaObject.builder()
-                                                        .type(Set.of(SchemaType.STRING))
+                                                        .type(Set.of(SchemaType.STRING.getValue()))
                                                         .enumValues(List.of("myGroupId"))
                                                         .build())
                                                 .clientId(SchemaObject.builder()
-                                                        .type(Set.of(SchemaType.STRING))
+                                                        .type(Set.of(SchemaType.STRING.getValue()))
                                                         .enumValues(List.of("myClientId"))
                                                         .build())
                                                 .build()))
@@ -141,7 +141,10 @@ class KafkaBindingTest {
                                                         KafkaMessageBinding.builder()
                                                                 .key(
                                                                         SchemaObject.builder()
-                                                                                .type(Set.of(SchemaType.STRING))
+                                                                                .type(
+                                                                                        Set.of(
+                                                                                                SchemaType.STRING
+                                                                                                        .getValue()))
                                                                                 .enumValues(List.of("myKey"))
                                                                                 .build())
                                                                 .schemaIdLocation("payload")

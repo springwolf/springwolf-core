@@ -139,7 +139,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())
                         .build()))
                 .headers(MessageHeaders.of(
@@ -187,7 +187,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())
                         .build()))
                 .headers(MessageHeaders.of(
@@ -236,7 +236,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())
                         .build()))
                 .headers(MessageHeaders.of(
@@ -460,7 +460,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())
                         .build()))
                 .headers(MessageHeaders.of(
@@ -490,7 +490,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.INTEGER))
+                                .type(Set.of(SchemaType.INTEGER.getValue()))
                                 .format("int32")
                                 .build())
                         .build()))
@@ -550,7 +550,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("string")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.STRING))
+                                .type(Set.of(SchemaType.STRING.getValue()))
                                 .build())
                         .build()))
                 .headers(MessageHeaders.of(
@@ -572,7 +572,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .title("integer")
                 .payload(MessagePayload.of(MultiFormatSchema.builder()
                         .schema(SchemaObject.builder()
-                                .type(Set.of(SchemaType.INTEGER))
+                                .type(Set.of(SchemaType.INTEGER.getValue()))
                                 .format("int32")
                                 .build())
                         .build()))

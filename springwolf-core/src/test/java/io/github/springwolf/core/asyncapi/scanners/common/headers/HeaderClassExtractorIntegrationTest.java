@@ -39,7 +39,7 @@ class HeaderClassExtractorIntegrationTest {
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(
             "payloadSchemaName", String.class.getSimpleName(), ComponentSchema.of(new SchemaObject()));
     private final SchemaObject stringSchema =
-            SchemaObject.builder().type(Set.of(SchemaType.STRING)).build();
+            SchemaObject.builder().type(Set.of(SchemaType.STRING.getValue())).build();
 
     @AfterAll
     static void tearDownClass() {
@@ -64,7 +64,7 @@ class HeaderClassExtractorIntegrationTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -81,7 +81,7 @@ class HeaderClassExtractorIntegrationTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -99,7 +99,7 @@ class HeaderClassExtractorIntegrationTest {
 
         // then
         SchemaObject expectedHeaders = SchemaObject.builder()
-                .type(Set.of(SchemaType.OBJECT))
+                .type(Set.of(SchemaType.OBJECT.getValue()))
                 .title("payloadSchemaNameHeaders")
                 .properties(new HashMap<>())
                 .build();
@@ -108,7 +108,7 @@ class HeaderClassExtractorIntegrationTest {
                 .put(
                         "myHeader",
                         ComponentSchema.of(SchemaObject.builder()
-                                .type(Set.of(SchemaType.OBJECT))
+                                .type(Set.of(SchemaType.OBJECT.getValue()))
                                 .title("MyHeader")
                                 .properties(Map.of("key", ComponentSchema.of(stringSchema)))
                                 .build()));
