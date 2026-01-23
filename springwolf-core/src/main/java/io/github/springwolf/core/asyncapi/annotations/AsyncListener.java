@@ -27,8 +27,6 @@ import java.lang.annotation.Target;
  *     &#064;KafkaAsyncOperationBinding
  *     public void receiveMessage(MonetaryAmount payload) { ... }
  * </pre>
- *
- * Maintainer note: move to io.github.springwolf.core.asyncapi.annotation
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
