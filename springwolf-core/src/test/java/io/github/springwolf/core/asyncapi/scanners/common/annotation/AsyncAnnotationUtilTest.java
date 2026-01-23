@@ -101,7 +101,7 @@ class AsyncAnnotationUtilTest {
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
                         .type(Set.of(SchemaType.OBJECT.getValue()))
-                        .title("Headers-548898580")
+                        .title("Headers-686508619")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
@@ -126,7 +126,7 @@ class AsyncAnnotationUtilTest {
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
                         .type(Set.of(SchemaType.OBJECT.getValue()))
-                        .title("Headers-390789095")
+                        .title("Headers-523287258")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
@@ -151,7 +151,7 @@ class AsyncAnnotationUtilTest {
         assertThat(headers)
                 .isEqualTo(SchemaObject.builder()
                         .type(Set.of(SchemaType.OBJECT.getValue()))
-                        .title("Headers-300966245")
+                        .title("Headers-435422296")
                         .properties(Map.of(
                                 "headerResolved",
                                 SchemaObject.builder()
