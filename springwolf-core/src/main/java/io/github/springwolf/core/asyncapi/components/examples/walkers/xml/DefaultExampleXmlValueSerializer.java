@@ -13,16 +13,22 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
 public class DefaultExampleXmlValueSerializer implements ExampleXmlValueSerializer {
+
     @Override
     public String writeDocumentAsXmlString(Document document) throws TransformerException {
-        DOMSource domSource = new DOMSource(document);
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+        Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.INDENT, "no");
+
         StringWriter sw = new StringWriter();
         StreamResult sr = new StreamResult(sw);
+        DOMSource domSource = new DOMSource(document);
         transformer.transform(domSource, sr);
+
         return sw.toString();
     }
 }
