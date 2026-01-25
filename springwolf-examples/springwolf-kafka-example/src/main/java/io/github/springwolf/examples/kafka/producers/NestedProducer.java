@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.producers;
 
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
@@ -57,7 +58,9 @@ public class NestedProducer {
                                                 @AsyncOperation.Headers.Header(
                                                         name = AsyncHeadersCloudEventConstants.TIME,
                                                         description = AsyncHeadersCloudEventConstants.TIME_DESC,
-                                                        value = "2023-10-28 20:01:23+00:00"),
+                                                        value = "2023-10-28T20:01:23+00:00",
+                                                        type = SchemaType.STRING,
+                                                        format = "date-time"),
                                                 @AsyncOperation.Headers.Header(
                                                         name = AsyncHeadersCloudEventConstants.TYPE,
                                                         description = AsyncHeadersCloudEventConstants.TYPE_DESC,
