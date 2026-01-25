@@ -225,10 +225,11 @@ components:
           title: ce_time
           type: string
           description: CloudEvent Time Header
+          format: date-time
           enum:
-            - 2023-10-28 20:01:23+00:00
+            - 2023-10-28T20:01:23+00:00
           examples:
-            - 2023-10-28 20:01:23+00:00
+            - 2023-10-28T20:01:23+00:00
         ce_type:
           title: ce_type
           type: string
@@ -252,7 +253,7 @@ components:
           ce_source: http://localhost
           ce_specversion: "1.0"
           ce_subject: Springwolf example project - Kafka
-          ce_time: 2023-10-28 20:01:23+00:00
+          ce_time: 2023-10-28T20:01:23+00:00
           ce_type: NestedPayloadDto.v1
           content-type: application/json
       x-json-schema:
@@ -292,7 +293,8 @@ components:
           ce_time:
             description: CloudEvent Time Header
             enum:
-              - 2023-10-28 20:01:23+00:00
+              - 2023-10-28T20:01:23+00:00
+            format: date-time
             title: ce_time
             type: string
           ce_type:
@@ -372,9 +374,15 @@ components:
           type: string
           description: Event identifier
           format: uuid
+          enum:
+            - 00000000-0000-0000-0000-000000000000
+            - FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+          examples:
+            - 00000000-0000-0000-0000-000000000000
+            - FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
       examples:
         - __TypeId__: string
-          my_uuid_field: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          my_uuid_field: 00000000-0000-0000-0000-000000000000
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
@@ -384,6 +392,9 @@ components:
             type: string
           my_uuid_field:
             description: Event identifier
+            enum:
+              - 00000000-0000-0000-0000-000000000000
+              - FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
             format: uuid
             title: my_uuid_field
             type: string

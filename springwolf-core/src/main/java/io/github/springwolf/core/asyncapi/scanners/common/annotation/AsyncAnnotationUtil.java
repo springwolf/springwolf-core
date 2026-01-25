@@ -97,7 +97,7 @@ public class AsyncAnnotationUtil {
     private static List<String> getHeaderValues(
             List<AsyncOperation.Headers.Header> value, StringValueResolver stringValueResolver) {
         return value.stream()
-                .map(AsyncOperation.Headers.Header::value)
+                .flatMap(it -> Arrays.stream(it.value()))
                 .filter(StringUtils::hasText)
                 .flatMap(text -> Optional.ofNullable(stringValueResolver.resolveStringValue(text)).stream())
                 .sorted()
