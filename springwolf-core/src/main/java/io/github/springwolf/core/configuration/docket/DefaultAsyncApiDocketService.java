@@ -38,8 +38,11 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     }
 
     private AsyncApiDocket createDocket() {
+        String basePackage = resolveBasePackage(configProperties.getDocket());
+        log.debug("Scanning base-package {}", basePackage);
+
         AsyncApiDocket.AsyncApiDocketBuilder builder = AsyncApiDocket.builder()
-                .basePackage(resolveBasePackage(configProperties.getDocket()))
+                .basePackage(basePackage)
                 .info(buildInfo(configProperties.getDocket().getInfo()));
         if (configProperties.getDocket().getServers() != null) {
             builder.servers(buildServers(configProperties.getDocket().getServers()));
