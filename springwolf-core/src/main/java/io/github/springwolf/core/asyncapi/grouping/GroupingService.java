@@ -254,7 +254,20 @@ public class GroupingService {
         if (schema.getProperties() != null) {
             propertySchemas = schema.getProperties().values().stream()
                     .filter(el -> el instanceof ComponentSchema)
-                    .map(el -> (ComponentSchema) el);
+                    .map(el -> (ComponentSchema) el)
+                    .flatMap(el -> {
+                        Stream.Builder<ComponentSchema> builder = Stream.builder();
+                        builder.add(el);
+
+                        if (el.getSchema() != null) {
+                            ComponentSchema items = el.getSchema().getItems();
+                            if (items != null) {
+                                builder.add(items);
+                            }
+                        }
+
+                        return builder.build();
+                    });
         } else {
             propertySchemas = Stream.empty();
         }
