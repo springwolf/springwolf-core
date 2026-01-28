@@ -250,27 +250,17 @@ public class GroupingService {
      */
     private static Set<String> findUnmarkedNestedSchemasForAsyncAPISchema(
             MarkingContext markingContext, SchemaObject schema) {
-        final Stream<ComponentSchema> propertySchemas;
-        if (schema.getProperties() != null) {
-            propertySchemas = schema.getProperties().values().stream()
-                    .filter(el -> el instanceof ComponentSchema)
-                    .map(el -> (ComponentSchema) el)
-                    .flatMap(el -> {
-                        Stream.Builder<ComponentSchema> builder = Stream.builder();
-                        builder.add(el);
-
-                        if (el.getSchema() != null) {
-                            ComponentSchema items = el.getSchema().getItems();
-                            if (items != null) {
-                                builder.add(items);
-                            }
-                        }
-
-                        return builder.build();
-                    });
-        } else {
-            propertySchemas = Stream.empty();
-        }
+        Stream<ComponentSchema> propertySchemas = schema.getProperties() == null
+                ? Stream.empty()
+                : schema.getProperties().values().stream()
+                        .filter(ComponentSchema.class::isInstance)
+                        .map(ComponentSchema.class::cast)
+                        .flatMap(el -> {
+                            Stream<ComponentSchema> base = Stream.of(el);
+                            ComponentSchema items =
+                                    el.getSchema() != null ? el.getSchema().getItems() : null;
+                            return items != null ? Stream.concat(base, Stream.of(items)) : base;
+                        });
 
         Stream<ComponentSchema> referencedSchemas = Stream.of(schema.getAllOf(), schema.getAnyOf(), schema.getOneOf())
                 .filter(Objects::nonNull)
@@ -299,12 +289,13 @@ public class GroupingService {
      */
     private static Set<String> findUnmarkedNestedSchemasForOpenAPISchema(
             MarkingContext markingContext, Schema<?> openapiSchema) {
-        final Stream<Schema> propertySchemas;
-        if (openapiSchema.getProperties() != null) {
-            propertySchemas = openapiSchema.getProperties().values().stream();
-        } else {
-            propertySchemas = Stream.empty();
-        }
+        Stream<Schema> propertySchemas = openapiSchema.getProperties() == null
+                ? Stream.empty()
+                : openapiSchema.getProperties().values().stream().flatMap(schema -> {
+                    Stream<Schema> base = Stream.of(schema);
+                    Schema<?> items = schema.getItems();
+                    return items != null ? Stream.concat(base, Stream.of(items)) : base;
+                });
 
         Stream<Schema> referencedSchemas = Stream.of(
                         openapiSchema.getAllOf(), openapiSchema.getAnyOf(), openapiSchema.getOneOf())
