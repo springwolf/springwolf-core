@@ -10,17 +10,21 @@ import java.util.Collection;
 import java.util.List;
 
 @SpringBootApplication
-public class PublisherGroupingComplexSchemaApplication {
+public class ComplexSchemaApplication {
+
+    @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
+    public void publish(List<String> payload) {}
+
     @Bean
     public ComplexPublisher complexPublisher() {
         return new ComplexPublisher();
     }
 
-    static class ComplexPublisher {
-        @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
+    public static class ComplexPublisher {
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel2"))
         public void publish1(User payload) {}
 
-        @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
+        @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel2"))
         public void publish2(List<User> payload) {}
 
         public record User(String name, Integer age, Collection<Address> addresses) {}
@@ -29,7 +33,4 @@ public class PublisherGroupingComplexSchemaApplication {
 
         public record City(String zipCode, String name) {}
     }
-
-    @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel2"))
-    public void publish2(List<String> payload) {}
 }
