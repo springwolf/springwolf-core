@@ -59,6 +59,8 @@ dependencies {
 
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
+    testImplementation("org.apache.avro:avro:1.12.0")
+
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
 }
