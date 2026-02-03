@@ -64,8 +64,8 @@ importers:
         specifier: ^21.1.1
         version: 21.1.1(@angular/compiler@21.1.1)(typescript@5.9.3)
       '@asyncapi/parser':
-        specifier: ^3.4.0
-        version: 3.4.0(encoding@0.1.13)
+        specifier: ^3.6.0
+        version: 3.6.0(encoding@0.1.13)
       '@testing-library/angular':
         specifier: ^19.0.0
         version: 19.0.0(c6677540eccbd04cc856555c43b24bc0)
@@ -338,11 +338,11 @@ packages:
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
 
-  '@asyncapi/parser@3.4.0':
-    resolution: {integrity: sha512-Sxn74oHiZSU6+cVeZy62iPZMFMvKp4jupMFHelSICCMw1qELmUHPvuZSr+ZHDmNGgHcEpzJM5HN02kR7T4g+PQ==}
+  '@asyncapi/parser@3.6.0':
+    resolution: {integrity: sha512-6S0Yr8vI418a1IrpGsOYbfWVo9+aHvSqN2oSkiY0YJltS/C7oDOt9e0mo6hSld8bg+EeKrtgkVmpW4obh1JFvA==}
 
-  '@asyncapi/specs@6.10.0':
-    resolution: {integrity: sha512-vB5oKLsdrLUORIZ5BXortZTlVyGWWMC1Nud/0LtgxQ3Yn2738HigAD6EVqScvpPsDUI/bcLVsYEXN4dtXQHVng==}
+  '@asyncapi/specs@6.11.1':
+    resolution: {integrity: sha512-A3WBLqAKGoJ2+6FWFtpjBlCQ1oFCcs4GxF7zsIGvNqp/klGUHjlA3aAcZ9XMMpLGE8zPeYDz2x9FmO6DSuKraQ==}
 
   '@babel/code-frame@7.28.6':
     resolution: {integrity: sha512-JYgintcMjRiCvS8mMECzaEn+m3PfoQiyqukOMCCVQtoJGYJw8j/8LBJEiqkHLkfwCcs74E3pbAUFNg7d9VNJ+Q==}
@@ -5203,9 +5203,9 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
-  '@asyncapi/parser@3.4.0(encoding@0.1.13)':
+  '@asyncapi/parser@3.6.0(encoding@0.1.13)':
     dependencies:
-      '@asyncapi/specs': 6.10.0
+      '@asyncapi/specs': 6.11.1
       '@openapi-contrib/openapi-schema-to-json-schema': 3.2.0
       '@stoplight/json': 3.21.0
       '@stoplight/json-ref-readers': 1.2.2(encoding@0.1.13)
@@ -5227,7 +5227,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@asyncapi/specs@6.10.0':
+  '@asyncapi/specs@6.11.1':
     dependencies:
       '@types/json-schema': 7.0.15
 
@@ -6540,7 +6540,7 @@ snapshots:
 
   '@stoplight/json-ref-readers@1.2.2(encoding@0.1.13)':
     dependencies:
-      node-fetch: 2.6.7(encoding@0.1.13)
+      node-fetch: 2.7.0(encoding@0.1.13)
       tslib: 1.14.1
     transitivePeerDependencies:
       - encoding
