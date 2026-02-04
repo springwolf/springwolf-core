@@ -227,8 +227,8 @@ public class SwaggerSchemaService {
     private void postProcessSchemas(
             Map<String, Schema> schemasToProcess, Map<String, Schema> schemas, String contentType) {
         boolean schemasHadEntries = !schemas.isEmpty();
-        for (Schema schema : schemasToProcess.values()) {
-            for (SchemasPostProcessor processor : schemaPostProcessors) {
+        for (SchemasPostProcessor processor : schemaPostProcessors) {
+            for (Schema schema : schemasToProcess.values()) {
                 processor.process(schema, schemas, contentType);
 
                 if (schemasHadEntries && !schemas.containsValue(schema)) {
