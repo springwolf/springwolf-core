@@ -28,7 +28,7 @@ spring-cloud-stream = "5.0.0" # not managed by spring-boot-dependencies
 [libraries]
 activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
 amqp-client = "com.rabbitmq:amqp-client:5.28.0"
-assertj-core = "org.assertj:assertj-core:3.27.6"
+assertj-core = "org.assertj:assertj-core:3.27.7"
 avro = "org.apache.avro:avro:1.12.1"
 awaitility = "org.awaitility:awaitility:4.3.0"
 commons-io = "commons-io:commons-io:2.21.0"
