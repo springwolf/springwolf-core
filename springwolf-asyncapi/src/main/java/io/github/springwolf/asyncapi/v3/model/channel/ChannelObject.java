@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Describes a shared communication channel.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#channelObject">Channel Object</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#channelObject">Channel Object</a>
  */
 @Data
 @Builder(toBuilder = true)

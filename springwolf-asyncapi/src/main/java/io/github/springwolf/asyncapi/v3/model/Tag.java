@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * Allows adding meta data to a single tag.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#tagsObject">Tag</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#tagsObject">Tag</a>
  */
 @Data
 @Builder

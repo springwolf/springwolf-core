@@ -27,7 +27,7 @@ import java.util.Set;
  * Further information about the properties can be found in JSON Schema Core and JSON Schema Validation. Unless stated
  * otherwise, the property definitions follow the JSON Schema specification as referenced here.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#schemaObject">Schema Object</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#schemaObject">Schema Object</a>
  */
 @Data
 @Builder

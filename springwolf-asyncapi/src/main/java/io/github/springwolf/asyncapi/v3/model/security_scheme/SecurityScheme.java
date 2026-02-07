@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
  *     <li>SASL (Simple Authentication and Security Layer) as defined in RFC4422.</li>
  * </ul>
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#securitySchemeObject">Schema Scheme Object</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#securitySchemeObject">Schema Scheme Object</a>
  */
 @Data
 @Builder

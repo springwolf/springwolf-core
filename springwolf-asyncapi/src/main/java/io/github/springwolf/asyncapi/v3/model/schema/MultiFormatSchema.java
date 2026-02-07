@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
  * The Multi Format Schema Object represents a schema definition. It differs from the Schema Object in that it
  * supports multiple schema formats or languages (e.g., JSON Schema, Avro, etc.).
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#multiFormatSchemaObject">Multi Format Schema Object</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#multiFormatSchemaObject">Multi Format Schema Object</a>
  */
 @Data
 @Builder

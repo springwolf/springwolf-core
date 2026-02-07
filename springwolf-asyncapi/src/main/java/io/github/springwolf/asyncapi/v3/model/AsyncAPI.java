@@ -20,7 +20,7 @@ import java.util.Map;
  * This is the root document object for the API specification.
  * It combines resource listing and API declaration together into one document.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#A2SObject">AsyncAPI</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#A2SObject">AsyncAPI</a>
  */
 @Data
 @Builder
@@ -29,7 +29,7 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class AsyncAPI extends ExtendableObject {
 
-    public static final String ASYNCAPI_DEFAULT_VERSION = "3.0.0";
+    public static final String ASYNCAPI_DEFAULT_VERSION = "3.1.0";
 
     /**
      * REQUIRED. Specifies the AsyncAPI Specification version being used. It can be used by tooling Specifications and
@@ -45,7 +45,7 @@ public class AsyncAPI extends ExtendableObject {
 
     /**
      * Identifier of the
-     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">application</a>
+     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#definitionsApplication">application</a>
      * the AsyncAPI document is defining.
      * </p>
      * This field represents a unique universal identifier of the application the AsyncAPI document is defining.
@@ -84,7 +84,7 @@ public class AsyncAPI extends ExtendableObject {
 
     /**
      * The channels used by this
-     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">application</a>.
+     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#definitionsApplication">application</a>.
      * </p>
      * An identifier for the described channel. The channelId value is case-sensitive. Tools and libraries MAY
      * use the channelId to uniquely identify a channel, therefore, it is RECOMMENDED to follow common programming
@@ -97,7 +97,7 @@ public class AsyncAPI extends ExtendableObject {
      * An element to hold various reusable objects for the specification. Everything that is defined inside this
      * object represents a resource that MAY or MAY NOT be used in the rest of the document and MAY or MAY NOT be
      * used by the implemented
-     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">Application</a>.
+     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#definitionsApplication">Application</a>.
      */
     @JsonProperty(value = "components")
     private Components components;
@@ -105,7 +105,7 @@ public class AsyncAPI extends ExtendableObject {
      * Holds a dictionary with all the operations this application MUST implement.
      * </p>
      * If you're looking for a place to define operations that MAY or MAY NOT be implemented by the
-     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#definitionsApplication">application</a>
+     * <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#definitionsApplication">application</a>
      * consider defining them in components/operations.
      */
     @JsonProperty(value = "operations")

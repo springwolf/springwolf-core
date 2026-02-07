@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 /**
  * License information for the exposed API.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#licenseObject">License</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#licenseObject">License</a>
  */
 @Data
 @Builder

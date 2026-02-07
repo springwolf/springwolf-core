@@ -1,4 +1,4 @@
-asyncapi: 3.0.0
+asyncapi: 3.1.0
 info:
   title: AsyncAPI Sample App
   version: 1.0.1
@@ -37,7 +37,7 @@ components:
   messages:
     io.github.springwolf.core.ExamplePayload:
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           "$ref": "#/components/schemas/ExamplePayload"
       name: io.github.springwolf.core.ExamplePayload

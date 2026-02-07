@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
  * For this specification, reference resolution is done as defined by the JSON Reference specification and not by
  * the JSON Schema specification.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#referenceObject">Reference</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#referenceObject">Reference</a>
  */
 public interface Reference {
     /**

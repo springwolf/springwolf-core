@@ -1,4 +1,4 @@
-asyncapi: 3.0.0
+asyncapi: 3.1.0
 info:
   title: Springwolf example project - AMQP
   version: 1.0.0
@@ -298,7 +298,7 @@ components:
       headers:
         $ref: "#/components/schemas/HeadersNotDocumented"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
       name: io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto
@@ -310,7 +310,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
       name: io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto
@@ -322,7 +322,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
       name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto
@@ -334,7 +334,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
       name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long
@@ -346,7 +346,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringRabbitListenerDefaultHeaders"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
       name: io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String
