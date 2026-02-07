@@ -45,6 +45,7 @@ dependencies {
     testImplementation libs.jackson.annotations
     testImplementation libs.jackson.databind
 
+    testImplementation libs.assertj.core
     testImplementation libs.mockito.core
     testImplementation libs.mockito.junit.jupiter
 
@@ -52,8 +53,6 @@ dependencies {
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.boot.webmvc.test
     testImplementation libs.spring.test
-
-    testImplementation libs.assertj.core
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
