@@ -37,7 +37,15 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.examples",
                 "springwolf.plugin.sqs.publishing.enabled=true"
             })
-    @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                SqsTemplate.class
+            })
     @Nested
     class SqsProducerWillBeCreatedIfEnabledTest {
         @Autowired
@@ -67,7 +75,15 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
                 "springwolf.docket.base-package=io.github.springwolf.examples",
                 "springwolf.plugin.sqs.publishing.enabled=false"
             })
-    @MockitoBean(types = {SpringwolfClassScanner.class, ComponentService.class, HeaderClassExtractor.class, PayloadMethodParameterService.class, StringValueResolver.class, SqsTemplate.class})
+    @MockitoBean(
+            types = {
+                SpringwolfClassScanner.class,
+                ComponentsService.class,
+                HeaderClassExtractor.class,
+                PayloadMethodParameterService.class,
+                StringValueResolver.class,
+                SqsTemplate.class
+            })
     @Nested
     class SqsProducerWillNotBeCreatedIfDisabledTest {
         @Autowired
@@ -82,5 +98,4 @@ public class SpringwolfSqsProducerConfigurationIntegrationTest {
             assertThat(springwolfSqsController).isNotPresent();
         }
     }
-
 }

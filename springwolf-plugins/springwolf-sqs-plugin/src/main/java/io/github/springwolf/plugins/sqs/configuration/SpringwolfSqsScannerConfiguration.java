@@ -15,8 +15,8 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
-import io.github.springwolf.core.asyncapi.scanners.operations.annotations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
