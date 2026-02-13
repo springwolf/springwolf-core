@@ -14,6 +14,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(":springwolf-asyncapi")
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-kafka")
     permitUnusedDeclared project(":springwolf-plugins:springwolf-kafka")

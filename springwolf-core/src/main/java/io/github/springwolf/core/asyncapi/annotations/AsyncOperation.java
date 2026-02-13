@@ -56,7 +56,7 @@ public @interface AsyncOperation {
 
             String description() default "";
 
-            String value() default "";
+            String[] value() default "";
 
             /**
              * The schema type of the header value according to AsyncAPI specification.
