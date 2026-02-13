@@ -35,14 +35,14 @@ dependencies {
 
     testAnnotationProcessor libs.lombok
 
+    testImplementation libs.jackson.databind
+
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
 
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.beans
     testImplementation libs.spring.test
-
-    testAnnotationProcessor libs.lombok
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter

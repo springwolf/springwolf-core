@@ -33,6 +33,8 @@ dependencies {
 
     testAnnotationProcessor libs.lombok
 
+    testImplementation libs.jackson.databind
+
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
 
@@ -40,8 +42,6 @@ dependencies {
     testImplementation libs.spring.beans
     testImplementation libs.spring.core
     testImplementation libs.spring.test
-
-    testAnnotationProcessor libs.lombok
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter

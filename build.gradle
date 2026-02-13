@@ -32,7 +32,7 @@ var plugins = [
         'springwolf-jms',
         'springwolf-kafka',
         'springwolf-sns',
-//        'springwolf-sqs', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
+        'springwolf-sqs',
         'springwolf-stomp'
 ]
 

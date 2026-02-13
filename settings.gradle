@@ -8,7 +8,7 @@ include(
         'springwolf-plugins:springwolf-jms-plugin',
         'springwolf-plugins:springwolf-kafka-plugin',
         'springwolf-plugins:springwolf-sns-plugin',
-//        'springwolf-plugins:springwolf-sqs-plugin', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
+        'springwolf-plugins:springwolf-sqs-plugin',
         'springwolf-plugins:springwolf-stomp-plugin',
         'springwolf-examples:e2e',
         'springwolf-examples:springwolf-amqp-example',
@@ -16,7 +16,7 @@ include(
         'springwolf-examples:springwolf-jms-example',
         'springwolf-examples:springwolf-kafka-example',
         'springwolf-examples:springwolf-sns-example',
-//        'springwolf-examples:springwolf-sqs-example', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
+        'springwolf-examples:springwolf-sqs-example',
         'springwolf-examples:springwolf-stomp-example',
         'springwolf-bindings:springwolf-amqp-binding',
         'springwolf-bindings:springwolf-googlepubsub-binding',
@@ -37,6 +37,6 @@ project(':springwolf-plugins:springwolf-cloud-stream-plugin').name = 'springwolf
 project(':springwolf-plugins:springwolf-jms-plugin').name = 'springwolf-jms'
 project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
 project(':springwolf-plugins:springwolf-sns-plugin').name = 'springwolf-sns'
-//project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs', re-enable, when update available: https://github.com/awspring/spring-cloud-aws/milestone/42
+project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
 project(':springwolf-plugins:springwolf-stomp-plugin').name = 'springwolf-stomp'
 
