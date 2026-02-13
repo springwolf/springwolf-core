@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Describes a specific operation.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#operationObject">Operation</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#operationObject">Operation</a>
  */
 @Data
 @Builder(toBuilder = true)

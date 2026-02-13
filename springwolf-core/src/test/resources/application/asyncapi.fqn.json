@@ -1,5 +1,5 @@
 {
-  "asyncapi": "3.0.0",
+  "asyncapi": "3.1.0",
   "info": {
     "title": "springwolf-core-integration-test",
     "version": "1.0.0",
@@ -84,7 +84,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/Foo"
           }
@@ -98,7 +98,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "type": "integer",
             "format": "int32",
@@ -116,7 +116,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "type": "string",
             "examples": [

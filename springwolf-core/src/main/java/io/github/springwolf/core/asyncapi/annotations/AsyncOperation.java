@@ -74,7 +74,7 @@ public @interface AsyncOperation {
              *   <li>"date-time" - RFC 3339 date-time</li>
              * </ul>
              *
-             * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#dataTypeFormat">AsyncAPI Data Type Format</a>
+             * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#dataTypeFormat">AsyncAPI Data Type Format</a>
              * @return the format string, empty by default
              */
             String format() default "";

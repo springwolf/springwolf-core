@@ -36,7 +36,7 @@ public class AsyncApiDocket {
     /**
      * A string representing the default content type to use when encoding/decoding a message's payload.
      *
-     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#defaultContentTypeString">Default Content Type</a>
+     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#defaultContentTypeString">Default Content Type</a>
      */
     @Builder.Default
     private final String defaultContentType = MediaType.APPLICATION_JSON_VALUE;
@@ -44,7 +44,7 @@ public class AsyncApiDocket {
     /**
      * A string representing the default content type to use when encoding/decoding a message's payload.
      *
-     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#A2SIdString">Identifier</a>
+     * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#A2SIdString">Identifier</a>
      */
     private final String id;
 }

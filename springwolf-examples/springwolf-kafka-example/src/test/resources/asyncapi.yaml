@@ -1,4 +1,4 @@
-asyncapi: 3.0.0
+asyncapi: 3.1.0
 info:
   title: Springwolf example project - Kafka
   version: 1.0.0
@@ -1392,7 +1392,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-PayloadNotUsed"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           title: PayloadNotUsed
           type: object
@@ -1407,7 +1407,7 @@ components:
       headers:
         $ref: "#/components/schemas/HeadersNotUsed"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.consumers.StringConsumer.StringEnvelope"
       name: StringPayload
@@ -1419,7 +1419,7 @@ components:
       headers:
         $ref: "#/components/schemas/HeadersNotDocumented"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
       contentType: application/avro
@@ -1432,7 +1432,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-Message"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message"
       name: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
@@ -1444,7 +1444,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-AnotherTopic"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
@@ -1456,7 +1456,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
@@ -1468,7 +1468,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringDefaultHeaderAndCloudEvent"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
@@ -1485,7 +1485,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto"
       name: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
@@ -1497,7 +1497,7 @@ components:
       headers:
         $ref: "#/components/schemas/HeadersNotDocumented"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.XmlPayloadDto"
       contentType: text/xml
@@ -1511,7 +1511,7 @@ components:
       headers:
         $ref: "#/components/schemas/HeadersNotDocumented"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.YamlPayloadDto"
       contentType: application/yaml
@@ -1525,7 +1525,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-VehicleBase"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
       name: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
@@ -1537,7 +1537,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-integer"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           type: integer
           format: int32
@@ -1552,7 +1552,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-string"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           type: string
           examples:
@@ -1566,7 +1566,7 @@ components:
       headers:
         $ref: "#/components/schemas/SpringKafkaDefaultHeaders-MonetaryAmount"
       payload:
-        schemaFormat: application/vnd.aai.asyncapi+json;version=3.0.0
+        schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
           $ref: "#/components/schemas/javax.money.MonetaryAmount"
       name: javax.money.MonetaryAmount

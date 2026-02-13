@@ -1,5 +1,5 @@
 {
-  "asyncapi": "3.0.0",
+  "asyncapi": "3.1.0",
   "info": {
     "title": "Springwolf example project - AMQP",
     "version": "1.0.0",
@@ -419,7 +419,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
           }
@@ -437,7 +437,7 @@
           "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
           }
@@ -455,7 +455,7 @@
           "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
           }
@@ -473,7 +473,7 @@
           "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
           }
@@ -491,7 +491,7 @@
           "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
           }

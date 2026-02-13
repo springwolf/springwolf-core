@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The object provides metadata about the API. The metadata can be used by the clients if needed.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#infoObject">Info</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#infoObject">Info</a>
  */
 @Data
 @Builder

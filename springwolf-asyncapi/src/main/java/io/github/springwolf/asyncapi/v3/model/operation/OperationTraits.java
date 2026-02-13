@@ -24,7 +24,7 @@ import java.util.Map;
  * </p>
  * If you're looking to apply traits to a message, see the Message Trait Object.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#operationTraitObject">Operation Trait Object</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#operationTraitObject">Operation Trait Object</a>
  */
 @Data
 @Builder

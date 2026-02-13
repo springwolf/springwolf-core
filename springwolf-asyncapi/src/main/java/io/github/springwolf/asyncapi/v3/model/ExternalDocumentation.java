@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 /**
  * Allows referencing an external resource for extended documentation.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#externalDocumentationObject">ExternalDocumentation</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#externalDocumentationObject">ExternalDocumentation</a>
  */
 @Data
 @Builder

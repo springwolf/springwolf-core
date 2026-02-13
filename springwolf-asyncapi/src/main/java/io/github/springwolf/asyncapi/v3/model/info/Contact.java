@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * Contact information for the exposed API.
  *
- * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0#contactObject">Contact</a>
+ * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#contactObject">Contact</a>
  */
 @Data
 @Builder

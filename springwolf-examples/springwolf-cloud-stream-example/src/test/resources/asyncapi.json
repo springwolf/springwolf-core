@@ -1,5 +1,5 @@
 {
-  "asyncapi": "3.0.0",
+  "asyncapi": "3.1.0",
   "info": {
     "title": "Springwolf example project - Cloud Stream",
     "version": "1.0.0",
@@ -246,7 +246,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/AnotherPayloadDto"
           }
@@ -262,7 +262,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/ExamplePayloadDto"
           }
@@ -278,7 +278,7 @@
           "$ref": "#/components/schemas/HeadersNotDocumented"
         },
         "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
           "schema": {
             "$ref": "#/components/schemas/GooglePubSubPayloadDto"
           }
