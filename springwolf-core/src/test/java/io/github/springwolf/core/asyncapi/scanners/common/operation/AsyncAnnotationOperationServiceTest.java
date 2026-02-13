@@ -12,6 +12,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,8 @@ class AsyncAnnotationOperationServiceTest {
                     asyncAnnotationProvider,
                     operationBindingProcessors,
                     asyncAnnotationMessageService,
-                    stringValueResolver);
+                    stringValueResolver,
+                    new ChannelNameResolver(List.of(), stringValueResolver));
 
     private static final String CHANNEL_ID = "test-channel-id";
     private static final OperationBinding defaultOperationBinding = new AMQPOperationBinding();

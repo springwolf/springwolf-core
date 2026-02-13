@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
@@ -33,12 +34,13 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
     private final List<OperationBindingProcessor> operationBindingProcessors;
     private final AsyncAnnotationMessageService asyncAnnotationMessageService;
     private final StringValueResolver stringValueResolver;
+    private final ChannelNameResolver channelNameResolver;
 
     public Operation buildOperation(AsyncOperation asyncOperation, Set<Method> methods) {
-        String channelName = stringValueResolver.resolveStringValue(asyncOperation.channelName());
+        Method method = methods.stream().findFirst().orElseThrow();
+        String channelName = channelNameResolver.resolve(asyncOperation, method);
         String channelId = ReferenceUtil.toValidId(channelName);
 
-        Method method = methods.stream().findFirst().orElseThrow();
         List<MessageReference> messages = methods.stream()
                 .map(m -> asyncAnnotationMessageService.buildMessage(asyncOperation, m))
                 .map(m -> MessageReference.toChannelMessage(channelId, m))

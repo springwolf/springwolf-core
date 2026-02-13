@@ -12,7 +12,13 @@ import java.lang.annotation.Target;
 @Target({})
 @Inherited
 public @interface AsyncOperation {
-    String channelName();
+    /**
+     * The name of the channel.
+     * <p>
+     * If not set, Springwolf will attempt to infer the channel name from the broker-specific listener annotation
+     * on the same method (e.g. {@code @RabbitListener(queues = "my-queue")} → channel name {@code my-queue}).
+     */
+    String channelName() default "";
 
     String description() default "";
 

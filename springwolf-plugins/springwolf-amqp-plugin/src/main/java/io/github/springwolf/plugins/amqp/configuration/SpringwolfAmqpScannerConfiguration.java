@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScann
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameInferrer;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
@@ -23,6 +24,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.channels.RabbitQueueBeanScanner;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.RabbitListenerChannelNameInferrer;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -202,5 +204,15 @@ public class SpringwolfAmqpScannerConfiguration {
     @ConditionalOnMissingBean
     public RabbitQueueBeanScanner rabbitQueueBeanScanner(List<Queue> queues, List<Binding> bindings) {
         return new RabbitQueueBeanScanner(queues, bindings);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_RABBIT_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public ChannelNameInferrer rabbitListenerChannelNameInferrer(StringValueResolver stringValueResolver) {
+        return new RabbitListenerChannelNameInferrer(stringValueResolver);
     }
 }

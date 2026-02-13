@@ -35,6 +35,7 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
     private final List<ChannelBindingProcessor> channelBindingProcessors;
     private final StringValueResolver stringValueResolver;
     private final AsyncApiDocketService asyncApiDocketService;
+    private final ChannelNameResolver channelNameResolver;
 
     public ChannelObject buildChannel(MethodAndAnnotation<Annotation> methodAndAnnotation) {
         AsyncOperation operationAnnotation =
@@ -51,7 +52,7 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
                     servers.stream().map(ServerReference::fromServer).toList());
         }
 
-        String channelName = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
+        String channelName = channelNameResolver.resolve(operationAnnotation, methodAndAnnotation.method());
         String channelId = ReferenceUtil.toValidId(channelName);
         MessageObject message =
                 asyncAnnotationMessageService.buildMessage(operationAnnotation, methodAndAnnotation.method());
