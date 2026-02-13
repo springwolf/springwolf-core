@@ -132,7 +132,7 @@ tasks.named('assemble').configure {
   it.dependsOn('pnpm_run_build')
 }
 tasks.named('test').configure {
-  it.dependsOn('pnpm_run_test', 'pnpm_run_lint_fix')
+  it.dependsOn('pnpm_run_build', 'pnpm_run_test', 'pnpm_run_lint_fix')
 }
 tasks.named('spotlessApply').configure {
   it.dependsOn('pnpm_run_lint_fix')
