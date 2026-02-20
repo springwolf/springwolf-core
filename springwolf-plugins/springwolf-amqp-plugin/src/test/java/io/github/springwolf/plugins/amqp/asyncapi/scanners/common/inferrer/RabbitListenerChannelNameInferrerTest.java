@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.plugins.amqp.asyncapi.scanners.common;
+package io.github.springwolf.plugins.amqp.asyncapi.scanners.common.inferrer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -42,16 +42,27 @@ class RabbitListenerChannelNameInferrerTest {
 
     @Test
     void returnsEmptyWhenNoRabbitListenerAnnotation() throws Exception {
+        // given
         Method method = NoAnnotationClass.class.getDeclaredMethod("method", String.class);
-        assertThat(inferrer.inferChannelName(method)).isEmpty();
+
+        // when
+        Optional<String> result = inferrer.inferChannelName(method);
+
+        // then
+        assertThat(result).isEmpty();
     }
 
     @Nested
     class QueuesAttribute {
         @Test
         void infersChannelNameFromQueues() throws Exception {
+            // given
             Method method = WithQueuesClass.class.getDeclaredMethod("listen", String.class);
+
+            // when
             Optional<String> result = inferrer.inferChannelName(method);
+
+            // then
             assertThat(result).hasValue("queue-1");
         }
     }
@@ -60,8 +71,13 @@ class RabbitListenerChannelNameInferrerTest {
     class QueuesToDeclareAttribute {
         @Test
         void infersChannelNameFromQueuesToDeclare() throws Exception {
+            // given
             Method method = WithQueuesToDeclareClass.class.getDeclaredMethod("listen", String.class);
+
+            // when
             Optional<String> result = inferrer.inferChannelName(method);
+
+            // then
             assertThat(result).hasValue("queue-1");
         }
     }
@@ -70,30 +86,26 @@ class RabbitListenerChannelNameInferrerTest {
     class BindingsAttribute {
         @Test
         void infersChannelNameFromBindingsExchange() throws Exception {
+            // given
             Method method = WithBindingsClass.class.getDeclaredMethod("listen", String.class);
+
+            // when
             Optional<String> result = inferrer.inferChannelName(method);
+
+            // then
             assertThat(result).hasValue("exchange-name");
         }
 
         @Test
         void infersChannelNameFromBindingsExchangeWithRoutingKey() throws Exception {
+            // given
             Method method = WithBindingsAndRoutingKeyClass.class.getDeclaredMethod("listen", String.class);
-            Optional<String> result = inferrer.inferChannelName(method);
-            assertThat(result).hasValue("exchange-name_routing-key");
-        }
-    }
 
-    @Nested
-    class ExplicitChannelNamePrecedence {
-        @Test
-        void explicitChannelNameIsNotAffectedByInferrer() throws Exception {
-            // The inferrer just infers – it is the responsibility of the caller to prefer
-            // the explicit value. Here we confirm the inferrer still returns the queue name
-            // (the caller in AsyncAnnotationChannelService will skip the inferrer when
-            // the explicit channel name is non-blank).
-            Method method = WithQueuesClass.class.getDeclaredMethod("listen", String.class);
-            Optional<String> inferred = inferrer.inferChannelName(method);
-            assertThat(inferred).hasValue("queue-1");
+            // when
+            Optional<String> result = inferrer.inferChannelName(method);
+
+            // then
+            assertThat(result).hasValue("exchange-name_routing-key");
         }
     }
 
