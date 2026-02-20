@@ -47,7 +47,6 @@ public class ExampleClassLevelKafkaListener {
     @AsyncListener(
             operation =
                     @AsyncOperation(
-                            channelName = TOPIC,
                             description =
                                     "Override description in the AsyncListener annotation with servers at ${spring.kafka.bootstrap-servers}",
                             headers =

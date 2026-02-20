@@ -25,7 +25,6 @@ public class StringConsumer {
     @AsyncListener(
             operation =
                     @AsyncOperation(
-                            channelName = TOPIC,
                             description =
                                     "Final classes (like String) can be documented using an envelope class and the @AsyncApiPayload annotation.",
                             payloadType = StringEnvelope.class,
