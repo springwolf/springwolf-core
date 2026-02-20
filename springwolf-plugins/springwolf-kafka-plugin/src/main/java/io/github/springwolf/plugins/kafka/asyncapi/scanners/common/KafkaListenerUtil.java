@@ -19,6 +19,7 @@ import org.springframework.util.StringValueResolver;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -27,15 +28,19 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class KafkaListenerUtil {
 
+    @Nullable
     public static String getChannelName(KafkaListener annotation, StringValueResolver stringValueResolver) {
         Stream<String> topicName = Stream.concat(
                 // the parameters topics and topicPattern are mutually exclusive
                 Arrays.stream(annotation.topics()), Stream.of(annotation.topicPattern()));
-        List<String> resolvedTopics =
-                topicName.map(stringValueResolver::resolveStringValue).collect(toList());
+        List<String> resolvedTopics = topicName
+                .map(stringValueResolver::resolveStringValue)
+                .filter(Objects::nonNull)
+                .filter(it -> !it.isBlank())
+                .collect(toList());
 
         log.trace("Found topics: {}", String.join(", ", resolvedTopics));
-        return resolvedTopics.get(0);
+        return resolvedTopics.stream().findFirst().orElse(null);
     }
 
     public static Map<String, ChannelBinding> buildChannelBinding() {
