@@ -19,8 +19,8 @@ import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanne
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.AsyncAnnotationChannelService;
-import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameInferrer;
-import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameResolver;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameInferrer;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;

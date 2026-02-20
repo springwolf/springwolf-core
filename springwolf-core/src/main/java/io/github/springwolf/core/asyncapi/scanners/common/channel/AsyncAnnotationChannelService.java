@@ -14,6 +14,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBind
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
@@ -41,17 +42,6 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
         AsyncOperation operationAnnotation =
                 this.asyncAnnotationProvider.getAsyncOperation(methodAndAnnotation.annotation());
 
-        ChannelObject.ChannelObjectBuilder channelBuilder = ChannelObject.builder();
-        List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, stringValueResolver);
-        if (!servers.isEmpty()) {
-            Operation operation = asyncAnnotationOperationService.buildOperation(
-                    operationAnnotation, Set.of(methodAndAnnotation.method()));
-            validateServers(servers, operation.getTitle());
-
-            channelBuilder.servers(
-                    servers.stream().map(ServerReference::fromServer).toList());
-        }
-
         String channelName = channelNameResolver.resolve(operationAnnotation, methodAndAnnotation.method());
         String channelId = ReferenceUtil.toValidId(channelName);
         MessageObject message =
@@ -59,12 +49,32 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
         Map<String, ChannelBinding> channelBindings = AsyncAnnotationUtil.processChannelBindingFromAnnotation(
                 methodAndAnnotation.method(), channelBindingProcessors);
 
-        return channelBuilder
-                .channelId(channelId)
+        ChannelObject.ChannelObjectBuilder builder = ChannelObject.builder();
+        getServers(methodAndAnnotation, operationAnnotation, builder);
+
+        return builder.channelId(channelId)
                 .address(channelName)
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .bindings(channelBindings)
                 .build();
+    }
+
+    void getServers(
+            MethodAndAnnotation<Annotation> methodAndAnnotation,
+            AsyncOperation operationAnnotation,
+            ChannelObject.ChannelObjectBuilder builder) {
+        List<String> servers = AsyncAnnotationUtil.getServers(operationAnnotation, stringValueResolver);
+        if (servers.isEmpty()) {
+            return;
+        }
+
+        Operation operation = asyncAnnotationOperationService.buildOperation(
+                operationAnnotation, Set.of(methodAndAnnotation.method()));
+        validateServers(servers, operation.getTitle());
+
+        List<ServerReference> references =
+                servers.stream().map(ServerReference::fromServer).toList();
+        builder.servers(references);
     }
 
     /**

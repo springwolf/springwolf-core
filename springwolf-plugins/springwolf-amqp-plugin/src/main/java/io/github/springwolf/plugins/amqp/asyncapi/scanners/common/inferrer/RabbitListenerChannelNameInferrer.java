@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.plugins.amqp.asyncapi.scanners.common;
+package io.github.springwolf.plugins.amqp.asyncapi.scanners.common.inferrer;
 
-import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameInferrer;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameInferrer;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.RabbitListenerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -28,14 +28,12 @@ public class RabbitListenerChannelNameInferrer implements ChannelNameInferrer {
 
     @Override
     public Optional<String> inferChannelName(Method method) {
-        RabbitListener annotation = method.getAnnotation(RabbitListener.class);
-        if (annotation == null) {
-            return Optional.empty();
-        }
-        try {
-            return Optional.of(RabbitListenerUtil.getChannelName(annotation, stringValueResolver));
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(method.getAnnotation(RabbitListener.class)).flatMap(annotation -> {
+            try {
+                return Optional.of(RabbitListenerUtil.getChannelName(annotation, stringValueResolver));
+            } catch (IllegalArgumentException e) {
+                return Optional.empty();
+            }
+        });
     }
 }

@@ -16,6 +16,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBind
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.common.AsyncAnnotationProvider;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
@@ -61,24 +62,6 @@ class AsyncAnnotationChannelServiceTest {
         }
     };
 
-    private final AsyncAnnotationProvider<TestListenerNoChannel> noChannelAnnotationProvider =
-            new AsyncAnnotationProvider<>() {
-                @Override
-                public Class<TestListenerNoChannel> getAnnotation() {
-                    return TestListenerNoChannel.class;
-                }
-
-                @Override
-                public AsyncOperation getAsyncOperation(TestListenerNoChannel annotation) {
-                    return annotation.operation();
-                }
-
-                @Override
-                public OperationAction getOperationType() {
-                    return OperationAction.RECEIVE;
-                }
-            };
-
     private final AsyncAnnotationMessageService asyncAnnotationMessageService =
             mock(AsyncAnnotationMessageService.class);
     private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService =
@@ -87,9 +70,7 @@ class AsyncAnnotationChannelServiceTest {
     private final List<ChannelBindingProcessor> channelBindingProcessors = List.of(channelBindingProcessor);
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
     private final AsyncApiDocketService asyncApiDocketService = mock(AsyncApiDocketService.class);
-
-    /** Resolver with no inferrers — relies entirely on explicit channelName. */
-    private final ChannelNameResolver channelNameResolver = new ChannelNameResolver(List.of(), stringValueResolver);
+    private final ChannelNameResolver channelNameResolver = mock(ChannelNameResolver.class);
 
     AsyncAnnotationChannelService<TestListener> asyncAnnotationChannelService = new AsyncAnnotationChannelService<>(
             asyncAnnotationProvider,
@@ -105,6 +86,10 @@ class AsyncAnnotationChannelServiceTest {
         doAnswer(invocation -> invocation.getArgument(0))
                 .when(stringValueResolver)
                 .resolveStringValue(any());
+
+        doAnswer(invocation -> ((AsyncOperation) invocation.getArgument(0)).channelName())
+                .when(channelNameResolver)
+                .resolve(any(), any());
 
         when(channelBindingProcessor.process(any()))
                 .thenReturn(Optional.of(new ProcessedChannelBinding("test-binding", new EmptyChannelBinding())));
@@ -218,104 +203,14 @@ class AsyncAnnotationChannelServiceTest {
         }
     }
 
-    @Nested
-    class ChannelNameInference {
-        @Test
-        void explicitChannelNameTakesPrecedenceOverInferred() throws Exception {
-            Method method = ClassWithListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
-            // even with an inferrer registered, explicit channelName must win
-            ChannelNameResolver resolverWithInferrer =
-                    new ChannelNameResolver(List.of(m -> Optional.of("inferred-channel")), stringValueResolver);
-
-            AsyncAnnotationChannelService<TestListener> service = new AsyncAnnotationChannelService<>(
-                    asyncAnnotationProvider,
-                    asyncAnnotationOperationService,
-                    asyncAnnotationMessageService,
-                    channelBindingProcessors,
-                    stringValueResolver,
-                    asyncApiDocketService,
-                    resolverWithInferrer);
-
-            MessageObject message =
-                    MessageObject.builder().messageId(String.class.getName()).build();
-            when(asyncAnnotationMessageService.buildMessage(any(), any())).thenReturn(message);
-
-            ChannelObject channel =
-                    service.buildChannel(new MethodAndAnnotation<>(method, method.getAnnotation(TestListener.class)));
-
-            assertThat(channel.getAddress()).isEqualTo(CHANNEL);
-        }
-
-        @Test
-        void blankChannelNameIsInferredFromInferrer() throws Exception {
-            Method method =
-                    ClassWithListenerAnnotationWithNoChannelName.class.getDeclaredMethod("method", String.class);
-            ChannelNameResolver resolverWithInferrer =
-                    new ChannelNameResolver(List.of(m -> Optional.of("inferred-channel")), stringValueResolver);
-
-            AsyncAnnotationChannelService<TestListenerNoChannel> service = new AsyncAnnotationChannelService<>(
-                    noChannelAnnotationProvider,
-                    mock(AsyncAnnotationOperationService.class),
-                    asyncAnnotationMessageService,
-                    channelBindingProcessors,
-                    stringValueResolver,
-                    asyncApiDocketService,
-                    resolverWithInferrer);
-
-            MessageObject message =
-                    MessageObject.builder().messageId(String.class.getName()).build();
-            when(asyncAnnotationMessageService.buildMessage(any(), any())).thenReturn(message);
-
-            ChannelObject channel = service.buildChannel(
-                    new MethodAndAnnotation<>(method, method.getAnnotation(TestListenerNoChannel.class)));
-
-            assertThat(channel.getAddress()).isEqualTo("inferred-channel");
-        }
-
-        @Test
-        void blankChannelNameWithNoInferrerThrows() throws Exception {
-            Method method =
-                    ClassWithListenerAnnotationWithNoChannelName.class.getDeclaredMethod("method", String.class);
-            ChannelNameResolver emptyResolver = new ChannelNameResolver(List.of(), stringValueResolver);
-
-            AsyncAnnotationChannelService<TestListenerNoChannel> service = new AsyncAnnotationChannelService<>(
-                    noChannelAnnotationProvider,
-                    mock(AsyncAnnotationOperationService.class),
-                    asyncAnnotationMessageService,
-                    channelBindingProcessors,
-                    stringValueResolver,
-                    asyncApiDocketService,
-                    emptyResolver);
-
-            MethodAndAnnotation<TestListenerNoChannel> methodAndAnnotation =
-                    new MethodAndAnnotation<>(method, method.getAnnotation(TestListenerNoChannel.class));
-
-            assertThatThrownBy(() -> service.buildChannel(methodAndAnnotation))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("No channelName was set in @AsyncOperation");
-        }
-    }
-
     private static class ClassWithListenerAnnotation {
 
         @TestListener
         private void methodWithAnnotation(String payload) {}
     }
 
-    private static class ClassWithListenerAnnotationWithNoChannelName {
-
-        @TestListenerNoChannel
-        private void method(String payload) {}
-    }
-
     @Retention(RetentionPolicy.RUNTIME)
     @interface TestListener {
         AsyncOperation operation() default @AsyncOperation(channelName = CHANNEL);
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface TestListenerNoChannel {
-        // channelName left blank to trigger inference
-        AsyncOperation operation() default @AsyncOperation();
     }
 }

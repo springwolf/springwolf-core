@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.common.channel;
+package io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,29 +29,32 @@ public class ChannelNameResolver {
     private final StringValueResolver stringValueResolver;
 
     public String resolve(AsyncOperation operationAnnotation, Method method) {
-        String explicit = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
-        if (StringUtils.isNotBlank(explicit)) {
-            log.debug("Using explicit channelName '{}' for method '{}'", explicit, method.getName());
-            return explicit;
+        String channelNameFromAnnotation = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
+        if (StringUtils.isNotBlank(channelNameFromAnnotation)) {
+            log.trace(
+                    "Using explicit channelName '{}' for method {}#{}",
+                    channelNameFromAnnotation,
+                    method.getDeclaringClass().getName(),
+                    method.getName());
+            return channelNameFromAnnotation;
         }
 
         for (ChannelNameInferrer inferrer : channelNameInferrers) {
             Optional<String> inferred = inferrer.inferChannelName(method);
             if (inferred.isPresent() && StringUtils.isNotBlank(inferred.get())) {
-                log.debug(
-                        "Inferred channelName '{}' for method '{}' via {}",
+                log.trace(
+                        "Inferred channelName '{}' for method {}#{} via {}",
                         inferred.get(),
+                        method.getDeclaringClass().getName(),
                         method.getName(),
                         inferrer.getClass().getSimpleName());
                 return inferred.get();
             }
         }
 
-        log.warn(
-                "No channelName could be resolved for method '{}': @AsyncOperation.channelName() is blank and no ChannelNameInferrer provided a value",
-                method.getName());
-        throw new IllegalArgumentException(
-                "No channelName was set in @AsyncOperation and none could be inferred from the listener annotation on method: "
-                        + method.getName());
+        String message = String.format(
+                "No channelName could be resolved for method %s#%s The field @AsyncOperation.channelName() is blank and no ChannelNameInferrer provided a value",
+                method.getDeclaringClass().getName(), method.getName());
+        throw new IllegalArgumentException(message);
     }
 }

@@ -9,8 +9,8 @@ import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScann
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
-import io.github.springwolf.core.asyncapi.scanners.common.channel.ChannelNameInferrer;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameInferrer;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
@@ -24,8 +24,8 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.bindings.AmqpBindingFactory;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.channels.RabbitQueueBeanScanner;
-import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.RabbitListenerChannelNameInferrer;
 import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.headers.AsyncHeadersForAmqpBuilder;
+import io.github.springwolf.plugins.amqp.asyncapi.scanners.common.inferrer.RabbitListenerChannelNameInferrer;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
