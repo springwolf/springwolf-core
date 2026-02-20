@@ -45,7 +45,7 @@ public class KafkaChannelNameInferrer implements ChannelNameInferrer {
 
     private Optional<String> inferFromAnnotation(KafkaListener annotation) {
         try {
-            return Optional.of(KafkaListenerUtil.getChannelName(annotation, stringValueResolver));
+            return Optional.ofNullable(KafkaListenerUtil.getChannelName(annotation, stringValueResolver));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
