@@ -28,7 +28,6 @@ public class AvroConsumer {
     @AsyncListener(
             operation =
                     @AsyncOperation(
-                            channelName = "avro-topic",
                             description =
                                     "Requires a running kafka-schema-registry. See docker-compose.yml to start it",
                             message = @AsyncMessage(contentType = "application/avro")))

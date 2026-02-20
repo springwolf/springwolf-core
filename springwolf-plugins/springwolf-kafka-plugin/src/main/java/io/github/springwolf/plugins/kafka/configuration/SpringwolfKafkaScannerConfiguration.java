@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAn
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationMethodLevelChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
+import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameInferrer;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
@@ -23,6 +24,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.inferrer.KafkaChannelNameInferrer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -182,5 +184,15 @@ public class SpringwolfKafkaScannerConfiguration {
                         operationCustomizers);
 
         return new OperationsInClassScannerAdapter(springwolfClassScanner, strategy);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public ChannelNameInferrer rabbitListenerChannelNameInferrer(StringValueResolver stringValueResolver) {
+        return new KafkaChannelNameInferrer(stringValueResolver);
     }
 }
