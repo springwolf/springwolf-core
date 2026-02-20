@@ -41,6 +41,7 @@ dependencies {
     permitTestUnusedDeclared libs.jackson.core
 
     testImplementation libs.mockito.core
+    testImplementation libs.mockito.junit.jupiter
 
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.boot.restclient
