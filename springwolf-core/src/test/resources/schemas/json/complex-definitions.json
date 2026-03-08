@@ -67,6 +67,7 @@
         "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.ComplexFoo.Nested.Cyclic"
       },
       "nli" : {
+        "title" : "List",
         "type" : "array",
         "items" : {
           "type" : "integer",
@@ -74,6 +75,7 @@
         }
       },
       "nmfm" : {
+        "title" : "Map",
         "type" : "object",
         "additionalProperties" : {
           "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.ComplexFoo.Nested.MyClass"
@@ -83,6 +85,7 @@
         "type" : "string"
       },
       "nsm" : {
+        "title" : "Set",
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.ComplexFoo.Nested.MyClass"

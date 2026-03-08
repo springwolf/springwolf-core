@@ -710,7 +710,8 @@
                 "FOO1",
                 "FOO2",
                 "FOO3"
-              ]
+              ],
+              "title": "ExampleEnum"
             }
           },
           "title": "AnotherPayloadAvroDto"
@@ -751,7 +752,8 @@
                 "FOO2",
                 "FOO3",
                 "UNRECOGNIZED"
-              ]
+              ],
+              "title": "ExampleEnum"
             },
             "someLong": {
               "type": "integer",
@@ -811,7 +813,8 @@
                 "FOO2",
                 "FOO3"
               ],
-              "example": "FOO2"
+              "example": "FOO2",
+              "title": "ExampleEnum"
             },
             "someLong": {
               "type": "integer",
@@ -854,7 +857,8 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
-              }
+              },
+              "title": "List"
             },
             "someStrings": {
               "type": "array",
@@ -863,6 +867,7 @@
                 "description": "Some string field",
                 "example": "some string value"
               },
+              "title": "Set",
               "uniqueItems": true
             }
           },
@@ -887,7 +892,8 @@
               "enum": [
                 "COMPLEX1",
                 "COMPLEX2"
-              ]
+              ],
+              "title": "ComplexEnum"
             },
             "notRequiredField": {
               "type": "string",
@@ -932,7 +938,8 @@
                 "FOO1",
                 "FOO2",
                 "FOO3"
-              ]
+              ],
+              "title": "ExampleEnum"
             },
             "someLong": {
               "type": "integer",
@@ -957,7 +964,8 @@
                 "FOO1",
                 "FOO2",
                 "FOO3"
-              ]
+              ],
+              "title": "ExampleEnum"
             },
             "someLong": {
               "type": "integer",
@@ -1070,7 +1078,8 @@
             "powerSource": "string",
             "topSpeed": 0,
             "vehicleType": "string"
-          }
+          },
+          "title": "VehicleElectricPayloadDto"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto": {
@@ -1100,7 +1109,8 @@
             "powerSource": "string",
             "topSpeed": 0,
             "vehicleType": "string"
-          }
+          },
+          "title": "VehicleGasolinePayloadDto"
         }
       },
       "java.lang.Integer": {

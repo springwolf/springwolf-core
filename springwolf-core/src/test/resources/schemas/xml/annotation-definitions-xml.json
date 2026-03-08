@@ -20,6 +20,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SchemaWithOneOf.ImplementationOne" : {
+    "title" : "ImplementationOne",
     "type" : "string",
     "properties" : {
       "firstOne" : {
@@ -32,6 +33,7 @@
     "examples" : [ "<ImplementationOne><firstOne>string</firstOne><secondOne>string</secondOne></ImplementationOne>" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SchemaWithOneOf.ImplementationTwo" : {
+    "title" : "ImplementationTwo",
     "type" : "string",
     "properties" : {
       "firstTwo" : {

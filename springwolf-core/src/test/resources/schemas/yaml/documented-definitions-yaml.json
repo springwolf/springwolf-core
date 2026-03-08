@@ -20,6 +20,7 @@
         "examples" : [ "2024-04-24T00:00:00.000+00:00" ]
       },
       "ls_plain" : {
+        "title" : "List",
         "type" : "array",
         "description" : "List without example",
         "items" : {
@@ -28,6 +29,7 @@
         }
       },
       "mss" : {
+        "title" : "Map",
         "type" : "object",
         "description" : "Map with example",
         "examples" : [ {
@@ -40,6 +42,7 @@
         }
       },
       "mss_plain" : {
+        "title" : "Map",
         "type" : "object",
         "description" : "Map without example",
         "additionalProperties" : {

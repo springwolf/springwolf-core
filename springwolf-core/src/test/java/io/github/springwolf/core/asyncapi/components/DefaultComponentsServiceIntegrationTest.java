@@ -87,6 +87,7 @@ class DefaultComponentsServiceIntegrationTest {
                                     "array",
                                     ComponentSchema.of(SchemaObject.builder()
                                             .type(Set.of(SchemaType.ARRAY.getValue()))
+                                            .title("List")
                                             .items(ComponentSchema.of(SchemaObject.builder()
                                                     .type(Set.of(SchemaType.STRING.getValue()))
                                                     .description("items description")

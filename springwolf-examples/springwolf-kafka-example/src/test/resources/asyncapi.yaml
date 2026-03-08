@@ -695,6 +695,7 @@ components:
         examplePayloadAvroDto:
           $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dto.avro.ExamplePayloadAvroDto"
         someEnum:
+          title: ExampleEnum
           type: string
           enum:
             - FOO1
@@ -722,6 +723,7 @@ components:
               - FOO1
               - FOO2
               - FOO3
+            title: ExampleEnum
             type: string
         title: AnotherPayloadAvroDto
         type: object
@@ -752,6 +754,7 @@ components:
       type: object
       properties:
         someEnum:
+          title: ExampleEnum
           type: string
           enum:
             - FOO1
@@ -776,6 +779,7 @@ components:
               - FOO2
               - FOO3
               - UNRECOGNIZED
+            title: ExampleEnum
             type: string
           someLong:
             format: int64
@@ -820,6 +824,7 @@ components:
                   - FOO1
                   - FOO2
                   - FOO3
+                title: ExampleEnum
                 type: string
               someLong:
                 description: Some long field
@@ -859,6 +864,7 @@ components:
       type: object
       properties:
         someEnum:
+          title: ExampleEnum
           type: string
           description: Some enum field
           enum:
@@ -913,6 +919,7 @@ components:
               - FOO1
               - FOO2
               - FOO3
+            title: ExampleEnum
             type: string
           someLong:
             description: Some long field
@@ -944,10 +951,12 @@ components:
       type: object
       properties:
         examplePayloads:
+          title: List
           type: array
           items:
             $ref: "#/components/schemas/io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto"
         someStrings:
+          title: Set
           type: array
           items:
             type: string
@@ -979,6 +988,7 @@ components:
                     - FOO1
                     - FOO2
                     - FOO3
+                  title: ExampleEnum
                   type: string
                 someLong:
                   description: Some long field
@@ -1005,11 +1015,13 @@ components:
                 - someString
               title: ExamplePayloadDto
               type: object
+            title: List
             type: array
           someStrings:
             items:
               description: Some string field
               type: string
+            title: Set
             type: array
             uniqueItems: true
         title: NestedPayloadDto
@@ -1019,6 +1031,7 @@ components:
       type: object
       properties:
         enumField:
+          title: ComplexEnum
           type:
             - string
             - "null"
@@ -1066,6 +1079,7 @@ components:
               - COMPLEX1
               - COMPLEX2
               - null
+            title: ComplexEnum
             type:
               - string
               - "null"
@@ -1098,6 +1112,7 @@ components:
         someAttribute:
           type: string
         someEnum:
+          title: ExampleEnum
           type: string
           enum:
             - FOO1
@@ -1119,6 +1134,7 @@ components:
               - FOO1
               - FOO2
               - FOO3
+            title: ExampleEnum
             type: string
           someLong:
             format: int64
@@ -1132,6 +1148,7 @@ components:
       type: string
       properties:
         someEnum:
+          title: ExampleEnum
           type: string
           enum:
             - FOO1
@@ -1155,6 +1172,7 @@ components:
               - FOO1
               - FOO2
               - FOO3
+            title: ExampleEnum
             type: string
           someLong:
             format: int64
@@ -1227,6 +1245,7 @@ components:
                     type: integer
                 type: object
             description: Electric vehicle implementation of VehicleBase
+            title: VehicleElectricPayloadDto
             type: object
           - allOf:
               - {}
@@ -1234,6 +1253,7 @@ components:
                   fuelCapacity: {}
                 type: object
             description: Gasoline vehicle implementation of VehicleBase
+            title: VehicleGasolinePayloadDto
             type: object
         properties:
           enginePower:
@@ -1249,6 +1269,7 @@ components:
         title: VehicleBase
         type: object
     io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto:
+      title: VehicleElectricPayloadDto
       type: object
       description: Electric vehicle implementation of VehicleBase
       examples:
@@ -1285,6 +1306,7 @@ components:
                         type: integer
                     type: object
                 description: Gasoline vehicle implementation of VehicleBase
+                title: VehicleGasolinePayloadDto
                 type: object
             properties:
               enginePower:
@@ -1304,8 +1326,10 @@ components:
               chargeTime: {}
             type: object
         description: Electric vehicle implementation of VehicleBase
+        title: VehicleElectricPayloadDto
         type: object
     io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto:
+      title: VehicleGasolinePayloadDto
       type: object
       description: Gasoline vehicle implementation of VehicleBase
       examples:
@@ -1338,6 +1362,7 @@ components:
                         type: integer
                     type: object
                 description: Electric vehicle implementation of VehicleBase
+                title: VehicleElectricPayloadDto
                 type: object
               - {}
             properties:
@@ -1357,6 +1382,7 @@ components:
               fuelCapacity: {}
             type: object
         description: Gasoline vehicle implementation of VehicleBase
+        title: VehicleGasolinePayloadDto
         type: object
     java.lang.Integer:
       type: integer
