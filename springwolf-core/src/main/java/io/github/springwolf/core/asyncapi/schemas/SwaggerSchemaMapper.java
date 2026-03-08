@@ -7,16 +7,14 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.components.examples.formatter.ExampleFormatter;
 import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -147,28 +145,14 @@ public class SwaggerSchemaMapper {
 
         Object example = swaggerSchema.getExample();
         if (example != null) {
-            if (swaggerSchema instanceof DateSchema && example instanceof Date) {
-                builder.examples(List.of(DefaultSchemaWalker.ISO_DATE_FORMAT.format(example)));
-            } else {
-                builder.examples(List.of(example));
-            }
+            builder.examples(List.of(ExampleFormatter.processExampleObject(example)));
         }
 
         List examples = swaggerSchema.getExamples();
         if (examples != null && !examples.isEmpty()) {
-            if (swaggerSchema instanceof DateSchema) {
-                List<Object> formatedDateExamples = new ArrayList<>(examples.size());
-                for (Object currentExample : examples) {
-                    if (currentExample instanceof Date) {
-                        formatedDateExamples.add(DefaultSchemaWalker.ISO_DATE_FORMAT.format(currentExample));
-                    } else {
-                        formatedDateExamples.add(currentExample);
-                    }
-                }
-                builder.examples(formatedDateExamples);
-            } else {
-                builder.examples(examples);
-            }
+            List<Object> processedExamples = ((List<Object>) examples)
+                    .stream().map(ExampleFormatter::processExampleObject).collect(Collectors.toList());
+            builder.examples(processedExamples);
         }
 
         Object additionalProperties = swaggerSchema.getAdditionalProperties();
