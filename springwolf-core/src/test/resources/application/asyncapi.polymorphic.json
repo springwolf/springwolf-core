@@ -29,6 +29,7 @@
         ]
       },
       "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Cat": {
+        "title": "Cat",
         "type": "object",
         "examples": [
           {
@@ -51,6 +52,7 @@
         ]
       },
       "io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication.Dog": {
+        "title": "Dog",
         "type": "object",
         "examples": [
           {

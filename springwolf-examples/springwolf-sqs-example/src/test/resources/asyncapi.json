@@ -113,6 +113,7 @@
         "type": "object",
         "properties": {
           "someEnum": {
+            "title": "ExampleEnum",
             "type": "string",
             "description": "Some enum field",
             "enum": [

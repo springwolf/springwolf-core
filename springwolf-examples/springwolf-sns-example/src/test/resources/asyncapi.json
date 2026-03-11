@@ -103,6 +103,7 @@
                     "FOO2",
                     "FOO3"
                   ],
+                  "title": "ExampleEnum",
                   "type": "string"
                 },
                 "someLong": {
@@ -141,6 +142,7 @@
         "type": "object",
         "properties": {
           "someEnum": {
+            "title": "ExampleEnum",
             "type": "string",
             "description": "Some enum field",
             "enum": [
@@ -192,6 +194,7 @@
                 "FOO2",
                 "FOO3"
               ],
+              "title": "ExampleEnum",
               "type": "string"
             },
             "someLong": {

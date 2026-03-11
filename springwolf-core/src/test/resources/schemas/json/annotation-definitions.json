@@ -28,6 +28,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SchemaWithOneOf.ImplementationOne" : {
+    "title" : "ImplementationOne",
     "type" : "object",
     "properties" : {
       "firstOne" : {
@@ -43,6 +44,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SchemaWithOneOf.ImplementationTwo" : {
+    "title" : "ImplementationTwo",
     "type" : "object",
     "properties" : {
       "firstTwo" : {

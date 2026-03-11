@@ -18,20 +18,24 @@ import java.util.Iterator;
 public class SchemaTitleModelConverter implements ModelConverter {
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+        if (!chain.hasNext()) return null;
+
+        Schema<?> schema = chain.next().resolve(type, context, chain);
+        if (schema == null) return null;
+
         JavaType javaType = Json.mapper().constructType(type.getType());
-        if (chain.hasNext()) {
-            Schema<?> schema = chain.next().resolve(type, context, chain);
-            boolean isPrimitiveType = PrimitiveType.createProperty(type.getType()) != null;
-            if (schema != null && !isPrimitiveType) {
-                if (schema.get$ref() != null) {
-                    Schema<?> definedModel = context.resolve(type);
-                    if (definedModel != null && definedModel.getTitle() == null) {
-                        definedModel.setTitle(javaType.getRawClass().getSimpleName());
-                    }
-                }
+        boolean isPrimitiveType = PrimitiveType.createProperty(type.getType()) != null;
+        if (isPrimitiveType) return schema;
+
+        if (schema.get$ref() != null) {
+            Schema<?> definedModel = context.resolve(type);
+            if (definedModel != null && definedModel.getTitle() == null) {
+                definedModel.setTitle(javaType.getRawClass().getSimpleName());
             }
-            return schema;
+        } else if (schema.getTitle() == null) {
+            schema.setTitle(javaType.getRawClass().getSimpleName());
         }
-        return null;
+
+        return schema;
     }
 }

@@ -4,6 +4,7 @@
     "type" : "object",
     "properties" : {
       "flist" : {
+        "title" : "List",
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.SimpleFoo"

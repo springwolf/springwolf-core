@@ -23,6 +23,7 @@
     "type" : "object",
     "properties" : {
       "b" : {
+        "title" : "Bar",
         "type" : "string",
         "enum" : [ "BAR1", "BAR2" ]
       },

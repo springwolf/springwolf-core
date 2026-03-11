@@ -169,6 +169,7 @@
                 }
               ],
               "description": "Electric vehicle implementation of VehicleBase",
+              "title": "VehicleElectricPayloadDto",
               "type": "object"
             },
             {
@@ -182,6 +183,7 @@
                 }
               ],
               "description": "Gasoline vehicle implementation of VehicleBase",
+              "title": "VehicleGasolinePayloadDto",
               "type": "object"
             }
           ],
@@ -205,6 +207,7 @@
         }
       },
       "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleElectricPayloadDto": {
+        "title": "VehicleElectricPayloadDto",
         "type": "object",
         "description": "Electric vehicle implementation of VehicleBase",
         "examples": [
@@ -259,6 +262,7 @@
                     }
                   ],
                   "description": "Gasoline vehicle implementation of VehicleBase",
+                  "title": "VehicleGasolinePayloadDto",
                   "type": "object"
                 }
               ],
@@ -289,10 +293,12 @@
             }
           ],
           "description": "Electric vehicle implementation of VehicleBase",
+          "title": "VehicleElectricPayloadDto",
           "type": "object"
         }
       },
       "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleGasolinePayloadDto": {
+        "title": "VehicleGasolinePayloadDto",
         "type": "object",
         "description": "Gasoline vehicle implementation of VehicleBase",
         "examples": [
@@ -342,6 +348,7 @@
                     }
                   ],
                   "description": "Electric vehicle implementation of VehicleBase",
+                  "title": "VehicleElectricPayloadDto",
                   "type": "object"
                 },
                 { }
@@ -372,6 +379,7 @@
             }
           ],
           "description": "Gasoline vehicle implementation of VehicleBase",
+          "title": "VehicleGasolinePayloadDto",
           "type": "object"
         }
       }

@@ -1,5 +1,6 @@
 {
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.JsonTypeTest.JsonTypeInfoExampleOne" : {
+    "title" : "JsonTypeInfoExampleOne",
     "type" : "object",
     "description" : "Json Type Info Example One model",
     "examples" : [ {
@@ -20,6 +21,7 @@
     } ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultJsonComponentsServiceIntegrationTest.JsonTypeTest.JsonTypeInfoExampleTwo" : {
+    "title" : "JsonTypeInfoExampleTwo",
     "type" : "object",
     "description" : "Json Type Info Example Two model",
     "examples" : [ {
