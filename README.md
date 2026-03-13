@@ -231,6 +231,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Haisia"><img src="https://avatars.githubusercontent.com/u/110602188?v=4?s=100" width="100px;" alt="Haisia"/><br /><sub><b>Haisia</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Haisia" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://blog.etrandafir.com/"><img src="https://avatars.githubusercontent.com/u/75391049?v=4?s=100" width="100px;" alt="Emanuel Trandafir"/><br /><sub><b>Emanuel Trandafir</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=etrandafir93" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/therev2"><img src="https://avatars.githubusercontent.com/u/162664573?v=4?s=100" width="100px;" alt="Revan Channa"/><br /><sub><b>Revan Channa</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=therev2" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Markus-Sky"><img src="https://avatars.githubusercontent.com/u/57673384?v=4?s=100" width="100px;" alt="Skypha"/><br /><sub><b>Skypha</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=Markus-Sky" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
