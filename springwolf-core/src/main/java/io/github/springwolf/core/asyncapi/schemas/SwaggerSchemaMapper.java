@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.springwolf.core.asyncapi.components.examples.formatter.ExampleFormatter;
 import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.models.media.ObjectSchema;
@@ -144,11 +145,14 @@ public class SwaggerSchemaMapper {
 
         Object example = swaggerSchema.getExample();
         if (example != null) {
-            builder.examples(List.of(example));
+            builder.examples(List.of(ExampleFormatter.processExampleObject(example)));
         }
+
         List examples = swaggerSchema.getExamples();
         if (examples != null && !examples.isEmpty()) {
-            builder.examples(examples);
+            List<Object> processedExamples = ((List<Object>) examples)
+                    .stream().map(ExampleFormatter::processExampleObject).collect(Collectors.toList());
+            builder.examples(processedExamples);
         }
 
         Object additionalProperties = swaggerSchema.getAdditionalProperties();

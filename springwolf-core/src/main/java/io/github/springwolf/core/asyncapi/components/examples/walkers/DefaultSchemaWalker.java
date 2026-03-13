@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.components.examples.walkers;
 
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
+import io.github.springwolf.core.asyncapi.components.examples.formatter.ExampleFormatter;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -10,11 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
-import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +27,6 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
-
-    private static final SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final Boolean DEFAULT_BOOLEAN_EXAMPLE = true;
 
@@ -140,14 +135,9 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return exampleValueGenerator.createDoubleExample(doubleValue, schema);
         }
 
-        if (exampleValue instanceof Date exampleDate) { // in case of LocalDate, swagger-parser converts it into a Date
-            String formatted = ISO_DATE_FORMAT.format(exampleDate);
-            return exampleValueGenerator.createStringExample(formatted, schema);
-        }
-
-        if (exampleValue instanceof OffsetDateTime exampleOffsetDateTime) {
-            String formatted = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(exampleOffsetDateTime);
-            return exampleValueGenerator.createStringExample(formatted, schema);
+        Object processedExampleObject = ExampleFormatter.processExampleObject(exampleValue);
+        if (processedExampleObject != exampleValue && processedExampleObject instanceof String processedExampleString) {
+            return exampleValueGenerator.createStringExample(processedExampleString, schema);
         }
 
         try {
