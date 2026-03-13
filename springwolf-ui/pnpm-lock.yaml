@@ -97,8 +97,8 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       ts-json-schema-generator:
-        specifier: ^2.5.0
-        version: 2.5.0
+        specifier: ^2.9.0
+        version: 2.9.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -4598,8 +4598,8 @@ packages:
       jest-util:
         optional: true
 
-  ts-json-schema-generator@2.5.0:
-    resolution: {integrity: sha512-sYY7AInozRbtj9OD3ynJJuMDWZ5lGxzxTevtmH3W9Hnd2J2szBC0HdPqSyuIirXnQ6g8KDJxS/HENoypUwBrlg==}
+  ts-json-schema-generator@2.9.0:
+    resolution: {integrity: sha512-NR5ZE108uiPtBHBJNGnhwoUaUx5vWTDJzDFG9YlRoqxPU76n+5FClRh92dcGgysbe1smRmYalM9Saj97GW1J4Q==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -10117,10 +10117,11 @@ snapshots:
       esbuild: 0.27.4
       jest-util: 30.2.0
 
-  ts-json-schema-generator@2.5.0:
+  ts-json-schema-generator@2.9.0:
     dependencies:
       '@types/json-schema': 7.0.15
       commander: 14.0.3
+      glob: 13.0.6
       json5: 2.2.3
       normalize-path: 3.0.0
       safe-stable-stringify: 2.5.0
