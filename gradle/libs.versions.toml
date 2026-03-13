@@ -48,7 +48,7 @@ jakarta-websocket-client-api = "jakarta.websocket:jakarta.websocket-client-api:2
 jakarta-xml-bind-api = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.5"
 jetbrains-annotations = "org.jetbrains:annotations:26.1.0"
 json-schema-validator = "com.networknt:json-schema-validator:3.0.0"
-json-unit-assertj = "net.javacrumbs.json-unit:json-unit-assertj:5.1.0"
+json-unit-assertj = "net.javacrumbs.json-unit:json-unit-assertj:5.1.1"
 jspecify = "org.jspecify:jspecify:1.0.0"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter" }
 junit-plattform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "org-junit-plattform" }
