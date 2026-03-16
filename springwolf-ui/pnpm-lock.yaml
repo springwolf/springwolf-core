@@ -67,8 +67,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0(encoding@0.1.13)
       '@testing-library/angular':
-        specifier: ^19.1.0
-        version: 19.1.0(21beb9c0ac8e8a002769f59d4bdf455e)
+        specifier: ^19.1.1
+        version: 19.1.1(21beb9c0ac8e8a002769f59d4bdf455e)
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -1860,8 +1860,8 @@ packages:
     resolution: {integrity: sha512-JZlVFE6/dYpP9tQmV0/ADfn32L9uFarHWxfcRhReKUnljz1ZiUM5zpX+PH8h5CJs6lao3TuFqnPm9IJJCEkE2w==}
     engines: {node: '>=10.8'}
 
-  '@testing-library/angular@19.1.0':
-    resolution: {integrity: sha512-gBWEWUWzprbGd0/UQwG/n+Da8b/9TcFXTL6+XlZTjC96Lm9ukcItcBiKEG5HXS8iugK9/fMRkiDF1fgU4hO6nQ==}
+  '@testing-library/angular@19.1.1':
+    resolution: {integrity: sha512-ruRBLMTxoxaIqSTBov2wbDHyFUKE5MeiNlk1xzbKjqHvZcmETNHVV2dFOXNOGFOpjBdxQZXLYjR2urOKiKO6yQ==}
     peerDependencies:
       '@angular/common': '>= 21.0.0'
       '@angular/core': '>= 21.0.0'
@@ -6734,7 +6734,7 @@ snapshots:
       '@stoplight/yaml-ast-parser': 0.0.50
       tslib: 2.8.1
 
-  '@testing-library/angular@19.1.0(21beb9c0ac8e8a002769f59d4bdf455e)':
+  '@testing-library/angular@19.1.1(21beb9c0ac8e8a002769f59d4bdf455e)':
     dependencies:
       '@angular/common': 21.2.4(@angular/core@21.2.4(@angular/compiler@21.2.4)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 21.2.4(@angular/compiler@21.2.4)(rxjs@7.8.2)(zone.js@0.15.1)
