@@ -21,7 +21,7 @@ owasp-dependencycheck = "12.2.0"
 protobuf = "4.34.0"
 protobuf-plugin =  "0.9.6"
 spotless = "8.3.0"
-spring-boot-plugin = "4.0.3"
+spring-boot-plugin = "4.0.4"
 spring-cloud = "2025.1.1" # not managed by spring-boot-dependencies
 spring-cloud-stream = "5.0.1" # not managed by spring-boot-dependencies
 
