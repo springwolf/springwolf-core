@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 @Order(value = Ordered.HIGHEST_PRECEDENCE) // Highest so that all others will replace this configuration
 public class SpringwolfUiResourceConfigurer implements WebMvcConfigurer {

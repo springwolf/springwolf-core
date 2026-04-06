@@ -5,7 +5,7 @@ import io.github.springwolf.examples.kafka.producers.NestedProducer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class NestedProducerBeanConfiguration {
 
     /**

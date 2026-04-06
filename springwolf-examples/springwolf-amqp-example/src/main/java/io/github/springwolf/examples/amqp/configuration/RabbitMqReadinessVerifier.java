@@ -8,7 +8,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Profile("!test")
 public class RabbitMqReadinessVerifier {
 
