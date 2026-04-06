@@ -43,7 +43,7 @@
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "jest-junit": "^16.0.0",
-    "jest-preset-angular": "^16.1.1",
+    "jest-preset-angular": "^16.1.2",
     "prettier": "^3.8.1",
     "ts-json-schema-generator": "^2.9.0",
     "typescript": "^5.9.3"
