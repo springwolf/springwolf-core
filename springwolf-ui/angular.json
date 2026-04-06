@@ -30,6 +30,11 @@
               "src/assets"
             ],
             "styles": [
+              "@fontsource/roboto/300.css",
+              "@fontsource/roboto/400.css",
+              "@fontsource/roboto/500.css",
+              "@fontsource/roboto/700.css",
+              "material-icons/iconfont/material-icons.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "node_modules/prism-code-editor/dist/layout.css",
               "node_modules/prism-code-editor/dist/themes/prism.css",
