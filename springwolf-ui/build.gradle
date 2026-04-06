@@ -74,6 +74,15 @@ tasks.register('pnpm_run_test', PnpmTask) {
   inputs.file 'pnpm-lock.yaml'
   outputs.upToDateWhen { true }
 }
+tasks.register('pnpm_update', PnpmTask) {
+  group = "pnpm"
+
+  args = ['update']
+
+  inputs.file 'package.json'
+  inputs.file 'pnpm-lock.yaml'
+  outputs.upToDateWhen { true }
+}
 
 tasks.register('buildPages', PnpmTask) {
   group = "pnpm"
