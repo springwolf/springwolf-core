@@ -1,6 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { AppComponent } from "./app.component";
-import { render, screen, waitFor, within } from "@testing-library/angular";
+import {
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/angular/zoneless";
 import { appConfig } from "./app.config";
 import { MatIconTestingModule } from "@angular/material/icon/testing";
 
