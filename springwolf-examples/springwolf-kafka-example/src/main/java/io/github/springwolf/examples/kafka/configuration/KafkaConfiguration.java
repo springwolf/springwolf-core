@@ -4,7 +4,7 @@ package io.github.springwolf.examples.kafka.configuration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableKafka
 public class KafkaConfiguration {
 

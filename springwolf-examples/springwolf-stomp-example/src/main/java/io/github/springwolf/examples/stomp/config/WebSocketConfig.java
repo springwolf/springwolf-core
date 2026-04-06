@@ -13,7 +13,7 @@ import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_END
 import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_PREFIX_APP;
 import static io.github.springwolf.examples.stomp.config.Constants.WEBSOCKET_PREFIX_USER;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 

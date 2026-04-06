@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * Demonstrate how to use spring-security with springwolf.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 public class CustomWebSecurityConfigurerAdapter {
     private static final String DOCS_ENDPOINT = "/springwolf/docs";

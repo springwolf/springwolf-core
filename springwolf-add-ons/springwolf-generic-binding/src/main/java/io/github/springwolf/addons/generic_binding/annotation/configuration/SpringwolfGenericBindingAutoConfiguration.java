@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringValueResolver;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 @StandaloneConfiguration
 public class SpringwolfGenericBindingAutoConfiguration {
