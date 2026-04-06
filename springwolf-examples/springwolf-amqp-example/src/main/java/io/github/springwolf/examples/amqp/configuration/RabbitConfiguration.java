@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @EnableRabbit
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class RabbitConfiguration {
 
     // Required so that the Rabbit Listeners will be able to receive json serialized messages

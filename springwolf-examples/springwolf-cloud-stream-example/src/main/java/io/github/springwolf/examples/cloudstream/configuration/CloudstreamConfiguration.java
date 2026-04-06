@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Slf4j
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CloudstreamConfiguration {
     @Bean
     public Function<ExamplePayloadDto, AnotherPayloadDto> process() {
