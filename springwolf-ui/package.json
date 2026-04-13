@@ -27,7 +27,7 @@
     "@fontsource/roboto": "^5.2.10",
     "ajv": "^8.18.0",
     "material-icons": "^1.13.14",
-    "ngx-markdown": "^21.1.0",
+    "ngx-markdown": "^21.2.0",
     "prism-code-editor": "^5.1.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1"
