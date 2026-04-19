@@ -16,7 +16,6 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.core.util.RefUtils;
 import io.swagger.v3.oas.models.media.Schema;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,18 +26,35 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
 @Slf4j
-@RequiredArgsConstructor
 public class SwaggerSchemaService {
 
     private final SpringwolfConfigProperties properties;
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SwaggerSchemaMapper swaggerSchemaMapper;
     private final ModelConvertersProvider modelConvertersProvider;
+    private final TypeNameResolver typeNameResolver;
+    private final TypeNameResolver simpleNameTypeNameResolver;
+
+    public SwaggerSchemaService(
+            SpringwolfConfigProperties properties,
+            List<SchemasPostProcessor> schemaPostProcessors,
+            SwaggerSchemaMapper swaggerSchemaMapper,
+            ModelConvertersProvider modelConvertersProvider) {
+        this.properties = properties;
+        this.schemaPostProcessors = schemaPostProcessors;
+        this.swaggerSchemaMapper = swaggerSchemaMapper;
+        this.modelConvertersProvider = modelConvertersProvider;
+
+        typeNameResolver = new SpringWolfTypeNameResolver();
+        typeNameResolver.setUseFqn(properties.isUseFqn());
+
+        simpleNameTypeNameResolver = new SpringWolfTypeNameResolver();
+        simpleNameTypeNameResolver.setUseFqn(false);
+    }
 
     public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
 
@@ -86,8 +102,8 @@ public class SwaggerSchemaService {
         // use swagger to resolve type to a swagger ResolvedSchema Object.
         ModelConverters converterToUse = modelConvertersProvider.getModelConverter();
 
-        ResolvedSchema resolvedSchema = runWithFqnSetting(
-                (unused) -> converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));
+        ResolvedSchema resolvedSchema =
+                converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true));
 
         if (resolvedSchema == null) {
             // defaulting to stringSchema when resolvedSchema is null
@@ -197,31 +213,18 @@ public class SwaggerSchemaService {
         }
     }
 
-    private <R> R runWithFqnSetting(Function<Void, R> callable) {
-        boolean previousUseFqn = TypeNameResolver.std.getUseFqn();
-        TypeNameResolver.std.setUseFqn(properties.isUseFqn());
-
-        R result = callable.apply(null);
-
-        TypeNameResolver.std.setUseFqn(previousUseFqn);
-        return result;
-    }
-
     public String getNameFromType(Type type) {
         PrimitiveType primitiveType = PrimitiveType.fromType(type);
         if (primitiveType != null && properties.isUseFqn()) {
             return primitiveType.getKeyClass().getName();
         }
         JavaType javaType = Json.mapper().constructType(type);
-        return runWithFqnSetting((unused) -> TypeNameResolver.std.nameForType(javaType));
+        return typeNameResolver.nameForType(javaType);
     }
 
     public String getSimpleNameFromType(Type type) {
         JavaType javaType = Json.mapper().constructType(type);
-        TypeNameResolver.std.setUseFqn(false);
-        String name = TypeNameResolver.std.nameForType(javaType);
-        TypeNameResolver.std.setUseFqn(properties.isUseFqn());
-        return name;
+        return simpleNameTypeNameResolver.nameForType(javaType);
     }
 
     private void postProcessSchemas(
