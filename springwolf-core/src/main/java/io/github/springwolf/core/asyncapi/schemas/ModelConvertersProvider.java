@@ -44,8 +44,7 @@ public class ModelConvertersProvider {
         return new SpringwolfTypeNameResolver(springwolfConfigProperties.isUseFqn());
     }
 
-    private boolean isOpenApi31(
-            SpringwolfConfigProperties springwolfConfigProperties) {
+    private boolean isOpenApi31(SpringwolfConfigProperties springwolfConfigProperties) {
         return switch (springwolfConfigProperties.getDocket().getPayloadSchemaFormat()) {
             case ASYNCAPI_V3, OPENAPI_V3 -> false;
             case OPENAPI_V3_1 -> true;
