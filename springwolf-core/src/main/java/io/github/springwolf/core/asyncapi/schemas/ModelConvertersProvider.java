@@ -8,6 +8,7 @@ import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Json31;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -16,63 +17,61 @@ import java.util.List;
  * requirements.
  */
 public class ModelConvertersProvider {
+    @Getter
+    private final TypeNameResolver typeNameResolver;
 
-    private final SpringwolfConfigProperties springwolfConfigProperties;
-    private final ModelConverters converter_openapi30;
-    private final ModelConverters converter_openapi31;
+    @Getter
+    private final ModelConverters modelConverters;
 
     public ModelConvertersProvider(
             SpringwolfConfigProperties springwolfConfigProperties, List<ModelConverter> externalModelConverters) {
-        this.springwolfConfigProperties = springwolfConfigProperties;
 
-        converter_openapi30 = createModelConverters(false, springwolfConfigProperties.isUseFqn());
-        converter_openapi31 = createModelConverters(true, springwolfConfigProperties.isUseFqn());
+        typeNameResolver = createTypeNameResolver(springwolfConfigProperties);
 
-        externalModelConverters.forEach(converter_openapi30::addConverter);
-        externalModelConverters.forEach(converter_openapi31::addConverter);
+        modelConverters = createModelConverter(springwolfConfigProperties, typeNameResolver);
+        externalModelConverters.forEach(modelConverters::addConverter);
     }
 
-    /**
-     * creates a ModelConverters Instance for openapi31 or openapi30 and the given useFqn-Flag.
-     *
-     * @param openapi31  true: use openapi31, false: use openapi30 format.
-     * @param useFqn
-     * @return
-     */
-    private ModelConverters createModelConverters(boolean openapi31, boolean useFqn) {
+    private TypeNameResolver createTypeNameResolver(SpringwolfConfigProperties springwolfConfigProperties) {
+        return new SpringwolfTypeNameResolver(springwolfConfigProperties.isUseFqn());
+    }
+
+    private ModelConverters createModelConverter(
+            SpringwolfConfigProperties springwolfConfigProperties, TypeNameResolver typeNameResolver) {
+        return switch (springwolfConfigProperties.getDocket().getPayloadSchemaFormat()) {
+            case ASYNCAPI_V3, OPENAPI_V3 -> createModelConverters(false, typeNameResolver);
+            case OPENAPI_V3_1 -> createModelConverters(true, typeNameResolver);
+        };
+    }
+
+    private ModelConverters createModelConverters(boolean openapi31, TypeNameResolver typeNameResolver) {
         ModelConverters modelConverters = new ModelConverters(openapi31);
 
-        // to set the correkt fqn-Flag, we have to replace the global (static)
-        // TypeNameResolver instance with a custom instance.
-        // We therefore have to replace the *ModelResolver* instance inside modelconverters,
-        // as ModelResolver holds a reference to TypeNameResolver as private final variable.
-        TypeNameResolver typeNameResolver = new SpringWolfTypeNameResolver();
-        typeNameResolver.setUseFqn(useFqn);
+        ModelResolver replacementResolver = createModelResolver(openapi31, typeNameResolver);
+        replaceModelResolver(modelConverters, replacementResolver);
 
-        ModelResolver replacementResolver = openapi31
-                ? new ModelResolver(Json31.mapper(), typeNameResolver).openapi31(true)
-                : new ModelResolver(Json.mapper(), typeNameResolver);
-
-        ModelConverter resolverToBeReplaced = modelConverters.getConverters().stream()
-                .filter(conv -> conv instanceof ModelResolver)
-                .findFirst()
-                .orElse(null);
-
-        // we replace by removing the found ModelResolver and adding the new one.
-        // Adding a ModelConverter *prepends* this converter to the internal list, which could change the
-        // order of convertes in the list. But at this point (after constructor of ModelConvertes),
-        // the internal list contains only one Modelresolver, so removing and adding works like replacing the converter.
-        if (resolverToBeReplaced != null) {
-            modelConverters.removeConverter(resolverToBeReplaced);
-            modelConverters.addConverter(replacementResolver);
-        }
         return modelConverters;
     }
 
-    public ModelConverters getModelConverter() {
-        return switch (springwolfConfigProperties.getDocket().getPayloadSchemaFormat()) {
-            case ASYNCAPI_V3, OPENAPI_V3 -> converter_openapi30;
-            case OPENAPI_V3_1 -> converter_openapi31;
-        };
+    /**
+     * Create a new ModelResolver with an own {@link TypeNameResolver} for thread-safety
+     */
+    private static ModelResolver createModelResolver(boolean isOpenapi31, TypeNameResolver typeNameResolver) {
+        return isOpenapi31
+                ? new ModelResolver(Json31.mapper(), typeNameResolver).openapi31(true)
+                : new ModelResolver(Json.mapper(), typeNameResolver);
+    }
+
+    /**
+     * The default {@link ModelConverters} has only a single {@link ModelResolver} that is replaced with a Springwolf one
+     */
+    private static void replaceModelResolver(ModelConverters modelConverters, ModelResolver replacementResolver) {
+        modelConverters.getConverters().stream()
+                .filter(conv -> conv instanceof ModelResolver)
+                .findFirst()
+                .ifPresent(modelConverter -> {
+                    modelConverters.removeConverter(modelConverter);
+                    modelConverters.addConverter(replacementResolver);
+                });
     }
 }
