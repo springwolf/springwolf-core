@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -21,6 +22,9 @@ public class ModelConvertersProvider {
     private final TypeNameResolver typeNameResolver;
 
     @Getter
+    private final ObjectMapper objectMapper;
+
+    @Getter
     private final ModelConverters modelConverters;
 
     public ModelConvertersProvider(
@@ -28,7 +32,11 @@ public class ModelConvertersProvider {
 
         typeNameResolver = createTypeNameResolver(springwolfConfigProperties);
 
-        modelConverters = createModelConverter(springwolfConfigProperties, typeNameResolver);
+        boolean isOpenApi31 = isOpenApi31(springwolfConfigProperties);
+        ModelResolver modelResolver = createModelResolver(isOpenApi31, typeNameResolver);
+        objectMapper = modelResolver.objectMapper();
+
+        modelConverters = createModelConverters(isOpenApi31, modelResolver);
         externalModelConverters.forEach(modelConverters::addConverter);
     }
 
@@ -36,19 +44,18 @@ public class ModelConvertersProvider {
         return new SpringwolfTypeNameResolver(springwolfConfigProperties.isUseFqn());
     }
 
-    private ModelConverters createModelConverter(
-            SpringwolfConfigProperties springwolfConfigProperties, TypeNameResolver typeNameResolver) {
+    private boolean isOpenApi31(
+            SpringwolfConfigProperties springwolfConfigProperties) {
         return switch (springwolfConfigProperties.getDocket().getPayloadSchemaFormat()) {
-            case ASYNCAPI_V3, OPENAPI_V3 -> createModelConverters(false, typeNameResolver);
-            case OPENAPI_V3_1 -> createModelConverters(true, typeNameResolver);
+            case ASYNCAPI_V3, OPENAPI_V3 -> false;
+            case OPENAPI_V3_1 -> true;
         };
     }
 
-    private ModelConverters createModelConverters(boolean openapi31, TypeNameResolver typeNameResolver) {
-        ModelConverters modelConverters = new ModelConverters(openapi31);
+    private ModelConverters createModelConverters(boolean isOpenApi31, ModelResolver modelResolver) {
+        ModelConverters modelConverters = new ModelConverters(isOpenApi31);
 
-        ModelResolver replacementResolver = createModelResolver(openapi31, typeNameResolver);
-        replaceModelResolver(modelConverters, replacementResolver);
+        replaceModelResolver(modelConverters, modelResolver);
 
         return modelConverters;
     }
