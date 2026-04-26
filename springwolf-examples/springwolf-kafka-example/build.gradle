@@ -39,6 +39,7 @@ dependencies {
     implementation libs.spring.messaging
     implementation libs.spring.security.config
     implementation libs.spring.security.web
+    implementation libs.spring.web
     implementation libs.swagger.models.jakarta
 
     runtimeOnly libs.spring.boot.starter.webmvc
