@@ -34,14 +34,13 @@ dependencies {
     implementation libs.spring.beans
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-    implementation libs.spring.boot.jackson2
     implementation libs.spring.context
-    implementation libs.spring.core
     implementation libs.spring.kafka
     implementation libs.spring.messaging
     implementation libs.spring.security.config
     implementation libs.spring.security.web
-    implementation libs.spring.web
+    implementation libs.swagger.models.jakarta
+
     runtimeOnly libs.spring.boot.starter.webmvc
 
     implementation libs.avro
