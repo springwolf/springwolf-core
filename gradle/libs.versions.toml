@@ -19,7 +19,7 @@ org-slf4j = "2.0.17"
 org-testcontainers = "1.21.4"
 owasp-dependencycheck = "12.2.1"
 protobuf = "4.34.1"
-protobuf-plugin =  "0.9.6"
+protobuf-plugin =  "0.10.0"
 spotless = "8.4.0"
 spring-boot-plugin = "4.0.5"
 spring-cloud = "2025.1.1" # not managed by spring-boot-dependencies
@@ -27,7 +27,7 @@ spring-cloud-stream = "5.0.1" # not managed by spring-boot-dependencies
 
 [libraries]
 activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "activemq" }
-amqp-client = "com.rabbitmq:amqp-client:5.29.0"
+amqp-client = "com.rabbitmq:amqp-client:5.30.0"
 assertj-core = "org.assertj:assertj-core:3.27.7"
 avro = "org.apache.avro:avro:1.12.1"
 awaitility = "org.awaitility:awaitility:4.3.0"
@@ -47,7 +47,7 @@ jakarta-websocket-api = "jakarta.websocket:jakarta.websocket-api:2.2.0"
 jakarta-websocket-client-api = "jakarta.websocket:jakarta.websocket-client-api:2.2.0"
 jakarta-xml-bind-api = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.5"
 jetbrains-annotations = "org.jetbrains:annotations:26.1.0"
-json-schema-validator = "com.networknt:json-schema-validator:3.0.1"
+json-schema-validator = "com.networknt:json-schema-validator:3.0.2"
 json-unit-assertj = "net.javacrumbs.json-unit:json-unit-assertj:5.1.1"
 jspecify = "org.jspecify:jspecify:1.0.0"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter" }
