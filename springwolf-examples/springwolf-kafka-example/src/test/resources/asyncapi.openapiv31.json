@@ -435,7 +435,7 @@
           "title": "SpringKafkaDefaultHeaders-AnotherTopic"
         }
       },
-      "SpringKafkaDefaultHeaders-ExamplePayloadDto-705226113": {
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896": {
         "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
         "schema": {
           "type": "object",
@@ -443,12 +443,7 @@
             "__TypeId__": "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto",
             "kafka_offset": 0,
             "kafka_receivedMessageKey": "string",
-            "kafka_recordMetadata": {
-              "offset": 0,
-              "partition": 0,
-              "timestamp": 0,
-              "topic": "string"
-            }
+            "kafka_recordMetadata": { }
           },
           "properties": {
             "__TypeId__": {
@@ -473,33 +468,11 @@
             },
             "kafka_recordMetadata": {
               "type": "object",
-              "example": {
-                "offset": 0,
-                "partition": 0,
-                "timestamp": 0,
-                "topic": "string"
-              },
-              "properties": {
-                "offset": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "partition": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "timestamp": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "topic": {
-                  "type": "string"
-                }
-              },
+              "example": { },
               "title": "ConsumerRecordMetadata"
             }
           },
-          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-705226113"
+          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896"
         }
       },
       "SpringKafkaDefaultHeaders-Message": {
@@ -1294,7 +1267,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-705226113"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",

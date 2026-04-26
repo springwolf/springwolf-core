@@ -4,10 +4,8 @@ package io.github.springwolf.examples.kafka.modelconverters;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 
 import java.util.Iterator;
@@ -21,12 +19,7 @@ public class ConsumerRecordMetadataModelConverter implements ModelConverter {
     @Override
     public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         if (type.getType().equals(ConsumerRecordMetadata.class)) {
-            ObjectSchema schema = new ObjectSchema();
-            schema.addProperty("offset", new IntegerSchema().format("int64"));
-            schema.addProperty("partition", new IntegerSchema().format("int32"));
-            schema.addProperty("timestamp", new IntegerSchema().format("int64"));
-            schema.addProperty("topic", new StringSchema());
-            return schema;
+            return new ObjectSchema();
         } else {
             return chain.next().resolve(type, context, chain);
         }
