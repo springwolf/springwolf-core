@@ -113,11 +113,14 @@ allprojects {
         }
     }
     tasks.register('unitTest', Test) {
-        enabled = !it.project.name.contains("-example") // Examples do not contain unit tests and would fail otherwise
+        enabled = sourceSets.test.allSource.files.any { testSource -> testSource.exists() }
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
         description = 'Run only unit tests (excludes **IntegrationTest and **SystemTest)'
         group = 'verification'
+
+        testClassesDirs = sourceSets.test.output.classesDirs
+        classpath = sourceSets.test.runtimeClasspath
 
         useJUnitPlatform()
         filter {
@@ -131,10 +134,14 @@ allprojects {
         }
     }
     tasks.register('integrationTest', Test) {
+        enabled = sourceSets.test.allSource.files.any { testSource -> testSource.exists() }
         dependsOn spotlessApply // Automatically fix code formatting if possible
 
         description = 'Run integration tests (excludes **SystemTest)'
         group = 'verification'
+
+        testClassesDirs = sourceSets.test.output.classesDirs
+        classpath = sourceSets.test.runtimeClasspath
 
         useJUnitPlatform()
         filter {
