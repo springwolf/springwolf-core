@@ -56,15 +56,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     public R fromSchema(Schema schema, Map<String, Schema> definitions) {
         exampleValueGenerator.initialize();
 
+        Optional<String> schemaName = exampleValueGenerator.lookupSchemaName(schema);
         try {
-            Optional<String> schemaName = exampleValueGenerator.lookupSchemaName(schema);
 
             T generatedExample = buildExample(schemaName, schema, definitions, new HashSet<>())
                     .orElseThrow(() -> new ExampleGeneratingException("Something went wrong"));
 
             return exampleValueGenerator.prepareForSerialization(schema, generatedExample);
         } catch (ExampleGeneratingException ex) {
-            log.info("Failed to build example for schema: {}", ex.getMessage(), ex);
+            log.info("Failed to build example for schema: {}", schemaName.orElse(schema.getName()), ex);
         }
         return null;
     }
