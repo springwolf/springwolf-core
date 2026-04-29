@@ -121,9 +121,23 @@ public class SwaggerSchemaService {
     }
 
     private void preProcessSchemas(Schema payloadSchema, Map<String, Schema> schemas, Type type) {
+        removeEmptySchemas(schemas);
         processCommonModelConverters(payloadSchema, schemas);
         processAsyncApiPayloadAnnotation(schemas, type);
         processSchemaAnnotation(payloadSchema, type);
+    }
+
+    private void removeEmptySchemas(Map<String, Schema> schemas) {
+        schemas.entrySet().stream().toList().forEach(e -> {
+            if (e.getValue().getType() == null
+                    && e.getValue().getTypes() == null
+                    && e.getValue().get$ref() == null
+                    && e.getValue().getAllOf() == null
+                    && e.getValue().getAnyOf() == null
+                    && e.getValue().getOneOf() == null) {
+                schemas.remove(e.getKey());
+            }
+        });
     }
 
     /**

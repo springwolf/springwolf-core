@@ -435,15 +435,14 @@
           "title": "SpringKafkaDefaultHeaders-AnotherTopic"
         }
       },
-      "SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896": {
+      "SpringKafkaDefaultHeaders-ExamplePayloadDto-439176902": {
         "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
         "schema": {
           "type": "object",
           "example": {
             "__TypeId__": "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto",
             "kafka_offset": 0,
-            "kafka_receivedMessageKey": "string",
-            "kafka_recordMetadata": { }
+            "kafka_receivedMessageKey": "string"
           },
           "properties": {
             "__TypeId__": {
@@ -465,14 +464,9 @@
             "kafka_receivedMessageKey": {
               "type": "string",
               "example": "string"
-            },
-            "kafka_recordMetadata": {
-              "type": "object",
-              "example": { },
-              "title": "ConsumerRecordMetadata"
             }
           },
-          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896"
+          "title": "SpringKafkaDefaultHeaders-ExamplePayloadDto-439176902"
         }
       },
       "SpringKafkaDefaultHeaders-Message": {
@@ -1267,7 +1261,7 @@
       },
       "io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto": {
         "headers": {
-          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1232589896"
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-439176902"
         },
         "payload": {
           "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
