@@ -44,7 +44,7 @@
     "esbuild": "^0.28.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
-    "jest-junit": "^16.0.0",
+    "jest-junit": "^17.0.0",
     "jest-preset-angular": "^16.1.4",
     "prettier": "^3.8.3",
     "ts-json-schema-generator": "^2.9.0",
