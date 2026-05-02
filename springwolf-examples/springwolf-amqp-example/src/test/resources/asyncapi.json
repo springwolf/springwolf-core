@@ -80,9 +80,9 @@
           "is": "queue",
           "queue": {
             "name": "another-queue",
-            "durable": false,
+            "durable": true,
             "exclusive": false,
-            "autoDelete": false,
+            "autoDelete": true,
             "vhost": "/"
           },
           "bindingVersion": "0.3.0"
@@ -96,7 +96,7 @@
           "is": "queue",
           "queue": {
             "name": "example-bindings-queue",
-            "durable": false,
+            "durable": true,
             "exclusive": false,
             "autoDelete": true,
             "vhost": "/"
@@ -117,7 +117,7 @@
           "is": "queue",
           "queue": {
             "name": "example-queue",
-            "durable": false,
+            "durable": true,
             "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
@@ -229,7 +229,7 @@
           "is": "queue",
           "queue": {
             "name": "queue-read",
-            "durable": false,
+            "durable": true,
             "exclusive": false,
             "autoDelete": false,
             "vhost": "/"
