@@ -13,9 +13,7 @@
             }
             <b>
               <a [href]="link.href">
-                @for (linkEl of link.name; track $index) {
-                  {{ linkEl }}&#x200B;
-                }
+                {{ link.name.join("&#x200B;") }}
               </a>
             </b>
           </span>
@@ -31,9 +29,7 @@
               >
                 <span>
                   <a [href]="child.href">
-                    @for (linkEl of child.name; track $index) {
-                      {{ linkEl }}&#x200B;
-                    }
+                    {{ child.name.join("&#x200B;") }}
                   </a>
                   @for (childTag of child.tags; track childTag) {
                     <span class="badge {{ childTag.type }}-badge">{{
@@ -53,9 +49,7 @@
                     >
                       <span>
                         <a [href]="subchild.href">
-                          @for (linkEl of subchild.name; track $index) {
-                            {{ linkEl }}&#x200B;
-                          }
+                          {{ subchild.name.join("&#x200B;") }}
                         </a>
 
                         @for (subChildTag of subchild.tags; track subChildTag) {
