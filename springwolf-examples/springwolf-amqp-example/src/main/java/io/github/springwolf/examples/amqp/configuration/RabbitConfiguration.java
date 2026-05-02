@@ -13,6 +13,8 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @EnableRabbit
 @Configuration(proxyBeanMethods = false)
 public class RabbitConfiguration {
@@ -25,17 +27,17 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue exampleQueue() {
-        return new Queue(AmqpConstants.QUEUE_EXAMPLE_QUEUE, false);
+        return new Queue(AmqpConstants.QUEUE_EXAMPLE_QUEUE, true, false, false);
     }
 
     @Bean
     public Queue anotherQueue() {
-        return new Queue(AmqpConstants.QUEUE_ANOTHER_QUEUE, false);
+        return new Queue(AmqpConstants.QUEUE_ANOTHER_QUEUE, true, false, true, Map.of("x-expires", 1800000));
     }
 
     @Bean
     public Queue queueRead() {
-        return new Queue(AmqpConstants.QUEUE_READ, false);
+        return new Queue(AmqpConstants.QUEUE_READ, true, false, false);
     }
 
     @Bean
@@ -53,7 +55,7 @@ public class RabbitConfiguration {
      */
     @Bean
     public Queue exampleBindingsQueue() {
-        return new Queue(AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE, false, false, true);
+        return new Queue(AmqpConstants.QUEUE_EXAMPLE_BINDINGS_QUEUE, true, false, true);
     }
 
     /**
