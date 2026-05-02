@@ -16,7 +16,6 @@ dependencies {
     implementation libs.spring.core
     implementation libs.spring.boot.autoconfigure
 
-    compileOnly libs.lombok
     annotationProcessor libs.lombok
 
     testImplementation libs.assertj.core
