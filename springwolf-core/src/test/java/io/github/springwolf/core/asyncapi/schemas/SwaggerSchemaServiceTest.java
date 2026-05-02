@@ -7,8 +7,10 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -141,6 +143,30 @@ class SwaggerSchemaServiceTest {
                 .satisfies((el) -> assertThat(el.getSchema().getProperties()).containsOnlyKeys("actual"));
     }
 
+    @Test
+    void ignoreNonSerializableClassesInOpenApi31() {
+        // given
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+        configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
+        schemaService = new SwaggerSchemaService(
+                configProperties,
+                List.of(schemasPostProcessor, schemasPostProcessor2),
+                new SwaggerSchemaMapper(configProperties),
+                new ModelConvertersProvider(configProperties, List.of(new ModelConverterNativeClass.Converter())));
+
+        // when
+        SwaggerSchemaService.ExtractedSchemas resolvedSchemas =
+                schemaService.resolveSchema(NonSerializableClass.class, "some-content-type");
+
+        // then the empty referencedSchema is removed. No cleanup of dangling $ref implemented at this point
+        assertThat(resolvedSchemas.rootSchema())
+                .isEqualTo(
+                        ComponentSchema.of(
+                                new SchemaReference(
+                                        "#/components/schemas/io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaServiceTest.NonSerializableClass")));
+        assertThat(resolvedSchemas.referencedSchemas()).isEmpty();
+    }
+
     @Data
     @NoArgsConstructor
     @Schema(name = "DifferentName")
@@ -153,6 +179,15 @@ class SwaggerSchemaServiceTest {
     @NoArgsConstructor
     private static class OneFieldFooWithoutFqn {
         private String s;
+    }
+
+    @NoArgsConstructor
+    private static class NonSerializableClass {
+        private String field;
+
+        public String field() {
+            return field;
+        }
     }
 
     /**

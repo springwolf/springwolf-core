@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
 
@@ -39,6 +38,7 @@ public class SwaggerSchemaService {
     private final List<SchemasPostProcessor> schemaPostProcessors;
     private final SwaggerSchemaMapper swaggerSchemaMapper;
     private final ModelConvertersProvider modelConvertersProvider;
+    private final TypeNameResolver simpleNameTypeNameResolver = new SpringwolfTypeNameResolver(false);
 
     public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
 
@@ -84,11 +84,10 @@ public class SwaggerSchemaService {
                 StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         // use swagger to resolve type to a swagger ResolvedSchema Object.
-        ModelConverters converterToUse = modelConvertersProvider.getModelConverter();
+        ModelConverters converterToUse = modelConvertersProvider.getModelConverters();
 
-        ResolvedSchema resolvedSchema = runWithFqnSetting(
-                (unused) -> converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true)));
-
+        ResolvedSchema resolvedSchema =
+                converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true));
         if (resolvedSchema == null) {
             // defaulting to stringSchema when resolvedSchema is null
             Schema<?> stringPropertySchema =
@@ -122,9 +121,23 @@ public class SwaggerSchemaService {
     }
 
     private void preProcessSchemas(Schema payloadSchema, Map<String, Schema> schemas, Type type) {
+        removeEmptySchemas(schemas);
         processCommonModelConverters(payloadSchema, schemas);
         processAsyncApiPayloadAnnotation(schemas, type);
         processSchemaAnnotation(payloadSchema, type);
+    }
+
+    private void removeEmptySchemas(Map<String, Schema> schemas) {
+        schemas.entrySet().stream().toList().forEach(e -> {
+            if (e.getValue().getType() == null
+                    && e.getValue().getTypes() == null
+                    && e.getValue().get$ref() == null
+                    && e.getValue().getAllOf() == null
+                    && e.getValue().getAnyOf() == null
+                    && e.getValue().getOneOf() == null) {
+                schemas.remove(e.getKey());
+            }
+        });
     }
 
     /**
@@ -197,31 +210,18 @@ public class SwaggerSchemaService {
         }
     }
 
-    private <R> R runWithFqnSetting(Function<Void, R> callable) {
-        boolean previousUseFqn = TypeNameResolver.std.getUseFqn();
-        TypeNameResolver.std.setUseFqn(properties.isUseFqn());
-
-        R result = callable.apply(null);
-
-        TypeNameResolver.std.setUseFqn(previousUseFqn);
-        return result;
-    }
-
     public String getNameFromType(Type type) {
         PrimitiveType primitiveType = PrimitiveType.fromType(type);
         if (primitiveType != null && properties.isUseFqn()) {
             return primitiveType.getKeyClass().getName();
         }
         JavaType javaType = Json.mapper().constructType(type);
-        return runWithFqnSetting((unused) -> TypeNameResolver.std.nameForType(javaType));
+        return modelConvertersProvider.getTypeNameResolver().nameForType(javaType);
     }
 
     public String getSimpleNameFromType(Type type) {
         JavaType javaType = Json.mapper().constructType(type);
-        TypeNameResolver.std.setUseFqn(false);
-        String name = TypeNameResolver.std.nameForType(javaType);
-        TypeNameResolver.std.setUseFqn(properties.isUseFqn());
-        return name;
+        return simpleNameTypeNameResolver.nameForType(javaType);
     }
 
     private void postProcessSchemas(
