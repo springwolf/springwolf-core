@@ -42,7 +42,7 @@
     "@types/node": "^22.19.17",
     "angular-in-memory-web-api": "^0.21.0",
     "esbuild": "^0.28.0",
-    "jest": "^30.3.0",
+    "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-junit": "^17.0.0",
     "jest-preset-angular": "^16.1.4",
