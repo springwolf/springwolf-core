@@ -55,7 +55,7 @@ dependencies {
 
     implementation libs.jakarta.xml.bind.api
 
-    implementation libs.swagger.annotations.outdated
+    implementation libs.swagger.annotations.jakarta
 
     implementation libs.slf4j.api
 
