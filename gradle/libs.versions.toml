@@ -4,7 +4,7 @@ cutterslade-analyze = "1.10.0"
 docker-spring-boot = "10.0.0"
 gradle-nexus-publish-plugin = "2.0.0"
 io-awspring-cloud = "4.0.2"
-io-confluent = "8.2.1"
+io-confluent = "8.3.0"
 io-swagger-core-v3 = "2.2.52"
 jackson-core = "2.22.0"
 kotlin =  "2.4.0"
@@ -106,7 +106,6 @@ spring-test = { module = "org.springframework:spring-test" }
 spring-web = { module = "org.springframework:spring-web" }
 spring-webmvc = { module = "org.springframework:spring-webmvc" }
 spring-websocket = { module = "org.springframework:spring-websocket" }
-swagger-annotations-outdated = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "io-swagger-core-v3" }
 swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "io-swagger-core-v3" }
 swagger-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version.ref = "io-swagger-core-v3" }
 swagger-models-jakarta = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "io-swagger-core-v3" }
