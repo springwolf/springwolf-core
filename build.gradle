@@ -53,9 +53,13 @@ allprojects {
         options.compilerArgs += ['-Xlint:deprecation']
     }
 
-    javadoc {
-        // Disable: warning: no comment
-        options.addStringOption('Xdoclint:none', '-quiet')
+    tasks.withType(Javadoc).configureEach { enabled = false }
+    tasks.matching { it.name == 'javadocJar' }.configureEach { enabled = false }
+
+    afterEvaluate {
+        if (configurations.names.contains('javadocElements')) {
+            components.java.withVariantsFromConfiguration(configurations.named('javadocElements').get()) { skip() }
+        }
     }
 
     repositories {
