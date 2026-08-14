@@ -1,5 +1,5 @@
 [versions]
-activemq = "6.2.7"
+activemq = "6.3.0"
 cutterslade-analyze = "1.10.0"
 docker-spring-boot = "10.0.0"
 gradle-nexus-publish-plugin = "2.0.0"
@@ -20,7 +20,7 @@ org-testcontainers = "1.21.4"
 owasp-dependencycheck = "12.2.2"
 protobuf = "4.35.1"
 protobuf-plugin =  "0.10.0"
-spotless = "8.8.0"
+spotless = "8.9.0"
 spring-boot-plugin = "4.1.0"
 spring-cloud = "2025.1.2" # not managed by spring-boot-dependencies
 spring-cloud-stream = "5.0.2" # not managed by spring-boot-dependencies
