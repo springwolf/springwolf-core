@@ -207,7 +207,7 @@ public class SwaggerSchemaMapper {
         String schemaType = swaggerSchema.getType();
         if (!types.contains(schemaType)) {
             // required while swagger v2 does not populate types
-            builder.type(Set.of(schemaType));
+            builder.type(schemaType == null ? Set.of() : Set.of(schemaType));
             return;
         }
 

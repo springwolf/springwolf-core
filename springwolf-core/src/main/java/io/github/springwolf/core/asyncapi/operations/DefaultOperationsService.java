@@ -34,7 +34,11 @@ public class DefaultOperationsService implements OperationsService {
                 Map<String, Operation> channels = scanner.scan();
                 foundOperations.addAll(channels.values());
             } catch (Exception e) {
-                log.warn("An error was encountered during operation scanning with {}: {}", scanner, e.getMessage(), e);
+                log.warn(
+                        "An error was encountered during operation scanning with {}: {}",
+                        scanner,
+                        e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName(),
+                        e);
             }
         }
         return OperationMerger.mergeOperations(foundOperations);

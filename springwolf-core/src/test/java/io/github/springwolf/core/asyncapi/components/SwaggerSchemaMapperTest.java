@@ -224,6 +224,21 @@ class SwaggerSchemaMapperTest {
         }
 
         @Test
+        void mapNullTypeForComposedSchema() {
+            // given
+            Schema<?> schema = new Schema<>();
+            // no type set - simulates a composed schema (allOf/oneOf/anyOf) with null type
+            schema.addAllOfItem(new Schema<>());
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
+
+            // then - should not throw NPE, type should be empty
+            assertThat(componentSchema.getSchema()).isNotNull();
+            assertThat(componentSchema.getSchema().getType()).isNullOrEmpty();
+        }
+
+        @Test
         void mapProperties() {
             // given
             ObjectSchema schema = new ObjectSchema();
@@ -639,6 +654,7 @@ class SwaggerSchemaMapperTest {
 
     @Nested
     class MapToSwagger {
+
         @Test
         void mapNameAndTitle() {
             // given
