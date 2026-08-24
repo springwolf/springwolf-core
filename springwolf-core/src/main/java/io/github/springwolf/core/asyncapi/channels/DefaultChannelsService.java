@@ -34,11 +34,7 @@ public class DefaultChannelsService implements ChannelsService {
                 Map<String, ChannelObject> channels = scanner.scan();
                 foundChannelItems.addAll(channels.values());
             } catch (Exception e) {
-                log.warn(
-                        "An error was encountered during channel scanning with {}: {}",
-                        scanner,
-                        e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName(),
-                        e);
+                log.warn("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage(), e);
             }
         }
         return ChannelMerger.mergeChannels(foundChannelItems);
