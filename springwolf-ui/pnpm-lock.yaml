@@ -91,8 +91,8 @@ importers:
         specifier: ^30.5.0
         version: 30.5.0(@types/node@22.19.19)(supports-color@8.1.1)
       jest-environment-jsdom:
-        specifier: ^30.4.1
-        version: 30.4.1(supports-color@8.1.1)
+        specifier: ^30.5.0
+        version: 30.5.0(supports-color@8.1.1)
       jest-junit:
         specifier: ^17.0.0
         version: 17.0.0
@@ -941,6 +941,17 @@ packages:
     resolution: {integrity: sha512-dSlKrqug3siYNHVnjwIldShY12wAH3spwRltO/+8VOjg0X+xEq7vOs3DbBs4LRKsu7OH+NUb9kuZUNBF9Ho3TA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
     peerDependencies:
+      canvas: ^3.0.0
+      jsdom: '*'
+    peerDependenciesMeta:
+      canvas:
+        optional: true
+
+  '@jest/environment-jsdom-abstract@30.5.0':
+    resolution: {integrity: sha512-825vac4Dmysbn2kU7VUQPoKuj/HNUpSTgv98KCByMOSPvHuj1/HpVZeLRsP/itDB2HFiDcoTUrsg8fSu3PxKBw==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+    peerDependencies:
+      '@types/jsdom': '*'
       canvas: ^3.0.0
       jsdom: '*'
     peerDependenciesMeta:
@@ -3158,8 +3169,8 @@ packages:
     resolution: {integrity: sha512-NiMFNhRygJEFqYNt8pnkxppUF6CR486GEpt9rSU6lPBf7KeccaOL0zbjxG8fgJgD//6e7zYdssnlt6j+1kI31A==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  jest-environment-jsdom@30.4.1:
-    resolution: {integrity: sha512-o3nfaN4zej7qgk2X0j8Jhq/S9nAVKs2xK3QeQxeHVvpkEPxaA1yxDGydR+iVI7zPy7Cp62Aq2h3Ja46QvfWHGA==}
+  jest-environment-jsdom@30.5.0:
+    resolution: {integrity: sha512-VVHN/G3zrxsQR398jvMalM76ALX6YBAftsYLCGtTeKRmz4f42YJAP05AGpk0VF5SLtoHdkfKunYGfnKPnmcEOA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
@@ -5384,11 +5395,22 @@ snapshots:
       jest-util: 30.4.1
       jsdom: 26.1.0(supports-color@8.1.1)
 
+  '@jest/environment-jsdom-abstract@30.5.0(@types/jsdom@21.1.7)(jsdom@26.1.0(supports-color@8.1.1))':
+    dependencies:
+      '@jest/environment': 30.5.0
+      '@jest/fake-timers': 30.5.0
+      '@jest/types': 30.5.0
+      '@types/jsdom': 21.1.7
+      '@types/node': 22.20.1
+      jest-mock: 30.5.0
+      jest-util: 30.5.0
+      jsdom: 26.1.0(supports-color@8.1.1)
+
   '@jest/environment@30.4.1':
     dependencies:
       '@jest/fake-timers': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       jest-mock: 30.4.1
 
   '@jest/environment@30.5.0':
@@ -5417,7 +5439,7 @@ snapshots:
     dependencies:
       '@jest/types': 30.4.1
       '@sinonjs/fake-timers': 15.4.0
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       jest-message-util: 30.4.1
       jest-mock: 30.4.1
       jest-util: 30.4.1
@@ -5543,7 +5565,7 @@ snapshots:
       '@jest/schemas': 30.4.1
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -6274,7 +6296,7 @@ snapshots:
 
   '@types/es-aggregate-error@1.0.6':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
 
   '@types/estree@1.0.8':
     optional: true
@@ -6298,7 +6320,7 @@ snapshots:
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       '@types/tough-cookie': 4.0.5
       parse5: 7.3.0
 
@@ -7626,10 +7648,11 @@ snapshots:
       jest-util: 30.5.0
       pretty-format: 30.5.0
 
-  jest-environment-jsdom@30.4.1(supports-color@8.1.1):
+  jest-environment-jsdom@30.5.0(supports-color@8.1.1):
     dependencies:
-      '@jest/environment': 30.4.1
-      '@jest/environment-jsdom-abstract': 30.4.1(jsdom@26.1.0(supports-color@8.1.1))
+      '@jest/environment': 30.5.0
+      '@jest/environment-jsdom-abstract': 30.5.0(@types/jsdom@21.1.7)(jsdom@26.1.0(supports-color@8.1.1))
+      '@types/jsdom': 21.1.7
       jsdom: 26.1.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - bufferutil
@@ -7715,7 +7738,7 @@ snapshots:
   jest-mock@30.4.1:
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       jest-util: 30.4.1
 
   jest-mock@30.5.0:
