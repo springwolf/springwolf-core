@@ -74,7 +74,11 @@ public class AsyncAnnotationUtil {
                     List<String> values = getHeaderValues(headersValues, stringValueResolver);
                     if (!values.isEmpty()) {
                         property.setExamples(new ArrayList<>(values));
-                        property.setEnumValues(values);
+                        if (values.size() == 1) {
+                            property.setConstValue(values.get(0));
+                        } else {
+                            property.setEnumValues(values);
+                        }
                     }
                     headerSchema.getProperties().put(propertyName, property);
                 });

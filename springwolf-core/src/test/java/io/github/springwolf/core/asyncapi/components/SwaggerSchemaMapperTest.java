@@ -435,6 +435,20 @@ class SwaggerSchemaMapperTest {
         }
 
         @Test
+        void mapSingleEnumValueAsConst() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setEnum(List.of("only"));
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
+
+            // then
+            assertThat(componentSchema.getSchema().getEnumValues()).isNull();
+            assertThat(componentSchema.getSchema().getConstValue()).isEqualTo("only");
+        }
+
+        @Test
         void mapExample() {
             // given
             ObjectSchema schema = new ObjectSchema();
@@ -721,6 +735,19 @@ class SwaggerSchemaMapperTest {
 
             // then
             assertThat(swaggerSchema.getEnum()).isEqualTo(schema.getEnumValues());
+        }
+
+        @Test
+        void mapConst() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setConstValue(42);
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema.getConst()).isEqualTo(42);
         }
 
         @Test

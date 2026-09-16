@@ -74,27 +74,40 @@ class KafkaListenerUtilTest {
         assertThat(channelBinding.get("kafka")).isEqualTo(new KafkaChannelBinding());
     }
 
-    @Test
-    void buildOperationBinding() {
-        // given
-        KafkaListener annotation = mock(KafkaListener.class);
-        when(annotation.groupId()).thenReturn("${group-id}");
+    @Nested
+    class OperationBindingTest {
+        @Test
+        void buildOperationBinding() {
+            // given
+            KafkaListener annotation = mock(KafkaListener.class);
+            when(annotation.groupId()).thenReturn("${group-id}");
 
-        StringValueResolver stringValueResolver = mock(StringValueResolver.class);
-        when(stringValueResolver.resolveStringValue("${group-id}")).thenReturn("group-id");
+            StringValueResolver stringValueResolver = mock(StringValueResolver.class);
+            when(stringValueResolver.resolveStringValue("${group-id}")).thenReturn("group-id");
 
-        // when
-        Map<String, OperationBinding> operationBinding =
-                KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
+            // when
+            Map<String, OperationBinding> operationBinding =
+                    KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
 
-        // then
-        assertThat(operationBinding.size()).isEqualTo(1);
-        assertThat(operationBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
+            // then
+            assertThat(operationBinding.size()).isEqualTo(1);
+            assertThat(operationBinding.keySet()).isEqualTo(Sets.newTreeSet("kafka"));
 
-        KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
-                .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
-                .build();
-        assertThat(operationBinding.get("kafka")).isEqualTo(expectedOperationBinding);
+            KafkaOperationBinding expectedOperationBinding = KafkaOperationBinding.builder()
+                    .groupId(KafkaListenerUtil.buildKafkaGroupIdSchema("group-id"))
+                    .build();
+            assertThat(operationBinding.get("kafka")).isEqualTo(expectedOperationBinding);
+        }
+
+        @Test
+        void buildKafkaGroupIdSchema() {
+            // when
+            SchemaObject groupIdSchema = KafkaListenerUtil.buildKafkaGroupIdSchema("group-id");
+
+            // then
+            assertThat(groupIdSchema.getType()).isEqualTo(Set.of(SchemaType.STRING.getValue()));
+            assertThat(groupIdSchema.getConstValue()).isEqualTo("group-id");
+        }
     }
 
     @Nested

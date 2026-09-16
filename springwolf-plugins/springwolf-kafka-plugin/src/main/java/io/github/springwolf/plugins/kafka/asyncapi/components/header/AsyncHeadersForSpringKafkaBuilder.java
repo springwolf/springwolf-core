@@ -28,19 +28,26 @@ public class AsyncHeadersForSpringKafkaBuilder {
         return withTypeIdHeader(exampleTypeId, List.of(exampleTypeId));
     }
 
-    public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId, List<String> types) {
+    public AsyncHeadersForSpringKafkaBuilder withTypeIdHeader(String exampleTypeId, List<String> values) {
         return this.withHeader(
-                DefaultJacksonJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME, types, exampleTypeId, "Spring Type Id Header");
+                DefaultJacksonJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME,
+                values,
+                exampleTypeId,
+                "Spring Type Id Header");
     }
 
     private AsyncHeadersForSpringKafkaBuilder withHeader(
-            String headerName, List<String> types, String exampleType, String description) {
+            String headerName, List<String> values, String exampleType, String description) {
         SchemaObject header = new SchemaObject();
         header.setType(Set.of(SchemaType.STRING.getValue()));
         header.setTitle(headerName);
         header.setDescription(description);
         header.setExamples(List.of(exampleType));
-        header.setEnumValues(types);
+        if (values.size() == 1) {
+            header.setConstValue(values.get(0));
+        } else {
+            header.setEnumValues(values);
+        }
 
         headers.getProperties().put(headerName, header);
         return this;
