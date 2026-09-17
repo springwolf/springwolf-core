@@ -51,8 +51,8 @@ importers:
         specifier: ^22.0.2
         version: 22.0.2(@angular/common@22.1.5(@angular/core@22.1.5(@angular/compiler@22.1.5)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.1.5(@angular/compiler@22.1.5)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.1.5(@angular/animations@22.1.5(@angular/core@22.1.5(@angular/compiler@22.1.5)(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/common@22.1.5(@angular/core@22.1.5(@angular/compiler@22.1.5)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.1.5(@angular/compiler@22.1.5)(rxjs@7.8.2)(zone.js@0.16.2)))(marked@18.0.5)(rxjs@7.8.2)(zone.js@0.16.2)
       prism-code-editor:
-        specifier: ^5.3.0
-        version: 5.3.0
+        specifier: ^5.4.0
+        version: 5.4.0
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -3853,8 +3853,13 @@ packages:
     resolution: {integrity: sha512-byhRAPguVKMQIj4kjJwJ5lAskVhfuiSdiYl/aLTWpgkGEmic2jYhJh1yE9ih8Ox44Xg9ccCT11/S6QrzSJuNrg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  prism-code-editor@5.3.0:
-    resolution: {integrity: sha512-ET80c+zFx1QXsA+XejqRt1LNoZ2O/N9P1JIuPc1L2AVRSANHKhag0cQTdV0DF2eHjWrccdvRwLD9kp9IvDDBYg==}
+  prism-code-editor@5.4.0:
+    resolution: {integrity: sha512-8y4SdQxwHa/lnxIbFf2w8N2D1OwxcskDRw774ov4XEEa1e5alqqrAZk08YXgaxisc1RuJdFbCTI+4tU3Plljqw==}
+    peerDependencies:
+      emmet: ^2.0.0
+    peerDependenciesMeta:
+      emmet:
+        optional: true
 
   proc-log@7.0.0:
     resolution: {integrity: sha512-FYgfaA69XZ93zaXLoMNQ+ViDXGGBgR8aLh03txzcFhV+9xOXx7+8DLCULrKKpR9+GsH9ZfHm82aSUPpozX0Ztg==}
@@ -8450,7 +8455,7 @@ snapshots:
       '@jest/schemas': 30.5.0
       ansi-styles: 5.2.0
 
-  prism-code-editor@5.3.0: {}
+  prism-code-editor@5.4.0: {}
 
   proc-log@7.0.0: {}
 
