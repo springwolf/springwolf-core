@@ -185,67 +185,59 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
         ce_id:
           title: ce_id
           type: string
           description: CloudEvent Id Header
-          enum:
-            - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
           examples:
             - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
+          const: 2c60089e-6f39-459d-8ced-2d6df7e4c03a
         ce_source:
           title: ce_source
           type: string
           description: CloudEvent Source Header
-          enum:
-            - http://localhost
           examples:
             - http://localhost
+          const: http://localhost
         ce_specversion:
           title: ce_specversion
           type: string
           description: CloudEvent Spec Version Header
-          enum:
-            - "1.0"
           examples:
             - "1.0"
+          const: "1.0"
         ce_subject:
           title: ce_subject
           type: string
           description: CloudEvent Subject Header
-          enum:
-            - Springwolf example project - Kafka
           examples:
             - Springwolf example project - Kafka
+          const: Springwolf example project - Kafka
         ce_time:
           title: ce_time
           type: string
           description: CloudEvent Time Header
           format: date-time
-          enum:
-            - 2023-10-28T20:01:23+00:00
           examples:
             - 2023-10-28T20:01:23+00:00
+          const: 2023-10-28T20:01:23+00:00
         ce_type:
           title: ce_type
           type: string
           description: CloudEvent Payload Type Header
-          enum:
-            - NestedPayloadDto.v1
           examples:
             - NestedPayloadDto.v1
+          const: NestedPayloadDto.v1
         content-type:
           title: content-type
           type: string
           description: CloudEvent Content-Type Header
-          enum:
-            - application/json
           examples:
             - application/json
+          const: application/json
       description: Spring __TypeId__ and CloudEvent Headers
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
@@ -261,52 +253,44 @@ components:
         description: Spring __TypeId__ and CloudEvent Headers
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
             title: __TypeId__
             type: string
           ce_id:
+            const: 2c60089e-6f39-459d-8ced-2d6df7e4c03a
             description: CloudEvent Id Header
-            enum:
-              - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
             title: ce_id
             type: string
           ce_source:
+            const: http://localhost
             description: CloudEvent Source Header
-            enum:
-              - http://localhost
             title: ce_source
             type: string
           ce_specversion:
+            const: "1.0"
             description: CloudEvent Spec Version Header
-            enum:
-              - "1.0"
             title: ce_specversion
             type: string
           ce_subject:
+            const: Springwolf example project - Kafka
             description: CloudEvent Subject Header
-            enum:
-              - Springwolf example project - Kafka
             title: ce_subject
             type: string
           ce_time:
+            const: 2023-10-28T20:01:23+00:00
             description: CloudEvent Time Header
-            enum:
-              - 2023-10-28T20:01:23+00:00
             format: date-time
             title: ce_time
             type: string
           ce_type:
+            const: NestedPayloadDto.v1
             description: CloudEvent Payload Type Header
-            enum:
-              - NestedPayloadDto.v1
             title: ce_type
             type: string
           content-type:
+            const: application/json
             description: CloudEvent Content-Type Header
-            enum:
-              - application/json
             title: content-type
             type: string
         title: SpringDefaultHeaderAndCloudEvent
@@ -319,19 +303,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
           examples:
             - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
+          const: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadAvroDto
@@ -344,19 +326,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-AnotherPayloadDto
@@ -400,18 +380,17 @@ components:
             type: string
         title: SpringKafkaDefaultHeaders-AnotherTopic
         type: object
-    SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105:
-      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105
+    SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656
       type: object
       properties:
         __TypeId__:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
         kafka_offset:
           type: integer
           format: int32
@@ -435,9 +414,8 @@ components:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
             title: __TypeId__
             type: string
           kafka_offset:
@@ -448,7 +426,7 @@ components:
           kafka_recordMetadata:
             title: ConsumerRecordMetadata
             type: object
-        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656
         type: object
     SpringKafkaDefaultHeaders-Message:
       title: SpringKafkaDefaultHeaders-Message
@@ -458,19 +436,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
           examples:
             - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
+          const: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-Message
@@ -483,19 +459,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - javax.money.MonetaryAmount
           examples:
             - javax.money.MonetaryAmount
+          const: javax.money.MonetaryAmount
       examples:
         - __TypeId__: javax.money.MonetaryAmount
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: javax.money.MonetaryAmount
             description: Spring Type Id Header
-            enum:
-              - javax.money.MonetaryAmount
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-MonetaryAmount
@@ -508,19 +482,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - PayloadNotUsed
           examples:
             - PayloadNotUsed
+          const: PayloadNotUsed
       examples:
         - __TypeId__: PayloadNotUsed
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: PayloadNotUsed
             description: Spring Type Id Header
-            enum:
-              - PayloadNotUsed
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-PayloadNotUsed
@@ -533,19 +505,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-RequiredAndNullablePayloadDto
@@ -558,19 +528,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
           examples:
             - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
+          const: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-VehicleBase
@@ -583,19 +551,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-XmlPayloadDto
@@ -608,19 +574,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
           examples:
             - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
+          const: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
       examples:
         - __TypeId__: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
             description: Spring Type Id Header
-            enum:
-              - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-YamlPayloadDto
@@ -633,19 +597,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - java.lang.Integer
           examples:
             - java.lang.Integer
+          const: java.lang.Integer
       examples:
         - __TypeId__: java.lang.Integer
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: java.lang.Integer
             description: Spring Type Id Header
-            enum:
-              - java.lang.Integer
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-integer
@@ -658,19 +620,17 @@ components:
           title: __TypeId__
           type: string
           description: Spring Type Id Header
-          enum:
-            - java.lang.String
           examples:
             - java.lang.String
+          const: java.lang.String
       examples:
         - __TypeId__: java.lang.String
       x-json-schema:
         $schema: https://json-schema.org/draft-07/schema#
         properties:
           __TypeId__:
+            const: java.lang.String
             description: Spring Type Id Header
-            enum:
-              - java.lang.String
             title: __TypeId__
             type: string
         title: SpringKafkaDefaultHeaders-string
@@ -1491,7 +1451,7 @@ components:
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
-        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-546532105"
+        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:
@@ -1625,8 +1585,7 @@ operations:
       kafka:
         groupId:
           type: string
-          enum:
-            - example-group-id
+          const: example-group-id
         bindingVersion: 0.5.0
     messages:
       - $ref: "#/channels/another-topic/messages/io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto"
@@ -1693,12 +1652,10 @@ operations:
       kafka:
         groupId:
           type: string
-          enum:
-            - foo-groupId
+          const: foo-groupId
         clientId:
           type: string
-          enum:
-            - foo-clientId
+          const: foo-clientId
         bindingVersion: 0.5.0
     messages:
       - $ref: "#/channels/multi-payload-topic/messages/javax.money.MonetaryAmount"
@@ -1752,8 +1709,7 @@ operations:
       kafka:
         clientId:
           type: string
-          enum:
-            - foo-clientId
+          const: foo-clientId
         bindingVersion: 0.5.0
     messages:
       - $ref: "#/channels/topic-defined-via-asyncPublisher-annotation/messages/io.github.springwolf.examples.kafka.dtos.NestedPayloadDto"

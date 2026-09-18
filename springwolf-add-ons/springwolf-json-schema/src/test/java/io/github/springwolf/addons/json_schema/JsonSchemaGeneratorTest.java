@@ -133,6 +133,21 @@ class JsonSchemaGeneratorTest {
                             return schema;
                         }),
                 Arguments.of(
+                        "{\"const\": 42,\"type\":\"integer\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
+                        (Supplier<Schema<?>>) () -> {
+                            Schema<Integer> schema = new Schema<>();
+                            schema.setType("integer");
+                            schema.setConst(42);
+                            return schema;
+                        }),
+                Arguments.of(
+                        "{\"const\": true,\"type\":\"boolean\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
+                        (Supplier<Schema<?>>) () -> {
+                            BooleanSchema schema = new BooleanSchema();
+                            schema.setConst(true);
+                            return schema;
+                        }),
+                Arguments.of(
                         "{\"description\": \"test\",\"type\":\"string\",\"$schema\":\"https://json-schema.org/draft-07/schema#\"}",
                         (Supplier<Schema<?>>) () -> {
                             StringSchema schema = new StringSchema();
