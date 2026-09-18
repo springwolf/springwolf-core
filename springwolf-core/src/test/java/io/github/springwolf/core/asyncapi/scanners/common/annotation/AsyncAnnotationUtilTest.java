@@ -134,6 +134,21 @@ class AsyncAnnotationUtilTest {
     }
 
     @Test
+    void getAsyncHeadersWithEmptyValue() throws Exception {
+        // given
+        Method m = ClassWithHeaders.class.getDeclaredMethod("withEmptyValue", String.class);
+        AsyncOperation operation = m.getAnnotation(AsyncListener.class).operation();
+
+        // when
+        SchemaObject headers = AsyncAnnotationUtil.getAsyncHeaders(operation, stringValueResolver);
+
+        // then
+        SchemaObject headerProperty = (SchemaObject) headers.getProperties().get("headerResolved");
+        assertThat(headerProperty.getEnumValues()).containsExactly("Resolved");
+        assertThat(headerProperty.getExamples()).containsExactly("Resolved");
+    }
+
+    @Test
     void getAsyncHeadersWithFormat() throws Exception {
         // given
         Method m = ClassWithHeaders.class.getDeclaredMethod("withFormat", String.class);
@@ -493,6 +508,19 @@ class AsyncAnnotationUtilTest {
                                         @AsyncOperation.Headers(
                                                 values = {@AsyncOperation.Headers.Header(name = "header")})))
         private void withoutValue(String payload) {}
+
+        @AsyncListener(
+                operation =
+                        @AsyncOperation(
+                                channelName = "${test.property.test-channel}",
+                                headers =
+                                        @AsyncOperation.Headers(
+                                                values = {
+                                                    @AsyncOperation.Headers.Header(
+                                                            name = "header",
+                                                            value = {""})
+                                                })))
+        private void withEmptyValue(String payload) {}
 
         @AsyncListener(
                 operation =
