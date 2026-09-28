@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
-import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,7 +106,7 @@ public class DefaultComponentsService implements ComponentsService {
 
     /**
      * Provides a schema name for the given type. The result is either the full-qualified classname or
-     * the simple classname of the given type - which depends on {@link SpringwolfConfigProperties#isUseFqn()}.
+     * the simple classname of the given type - which depends on {@link io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties#isUseFqn()}.
      *
      * @param type Type to generate a schema name from
      * @return the resulting schema name
