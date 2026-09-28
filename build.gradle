@@ -42,8 +42,8 @@ allprojects {
     apply plugin: 'signing'
     apply plugin: 'com.diffplug.spotless'
 
-    group 'io.github.springwolf'
-    version System.getProperty("SPRINGWOLF_VERSION")
+    group = 'io.github.springwolf'
+    version = System.getProperty("SPRINGWOLF_VERSION")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -68,7 +68,7 @@ allprojects {
 
         mavenCentral()
 
-        maven { url "https://packages.confluent.io/maven/" }
+        maven { url = "https://packages.confluent.io/maven/" }
     }
 
     spotless {
@@ -156,8 +156,8 @@ allprojects {
     }
 
     tasks.register('updateAsyncApiJson') {
-        group 'verification'
-        description 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
+        group = 'verification'
+        description = 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
 
         doLast { // ensure that the code is not executed as part of a gradle refresh
             plugins.forEach {
@@ -192,9 +192,9 @@ allprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
-                artifactId project.name
-                groupId project.group
-                version project.version
+                artifactId = project.name
+                groupId = project.group
+                version = project.version
 
                 pom {
                     name = ''
@@ -243,7 +243,7 @@ allprojects {
     }
 
     signing {
-        required { gradle.taskGraph.hasTask("publish") }
+        required = { gradle.taskGraph.hasTask("publish") }
         def signingKey = project.findProperty("SIGNINGKEY") as String
         def signingPassword = project.findProperty("SIGNINGPASSWORD") as String
         useInMemoryPgpKeys(signingKey, signingPassword)
