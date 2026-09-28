@@ -144,7 +144,8 @@ class AsyncAnnotationUtilTest {
 
         // then
         SchemaObject headerProperty = (SchemaObject) headers.getProperties().get("headerResolved");
-        assertThat(headerProperty.getEnumValues()).containsExactly("Resolved");
+        assertThat(headerProperty.getEnumValues()).isNull();
+        assertThat(headerProperty.getConstValue()).isEqualTo("Resolved");
         assertThat(headerProperty.getExamples()).containsExactly("Resolved");
     }
 
