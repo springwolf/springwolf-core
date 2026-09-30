@@ -22,6 +22,7 @@
 
 - [About](#about)
 - [Demo & Documentation](#-demo---documentation)
+- [Quick Start](#-quick-start)
 - [Why You Should Use Springwolf](#-why-you-should-use-springwolf)
 - [Usage & Example](#-usage--example)
 - [Who's Using Springwolf](#-whos-using-springwolf)
@@ -40,6 +41,37 @@ It documents asynchronous APIs using the [AsyncAPI specification](https://www.as
 Take a look at the Springwolf [live demo](https://demo.springwolf.dev/) and a [generated AsyncAPI document](springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json).
 
 [springwolf.dev](https://www.springwolf.dev) includes the [quickstart guide](https://www.springwolf.dev/docs/quickstart) and full documentation.
+
+### 🚀 Quick Start
+
+The minimal setup for a Spring Boot application using Kafka. For other protocols (AMQP, SQS, JMS, etc.), replace the plugin dependency with the corresponding one from the table below.
+
+1. Add the Springwolf Kafka plugin to your `pom.xml`:
+
+   ```xml
+   <dependency>
+       <groupId>io.github.springwolf</groupId>
+       <artifactId>springwolf-kafka</artifactId>
+       <!-- use the version from the Kafka plugin row below -->
+       <version>${springwolf.version}</version>
+   </dependency>
+   ```
+
+2. Annotate your existing listeners — no extra code required:
+
+   ```java
+   @KafkaListener(topics = "user-events")
+   public void onUserEvent(UserEvent event) {
+       // your business logic
+   }
+   ```
+
+3. Start the application and open the generated documentation:
+
+   - AsyncAPI JSON: `http://localhost:8080/springwolf/docs`
+   - Springwolf UI: `http://localhost:8080/springwolf/asyncapi-ui.html`
+
+For a step-by-step walkthrough including `application.properties` configuration, see the [full quickstart guide](https://www.springwolf.dev/docs/quickstart).
 
 ### ✨ Why You Should Use Springwolf
 
@@ -99,7 +131,7 @@ More details in the documentation.
 | [Common Model Converter](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-common-model-converters)                              | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-common-model-converters?color=green&label=springwolf-common-model-converters&style=plastic)                             | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-common-model-converters%2Fmaven-metadata.xml&label=springwolf-common-model-converters&style=plastic)                             |
 | [Generic Binding](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-generic-binding)                                             | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-generic-binding?color=green&label=springwolf-generic-binding&style=plastic)                                             | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-generic-binding%2Fmaven-metadata.xml&label=springwolf-generic-binding&style=plastic)                                             |
 | [Json Schema](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-json-schema)                                                     | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-json-schema?color=green&label=springwolf-json-schema&style=plastic)                                                     | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-json-schema%2Fmaven-metadata.xml&label=springwolf-json-schema&style=plastic)                                                     |
-| [Kotlinx Serialization Model Converter](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-kotlinx-serialization-model-converter) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kotlinx-serialization-model-converter?color=green&label=springwolf-kotlinx-serialization-model-converter&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-kotlinx-serialization-model-converter%2Fmaven-metadata.xml&label=springwolf-kotlinx-serialization-model-converter&style=plastic) |
+| [Kotlinx Serialization Model Converter](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-kotlinx-serialization-model-converter) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kotlinx-serialization-model-converters?color=green&label=springwolf-kotlinx-serialization-model-converters&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-kotlinx-serialization-model-converters%2Fmaven-metadata.xml&label=springwolf-kotlinx-serialization-model-converters&style=plastic) |
 </details>
 
 ### 🚀 Who's Using Springwolf
