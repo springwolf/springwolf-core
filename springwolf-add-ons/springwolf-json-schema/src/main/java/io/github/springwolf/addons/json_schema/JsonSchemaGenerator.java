@@ -65,7 +65,7 @@ public class JsonSchemaGenerator {
             node.set("allOf", arrayNode);
         }
         if (schema.getConstValue() != null) {
-            node.put("const", schema.getConstValue().toString());
+            node.set("const", jsonMapper.valueToTree(schema.getConstValue()));
         }
         if (schema.getDescription() != null) {
             node.put("description", schema.getDescription());

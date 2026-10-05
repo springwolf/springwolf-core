@@ -237,6 +237,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/elliot-eyre"><img src="https://avatars.githubusercontent.com/u/134098343?v=4?s=100" width="100px;" alt="elliot-eyre"/><br /><sub><b>elliot-eyre</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=elliot-eyre" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/itsmib"><img src="https://avatars.githubusercontent.com/u/175726682?v=4?s=100" width="100px;" alt="Noorul Misbah"/><br /><sub><b>Noorul Misbah</b></sub></a><br /><a href="https://github.com/stavshamir/Springwolf/commits?author=itsmib" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

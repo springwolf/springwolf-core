@@ -88,7 +88,7 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
         Map<String, Message> messages = Map.of(message.getMessageId(), message);
 
         SchemaObject groupId = new SchemaObject();
-        groupId.setEnumValues(List.of("myGroupId"));
+        groupId.setConstValue("myGroupId");
         groupId.setType(Set.of(SchemaType.STRING.getValue()));
 
         OperationBinding operationBinding =
@@ -102,11 +102,9 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .build();
 
         ChannelObject newUserChannel = ChannelObject.builder()
-                // FIXME: Can we autogenerate the address somehow?
                 .address("new-user")
                 .description("This channel is used to exchange messages about users signing up")
-                .servers(List.of(
-                        ServerReference.builder().ref("#/servers/production").build()))
+                .servers(List.of(ServerReference.fromServer("production")))
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 

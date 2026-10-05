@@ -140,7 +140,11 @@ public class SwaggerSchemaMapper {
             if (isNullable) {
                 enumStringValues.add(null);
             }
-            builder.enumValues(enumStringValues);
+            if (enumStringValues.size() == 1) {
+                builder.constValue(anEnum.get(0));
+            } else {
+                builder.enumValues(enumStringValues);
+            }
         }
 
         Object example = swaggerSchema.getExample();
@@ -181,7 +185,9 @@ public class SwaggerSchemaMapper {
             builder.anyOf(anyOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
-        builder.constValue(swaggerSchema.getConst());
+        if (swaggerSchema.getConst() != null) {
+            builder.constValue(swaggerSchema.getConst());
+        }
 
         Schema not = swaggerSchema.getNot();
         if (not != null) {
@@ -207,7 +213,7 @@ public class SwaggerSchemaMapper {
         String schemaType = swaggerSchema.getType();
         if (!types.contains(schemaType)) {
             // required while swagger v2 does not populate types
-            builder.type(Set.of(schemaType));
+            builder.type(schemaType == null ? Set.of() : Set.of(schemaType));
             return;
         }
 
@@ -297,6 +303,7 @@ public class SwaggerSchemaMapper {
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
         swaggerSchema.setExamples(asyncApiSchema.getExamples());
         swaggerSchema.setEnum(asyncApiSchema.getEnumValues());
+        swaggerSchema.setConst(asyncApiSchema.getConstValue());
 
         if (asyncApiSchema.getProperties() != null) {
             Map<String, Schema> properties = asyncApiSchema.getProperties().entrySet().stream()

@@ -171,8 +171,10 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             return composedSchemaExample;
         }
 
-        // schema may be an openapi v3 or v3.1 schema. While v3 uses an simple 'type' field, v3.1 supports a set of
-        // types, for example ["string", "null"].
+        Optional<T> constOrEnumExample = buildFromConstOrEnum(schema);
+        if (constOrEnumExample.isPresent()) {
+            return constOrEnumExample;
+        }
 
         String type = getTypeForExampleValue(schema);
         if (type == null) {
@@ -205,11 +207,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildFromStringSchema(Schema schema) {
-        String firstEnumValue = getFirstEnumValue(schema);
-        if (firstEnumValue != null) {
-            return exampleValueGenerator.createEnumExample(firstEnumValue, schema);
-        }
-
         String format = schema.getFormat();
         if (format == null) {
             return exampleValueGenerator.createStringExample(DEFAULT_STRING_EXAMPLE, schema);
@@ -225,6 +222,20 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             case "uuid" -> exampleValueGenerator.createStringExample(DEFAULT_UUID_EXAMPLE, schema);
             default -> getFallbackExampleSchemaStringForFormat(format, schema);
         };
+    }
+
+    private Optional<T> buildFromConstOrEnum(Schema schema) {
+        Object constValue = schema.getConst();
+        if (constValue != null) {
+            return exampleValueGenerator.createStringExample(constValue.toString(), schema);
+        }
+
+        String firstEnumValue = getFirstEnumValue(schema);
+        if (firstEnumValue != null) {
+            return exampleValueGenerator.createEnumExample(firstEnumValue, schema);
+        }
+
+        return Optional.empty();
     }
 
     private String getFirstEnumValue(Schema schema) {

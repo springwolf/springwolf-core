@@ -224,6 +224,21 @@ class SwaggerSchemaMapperTest {
         }
 
         @Test
+        void mapNullTypeForComposedSchema() {
+            // given
+            Schema<?> schema = new Schema<>();
+            // no type set - simulates a composed schema (allOf/oneOf/anyOf) with null type
+            schema.addAllOfItem(new Schema<>());
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
+
+            // then - should not throw NPE, type should be empty
+            assertThat(componentSchema.getSchema()).isNotNull();
+            assertThat(componentSchema.getSchema().getType()).isNullOrEmpty();
+        }
+
+        @Test
         void mapProperties() {
             // given
             ObjectSchema schema = new ObjectSchema();
@@ -417,6 +432,20 @@ class SwaggerSchemaMapperTest {
 
             // then
             assertThat(componentSchema.getSchema().getEnumValues()).isEqualTo(schema.getEnum());
+        }
+
+        @Test
+        void mapSingleEnumValueAsConst() {
+            // given
+            ObjectSchema schema = new ObjectSchema();
+            schema.setEnum(List.of("only"));
+
+            // when
+            ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
+
+            // then
+            assertThat(componentSchema.getSchema().getEnumValues()).isNull();
+            assertThat(componentSchema.getSchema().getConstValue()).isEqualTo("only");
         }
 
         @Test
@@ -639,6 +668,7 @@ class SwaggerSchemaMapperTest {
 
     @Nested
     class MapToSwagger {
+
         @Test
         void mapNameAndTitle() {
             // given
@@ -705,6 +735,19 @@ class SwaggerSchemaMapperTest {
 
             // then
             assertThat(swaggerSchema.getEnum()).isEqualTo(schema.getEnumValues());
+        }
+
+        @Test
+        void mapConst() {
+            // given
+            SchemaObject schema = new SchemaObject();
+            schema.setConstValue(42);
+
+            // when
+            Schema<?> swaggerSchema = swaggerSchemaMapper.mapToSwagger(schema);
+
+            // then
+            assertThat(swaggerSchema.getConst()).isEqualTo(42);
         }
 
         @Test

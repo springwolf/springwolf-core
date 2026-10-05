@@ -11,7 +11,6 @@ import jakarta.annotation.Nullable;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
-import java.util.List;
 import java.util.Set;
 
 public class KafkaOperationBindingProcessor extends AbstractOperationBindingProcessor<KafkaAsyncOperationBinding> {
@@ -42,7 +41,7 @@ public class KafkaOperationBindingProcessor extends AbstractOperationBindingProc
     private static SchemaObject createStringSchema(String value) {
         if (value != null && !value.isEmpty()) {
             SchemaObject schema = new SchemaObject();
-            schema.setEnumValues(List.of(value));
+            schema.setConstValue(value);
             schema.setType(Set.of(SchemaType.STRING.getValue()));
             return schema;
         }

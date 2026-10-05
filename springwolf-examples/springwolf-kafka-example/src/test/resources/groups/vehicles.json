@@ -48,12 +48,10 @@
             "title": "__TypeId__",
             "type": "string",
             "description": "Spring Type Id Header",
-            "enum": [
-              "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
-            ],
             "examples": [
               "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
-            ]
+            ],
+            "const": "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
           }
         },
         "examples": [
@@ -65,10 +63,8 @@
           "$schema": "https://json-schema.org/draft-07/schema#",
           "properties": {
             "__TypeId__": {
+              "const": "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase",
               "description": "Spring Type Id Header",
-              "enum": [
-                "io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase"
-              ],
               "title": "__TypeId__",
               "type": "string"
             }

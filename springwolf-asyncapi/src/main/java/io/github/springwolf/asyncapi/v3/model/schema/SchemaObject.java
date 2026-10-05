@@ -98,6 +98,9 @@ public class SchemaObject extends ExtendableObject implements Schema {
     @JsonProperty(value = "maxLength")
     private Integer maxLength;
 
+    /**
+     * For a single entry, use {@link #constValue}
+     */
     @JsonProperty("enum")
     private List<String> enumValues;
 
@@ -125,6 +128,9 @@ public class SchemaObject extends ExtendableObject implements Schema {
     @JsonProperty(value = "anyOf")
     private List<ComponentSchema> anyOf;
 
+    /**
+     * For multiple entries, use {@link #enumValues}
+     */
     @JsonProperty(value = "const")
     private Object constValue;
 

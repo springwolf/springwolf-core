@@ -82,9 +82,7 @@
         "kafka": {
           "groupId": {
             "type": "string",
-            "enum": [
-              "myGroupId"
-            ]
+            "const": "myGroupId"
           },
           "bindingVersion": "0.5.0"
         }
