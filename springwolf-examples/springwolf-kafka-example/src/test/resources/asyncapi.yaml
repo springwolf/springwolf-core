@@ -186,35 +186,35 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
+          - io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
           const: io.github.springwolf.examples.kafka.dtos.NestedPayloadDto
         ce_id:
           title: ce_id
           type: string
           description: CloudEvent Id Header
           examples:
-            - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
+          - 2c60089e-6f39-459d-8ced-2d6df7e4c03a
           const: 2c60089e-6f39-459d-8ced-2d6df7e4c03a
         ce_source:
           title: ce_source
           type: string
           description: CloudEvent Source Header
           examples:
-            - http://localhost
+          - http://localhost
           const: http://localhost
         ce_specversion:
           title: ce_specversion
           type: string
           description: CloudEvent Spec Version Header
           examples:
-            - "1.0"
+          - "1.0"
           const: "1.0"
         ce_subject:
           title: ce_subject
           type: string
           description: CloudEvent Subject Header
           examples:
-            - Springwolf example project - Kafka
+          - Springwolf example project - Kafka
           const: Springwolf example project - Kafka
         ce_time:
           title: ce_time
@@ -222,21 +222,21 @@ components:
           description: CloudEvent Time Header
           format: date-time
           examples:
-            - 2023-10-28T20:01:23+00:00
+          - 2023-10-28T20:01:23+00:00
           const: 2023-10-28T20:01:23+00:00
         ce_type:
           title: ce_type
           type: string
           description: CloudEvent Payload Type Header
           examples:
-            - NestedPayloadDto.v1
+          - NestedPayloadDto.v1
           const: NestedPayloadDto.v1
         content-type:
           title: content-type
           type: string
           description: CloudEvent Content-Type Header
           examples:
-            - application/json
+          - application/json
           const: application/json
       description: Spring __TypeId__ and CloudEvent Headers
       examples:
@@ -304,7 +304,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
+          - io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
           const: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto
@@ -327,7 +327,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
+          - io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
           const: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto
@@ -380,8 +380,8 @@ components:
             type: string
         title: SpringKafkaDefaultHeaders-AnotherTopic
         type: object
-    SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656:
-      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656
+    SpringKafkaDefaultHeaders-ExamplePayloadDto-1810898840:
+      title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1810898840
       type: object
       properties:
         __TypeId__:
@@ -389,7 +389,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
+          - io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
           const: io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto
         kafka_offset:
           type: integer
@@ -417,10 +417,7 @@ components:
             type: integer
           kafka_receivedMessageKey:
             type: string
-          kafka_recordMetadata:
-            title: ConsumerRecordMetadata
-            type: object
-        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656
+        title: SpringKafkaDefaultHeaders-ExamplePayloadDto-1810898840
         type: object
     SpringKafkaDefaultHeaders-Message:
       title: SpringKafkaDefaultHeaders-Message
@@ -431,7 +428,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
+          - io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
           const: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message
@@ -454,7 +451,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - javax.money.MonetaryAmount
+          - javax.money.MonetaryAmount
           const: javax.money.MonetaryAmount
       examples:
       - __TypeId__: javax.money.MonetaryAmount
@@ -477,7 +474,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - PayloadNotUsed
+          - PayloadNotUsed
           const: PayloadNotUsed
       examples:
       - __TypeId__: PayloadNotUsed
@@ -500,7 +497,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
+          - io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
           const: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dtos.RequiredAndNullablePayloadDto
@@ -523,7 +520,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
+          - io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
           const: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dtos.discriminator.VehicleBase
@@ -546,7 +543,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
+          - io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
           const: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dtos.XmlPayloadDto
@@ -569,7 +566,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
+          - io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
           const: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
       examples:
       - __TypeId__: io.github.springwolf.examples.kafka.dtos.YamlPayloadDto
@@ -592,7 +589,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - java.lang.Integer
+          - java.lang.Integer
           const: java.lang.Integer
       examples:
       - __TypeId__: java.lang.Integer
@@ -615,7 +612,7 @@ components:
           type: string
           description: Spring Type Id Header
           examples:
-            - java.lang.String
+          - java.lang.String
           const: java.lang.String
       examples:
       - __TypeId__: java.lang.String
@@ -1540,7 +1537,7 @@ components:
           bindingVersion: 0.5.0
     io.github.springwolf.examples.kafka.dtos.ExamplePayloadDto:
       headers:
-        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1408272656"
+        $ref: "#/components/schemas/SpringKafkaDefaultHeaders-ExamplePayloadDto-1810898840"
       payload:
         schemaFormat: application/vnd.aai.asyncapi+json;version=3.1.0
         schema:

@@ -1,6 +1,6 @@
 [versions]
 activemq = "6.3.2"
-cutterslade-analyze = "1.10.0"
+cutterslade-analyze = "2.0.0"
 docker-spring-boot = "10.0.0"
 gradle-nexus-publish-plugin = "2.0.0"
 io-awspring-cloud = "4.1.1"
