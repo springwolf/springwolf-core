@@ -97,8 +97,8 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0
       jest-preset-angular:
-        specifier: ^17.0.1
-        version: 17.0.1(@angular/compiler-cli@22.2.0(@angular/compiler@22.2.0)(typescript@6.0.3))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.2.0(@angular/animations@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/common@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.2(@types/node@22.19.19)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3)
+        specifier: ^17.0.2
+        version: 17.0.2(@angular/compiler-cli@22.2.0(@angular/compiler@22.2.0)(typescript@6.0.3))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.2.0(@angular/animations@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/common@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.2(@types/node@22.19.19)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3)
       prettier:
         specifier: ^3.9.9
         version: 3.9.9
@@ -2819,8 +2819,8 @@ packages:
     resolution: {integrity: sha512-KTHb37Fhj8xY8qPFvTFaFJHcdsumQp+ExsUlgoX232Agmc706gagBs53+CYvulV7MVQo9AgXOUxsqzzVBoJlrA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  jest-preset-angular@17.0.1:
-    resolution: {integrity: sha512-NQYAMn1fH+jvICCuK+g4MDW2S4zGj22XV0jzbzj8PPnWw0EmTCs0/oBJHmTrIWTV0QroT4vk0aquQgO9W50zEg==}
+  jest-preset-angular@17.0.2:
+    resolution: {integrity: sha512-P1de5TJfHRKkjqyyP8V5LrHScCi/QI72KrfdD4ehTcYA05TahyS3krEVxLlFlSPQZGZnch2iv6nIcnmtKDRVhQ==}
     engines: {node: ^20.11.1 || >=22.0.0}
     peerDependencies:
       '@angular/compiler-cli': '>=20.0.0 <23.0.0'
@@ -7031,7 +7031,7 @@ snapshots:
       '@types/node': 22.20.1
       jest-util: 30.5.1
 
-  jest-preset-angular@17.0.1(@angular/compiler-cli@22.2.0(@angular/compiler@22.2.0)(typescript@6.0.3))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.2.0(@angular/animations@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/common@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.2(@types/node@22.19.19)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3):
+  jest-preset-angular@17.0.2(@angular/compiler-cli@22.2.0(@angular/compiler@22.2.0)(typescript@6.0.3))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.2.0(@angular/animations@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/common@22.2.0(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.2(@types/node@22.19.19)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3):
     dependencies:
       '@angular/compiler-cli': 22.2.0(@angular/compiler@22.2.0)(typescript@6.0.3)
       '@angular/core': 22.2.0(@angular/compiler@22.2.0)(rxjs@7.8.2)(zone.js@0.16.2)
@@ -7169,7 +7169,7 @@ snapshots:
   jest-util@30.5.1:
     dependencies:
       '@jest/types': 30.5.1
-      '@types/node': 22.20.1
+      '@types/node': 22.19.19
       chalk: 4.1.2
       ci-info: 4.4.0
       graceful-fs: 4.2.11
