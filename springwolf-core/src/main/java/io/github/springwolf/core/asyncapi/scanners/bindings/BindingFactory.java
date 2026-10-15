@@ -14,11 +14,38 @@ public interface BindingFactory<T> {
         return ReferenceUtil.toValidId(getChannelName(annotation));
     }
 
+    /**
+     * Same as {@link #getChannelId(Object)}, with access to the context in which the annotation was found.
+     * <p>
+     * Maintainer note: delegates to {@link #getChannelId(Object)} to stay compatible with existing implementations.
+     */
+    default String getChannelId(T annotation, BindingContext bindingContext) {
+        return getChannelId(annotation);
+    }
+
     String getChannelName(T annotation);
+
+    /**
+     * Same as {@link #getChannelName(Object)}, with access to the context in which the annotation was found.
+     * <p>
+     * Maintainer note: delegates to {@link #getChannelName(Object)} to stay compatible with existing implementations.
+     */
+    default String getChannelName(T annotation, BindingContext bindingContext) {
+        return getChannelName(annotation);
+    }
 
     Map<String, ChannelBinding> buildChannelBinding(T annotation);
 
     Map<String, OperationBinding> buildOperationBinding(T annotation);
+
+    /**
+     * Same as {@link #buildOperationBinding(Object)}, with access to the context in which the annotation was found.
+     * <p>
+     * Maintainer note: delegates to {@link #buildOperationBinding(Object)} to stay compatible with existing implementations.
+     */
+    default Map<String, OperationBinding> buildOperationBinding(T annotation, BindingContext bindingContext) {
+        return buildOperationBinding(annotation);
+    }
 
     Map<String, MessageBinding> buildMessageBinding(T annotation, SchemaObject headerSchema);
 }
