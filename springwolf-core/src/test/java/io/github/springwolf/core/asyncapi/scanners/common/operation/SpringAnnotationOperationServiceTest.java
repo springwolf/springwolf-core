@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
@@ -42,8 +43,8 @@ class SpringAnnotationOperationServiceTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
-        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
+        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_ID);
+        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any(), any());
     }
 
     @Test
@@ -62,8 +63,11 @@ class SpringAnnotationOperationServiceTest {
                 .thenReturn(messageObject);
 
         // when
-        Operation operations =
-                springAnnotationOperationService.buildOperation(methodAndAnnotation, payloadSchemaName, headerSchema);
+        Operation operations = springAnnotationOperationService.buildOperation(
+                methodAndAnnotation,
+                BindingContext.ofAnnotatedMethod(ClassWithTestListenerAnnotation.class, method),
+                payloadSchemaName,
+                headerSchema);
 
         // then
         Operation expectedOperation = Operation.builder()
