@@ -4,7 +4,9 @@ package io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings;
 import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.KafkaListenerUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     private final StringValueResolver stringValueResolver;
+    private final KafkaListenerBeanRefResolver beanRefResolver;
+
+    @Override
+    public String getChannelId(BindingContext<KafkaListener> bindingContext) {
+        return ReferenceUtil.toValidId(getChannelName(bindingContext));
+    }
 
     @Override
     public String getChannelName(KafkaListener annotation) {
         return KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
+    }
+
+    @Override
+    public String getChannelName(BindingContext<KafkaListener> bindingContext) {
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(bindingContext);
+        return KafkaListenerUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
@@ -30,6 +44,12 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     @Override
     public Map<String, OperationBinding> buildOperationBinding(KafkaListener annotation) {
         return KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
+    }
+
+    @Override
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<KafkaListener> bindingContext) {
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(bindingContext);
+        return KafkaListenerUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override

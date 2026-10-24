@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
@@ -42,15 +43,17 @@ public class SpringAnnotationClassLevelChannelsScanner<
     private Stream<ChannelObject> mapClassToChannel(
             Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
+        BindingContext<ClassAnnotation> bindingContext = BindingContext.ofAnnotatedClass(component, classAnnotation);
         Set<Method> methods =
                 annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
         Map<String, Message> messages = new HashMap<>(springAnnotationMessagesService.buildMessages(
-                classAnnotation, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
+                bindingContext, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
 
-        return mapClassToChannel(classAnnotation, messages);
+        return mapClassToChannel(bindingContext, messages);
     }
 
-    private Stream<ChannelObject> mapClassToChannel(ClassAnnotation classAnnotation, Map<String, Message> messages) {
-        return Stream.of(springAnnotationChannelService.buildChannel(classAnnotation, messages));
+    private Stream<ChannelObject> mapClassToChannel(
+            BindingContext<ClassAnnotation> bindingContext, Map<String, Message> messages) {
+        return Stream.of(springAnnotationChannelService.buildChannel(bindingContext, messages));
     }
 }

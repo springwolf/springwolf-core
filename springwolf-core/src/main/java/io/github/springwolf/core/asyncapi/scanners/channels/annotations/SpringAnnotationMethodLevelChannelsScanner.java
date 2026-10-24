@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelsInClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationUtil;
@@ -36,18 +37,20 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
     @Override
     public List<ChannelObject> scan(Class<?> clazz) {
         return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
-                .map(this::mapMethodToChannel)
+                .map(method -> mapMethodToChannel(clazz, method))
                 .toList();
     }
 
-    private ChannelObject mapMethodToChannel(MethodAndAnnotation<MethodAnnotation> method) {
+    private ChannelObject mapMethodToChannel(Class<?> clazz, MethodAndAnnotation<MethodAnnotation> method) {
         MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
+        BindingContext<MethodAnnotation> bindingContext =
+                BindingContext.ofAnnotatedMethod(clazz, method.method(), method.annotation());
 
         PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method.method());
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadSchema, headerSchema);
         Map<String, Message> messages = Map.of(message.getMessageId(), MessageReference.toComponentMessage(message));
 
-        return springAnnotationChannelService.buildChannel(annotation, messages);
+        return springAnnotationChannelService.buildChannel(bindingContext, messages);
     }
 }

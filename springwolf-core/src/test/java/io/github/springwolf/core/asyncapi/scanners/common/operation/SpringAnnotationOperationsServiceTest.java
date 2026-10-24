@@ -7,6 +7,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import org.junit.jupiter.api.Test;
@@ -39,11 +40,13 @@ class SpringAnnotationOperationsServiceTest {
         Class<ClassWithTestListenerAnnotation> clazz = ClassWithTestListenerAnnotation.class;
         TestMethodListener clazzAnnotation = clazz.getAnnotation(TestMethodListener.class);
         Set<Method> methods = Set.of(clazz.getDeclaredMethods());
+        BindingContext<TestMethodListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, clazzAnnotation);
 
-        when(bindingFactory.getChannelId(clazzAnnotation)).thenReturn(CHANNEL_ID);
-        when(bindingFactory.buildOperationBinding(clazzAnnotation)).thenReturn(defaultOperationBinding);
+        when(bindingFactory.getChannelId(bindingContext)).thenReturn(CHANNEL_ID);
+        when(bindingFactory.buildOperationBinding(bindingContext)).thenReturn(defaultOperationBinding);
         when(springAnnotationMessageService.buildMessages(
-                        clazzAnnotation, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
+                        bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
                 .thenReturn(Map.of("message", MessageReference.toComponentMessage("messageId")));
 
         // when
@@ -67,11 +70,13 @@ class SpringAnnotationOperationsServiceTest {
         Class<?> clazz = ClassWithMultipleTestListenerAnnotation.class;
         TestMethodListener clazzAnnotation = clazz.getAnnotation(TestMethodListener.class);
         Set<Method> methods = Set.of(clazz.getDeclaredMethods());
+        BindingContext<TestMethodListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, clazzAnnotation);
 
-        when(bindingFactory.getChannelId(clazzAnnotation)).thenReturn(CHANNEL_ID);
-        when(bindingFactory.buildOperationBinding(clazzAnnotation)).thenReturn(defaultOperationBinding);
+        when(bindingFactory.getChannelId(bindingContext)).thenReturn(CHANNEL_ID);
+        when(bindingFactory.buildOperationBinding(bindingContext)).thenReturn(defaultOperationBinding);
         when(springAnnotationMessageService.buildMessages(
-                        clazzAnnotation, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
+                        bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
                 .thenReturn(Map.of(
                         "message1",
                         MessageReference.toComponentMessage("messageId1"),

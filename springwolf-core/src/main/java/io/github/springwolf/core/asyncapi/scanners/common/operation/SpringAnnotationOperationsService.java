@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
@@ -23,13 +24,14 @@ public class SpringAnnotationOperationsService<ClassAnnotation extends Annotatio
     private final SpringAnnotationMessagesService<ClassAnnotation> springAnnotationMessagesService;
 
     public Operation buildOperation(ClassAnnotation classAnnotation, Class<?> component, Set<Method> methods) {
+        BindingContext<ClassAnnotation> bindingContext = BindingContext.ofAnnotatedClass(component, classAnnotation);
         var messages = springAnnotationMessagesService.buildMessages(
-                classAnnotation, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
+                bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION);
 
-        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(classAnnotation);
+        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(bindingContext);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
-        String channelId = bindingFactory.getChannelId(classAnnotation);
+        String channelId = bindingFactory.getChannelId(bindingContext);
         String operationId =
                 OperationIdHelper.buildOperationId(channelId, OperationAction.RECEIVE, component.getSimpleName());
 

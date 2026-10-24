@@ -4,6 +4,7 @@ package io.github.springwolf.core.asyncapi.scanners.channels.annotations;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.channels.annotations.SpringAnnotationClassLevelChannelsScannerIntegrationTest.TestBindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,8 +41,12 @@ class SpringAnnotationClassLevelChannelsScannerTest {
         // given
         MessageReference message = MessageReference.toComponentMessage("messageId");
         Map<String, Message> messages = Map.of("messageId", message);
+        TestClassListener classAnnotation =
+                ClassWithTestListenerAnnotation.class.getAnnotation(TestClassListener.class);
+        BindingContext<TestClassListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, classAnnotation);
 
-        when(springAnnotationChannelService.buildChannel(any(), any()))
+        when(springAnnotationChannelService.buildChannel(eq(bindingContext), any()))
                 .thenReturn(ChannelObject.builder()
                         .channelId(TestBindingFactory.CHANNEL_ID)
                         .messages(messages)
@@ -58,7 +64,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
 
         int methodsInClass = 2;
         verify(springAnnotationMessagesService)
-                .buildMessages(any(), argThat(list -> list.size() == methodsInClass), any());
+                .buildMessages(eq(bindingContext), argThat(list -> list.size() == methodsInClass), any());
     }
 
     @TestClassListener
