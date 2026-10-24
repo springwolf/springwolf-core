@@ -33,7 +33,7 @@ class HeaderClassExtractorIntegrationTest {
             configProperties,
             List.of(),
             new SwaggerSchemaMapper(configProperties),
-            new ModelConvertersProvider(configProperties, List.of(titleModelConverter)));
+            new ModelConvertersProvider(configProperties, List.of(titleModelConverter), List.of()));
     private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(

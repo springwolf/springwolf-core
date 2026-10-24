@@ -2,12 +2,14 @@
 package io.github.springwolf.examples.kafka;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestPropertySource;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,6 +31,9 @@ public class SpringContextIntegrationTest {
 
         @Autowired
         private AsyncApiService asyncApiService;
+
+        @Autowired
+        private ObjectMapper objectMapper;
 
         @Test
         void contextWithApplicationProperties() {
@@ -55,6 +60,29 @@ public class SpringContextIntegrationTest {
                             "vehicle-topic",
                             "xml-topic",
                             "yaml-topic");
+        }
+
+        @Test
+        void protobufSchemaContainsOnlyProtobufFields() throws Exception {
+            var protobufSchemaName =
+                    ExamplePayloadProtobufDto.Message.class.getName().replace("$", ".");
+            assertThat(asyncApiService
+                            .getAsyncAPI()
+                            .getComponents()
+                            .getSchemas()
+                            .get(protobufSchemaName)
+                            .getSchema()
+                            .getProperties())
+                    .containsOnlyKeys("someEnum", "someLong", "someString");
+
+            var original = ExamplePayloadProtobufDto.Message.newBuilder()
+                    .setSomeString("hello")
+                    .setSomeLong(5)
+                    .setSomeEnum(ExamplePayloadProtobufDto.ExampleEnum.FOO2)
+                    .build();
+            assertThat(objectMapper.readValue(
+                            objectMapper.writeValueAsString(original), ExamplePayloadProtobufDto.Message.class))
+                    .isEqualTo(original);
         }
     }
 

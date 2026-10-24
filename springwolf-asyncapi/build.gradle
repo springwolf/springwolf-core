@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation libs.swagger.core.jakarta
+    implementation libs.swagger.core
     implementation libs.jakarta.validation.api
 
     implementation libs.jackson.core
@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation libs.jackson.databind
     testImplementation libs.jackson.dataformat.yaml
-    testImplementation libs.swagger.core.jakarta
+    testImplementation libs.swagger.core
     testImplementation libs.json.unit.assertj
     testImplementation libs.assertj.core
 

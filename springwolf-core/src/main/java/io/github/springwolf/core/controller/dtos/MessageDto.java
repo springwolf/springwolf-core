@@ -2,14 +2,14 @@
 package io.github.springwolf.core.controller.dtos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Map;
 
@@ -38,10 +38,9 @@ public class MessageDto {
         }
     }
 
-    public static class HeaderValueSerializer extends JsonSerializer<HeaderValue> {
+    public static class HeaderValueSerializer extends ValueSerializer<HeaderValue> {
         @Override
-        public void serialize(HeaderValue value, JsonGenerator gen, SerializerProvider serializers)
-                throws java.io.IOException {
+        public void serialize(HeaderValue value, JsonGenerator gen, SerializationContext ctx) {
             String stringValue = value.stringValue();
             try {
                 double number = Double.parseDouble(stringValue);

@@ -19,7 +19,7 @@ dependencies {
     runtimeOnly project(":springwolf-ui")
 
     implementation libs.slf4j.api
-    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.annotations
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.cloud.dependencies

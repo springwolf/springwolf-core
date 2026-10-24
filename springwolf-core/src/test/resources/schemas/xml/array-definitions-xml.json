@@ -3,7 +3,7 @@
     "title" : "ArrayFoo",
     "type" : "string",
     "properties" : {
-      "flist" : {
+      "fList" : {
         "title" : "List",
         "type" : "array",
         "items" : {
@@ -11,7 +11,7 @@
         }
       }
     },
-    "examples" : [ "<ArrayFoo><flist><SimpleFoo><b>true</b><s>string</s></SimpleFoo></flist></ArrayFoo>" ]
+    "examples" : [ "<ArrayFoo><fList><SimpleFoo><b>true</b><s>string</s></SimpleFoo></fList></ArrayFoo>" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultXmlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",

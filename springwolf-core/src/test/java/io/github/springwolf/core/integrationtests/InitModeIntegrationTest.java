@@ -3,6 +3,7 @@ package io.github.springwolf.core.integrationtests;
 
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
 import io.github.springwolf.core.controller.AsyncApiController;
+import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.basic.TestApplication;
 import org.junit.jupiter.api.Nested;
@@ -69,7 +70,7 @@ public class InitModeIntegrationTest {
             String[] args = new String[] {"--springwolf.docket.info.version="};
 
             try {
-                SpringApplication.run(TestApplication.class, args);
+                new SpringApplication(TestApplication.class, JsonMapperTestConfiguration.class).run(args);
                 fail("Exception expected, but not raised.");
             } catch (Exception ex) {
                 assertThat(ex.getMessage()).contains("Error occurred during creation of AsyncAPI");

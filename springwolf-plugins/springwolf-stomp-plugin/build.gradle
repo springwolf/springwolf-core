@@ -17,7 +17,7 @@ dependencies {
     compileOnly libs.lombok
     testAnnotationProcessor libs.lombok
 
-    runtimeOnly libs.swagger.models.jakarta
+    runtimeOnly libs.swagger.models
 
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api

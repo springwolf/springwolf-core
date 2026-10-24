@@ -50,12 +50,13 @@ dependencies {
     implementation libs.protobuf.java
     implementation libs.jackson.datatype.protobuf
     implementation libs.jackson.annotations
-    implementation libs.jackson.core
     implementation libs.jackson.databind
 
     implementation libs.jakarta.xml.bind.api
 
     implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.models
+    implementation libs.swagger.core
 
     implementation libs.slf4j.api
 
