@@ -4,7 +4,6 @@ package io.github.springwolf.core.asyncapi.components;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
@@ -29,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -55,7 +55,8 @@ class DefaultYamlComponentsServiceIntegrationTest {
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(exampleYamlValueGenerator))))),
             new SwaggerSchemaMapper(springwolfConfigProperties),
-            new ModelConvertersProvider(springwolfConfigProperties, List.of(new SchemaTitleModelConverter())));
+            new ModelConvertersProvider(
+                    springwolfConfigProperties, List.of(new SchemaTitleModelConverter()), List.of()));
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;

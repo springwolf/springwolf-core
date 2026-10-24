@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -10,6 +9,8 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Json31;
 import lombok.Getter;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -28,12 +29,14 @@ public class ModelConvertersProvider {
     private final ModelConverters modelConverters;
 
     public ModelConvertersProvider(
-            SpringwolfConfigProperties springwolfConfigProperties, List<ModelConverter> externalModelConverters) {
+            SpringwolfConfigProperties springwolfConfigProperties,
+            List<ModelConverter> externalModelConverters,
+            List<JacksonModule> jacksonModules) {
 
         typeNameResolver = createTypeNameResolver(springwolfConfigProperties);
 
         boolean isOpenApi31 = isOpenApi31(springwolfConfigProperties);
-        ModelResolver modelResolver = createModelResolver(isOpenApi31, typeNameResolver);
+        ModelResolver modelResolver = createModelResolver(isOpenApi31, typeNameResolver, jacksonModules);
         objectMapper = modelResolver.objectMapper();
 
         modelConverters = createModelConverters(isOpenApi31, modelResolver);
@@ -62,10 +65,13 @@ public class ModelConvertersProvider {
     /**
      * Create a new ModelResolver with an own {@link TypeNameResolver} for thread-safety
      */
-    private static ModelResolver createModelResolver(boolean isOpenapi31, TypeNameResolver typeNameResolver) {
-        return isOpenapi31
-                ? new ModelResolver(Json31.mapper(), typeNameResolver).openapi31(true)
-                : new ModelResolver(Json.mapper(), typeNameResolver);
+    private static ModelResolver createModelResolver(
+            boolean isOpenapi31, TypeNameResolver typeNameResolver, List<JacksonModule> jacksonModules) {
+        ObjectMapper mapper = (isOpenapi31 ? Json31.mapper() : Json.mapper())
+                .rebuild()
+                .addModules(jacksonModules)
+                .build();
+        return new ModelResolver(mapper, typeNameResolver).openapi31(isOpenapi31);
     }
 
     /**

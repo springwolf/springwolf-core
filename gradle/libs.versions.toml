@@ -5,8 +5,9 @@ docker-spring-boot = "10.0.0"
 gradle-nexus-publish-plugin = "2.0.0"
 io-awspring-cloud = "4.1.1"
 io-confluent = "8.3.0"
-io-swagger-core-v3 = "2.2.55"
-jackson-core = "2.22.3"
+io-swagger-core-v3 = "3.0.0-SNAPSHOT"
+swagger-annotations-jakarta = "2.2.42"
+jackson-core = "3.2.4"
 kotlin =  "2.4.20"
 node-plugin = "7.1.0"
 nodeVersion = "22.22.3"
@@ -35,10 +36,10 @@ commons-io = "commons-io:commons-io:2.22.0"
 commons-lang3 = "org.apache.commons:commons-lang3:3.21.0"
 commons-logging = "commons-logging:commons-logging:1.4.0"
 jackson-annotations = "com.fasterxml.jackson.core:jackson-annotations:2.22"
-jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-core" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-core" }
-jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
-jackson-datatype-protobuf = "com.hubspot.jackson:jackson-datatype-protobuf:0.10.0"
+jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jackson-core" }
+jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson-core" }
+jackson-dataformat-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
+jackson-datatype-protobuf = "com.hubspot.jackson:jackson3-datatype-protobuf:1.0.0"
 jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
@@ -79,7 +80,6 @@ spring-boot = { module = "org.springframework.boot:spring-boot" }
 spring-boot-artemis = { module = "org.springframework.boot:spring-boot-artemis" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
-spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2", version.ref = "spring-boot-plugin" }
 spring-boot-jms = { module = "org.springframework.boot:spring-boot-jms" }
 spring-boot-kafka = { module = "org.springframework.boot:spring-boot-kafka" }
 spring-boot-restclient = { module = "org.springframework.boot:spring-boot-restclient", version.ref = "spring-boot-plugin" }
@@ -106,9 +106,10 @@ spring-test = { module = "org.springframework:spring-test" }
 spring-web = { module = "org.springframework:spring-web" }
 spring-webmvc = { module = "org.springframework:spring-webmvc" }
 spring-websocket = { module = "org.springframework:spring-websocket" }
-swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "io-swagger-core-v3" }
-swagger-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version.ref = "io-swagger-core-v3" }
-swagger-models-jakarta = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "io-swagger-core-v3" }
+swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "io-swagger-core-v3" }
+swagger-annotations-jakarta = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "swagger-annotations-jakarta" }
+swagger-core = { module = "io.swagger.core.v3:swagger-core", version.ref = "io-swagger-core-v3" }
+swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "io-swagger-core-v3" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "org-testcontainers" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers" }
 testcontainers-localstack = { module = "org.testcontainers:localstack", version.ref = "org-testcontainers" }

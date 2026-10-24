@@ -52,6 +52,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import tools.jackson.databind.JacksonModule;
 
 import java.util.List;
 
@@ -135,8 +136,10 @@ public class SpringwolfCoreConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ModelConvertersProvider modelConvertersProvider(
-            SpringwolfConfigProperties springwolfConfigProperties, List<ModelConverter> modelConverters) {
-        return new ModelConvertersProvider(springwolfConfigProperties, modelConverters);
+            SpringwolfConfigProperties springwolfConfigProperties,
+            List<ModelConverter> modelConverters,
+            List<JacksonModule> jacksonModules) {
+        return new ModelConvertersProvider(springwolfConfigProperties, modelConverters, jacksonModules);
     }
 
     @Bean

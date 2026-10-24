@@ -16,7 +16,7 @@ dependencies {
     implementation libs.jackson.core
     implementation libs.jackson.databind
 
-    testImplementation libs.swagger.models.jakarta
+    testImplementation libs.swagger.models
 
     implementation libs.slf4j.api
 

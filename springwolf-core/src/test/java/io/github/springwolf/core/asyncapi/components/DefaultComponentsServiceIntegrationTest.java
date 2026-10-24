@@ -36,7 +36,7 @@ class DefaultComponentsServiceIntegrationTest {
             configProperties,
             List.of(),
             new SwaggerSchemaMapper(configProperties),
-            new ModelConvertersProvider(configProperties, List.of(titleModelConverter)));
+            new ModelConvertersProvider(configProperties, List.of(titleModelConverter), List.of()));
 
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 

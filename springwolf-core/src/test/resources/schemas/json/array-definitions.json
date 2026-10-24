@@ -3,7 +3,7 @@
     "title" : "ArrayFoo",
     "type" : "object",
     "properties" : {
-      "flist" : {
+      "fList" : {
         "title" : "List",
         "type" : "array",
         "items" : {
@@ -12,7 +12,7 @@
       }
     },
     "examples" : [ {
-      "flist" : [ {
+      "fList" : [ {
         "b" : true,
         "s" : "string"
       } ]

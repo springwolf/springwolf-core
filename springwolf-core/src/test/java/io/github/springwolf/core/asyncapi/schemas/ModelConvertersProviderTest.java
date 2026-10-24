@@ -23,8 +23,8 @@ class ModelConvertersProviderTest {
     @ValueSource(booleans = {true, false})
     void createsSpringwolfTypeNameResolverWithUseFqnSetting(boolean useFqn) {
         // given
-        ModelConvertersProvider provider =
-                new ModelConvertersProvider(configProperties(useFqn, PayloadSchemaFormat.ASYNCAPI_V3), List.of());
+        ModelConvertersProvider provider = new ModelConvertersProvider(
+                configProperties(useFqn, PayloadSchemaFormat.ASYNCAPI_V3), List.of(), List.of());
 
         // when
         TypeNameResolver typeNameResolver = provider.getTypeNameResolver();
@@ -40,7 +40,7 @@ class ModelConvertersProviderTest {
             PayloadSchemaFormat payloadSchemaFormat, boolean expectedOpenapi31) {
         // given
         ModelConvertersProvider provider =
-                new ModelConvertersProvider(configProperties(true, payloadSchemaFormat), List.of());
+                new ModelConvertersProvider(configProperties(true, payloadSchemaFormat), List.of(), List.of());
 
         // when
         ModelConverters modelConverters = provider.getModelConverters();
@@ -56,7 +56,7 @@ class ModelConvertersProviderTest {
         // given
         ModelConverter externalModelConverter = mock(ModelConverter.class);
         ModelConvertersProvider provider = new ModelConvertersProvider(
-                configProperties(false, PayloadSchemaFormat.OPENAPI_V3_1), List.of(externalModelConverter));
+                configProperties(false, PayloadSchemaFormat.OPENAPI_V3_1), List.of(externalModelConverter), List.of());
 
         // when
         List<ModelConverter> converters = provider.getModelConverters().getConverters();

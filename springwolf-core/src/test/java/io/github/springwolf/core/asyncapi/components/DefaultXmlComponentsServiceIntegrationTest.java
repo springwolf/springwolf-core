@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
@@ -24,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -48,7 +48,7 @@ class DefaultXmlComponentsServiceIntegrationTest {
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaMapper(configProperties),
-            new ModelConvertersProvider(configProperties, List.of(new SchemaTitleModelConverter())));
+            new ModelConvertersProvider(configProperties, List.of(new SchemaTitleModelConverter()), List.of()));
     private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
 
     @Test
