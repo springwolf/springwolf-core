@@ -45,16 +45,13 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
     }
 
     public Map<String, MessageReference> buildMessages(
-            ClassAnnotation classAnnotation,
-            BindingContext bindingContext,
-            Set<Method> methods,
-            MessageType messageType) {
+            BindingContext<ClassAnnotation> bindingContext, Set<Method> methods, MessageType messageType) {
         Set<MessageObject> messages = methods.stream()
-                .map(method -> buildMessage(classAnnotation, method))
+                .map(method -> buildMessage(bindingContext.annotation(), method))
                 .collect(toSet());
 
         if (messageType == MessageType.OPERATION) {
-            String channelId = bindingFactory.getChannelName(classAnnotation, bindingContext);
+            String channelId = bindingFactory.getChannelName(bindingContext);
             return toOperationsMessagesMap(channelId, messages);
         }
         return toMessagesMap(messages);

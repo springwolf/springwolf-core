@@ -43,17 +43,17 @@ public class SpringAnnotationClassLevelChannelsScanner<
     private Stream<ChannelObject> mapClassToChannel(
             Class<?> component, Set<MethodAndAnnotation<MethodAnnotation>> annotatedMethods) {
         ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
-        BindingContext bindingContext = BindingContext.ofAnnotatedClass(component);
+        BindingContext<ClassAnnotation> bindingContext = BindingContext.ofAnnotatedClass(component, classAnnotation);
         Set<Method> methods =
                 annotatedMethods.stream().map(MethodAndAnnotation::method).collect(Collectors.toSet());
         Map<String, Message> messages = new HashMap<>(springAnnotationMessagesService.buildMessages(
-                classAnnotation, bindingContext, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
+                bindingContext, methods, SpringAnnotationMessagesService.MessageType.CHANNEL));
 
-        return mapClassToChannel(classAnnotation, bindingContext, messages);
+        return mapClassToChannel(bindingContext, messages);
     }
 
     private Stream<ChannelObject> mapClassToChannel(
-            ClassAnnotation classAnnotation, BindingContext bindingContext, Map<String, Message> messages) {
-        return Stream.of(springAnnotationChannelService.buildChannel(classAnnotation, bindingContext, messages));
+            BindingContext<ClassAnnotation> bindingContext, Map<String, Message> messages) {
+        return Stream.of(springAnnotationChannelService.buildChannel(bindingContext, messages));
     }
 }

@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.stomp.asyncapi.scanners.operation.annotatio
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodReturnService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.bindings.StompBindingSendToFactory;
@@ -31,8 +32,8 @@ class SendToCustomizerTest {
     void customize() throws Exception {
         // given
         Operation operation = new Operation();
-        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
-        when(bindingFactory.getChannelName(any())).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelId(any(BindingContext.class))).thenReturn(CHANNEL_ID);
+        when(bindingFactory.getChannelName(any(BindingContext.class))).thenReturn(CHANNEL_ID);
         when(payloadService.extractSchema(any())).thenReturn(new PayloadSchemaObject(MESSAGE_ID, MESSAGE_ID, null));
 
         // when
