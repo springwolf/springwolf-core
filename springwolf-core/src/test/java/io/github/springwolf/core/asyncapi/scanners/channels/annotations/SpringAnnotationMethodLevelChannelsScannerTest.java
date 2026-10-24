@@ -49,7 +49,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
                 .build();
 
         when(springAnnotationMessageService.buildMessage(any(), any(), any())).thenReturn(message);
-        when(springAnnotationChannelService.buildChannel(any(), any())).thenReturn(expectedChannelItem);
+        when(springAnnotationChannelService.buildChannel(any(), any(), any())).thenReturn(expectedChannelItem);
 
         // when
         List<ChannelObject> channels = scanner.scan(ClassWithTestListenerAnnotation.class);

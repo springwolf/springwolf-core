@@ -1,0 +1,630 @@
+{
+  "asyncapi": "3.1.0",
+  "info": {
+    "title": "Springwolf example project - AMQP",
+    "version": "1.0.0",
+    "description": "Springwolf [example project](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-amqp-example) to demonstrate springwolfs abilities, including **markdown** support for descriptions.",
+    "termsOfService": "https://asyncapi.org/terms",
+    "contact": {
+      "name": "springwolf",
+      "url": "https://github.com/springwolf/springwolf-core",
+      "email": "example@example.com",
+      "x-phone": "+49 123 456789"
+    },
+    "license": {
+      "name": "Apache License 2.0",
+      "x-desc": "some description"
+    },
+    "x-api-audience": "company-internal",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "amqp-server": {
+      "host": "amqp:5672",
+      "protocol": "amqp"
+    }
+  },
+  "channels": {
+    "CRUD-topic-exchange-1": {
+      "address": "CRUD-topic-exchange-1",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "routingKey",
+          "exchange": {
+            "name": "CRUD-topic-exchange-1",
+            "type": "topic",
+            "durable": true,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "CRUD-topic-exchange-2": {
+      "address": "CRUD-topic-exchange-2",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "routingKey",
+          "exchange": {
+            "name": "CRUD-topic-exchange-2",
+            "type": "topic",
+            "durable": true,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "another-queue": {
+      "address": "another-queue",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "queue",
+          "queue": {
+            "name": "another-queue",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "example-queue": {
+      "address": "example-queue",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "queue",
+          "queue": {
+            "name": "example-queue",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "example-topic-exchange": {
+      "address": "example-topic-exchange",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        }
+      },
+      "bindings": { }
+    },
+    "example-topic-exchange_example-topic-routing-key": {
+      "address": "example-topic-exchange_example-topic-routing-key",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "routingKey",
+          "exchange": {
+            "name": "example-topic-exchange",
+            "type": "topic",
+            "durable": true,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "multi-payload-queue": {
+      "address": "multi-payload-queue",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        },
+        "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "queue",
+          "queue": {
+            "name": "multi-payload-queue",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "queue-create": {
+      "address": "queue-create",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "queue",
+          "queue": {
+            "name": "queue-create",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    },
+    "queue-delete": {
+      "address": "queue-delete",
+      "messages": {
+        "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long": {
+          "$ref": "#/components/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
+        }
+      },
+      "bindings": {
+        "amqp": {
+          "is": "queue",
+          "queue": {
+            "name": "queue-delete",
+            "durable": true,
+            "exclusive": false,
+            "autoDelete": false,
+            "vhost": "/"
+          },
+          "bindingVersion": "0.3.0"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HeadersNotDocumented": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "There can be headers, but they are not explicitly documented.",
+          "example": { },
+          "properties": { },
+          "title": "HeadersNotDocumented"
+        }
+      },
+      "SpringRabbitListenerDefaultHeaders": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "example": { },
+          "properties": { },
+          "title": "SpringRabbitListenerDefaultHeaders"
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "Another payload model",
+          "example": {
+            "example": {
+              "someEnum": "FOO2",
+              "someLong": 5,
+              "someString": "some string value"
+            },
+            "foo": "bar"
+          },
+          "properties": {
+            "example": {
+              "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto",
+              "description": "Example field"
+            },
+            "foo": {
+              "type": "string",
+              "description": "Foo field",
+              "example": "bar",
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "example"
+          ],
+          "title": "AnotherPayloadDto"
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "Example payload model",
+          "example": {
+            "someEnum": "FOO2",
+            "someLong": 5,
+            "someString": "some string value"
+          },
+          "properties": {
+            "someEnum": {
+              "type": "string",
+              "description": "Some enum field",
+              "enum": [
+                "FOO1",
+                "FOO2",
+                "FOO3"
+              ],
+              "example": "FOO2",
+              "title": "ExampleEnum"
+            },
+            "someLong": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Some long field",
+              "example": 5,
+              "minimum": 0
+            },
+            "someString": {
+              "type": "string",
+              "description": "Some string field",
+              "example": "some string value"
+            }
+          },
+          "required": [
+            "someEnum",
+            "someString"
+          ],
+          "title": "ExamplePayloadDto"
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "Generic payload model",
+          "example": {
+            "genericValue": {
+              "someEnum": "FOO2",
+              "someLong": 5,
+              "someString": "some string value"
+            }
+          },
+          "properties": {
+            "genericValue": {
+              "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto",
+              "description": "Generic Payload field"
+            }
+          },
+          "required": [
+            "genericValue"
+          ],
+          "title": "GenericPayloadDto"
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "Generic payload model",
+          "example": {
+            "genericValue": 0
+          },
+          "properties": {
+            "genericValue": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Generic Payload field"
+            }
+          },
+          "required": [
+            "genericValue"
+          ],
+          "title": "GenericPayloadDto"
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String": {
+        "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
+        "schema": {
+          "type": "object",
+          "description": "Generic payload model",
+          "example": {
+            "genericValue": "string"
+          },
+          "properties": {
+            "genericValue": {
+              "type": "string",
+              "description": "Generic Payload field"
+            }
+          },
+          "required": [
+            "genericValue"
+          ],
+          "title": "GenericPayloadDto"
+        }
+      }
+    },
+    "messages": {
+      "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto",
+        "title": "AnotherPayloadDto",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto",
+        "title": "ExamplePayloadDto",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto",
+        "title": "GenericPayloadDtoExamplePayloadDto",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long",
+        "title": "GenericPayloadDtoLong",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      },
+      "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringRabbitListenerDefaultHeaders"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "$ref": "#/components/schemas/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
+          }
+        },
+        "name": "io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String",
+        "title": "GenericPayloadDtoString",
+        "bindings": {
+          "amqp": {
+            "bindingVersion": "0.3.0"
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "CRUD-topic-exchange-1_receive_bindingsUpdate": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/CRUD-topic-exchange-1"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/CRUD-topic-exchange-1/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoIo.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "CRUD-topic-exchange-2_receive_bindingsRead": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/CRUD-topic-exchange-2"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/CRUD-topic-exchange-2/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "another-queue_receive_receiveAnotherPayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/another-queue"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/another-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "example-queue_receive_receiveExamplePayload": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-queue"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "example-topic-exchange_example-topic-routing-key_receive_bindingsExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/example-topic-exchange_example-topic-routing-key"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic-exchange_example-topic-routing-key/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "example-topic-exchange_send_sendMessage": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/example-topic-exchange"
+      },
+      "title": "example-topic-exchange_send",
+      "description": "Custom, optional description defined in the AsyncPublisher annotation",
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "cc": [ ],
+          "priority": 0,
+          "deliveryMode": 1,
+          "mandatory": false,
+          "bcc": [ ],
+          "timestamp": false,
+          "ack": false,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/example-topic-exchange/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        }
+      ]
+    },
+    "multi-payload-queue_receive_bindingsBeanExample": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/multi-payload-queue"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto"
+        },
+        {
+          "$ref": "#/channels/multi-payload-queue/messages/io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto"
+        }
+      ]
+    },
+    "queue-create_receive_queuesToDeclareCreate": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/queue-create"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/queue-create/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.String"
+        }
+      ]
+    },
+    "queue-delete_receive_queuesToDeclareDelete": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/queue-delete"
+      },
+      "bindings": {
+        "amqp": {
+          "expiration": 0,
+          "bindingVersion": "0.3.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/queue-delete/messages/io.github.springwolf.examples.amqp.dtos.GenericPayloadDtoJava.lang.Long"
+        }
+      ]
+    }
+  }
+}

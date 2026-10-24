@@ -32,10 +32,10 @@ class StandaloneTest {
         AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
         String actual = serializerService.toJsonString(asyncApi);
         String actualPatched = actual.replace("localhost:9092", "kafka:29092");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
+        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.actual.json"), actualPatched);
 
         // then
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
+        InputStream s = this.getClass().getResourceAsStream("/asyncapi.standalone.json");
         String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
         assertThat(actualPatched).isEqualTo(expected);
     }

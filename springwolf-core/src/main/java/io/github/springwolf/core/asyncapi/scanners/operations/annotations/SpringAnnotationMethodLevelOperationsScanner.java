@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AnnotationScannerUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
@@ -32,14 +33,17 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     @Override
     public Stream<Operation> scan(Class<?> clazz) {
         return AnnotationScannerUtil.findAnnotatedMethods(clazz, methodAnnotationClass)
-                .map(this::mapMethodToOperation);
+                .map(method -> mapMethodToOperation(clazz, method));
     }
 
-    private Operation mapMethodToOperation(MethodAndAnnotation<MethodAnnotation> method) {
+    private Operation mapMethodToOperation(Class<?> clazz, MethodAndAnnotation<MethodAnnotation> method) {
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
-        Operation operation = springAnnotationOperationService.buildOperation(method, payloadSchema, headerSchema);
+        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(clazz, method.method());
+
+        Operation operation =
+                springAnnotationOperationService.buildOperation(method, bindingContext, payloadSchema, headerSchema);
         customizers.forEach(customizer -> customizer.customize(operation, method.method()));
         return operation;
     }
