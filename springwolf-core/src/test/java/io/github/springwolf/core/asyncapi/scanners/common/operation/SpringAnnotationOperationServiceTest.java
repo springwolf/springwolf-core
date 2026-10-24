@@ -53,6 +53,7 @@ class SpringAnnotationOperationServiceTest {
         Method method = ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         MethodAndAnnotation<TestMethodListener> methodAndAnnotation =
                 new MethodAndAnnotation<>(method, method.getAnnotation(TestMethodListener.class));
+        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(ClassWithTestListenerAnnotation.class, method);
         PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject("name", "full.name", null);
         SchemaObject headerSchema = new SchemaObject();
         MessageObject messageObject =
@@ -64,10 +65,7 @@ class SpringAnnotationOperationServiceTest {
 
         // when
         Operation operations = springAnnotationOperationService.buildOperation(
-                methodAndAnnotation,
-                BindingContext.ofAnnotatedMethod(ClassWithTestListenerAnnotation.class, method),
-                payloadSchemaName,
-                headerSchema);
+                methodAndAnnotation, bindingContext, payloadSchemaName, headerSchema);
 
         // then
         Operation expectedOperation = Operation.builder()

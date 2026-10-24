@@ -2,7 +2,6 @@
 package io.github.springwolf.core.asyncapi.scanners.operations.annotations;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.SpringAnnotationOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
@@ -15,7 +14,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,13 +34,10 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
                     List.of(operationCustomizer));
 
     @Test
-    void scan_componentHasTestListenerMethods() throws NoSuchMethodException {
+    void scan_componentHasTestListenerMethods() {
         // given
         Operation operation = Operation.builder().operationId("operationId").build();
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(
-                ClassWithTestListenerAnnotation.class,
-                ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class));
-        when(springAnnotationOperationService.buildOperation(any(), eq(bindingContext), any(), any()))
+        when(springAnnotationOperationService.buildOperation(any(), any(), any(), any()))
                 .thenReturn(operation);
 
         // when

@@ -10,6 +10,10 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import java.util.Map;
 
 public interface BindingFactory<T> {
+    /**
+     * @deprecated use {@link #getChannelId(Object, BindingContext)} instead
+     */
+    @Deprecated
     default String getChannelId(T annotation) {
         return ReferenceUtil.toValidId(getChannelName(annotation));
     }
@@ -23,6 +27,10 @@ public interface BindingFactory<T> {
         return getChannelId(annotation);
     }
 
+    /**
+     * @deprecated use {@link #getChannelName(Object, BindingContext)} instead
+     */
+    @Deprecated
     String getChannelName(T annotation);
 
     /**
@@ -36,6 +44,10 @@ public interface BindingFactory<T> {
 
     Map<String, ChannelBinding> buildChannelBinding(T annotation);
 
+    /**
+     * @deprecated use {@link #buildOperationBinding(Object, BindingContext)} instead
+     */
+    @Deprecated
     Map<String, OperationBinding> buildOperationBinding(T annotation);
 
     /**

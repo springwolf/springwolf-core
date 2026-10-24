@@ -16,16 +16,6 @@ This plugin generates an [AsyncAPI document](https://www.asyncapi.com/) from:
 - `@KafkaListener` methods
 - `@KafkaHandler` methods in classes annotated with `@KafkaListener`
 
-Topics and `groupId` can use property placeholders (`${...}`) and SpEL expressions (`#{...}`),
-including the `__listener` pseudo bean (or a custom `beanRef`) that references the listener bean itself:
-
-```java
-@KafkaListener(topics = "#{__listener.topic}", groupId = "#{__listener.group}")
-```
-
-Note: Springwolf looks up the listener bean by its type, so exactly one bean of that type must exist.
-`__listener` cannot be resolved in standalone mode.
-
 ### Usage
 
 Add the following dependencies and configuration class to enable this plugin.

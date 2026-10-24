@@ -20,13 +20,6 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     private final StringValueResolver stringValueResolver;
     private final KafkaListenerBeanRefResolver beanRefResolver;
 
-    /**
-     * Maintainer note: kept for compatibility, {@link KafkaListener#beanRef()} is not resolved
-     */
-    public KafkaBindingFactory(StringValueResolver stringValueResolver) {
-        this(stringValueResolver, new KafkaListenerBeanRefResolver(stringValueResolver));
-    }
-
     @Override
     public String getChannelId(KafkaListener annotation, BindingContext bindingContext) {
         return ReferenceUtil.toValidId(getChannelName(annotation, bindingContext));
@@ -39,8 +32,8 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
 
     @Override
     public String getChannelName(KafkaListener annotation, BindingContext bindingContext) {
-        return KafkaListenerUtil.getChannelName(
-                annotation, beanRefResolver.getStringValueResolver(annotation, bindingContext));
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(annotation, bindingContext);
+        return KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
     }
 
     @Override
@@ -56,8 +49,8 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     @Override
     public Map<String, OperationBinding> buildOperationBinding(
             KafkaListener annotation, BindingContext bindingContext) {
-        return KafkaListenerUtil.buildOperationBinding(
-                annotation, beanRefResolver.getStringValueResolver(annotation, bindingContext));
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(annotation, bindingContext);
+        return KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
     }
 
     @Override

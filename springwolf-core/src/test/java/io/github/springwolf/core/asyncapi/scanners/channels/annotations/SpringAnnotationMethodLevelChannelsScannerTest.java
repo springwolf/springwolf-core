@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +40,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
     private static final String CHANNEL_ID = ReferenceUtil.toValidId(CHANNEL);
 
     @Test
-    void scan() throws NoSuchMethodException {
+    void scan() {
         MessageObject message =
                 MessageObject.builder().messageId(String.class.getName()).build();
         ChannelObject expectedChannelItem = ChannelObject.builder()
@@ -51,11 +49,7 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
                 .build();
 
         when(springAnnotationMessageService.buildMessage(any(), any(), any())).thenReturn(message);
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(
-                ClassWithTestListenerAnnotation.class,
-                ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class));
-        when(springAnnotationChannelService.buildChannel(any(), eq(bindingContext), any()))
-                .thenReturn(expectedChannelItem);
+        when(springAnnotationChannelService.buildChannel(any(), any(), any())).thenReturn(expectedChannelItem);
 
         // when
         List<ChannelObject> channels = scanner.scan(ClassWithTestListenerAnnotation.class);
