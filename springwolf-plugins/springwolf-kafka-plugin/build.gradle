@@ -13,8 +13,8 @@ dependencies {
     api project(":springwolf-bindings:springwolf-kafka-binding")
     permitUnusedDeclared project(":springwolf-bindings:springwolf-kafka-binding")
 
-    implementation libs.swagger.models.jakarta
-    permitUnusedDeclared libs.swagger.models.jakarta
+    implementation libs.swagger.models
+    permitUnusedDeclared libs.swagger.models
     implementation libs.kafka.clients
 
     implementation libs.jakarta.annotation.api

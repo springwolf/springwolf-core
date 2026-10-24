@@ -16,9 +16,9 @@ dependencies {
     implementation libs.jackson.annotations
     implementation libs.jackson.databind
 
-    implementation libs.swagger.annotations.jakarta
-    implementation libs.swagger.core.jakarta
-    implementation libs.swagger.models.jakarta
+    implementation libs.swagger.annotations
+    implementation libs.swagger.core
+    implementation libs.swagger.models
 
     implementation libs.money.api
 

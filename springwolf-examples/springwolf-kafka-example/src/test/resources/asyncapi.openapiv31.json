@@ -696,7 +696,6 @@
       "io.github.springwolf.examples.kafka.dto.proto.ExamplePayloadProtobufDto.Message": {
         "schemaFormat": "application/vnd.oai.openapi;version=3.1.0",
         "schema": {
-          "type": "object",
           "example": {
             "someEnum": "FOO1",
             "someLong": 0,

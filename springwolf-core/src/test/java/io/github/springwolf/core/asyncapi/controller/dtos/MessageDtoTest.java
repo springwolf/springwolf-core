@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.controller.dtos;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import io.github.springwolf.core.controller.dtos.MessageDto;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.JsonNodeType;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,10 +40,7 @@ class MessageDtoTest {
                 .build();
 
         String expected = jsonMapper.writeValueAsString(messageDto);
-        String actual = jsonMapper
-                .copy()
-                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-                .writeValueAsString(messageDto);
+        String actual = jsonMapper.writeValueAsString(messageDto);
 
         assertThat(actual).isEqualTo(expected);
     }

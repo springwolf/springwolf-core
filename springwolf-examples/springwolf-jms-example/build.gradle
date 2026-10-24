@@ -26,7 +26,7 @@ dependencies {
 
     implementation libs.slf4j.api
 
-    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.annotations
 
     compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)

@@ -11,8 +11,8 @@ dependencies {
     api project(":springwolf-asyncapi")
     testRuntimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
 
-    implementation libs.swagger.annotations.jakarta
-    implementation libs.swagger.core.jakarta
+    implementation libs.swagger.annotations
+    implementation libs.swagger.core
 
     implementation libs.jackson.annotations
     implementation libs.jackson.core
@@ -28,18 +28,17 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.messaging
     implementation libs.spring.beans
-    implementation libs.spring.boot.jackson2
-    permitUnusedDeclared libs.spring.boot.jackson2
     implementation libs.spring.boot.webmvc
     implementation libs.spring.core
     implementation libs.spring.web
     implementation libs.spring.webmvc
 
-    implementation libs.swagger.models.jakarta
+    implementation libs.swagger.models
     implementation libs.jakarta.annotation.api
     implementation libs.jakarta.validation.api
 
     implementation libs.commons.lang3
+    implementation libs.slf4j.api
 
     compileOnly libs.spring.boot.starter.actuator
     compileOnly libs.lombok

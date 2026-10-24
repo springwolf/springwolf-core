@@ -34,7 +34,7 @@ class SwaggerSchemaServicePostProcessorExecutionTest {
                     new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(
                             List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator()))))),
             new SwaggerSchemaMapper(springwolfConfigProperties),
-            new ModelConvertersProvider(springwolfConfigProperties, List.of()));
+            new ModelConvertersProvider(springwolfConfigProperties, List.of(), List.of()));
 
     @Test
     void happyPath_AvroGamma_having_multiple_AvroDelta() {

@@ -37,7 +37,7 @@ dependencies {
     implementation libs.spring.web
     implementation libs.spring.websocket
 
-    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.annotations
 
     implementation libs.commons.logging
     implementation libs.slf4j.api
