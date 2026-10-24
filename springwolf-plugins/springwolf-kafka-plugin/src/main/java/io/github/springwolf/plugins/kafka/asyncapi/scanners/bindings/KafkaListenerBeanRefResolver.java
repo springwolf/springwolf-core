@@ -5,8 +5,11 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanExpressionException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
@@ -56,9 +59,45 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
             if (resolved == null) {
                 return null;
             }
-            Object evaluated = expressionResolver.evaluate(resolved, expressionContext);
-            return evaluated != null ? evaluated.toString() : null;
+            try {
+                Object evaluated = expressionResolver.evaluate(resolved, expressionContext);
+                return evaluated != null ? evaluated.toString() : null;
+            } catch (BeanExpressionException ex) {
+                if (isListenerBeanUnavailable(ex)) {
+                    // Standalone scans have no listener instances; keep the expression instead of aborting all scans.
+                    return resolved;
+                }
+                throw ex;
+            }
         };
+    }
+
+    private static boolean isListenerBeanUnavailable(Throwable exception) {
+        for (Throwable cause = exception; cause != null; cause = cause.getCause()) {
+            if (cause instanceof ListenerBeanUnavailableException) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static IllegalStateException listenerBeanLookupException(
+            String beanRef, Class<?> listenerClass, BeansException cause) {
+        String message = String.format(
+                "Unable to resolve '%s' of @KafkaListener in %s. "
+                        + "Springwolf looks up the listener bean by its type, "
+                        + "which requires exactly one bean of type %s",
+                beanRef, listenerClass.getName(), listenerClass.getName());
+        if (cause instanceof NoSuchBeanDefinitionException && !(cause instanceof NoUniqueBeanDefinitionException)) {
+            return new ListenerBeanUnavailableException(message, cause);
+        }
+        return new IllegalStateException(message, cause);
+    }
+
+    private static final class ListenerBeanUnavailableException extends IllegalStateException {
+        private ListenerBeanUnavailableException(String message, BeansException cause) {
+            super(message, cause);
+        }
     }
 
     private record BeanRefScope(BeanFactory beanFactory, String beanRef, Class<?> listenerClass) implements Scope {
@@ -72,13 +111,7 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
             try {
                 return beanFactory.getBean(listenerClass);
             } catch (BeansException ex) {
-                throw new IllegalStateException(
-                        String.format(
-                                "Unable to resolve '%s' of @KafkaListener in %s. "
-                                        + "Springwolf looks up the listener bean by its type, "
-                                        + "which requires exactly one bean of type %s",
-                                beanRef, listenerClass.getName(), listenerClass.getName()),
-                        ex);
+                throw listenerBeanLookupException(beanRef, listenerClass, ex);
             }
         }
 

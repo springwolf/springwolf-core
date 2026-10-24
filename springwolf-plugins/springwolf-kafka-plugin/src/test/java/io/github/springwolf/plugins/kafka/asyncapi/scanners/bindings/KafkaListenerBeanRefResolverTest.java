@@ -106,6 +106,22 @@ class KafkaListenerBeanRefResolverTest {
         assertThat(stringValueResolver.resolveStringValue("${topic.property}")).isEqualTo("topic-from-fallback");
     }
 
+    @Test
+    void preserveListenerExpressionWhenListenerBeanIsUnavailable() throws NoSuchMethodException {
+        // given
+        context.refresh();
+        resolver.setBeanFactory(context.getBeanFactory());
+        KafkaListener annotation = getAnnotation(ListenerWithDefaultBeanRef.class);
+
+        // when
+        StringValueResolver stringValueResolver = resolver.getStringValueResolver(
+                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+
+        // then
+        assertThat(stringValueResolver.resolveStringValue("#{__listener.topic}"))
+                .isEqualTo("#{__listener.topic}");
+    }
+
     private void refreshContext(Class<?>... listenerClasses) {
         context.getEnvironment()
                 .getPropertySources()
