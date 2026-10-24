@@ -41,9 +41,12 @@ class SpringAnnotationClassLevelChannelsScannerTest {
         // given
         MessageReference message = MessageReference.toComponentMessage("messageId");
         Map<String, Message> messages = Map.of("messageId", message);
-        BindingContext bindingContext = BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class);
+        TestClassListener classAnnotation =
+                ClassWithTestListenerAnnotation.class.getAnnotation(TestClassListener.class);
+        BindingContext<TestClassListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, classAnnotation);
 
-        when(springAnnotationChannelService.buildChannel(any(), eq(bindingContext), any()))
+        when(springAnnotationChannelService.buildChannel(eq(bindingContext), any()))
                 .thenReturn(ChannelObject.builder()
                         .channelId(TestBindingFactory.CHANNEL_ID)
                         .messages(messages)
@@ -61,7 +64,7 @@ class SpringAnnotationClassLevelChannelsScannerTest {
 
         int methodsInClass = 2;
         verify(springAnnotationMessagesService)
-                .buildMessages(any(), eq(bindingContext), argThat(list -> list.size() == methodsInClass), any());
+                .buildMessages(eq(bindingContext), argThat(list -> list.size() == methodsInClass), any());
     }
 
     @TestClassListener

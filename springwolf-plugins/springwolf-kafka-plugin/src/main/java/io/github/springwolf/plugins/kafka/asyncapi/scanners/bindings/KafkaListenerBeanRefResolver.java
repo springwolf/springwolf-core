@@ -40,7 +40,7 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
         }
     }
 
-    public StringValueResolver getStringValueResolver(KafkaListener annotation, BindingContext bindingContext) {
+    public StringValueResolver getStringValueResolver(BindingContext<KafkaListener> bindingContext) {
         if (beanFactory == null || beanFactory.getBeanExpressionResolver() == null) {
             return fallbackStringValueResolver;
         }
@@ -48,7 +48,8 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
         ConfigurableBeanFactory factory = beanFactory;
         BeanExpressionResolver expressionResolver = factory.getBeanExpressionResolver();
         BeanExpressionContext expressionContext = new BeanExpressionContext(
-                factory, new BeanRefScope(factory, annotation.beanRef(), bindingContext.annotatedClass()));
+                factory,
+                new BeanRefScope(factory, bindingContext.annotation().beanRef(), bindingContext.annotatedClass()));
 
         // same as org.springframework.beans.factory.config.EmbeddedValueResolver, but with the listener scope
         return value -> {

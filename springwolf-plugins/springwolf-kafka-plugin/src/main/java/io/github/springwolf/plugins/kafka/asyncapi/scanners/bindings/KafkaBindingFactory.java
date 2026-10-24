@@ -21,8 +21,8 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     private final KafkaListenerBeanRefResolver beanRefResolver;
 
     @Override
-    public String getChannelId(KafkaListener annotation, BindingContext bindingContext) {
-        return ReferenceUtil.toValidId(getChannelName(annotation, bindingContext));
+    public String getChannelId(BindingContext<KafkaListener> bindingContext) {
+        return ReferenceUtil.toValidId(getChannelName(bindingContext));
     }
 
     @Override
@@ -31,9 +31,9 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     }
 
     @Override
-    public String getChannelName(KafkaListener annotation, BindingContext bindingContext) {
-        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(annotation, bindingContext);
-        return KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
+    public String getChannelName(BindingContext<KafkaListener> bindingContext) {
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(bindingContext);
+        return KafkaListenerUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
@@ -47,10 +47,9 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     }
 
     @Override
-    public Map<String, OperationBinding> buildOperationBinding(
-            KafkaListener annotation, BindingContext bindingContext) {
-        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(annotation, bindingContext);
-        return KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<KafkaListener> bindingContext) {
+        StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(bindingContext);
+        return KafkaListenerUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override

@@ -49,13 +49,13 @@ class KafkaBindingFactoryTest {
         // given
         Method method = MethodLevelListener.class.getDeclaredMethod("listen", String.class);
         KafkaListener annotation = method.getAnnotation(KafkaListener.class);
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(MethodLevelListener.class, method);
+        BindingContext<KafkaListener> bindingContext =
+                BindingContext.ofAnnotatedMethod(MethodLevelListener.class, method, annotation);
 
         // when
-        String channelName = kafkaBindingFactory.getChannelName(annotation, bindingContext);
-        String channelId = kafkaBindingFactory.getChannelId(annotation, bindingContext);
-        Map<String, OperationBinding> operationBinding =
-                kafkaBindingFactory.buildOperationBinding(annotation, bindingContext);
+        String channelName = kafkaBindingFactory.getChannelName(bindingContext);
+        String channelId = kafkaBindingFactory.getChannelId(bindingContext);
+        Map<String, OperationBinding> operationBinding = kafkaBindingFactory.buildOperationBinding(bindingContext);
 
         // then
         assertThat(channelName).isEqualTo("topic-from-bean");
@@ -67,12 +67,12 @@ class KafkaBindingFactoryTest {
     void classLevelListenerWithBeanRef() {
         // given
         KafkaListener annotation = ClassLevelListener.class.getAnnotation(KafkaListener.class);
-        BindingContext bindingContext = BindingContext.ofAnnotatedClass(ClassLevelListener.class);
+        BindingContext<KafkaListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassLevelListener.class, annotation);
 
         // when
-        String channelName = kafkaBindingFactory.getChannelName(annotation, bindingContext);
-        Map<String, OperationBinding> operationBinding =
-                kafkaBindingFactory.buildOperationBinding(annotation, bindingContext);
+        String channelName = kafkaBindingFactory.getChannelName(bindingContext);
+        Map<String, OperationBinding> operationBinding = kafkaBindingFactory.buildOperationBinding(bindingContext);
 
         // then
         assertThat(channelName).isEqualTo("topic-from-property");

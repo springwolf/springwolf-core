@@ -29,17 +29,16 @@ public class SpringAnnotationOperationService<MethodAnnotation extends Annotatio
 
     public Operation buildOperation(
             MethodAndAnnotation<MethodAnnotation> annotation,
-            BindingContext bindingContext,
+            BindingContext<MethodAnnotation> bindingContext,
             PayloadSchemaObject payloadType,
             SchemaObject headerSchema) {
-        String channelId = bindingFactory.getChannelId(annotation.annotation(), bindingContext);
+        String channelId = bindingFactory.getChannelId(bindingContext);
         String operationId = OperationIdHelper.buildOperationId(
                 channelId, OperationAction.RECEIVE, annotation.method().getName());
 
         MessageObject message =
                 springAnnotationMessageService.buildMessage(annotation.annotation(), payloadType, headerSchema);
-        Map<String, OperationBinding> operationBinding =
-                bindingFactory.buildOperationBinding(annotation.annotation(), bindingContext);
+        Map<String, OperationBinding> operationBinding = bindingFactory.buildOperationBinding(bindingContext);
         Map<String, OperationBinding> opBinding = operationBinding != null ? new HashMap<>(operationBinding) : null;
 
         return Operation.builder()
