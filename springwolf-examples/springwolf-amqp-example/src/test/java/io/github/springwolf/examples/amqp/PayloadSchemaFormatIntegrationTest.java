@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.examples.kafka;
+package io.github.springwolf.examples.amqp;
 
 import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
@@ -40,7 +40,7 @@ public class PayloadSchemaFormatIntegrationTest {
 
         AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
         String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:9092", "kafka:29092");
+        String actualPatched = actual.replace("localhost:5672", "amqp:5672");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.openapiv31.actual.json"), actualPatched);
 
         // then
