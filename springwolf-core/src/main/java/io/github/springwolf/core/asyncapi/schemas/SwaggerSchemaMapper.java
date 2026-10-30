@@ -211,10 +211,24 @@ public class SwaggerSchemaMapper {
         Set<String> types = schemaTypes == null ? new HashSet<>() : new HashSet<>(schemaTypes);
 
         String schemaType = swaggerSchema.getType();
+        if (schemaType == null) {
+            if (types.isEmpty()) {
+                // Leave type unset when the schema is composed and does not declare a concrete type
+                // (e.g. oneOf/anyOf/allOf without a base type).
+                return;
+            }
+            if (isNullable) {
+                types.add("null");
+            }
+            builder.type(types);
+            return;
+        }
+
         if (!types.contains(schemaType)) {
-            // required while swagger v2 does not populate types. Leave type unset when the schema is composed
-            // and does not declare a concrete type (e.g. oneOf/anyOf/allOf without a base type).
-            if (schemaType != null) {
+            // required while swagger v2 does not populate types
+            if (isNullable) {
+                builder.type(Set.of(schemaType, "null"));
+            } else {
                 builder.type(Set.of(schemaType));
             }
             return;
