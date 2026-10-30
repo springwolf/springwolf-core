@@ -10,6 +10,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.fqn.FqnApplication;
 import io.github.springwolf.core.integrationtests.application.listener.ListenerApplication;
+import io.github.springwolf.core.integrationtests.application.oneof.OneOfPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.polymorphic.PolymorphicPayloadApplication;
 import io.github.springwolf.core.integrationtests.application.publisher.PublisherApplication;
 import io.github.springwolf.core.integrationtests.application.ref.SchemaEnumAsRefApplication;
@@ -251,6 +252,41 @@ public class ApplicationIntegrationTest {
                             .getSchema()
                             .getProperties())
                     .containsOnlyKeys("dogSpecificField");
+        }
+    }
+
+    @Nested
+    @SpringBootTest(classes = OneOfPayloadApplication.class)
+    @SpringwolfIntegrationTest
+    class OneOfPayloadTest {
+        @Autowired
+        private AsyncApiService asyncApiService;
+
+        @Autowired
+        private AsyncApiSerializerService asyncApiSerializerService;
+
+        @Test
+        void oneOfPropertyIsGeneratedFromTheApplication() throws Exception {
+            // when
+            AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
+
+            // then
+            String payloadName =
+                    "io.github.springwolf.core.integrationtests.application.oneof.OneOfPayloadApplication.Payload";
+            ComponentSchema payloadSchema =
+                    asyncAPI.getComponents().getSchemas().get(payloadName);
+            assertThat(payloadSchema.getSchema().getType()).containsExactly("object");
+            ComponentSchema operationSchema =
+                    (ComponentSchema) payloadSchema.getSchema().getProperties().get("operation");
+            assertThat(operationSchema.getSchema().getType()).containsExactly("object");
+            assertThat(operationSchema.getSchema().getOneOf())
+                    .extracting(oneOf -> oneOf.getReference().getRef())
+                    .containsExactlyInAnyOrder(
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.oneof.OneOfPayloadApplication.OperationA",
+                            "#/components/schemas/io.github.springwolf.core.integrationtests.application.oneof.OneOfPayloadApplication.OperationB");
+
+            String serialized = asyncApiSerializerService.toJsonString(asyncAPI);
+            assertThat(serialized).contains("\"oneOf\"").doesNotContain("\"type\": []");
         }
     }
 

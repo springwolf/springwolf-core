@@ -1,0 +1,43 @@
+{
+  "asyncapi": "3.1.0",
+  "info": {
+    "title": "polymorphic oneOf integration test",
+    "version": "1.0.0"
+  },
+  "channels": {},
+  "components": {
+    "schemas": {
+      "Payload": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OperationA"
+              },
+              {
+                "$ref": "#/components/schemas/OperationB"
+              }
+            ]
+          }
+        }
+      },
+      "OperationA": {
+        "type": "object",
+        "properties": {
+          "valueA": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationB": {
+        "type": "object",
+        "properties": {
+          "valueB": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
