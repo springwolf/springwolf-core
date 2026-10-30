@@ -139,14 +139,10 @@ class KafkaBindingTest {
                                                 .bindings(Map.of(
                                                         "kafka",
                                                         KafkaMessageBinding.builder()
-                                                                .key(
-                                                                        SchemaObject.builder()
-                                                                                .type(
-                                                                                        Set.of(
-                                                                                                SchemaType.STRING
-                                                                                                        .getValue()))
-                                                                                .enumValues(List.of("myKey"))
-                                                                                .build())
+                                                                .key(SchemaObject.builder()
+                                                                        .type(Set.of(SchemaType.STRING.getValue()))
+                                                                        .enumValues(List.of("myKey"))
+                                                                        .build())
                                                                 .schemaIdLocation("payload")
                                                                 .schemaIdPayloadEncoding("apicurio-new")
                                                                 .schemaLookupStrategy("TopicIdStrategy")

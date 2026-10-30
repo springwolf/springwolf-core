@@ -37,8 +37,9 @@ public class AsyncApiGroup {
     private final List<Pattern> messageNamesToKeep = Collections.emptyList();
 
     public boolean isMatch(MessageObject messageObject) {
-        return getMessageNamesToKeep().stream().anyMatch(pattern -> pattern.matcher(messageObject.getMessageId())
-                .matches());
+        return getMessageNamesToKeep().stream()
+                .anyMatch(
+                        pattern -> pattern.matcher(messageObject.getMessageId()).matches());
     }
 
     public boolean isMatch(Operation operation) {

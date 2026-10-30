@@ -62,9 +62,10 @@ public class AmqpProducerSystemTest {
             .withServices(AMQP_NAME)
             .withExposedService(AMQP_NAME, 5672)
             .waitingFor(AMQP_NAME, Wait.forLogMessage(".*Server startup complete.*", 1))
-            .withLogConsumer(AMQP_NAME, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("AMQP: {}", m)));
+            .withLogConsumer(
+                    AMQP_NAME,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("AMQP: {}", m)));
 
     @DynamicPropertySource
     static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
@@ -77,9 +78,10 @@ public class AmqpProducerSystemTest {
     void verifyAmqpIsAvailable() {
         ConnectionFactory factory = new CachingConnectionFactory("localhost");
 
-        await().atMost(60, SECONDS).ignoreException(AmqpIOException.class).untilAsserted(() -> assertThat(
-                        factory.createConnection().isOpen())
-                .isTrue());
+        await().atMost(60, SECONDS)
+                .ignoreException(AmqpIOException.class)
+                .untilAsserted(
+                        () -> assertThat(factory.createConnection().isOpen()).isTrue());
     }
 
     @Test

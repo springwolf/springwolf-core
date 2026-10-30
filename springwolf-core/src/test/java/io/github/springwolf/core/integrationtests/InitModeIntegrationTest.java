@@ -54,8 +54,9 @@ public class InitModeIntegrationTest {
             // Given initMode is 'background'
             // When application is ready
             // Then a thread is started in the background and initializes the document
-            await().atMost(5, SECONDS).untilAsserted(() -> assertThat(defaultAsyncApiService.isNotInitialized())
-                    .isFalse());
+            await().atMost(5, SECONDS)
+                    .untilAsserted(() -> assertThat(defaultAsyncApiService.isNotInitialized())
+                            .isFalse());
         }
     }
 

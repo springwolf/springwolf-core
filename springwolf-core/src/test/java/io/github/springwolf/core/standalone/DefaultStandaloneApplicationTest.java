@@ -89,9 +89,10 @@ class DefaultStandaloneApplicationTest {
         List<String> scanPackages = List.of("non.existing.package");
 
         // then
-        assertThatRuntimeException().isThrownBy(() -> DefaultStandaloneApplication.builder()
-                .setScanPackages(scanPackages)
-                .buildAndStart());
+        assertThatRuntimeException()
+                .isThrownBy(() -> DefaultStandaloneApplication.builder()
+                        .setScanPackages(scanPackages)
+                        .buildAndStart());
     }
 
     @Test

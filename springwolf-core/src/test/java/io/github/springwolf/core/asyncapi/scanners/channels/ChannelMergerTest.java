@@ -65,8 +65,9 @@ class ChannelMergerTest {
                 ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getTitle())
-                .isEqualTo("channel1"));
+        assertThat(mergedChannels)
+                .hasSize(1)
+                .hasEntrySatisfying(channelId, it -> assertThat(it.getTitle()).isEqualTo("channel1"));
     }
 
     @Test
@@ -105,8 +106,11 @@ class ChannelMergerTest {
         // then expectedMessage only includes message1 and message2.
         // Message3 is not included as it is identical in terms of payload type (Message#name) to message 2
         var expectedMessages = MessageHelper.toMessagesMap(Set.of(message1, message2));
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getMessages())
-                .containsExactlyInAnyOrderEntriesOf(expectedMessages));
+        assertThat(mergedChannels)
+                .hasSize(1)
+                .hasEntrySatisfying(
+                        channelId,
+                        it -> assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages));
     }
 
     @Test
@@ -153,9 +157,10 @@ class ChannelMergerTest {
                 ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getBindings())
+        assertThat(mergedChannels)
                 .hasSize(1)
-                .containsKeys("binding2"));
+                .hasEntrySatisfying(
+                        channelId, it -> assertThat(it.getBindings()).hasSize(1).containsKeys("binding2"));
     }
 
     @Test
@@ -176,8 +181,9 @@ class ChannelMergerTest {
                 ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
 
         // then
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> assertThat(it.getBindings())
-                .hasSize(2)
-                .containsKeys("binding1", "binding2"));
+        assertThat(mergedChannels)
+                .hasSize(1)
+                .hasEntrySatisfying(
+                        channelId, it -> assertThat(it.getBindings()).hasSize(2).containsKeys("binding1", "binding2"));
     }
 }
