@@ -143,7 +143,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -176,8 +176,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(expectedChannel);
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-consumer-input-topic_receive_testConsumer", expectedOperation));
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -191,7 +190,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -224,8 +223,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(expectedChannel);
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-biconsumer-input-topic_receive_testBiConsumer", expectedOperation));
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -239,7 +237,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
 
@@ -273,8 +271,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactly(expectedChannel);
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-supplier-output-topic_send_testSupplier", expectedOperation));
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -296,7 +293,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -355,10 +352,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_testFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testFunction", publishOperation));
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
     }
 
     @Test
@@ -379,7 +373,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -438,10 +432,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_testBiFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testBiFunction", publishOperation));
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
     }
 
     @Test
@@ -462,7 +453,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -526,10 +517,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_kStreamTestFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_kStreamTestFunction", publishOperation));
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
     }
@@ -551,7 +539,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
         // When scan is called
         List<ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish and a subscribe channel
         MessageObject subscribeMessage = MessageObject.builder()
@@ -614,10 +602,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .build();
 
         assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-topic_send_testFunction", publishOperation),
-                        Map.entry("test-topic_receive_testFunction", subscribeOperation));
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
     }

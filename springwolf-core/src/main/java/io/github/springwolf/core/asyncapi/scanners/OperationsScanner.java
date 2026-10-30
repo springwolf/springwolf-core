@@ -3,12 +3,12 @@ package io.github.springwolf.core.asyncapi.scanners;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 
-import java.util.Map;
+import java.util.List;
 
 public interface OperationsScanner {
 
     /**
-     * @return A mapping of operation names to their respective operation object for a given protocol.
+     * @return The operations found for a given protocol.
      */
-    Map<String, Operation> scan();
+    List<Operation> scan();
 }

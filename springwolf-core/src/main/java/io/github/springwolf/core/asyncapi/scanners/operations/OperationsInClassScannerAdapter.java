@@ -7,7 +7,6 @@ import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -18,12 +17,10 @@ public class OperationsInClassScannerAdapter implements OperationsScanner {
     private final OperationsInClassScanner classProcessor;
 
     @Override
-    public Map<String, Operation> scan() {
+    public List<Operation> scan() {
         Set<Class<?>> components = classScanner.scan();
 
-        List<Operation> operations = mapToOperations(components);
-
-        return OperationMerger.mergeOperations(operations);
+        return mapToOperations(components);
     }
 
     private List<Operation> mapToOperations(Set<Class<?>> components) {

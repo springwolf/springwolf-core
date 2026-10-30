@@ -5,7 +5,7 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -25,7 +25,7 @@ class OperationsInClassScannerAdapterTest {
     @Test
     void noClassFoundTest() {
         // when
-        Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
+        List<Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
         assertThat(operations).isEmpty();
@@ -40,15 +40,14 @@ class OperationsInClassScannerAdapterTest {
         when(classProcessor.scan(any())).thenReturn(Stream.of(operation1, operation2));
 
         // when
-        Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
+        List<Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
-        assertThat(operations)
-                .containsExactlyInAnyOrderEntriesOf(Map.of("operation1", operation1, "operation2", operation2));
+        assertThat(operations).containsExactlyInAnyOrder(operation1, operation2);
     }
 
     @Test
-    void sameOperationsAreMergedTest() {
+    void sameOperationsAreReturnedUnmergedTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
         Operation operation1 =
@@ -58,10 +57,10 @@ class OperationsInClassScannerAdapterTest {
         when(classProcessor.scan(any())).thenReturn(Stream.of(operation1, operation2));
 
         // when
-        Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
+        List<Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
-        assertThat(operations).hasSize(1);
+        assertThat(operations).containsExactly(operation1, operation2);
     }
 
     @Test
@@ -71,7 +70,7 @@ class OperationsInClassScannerAdapterTest {
         when(classProcessor.scan(any())).thenReturn(Stream.of());
 
         // when
-        Map<String, Operation> operations = operationsInClassScannerAdapter.scan();
+        List<Operation> operations = operationsInClassScannerAdapter.scan();
 
         // then
         assertThat(operations).isEmpty();

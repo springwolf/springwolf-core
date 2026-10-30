@@ -31,8 +31,7 @@ public class DefaultOperationsService implements OperationsService {
 
         for (OperationsScanner scanner : operationScanners) {
             try {
-                Map<String, Operation> channels = scanner.scan();
-                foundOperations.addAll(channels.values());
+                foundOperations.addAll(scanner.scan());
             } catch (Exception e) {
                 log.warn("An error was encountered during operation scanning with {}: {}", scanner, e.getMessage(), e);
             }

@@ -26,7 +26,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -58,7 +57,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private final List<OperationBindingProcessor> operationBindingProcessors;
 
     @Override
-    public Map<String, Operation> scan() {
+    public List<Operation> scan() {
         Set<AnnotatedElement> elements = new HashSet<>();
         elements.addAll(componentClassScanner.scan());
         elements.addAll(beanMethodsScanner.getBeanMethods());
@@ -70,7 +69,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .map(this::buildOperation)
                 .toList();
 
-        return OperationMerger.mergeOperations(operations);
+        return operations;
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
