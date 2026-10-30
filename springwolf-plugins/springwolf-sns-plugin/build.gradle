@@ -9,8 +9,8 @@ plugins {
 
 dependencies {
     api project(":springwolf-core")
-    api project(":springwolf-bindings:springwolf-sns-binding")
-    permitUnusedDeclared project(":springwolf-bindings:springwolf-sns-binding")
+    api project(":springwolf-bindings")
+    permitUnusedDeclared project(":springwolf-bindings")
 
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api

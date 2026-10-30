@@ -2,6 +2,7 @@ rootProject.name = 'springwolf'
 
 include(
         'springwolf-asyncapi',
+        'springwolf-bindings',
         'springwolf-core',
         'springwolf-plugins:springwolf-amqp-plugin',
         'springwolf-plugins:springwolf-cloud-stream-plugin',
@@ -18,13 +19,6 @@ include(
         'springwolf-examples:springwolf-sns-example',
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-examples:springwolf-stomp-example',
-        'springwolf-bindings:springwolf-amqp-binding',
-        'springwolf-bindings:springwolf-googlepubsub-binding',
-        'springwolf-bindings:springwolf-jms-binding',
-        'springwolf-bindings:springwolf-kafka-binding',
-        'springwolf-bindings:springwolf-sns-binding',
-        'springwolf-bindings:springwolf-sqs-binding',
-        'springwolf-bindings:springwolf-stomp-binding',
         'springwolf-ui',
         'springwolf-add-ons:springwolf-common-model-converters',
         'springwolf-add-ons:springwolf-generic-binding',
@@ -39,4 +33,3 @@ project(':springwolf-plugins:springwolf-kafka-plugin').name = 'springwolf-kafka'
 project(':springwolf-plugins:springwolf-sns-plugin').name = 'springwolf-sns'
 project(':springwolf-plugins:springwolf-sqs-plugin').name = 'springwolf-sqs'
 project(':springwolf-plugins:springwolf-stomp-plugin').name = 'springwolf-stomp'
-

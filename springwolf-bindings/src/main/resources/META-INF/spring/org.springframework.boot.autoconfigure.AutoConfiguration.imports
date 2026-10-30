@@ -1,0 +1,7 @@
+io.github.springwolf.bindings.amqp.configuration.SpringwolfAmqpBindingAutoConfiguration
+io.github.springwolf.bindings.googlepubsub.configuration.SpringwolfGooglePubSubBindingAutoConfiguration
+io.github.springwolf.bindings.jms.configuration.SpringwolfJmsBindingAutoConfiguration
+io.github.springwolf.bindings.kafka.configuration.SpringwolfKafkaBindingAutoConfiguration
+io.github.springwolf.bindings.sns.configuration.SpringwolfSnsBindingAutoConfiguration
+io.github.springwolf.bindings.sqs.configuration.SpringwolfSqsBindingAutoConfiguration
+io.github.springwolf.bindings.stomp.configuration.SpringwolfStompBindingAutoConfiguration

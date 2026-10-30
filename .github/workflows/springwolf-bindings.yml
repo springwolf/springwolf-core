@@ -22,14 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    strategy:
-      fail-fast: false
-      matrix:
-        binding: [ "amqp", "googlepubsub", "jms", "kafka", "sns", "sqs", "stomp" ]
-
-    env:
-      binding: springwolf-bindings/springwolf-${{ matrix.binding }}-binding
-
     steps:
       - uses: actions/checkout@v7
 
@@ -42,18 +34,18 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6.4.0
 
-      - name: Check formatting (before running tests) on binding
-        run: ./gradlew -p ${{ env.binding }} spotlessCheck
+      - name: Check formatting (before running tests) on bindings
+        run: ./gradlew -p springwolf-bindings spotlessCheck
 
       - name: Run unit tests
-        run: ./gradlew -p ${{ env.binding }} test
+        run: ./gradlew -p springwolf-bindings test
 
-      - name: Run build, check, analyzeDependencies on binding
-        run: ./gradlew -p ${{ env.binding }} build
+      - name: Run build, check, analyzeDependencies on bindings
+        run: ./gradlew -p springwolf-bindings build
 
       - name: Publish package
         if: github.ref == 'refs/heads/main'
-        run: ./gradlew -p ${{ env.binding }} publish
+        run: ./gradlew -p springwolf-bindings publish
         env:
           ORG_GRADLE_PROJECT_SNAPSHOT: true
 

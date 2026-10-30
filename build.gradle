@@ -17,15 +17,6 @@ var addons = [
         'springwolf-json-schema',
         'springwolf-kotlinx-serialization-model-converter'
 ]
-var bindings = [
-        'springwolf-amqp-binding',
-        'springwolf-googlepubsub-binding',
-        'springwolf-jms-binding',
-        'springwolf-kafka-binding',
-        'springwolf-sns-binding',
-        'springwolf-sqs-binding',
-        'springwolf-stomp-binding'
-]
 var plugins = [
         'springwolf-amqp',
         'springwolf-cloud-stream',
@@ -184,11 +175,11 @@ allprojects {
 
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
+                    project.name == 'springwolf-bindings' ||
             project.name == 'springwolf-core' ||
             project.name == 'springwolf-ui' ||
             addons.contains(project.name) ||
-            plugins.contains(project.name) ||
-            bindings.contains(project.name)
+            plugins.contains(project.name)
     )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
