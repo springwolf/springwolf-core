@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 import { Parser } from "@asyncapi/parser";
-import { exampleSchemas } from "../mock/example-data";
+import { coreIntegrationSchemas, exampleSchemas } from "../mock/example-data";
 import { INotificationService } from "../notification.service";
 import { AsyncApiMapperService } from "./asyncapi-mapper.service";
 
@@ -52,5 +52,17 @@ describe("AsyncApiMapperService", () => {
         }
       );
     }
+  }
+
+  for (const [fixtureName, schema] of Object.entries(coreIntegrationSchemas)) {
+    it(
+      "should be a valid AsyncAPI schema - core example " + fixtureName,
+      async () => {
+        const diagnostics = await parser.validate(JSON.stringify(schema));
+
+        expect(diagnostics.map((el) => el.message)).toHaveLength(0);
+        expect(diagnostics).toHaveLength(0);
+      }
+    );
   }
 });

@@ -8,8 +8,27 @@ import mockSpringwolfJms from "../../../../../springwolf-examples/springwolf-jms
 import mockSpringwolfSns from "../../../../../springwolf-examples/springwolf-sns-example/src/test/resources/asyncapi.json";
 import mockSpringwolfSqs from "../../../../../springwolf-examples/springwolf-sqs-example/src/test/resources/asyncapi.json";
 import mockSpringwolfStomp from "../../../../../springwolf-examples/springwolf-stomp-example/src/test/resources/asyncapi.json";
+import coreAsyncApiFqn from "../../../../../springwolf-core/src/test/resources/application/asyncapi.fqn.json";
+import coreAsyncApiListener from "../../../../../springwolf-core/src/test/resources/application/asyncapi.listener.json";
+import coreAsyncApiOneOf from "../../../../../springwolf-core/src/test/resources/application/asyncapi.oneof.json";
+import coreAsyncApiOpenApiV3 from "../../../../../springwolf-core/src/test/resources/application/asyncapi.openapiv3.json";
+import coreAsyncApiOpenApiV31 from "../../../../../springwolf-core/src/test/resources/application/asyncapi.openapiv31.json";
+import coreAsyncApiPolymorphic from "../../../../../springwolf-core/src/test/resources/application/asyncapi.polymorphic.json";
+import coreAsyncApiPublisher from "../../../../../springwolf-core/src/test/resources/application/asyncapi.publisher.json";
+import coreAsyncApiRef from "../../../../../springwolf-core/src/test/resources/application/asyncapi.ref.json";
 import { ServerAsyncApi } from "../asyncapi/models/asyncapi.model";
 import { ServerUiConfig } from "../asyncapi/models/ui.model";
+
+export const coreIntegrationSchemas = {
+  fqn: coreAsyncApiFqn,
+  listener: coreAsyncApiListener,
+  oneOf: coreAsyncApiOneOf,
+  openApiV3: coreAsyncApiOpenApiV3,
+  openApiV31: coreAsyncApiOpenApiV31,
+  polymorphic: coreAsyncApiPolymorphic,
+  publisher: coreAsyncApiPublisher,
+  ref: coreAsyncApiRef,
+};
 
 export const exampleSchemas: {
   [key: string]: {
