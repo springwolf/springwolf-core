@@ -16,7 +16,7 @@ springwolf-plugins/springwolf-amqp-plugin/build/
 springwolf-plugins/springwolf-cloud-stream-plugin/build/
 springwolf-plugins/springwolf-kafka-plugin/build/
 springwolf-plugins/springwolf-sqs-plugin/build/
-springwolf-bindings/springwolf-sqs-binding/build/
+
 
 .gradle/
 .kotlin/

@@ -13,7 +13,7 @@ dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-sns")
     permitUnusedDeclared project(":springwolf-plugins:springwolf-sns")
-    permitUsedUndeclared project(":springwolf-bindings:springwolf-sns-binding")
+    permitUsedUndeclared project(":springwolf-bindings")
 
     annotationProcessor project(":springwolf-plugins:springwolf-sns")
     runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")

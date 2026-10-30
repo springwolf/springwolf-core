@@ -10,8 +10,8 @@ plugins {
 dependencies {
     api project(":springwolf-core")
     api project(":springwolf-asyncapi")
-    api project(":springwolf-bindings:springwolf-amqp-binding")
-    permitUnusedDeclared project(":springwolf-bindings:springwolf-amqp-binding")
+    api project(":springwolf-bindings")
+    permitUnusedDeclared project(":springwolf-bindings")
 
     implementation libs.slf4j.api
 

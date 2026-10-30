@@ -12,7 +12,7 @@ dependencies {
     runtimeOnly project(":springwolf-core")
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
-    implementation project(":springwolf-bindings:springwolf-googlepubsub-binding")
+    implementation project(":springwolf-bindings")
 
     annotationProcessor project(":springwolf-plugins:springwolf-cloud-stream")
 

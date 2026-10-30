@@ -13,7 +13,7 @@ dependencies {
     implementation project(":springwolf-core")
     implementation project(":springwolf-plugins:springwolf-stomp")
     permitUnusedDeclared project(":springwolf-plugins:springwolf-stomp")
-    permitUsedUndeclared project(":springwolf-bindings:springwolf-stomp-binding")
+    permitUsedUndeclared project(":springwolf-bindings")
 
     runtimeOnly project(":springwolf-ui")
 

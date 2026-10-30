@@ -10,8 +10,8 @@ plugins {
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
-    api project(":springwolf-bindings:springwolf-kafka-binding")
-    permitUnusedDeclared project(":springwolf-bindings:springwolf-kafka-binding")
+    api project(":springwolf-bindings")
+    permitUnusedDeclared project(":springwolf-bindings")
 
     implementation libs.swagger.models
     permitUnusedDeclared libs.swagger.models

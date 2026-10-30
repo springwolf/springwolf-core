@@ -14,7 +14,7 @@ dependencies {
     implementation project(":springwolf-add-ons:springwolf-generic-binding")
     implementation project(":springwolf-plugins:springwolf-jms")
     permitUnusedDeclared project(":springwolf-plugins:springwolf-jms")
-    permitUsedUndeclared project(":springwolf-bindings:springwolf-jms-binding")
+    permitUsedUndeclared project(":springwolf-bindings")
 
     annotationProcessor project(":springwolf-plugins:springwolf-jms")
     runtimeOnly project(":springwolf-ui")

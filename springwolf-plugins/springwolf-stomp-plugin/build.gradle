@@ -10,8 +10,8 @@ plugins {
 dependencies {
     api project(":springwolf-asyncapi")
     api project(":springwolf-core")
-    api project(":springwolf-bindings:springwolf-stomp-binding")
-    permitUnusedDeclared project(":springwolf-bindings:springwolf-stomp-binding")
+    api project(":springwolf-bindings")
+    permitUnusedDeclared project(":springwolf-bindings")
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
