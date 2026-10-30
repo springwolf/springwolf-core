@@ -32,7 +32,8 @@ class ProtobufModelConverter implements ModelConverter {
     }
 
     @Override
-    public Schema resolve(AnnotatedType annotatedType, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    public Schema<?> resolve(
+            AnnotatedType annotatedType, ModelConverterContext context, Iterator<ModelConverter> chain) {
         if (annotatedType == null) {
             return null;
         }
@@ -43,19 +44,22 @@ class ProtobufModelConverter implements ModelConverter {
             return chain.hasNext() ? chain.next().resolve(annotatedType, context, chain) : null;
         }
         Descriptor descriptor = defaultInstance(rawClass).getDescriptorForType();
-        Schema wellKnownTypeSchema = wellKnownTypeSchema(descriptor);
+        Schema<?> wellKnownTypeSchema = wellKnownTypeSchema(descriptor);
         if (wellKnownTypeSchema != null) {
             return wellKnownTypeSchema;
         }
 
         String name = modelName(rawClass);
-        Schema model = new Schema<>().name(name).title(rawClass.getSimpleName()).type("object");
-        model.setProperties(new LinkedHashMap<>());
+        Schema<Object> model = new Schema<>();
+        model.setName(name);
+        model.setTitle(rawClass.getSimpleName());
+        model.setType("object");
+        model.setProperties(new LinkedHashMap<String, Schema>());
 
         for (FieldDescriptor field : descriptor.getFields()) {
             Method getter = getter(rawClass, field);
             Class<?> javaType = valueClass(getter, field);
-            Schema property = schema(field, javaType, context);
+            Schema<?> property = schema(field, javaType, context);
             if (field.isRepeated() && !field.isMapField()) {
                 property = new ArraySchema().items(property);
             } else if (field.isMapField()) {
@@ -73,7 +77,7 @@ class ProtobufModelConverter implements ModelConverter {
         return model;
     }
 
-    private Schema schema(FieldDescriptor field, Class<?> javaType, ModelConverterContext context) {
+    private Schema<?> schema(FieldDescriptor field, Class<?> javaType, ModelConverterContext context) {
         return switch (field.getType()) {
             case BOOL -> new BooleanSchema();
             case BYTES -> new StringSchema().format("byte");
@@ -87,7 +91,7 @@ class ProtobufModelConverter implements ModelConverter {
         };
     }
 
-    private Schema enumSchema(FieldDescriptor field, Class<?> enumClass) {
+    private Schema<?> enumSchema(FieldDescriptor field, Class<?> enumClass) {
         StringSchema schema = new StringSchema();
         schema.setTitle(field.getEnumType().getName());
         if (enumClass.isEnum()) {
@@ -102,7 +106,7 @@ class ProtobufModelConverter implements ModelConverter {
         return schema;
     }
 
-    private Schema messageSchema(FieldDescriptor field, Class<?> messageClass, ModelConverterContext context) {
+    private Schema<?> messageSchema(FieldDescriptor field, Class<?> messageClass, ModelConverterContext context) {
         String fullName = field.getMessageType().getFullName();
         if ("google.protobuf.Timestamp".equals(fullName)) {
             return new StringSchema().format("date-time");
@@ -148,7 +152,7 @@ class ProtobufModelConverter implements ModelConverter {
         }
     }
 
-    private Schema wellKnownTypeSchema(Descriptor descriptor) {
+    private Schema<?> wellKnownTypeSchema(Descriptor descriptor) {
         return switch (descriptor.getFullName()) {
             case "google.protobuf.Timestamp" -> new StringSchema().format("date-time");
             case "google.protobuf.Duration", "google.protobuf.FieldMask" -> new StringSchema();
