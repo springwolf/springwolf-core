@@ -18,7 +18,10 @@ import io.github.springwolf.asyncapi.v3.model.server.Server;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
@@ -33,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +54,8 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private final PayloadService payloadService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
+    private final List<MessageBindingProcessor> messageBindingProcessors;
+    private final List<OperationBindingProcessor> operationBindingProcessors;
 
     @Override
     public Map<String, Operation> scan() {
@@ -93,7 +99,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .title(payloadSchema.title())
                 .payload(payload)
                 .headers(messageHeaders)
-                .bindings(buildMessageBinding())
+                .bindings(buildMessageBinding(beanData.annotatedElement()))
                 .build();
 
         return Operation.builder()
@@ -102,18 +108,29 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(channelId))
                 .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
-                .bindings(buildOperationBinding())
+                .bindings(buildOperationBinding(beanData.annotatedElement()))
                 .build();
     }
 
-    private Map<String, MessageBinding> buildMessageBinding() {
-        // FIXME: handle messageBindings from annotations as for the channel
+    private Map<String, MessageBinding> buildMessageBinding(AnnotatedElement annotatedElement) {
+        Map<String, MessageBinding> messageBindings =
+                AsyncAnnotationUtil.processMessageBindingFromAnnotation(annotatedElement, messageBindingProcessors);
+        if (!messageBindings.isEmpty()) {
+            return messageBindings;
+        }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, OperationBinding> buildOperationBinding() {
-        // FIXME: handle operationBindings from annotations as for the channel
+    private Map<String, OperationBinding> buildOperationBinding(AnnotatedElement annotatedElement) {
+        Map<String, OperationBinding> operationBindings = annotatedElement instanceof Method method
+                ? AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors)
+                : Map.of();
+        if (!operationBindings.isEmpty()) {
+            return operationBindings;
+        }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }

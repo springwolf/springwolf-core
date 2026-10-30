@@ -25,6 +25,10 @@ import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvid
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
@@ -39,6 +43,7 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.operations.CloudStreamFunctionOperationsScanner;
 import org.apache.kafka.streams.kstream.KStream;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -51,9 +56,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -114,6 +121,11 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     private Map<String, OperationBinding> operationBinding = Map.of("kafka", new EmptyOperationBinding());
     private Map<String, ChannelBinding> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
+    @BeforeEach
+    void clearRegisteredMessages() {
+        componentsService.getMessages().clear();
+    }
+
     @Test
     void noBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
@@ -144,7 +156,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(messageBinding)
+                .bindings(Map.of("test", new EmptyMessageBinding()))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -157,7 +169,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         Operation expectedOperation = Operation.builder()
                 .operationId("test-consumer-input-topic_receive_testConsumer")
                 .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
+                .bindings(Map.of("test", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
                 .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
@@ -611,6 +623,21 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
 
     @TestConfiguration
     public static class Configuration {
+        @Bean
+        public MessageBindingProcessor testMessageBindingProcessor() {
+            return annotatedElement -> annotatedElement instanceof Method method
+                            && method.getName().equals("testConsumer")
+                    ? Optional.of(new ProcessedMessageBinding("test", new EmptyMessageBinding()))
+                    : Optional.empty();
+        }
+
+        @Bean
+        public OperationBindingProcessor testOperationBindingProcessor() {
+            return method -> method.getName().equals("testConsumer")
+                    ? Optional.of(new ProcessedOperationBinding("test", new EmptyOperationBinding()))
+                    : Optional.empty();
+        }
+
         @Bean
         public Consumer<String> testConsumer() {
             return System.out::println;
