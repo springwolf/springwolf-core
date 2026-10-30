@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 class SpringAnnotationClassLevelChannelsScannerTest {
 
     private final SpringAnnotationMessagesService<TestClassListener> springAnnotationMessagesService =
-            mock(SpringAnnotationMessagesService.class);
+            mock();
     private final SpringAnnotationChannelService<TestClassListener> springAnnotationChannelService =
-            mock(SpringAnnotationChannelService.class);
+            mock();
     SpringAnnotationClassLevelChannelsScanner<TestClassListener, TestMethodListener> scanner =
             new SpringAnnotationClassLevelChannelsScanner<>(
                     TestClassListener.class,

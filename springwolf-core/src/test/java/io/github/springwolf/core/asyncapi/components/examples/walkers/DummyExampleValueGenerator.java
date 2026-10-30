@@ -39,7 +39,7 @@ class DummyExampleValueGenerator implements ExampleValueGenerator<Object, Object
     }
 
     @Override
-    public Optional createEmptyObjectExample() {
+    public Optional<Object> createEmptyObjectExample() {
         return Optional.of("emptyObjectExample");
     }
 

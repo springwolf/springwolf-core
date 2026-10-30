@@ -26,9 +26,9 @@ class SpringAnnotationMethodLevelChannelsScannerTest {
     private final PayloadMethodService payloadMethodService = mock();
     private final HeaderClassExtractor headerClassExtractor = mock(HeaderClassExtractor.class);
     private final SpringAnnotationMessageService<TestListener> springAnnotationMessageService =
-            mock(SpringAnnotationMessageService.class);
+            mock();
     private final SpringAnnotationChannelService<TestListener> springAnnotationChannelService =
-            mock(SpringAnnotationChannelService.class);
+            mock();
     SpringAnnotationMethodLevelChannelsScanner<TestListener> scanner = new SpringAnnotationMethodLevelChannelsScanner<>(
             TestListener.class,
             payloadMethodService,

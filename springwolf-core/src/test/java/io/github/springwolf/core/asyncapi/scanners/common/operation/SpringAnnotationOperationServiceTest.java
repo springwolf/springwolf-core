@@ -30,9 +30,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class SpringAnnotationOperationServiceTest {
-    private final BindingFactory<TestMethodListener> bindingFactory = mock(BindingFactory.class);
+    private final BindingFactory<TestMethodListener> bindingFactory = mock();
     private final SpringAnnotationMessageService<TestMethodListener> springAnnotationMessageService =
-            mock(SpringAnnotationMessageService.class);
+            mock();
     SpringAnnotationOperationService<TestMethodListener> springAnnotationOperationService =
             new SpringAnnotationOperationService<>(bindingFactory, springAnnotationMessageService);
 
@@ -43,8 +43,8 @@ class SpringAnnotationOperationServiceTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingFactory.getChannelId(any(BindingContext.class))).thenReturn(CHANNEL_ID);
-        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any(BindingContext.class));
+        when(bindingFactory.getChannelId(any())).thenReturn(CHANNEL_ID);
+        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any());
     }
 
     @Test
@@ -53,7 +53,7 @@ class SpringAnnotationOperationServiceTest {
         Method method = ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         MethodAndAnnotation<TestMethodListener> methodAndAnnotation =
                 new MethodAndAnnotation<>(method, method.getAnnotation(TestMethodListener.class));
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(
+        BindingContext<TestMethodListener> bindingContext = BindingContext.ofAnnotatedMethod(
                 ClassWithTestListenerAnnotation.class, method, methodAndAnnotation.annotation());
         PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject("name", "full.name", null);
         SchemaObject headerSchema = new SchemaObject();

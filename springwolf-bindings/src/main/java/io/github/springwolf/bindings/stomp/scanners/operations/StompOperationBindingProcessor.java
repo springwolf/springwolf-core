@@ -10,7 +10,7 @@ import org.springframework.util.StringValueResolver;
 public class StompOperationBindingProcessor extends AbstractOperationBindingProcessor<StompAsyncOperationBinding> {
 
     public StompOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, StompAsyncOperationBinding.class);
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.util.StringValueResolver;
 
 public class JmsOperationBindingProcessor extends AbstractOperationBindingProcessor<JmsAsyncOperationBinding> {
     public JmsOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, JmsAsyncOperationBinding.class);
     }
 
     @Override

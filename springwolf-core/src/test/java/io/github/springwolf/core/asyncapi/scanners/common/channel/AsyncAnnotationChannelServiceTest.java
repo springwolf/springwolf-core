@@ -65,7 +65,7 @@ class AsyncAnnotationChannelServiceTest {
     private final AsyncAnnotationMessageService asyncAnnotationMessageService =
             mock(AsyncAnnotationMessageService.class);
     private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService =
-            mock(AsyncAnnotationOperationService.class);
+            mock();
     private final ChannelBindingProcessor channelBindingProcessor = mock(ChannelBindingProcessor.class);
     private final List<ChannelBindingProcessor> channelBindingProcessors = List.of(channelBindingProcessor);
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);

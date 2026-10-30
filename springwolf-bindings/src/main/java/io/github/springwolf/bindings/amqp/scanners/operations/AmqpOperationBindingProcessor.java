@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class AmqpOperationBindingProcessor extends AbstractOperationBindingProcessor<AmqpAsyncOperationBinding> {
     public AmqpOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, AmqpAsyncOperationBinding.class);
     }
 
     @Override

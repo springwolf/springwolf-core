@@ -21,7 +21,7 @@ class SpringAnnotationClassLevelOperationsScannerTest {
 
     private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
     private final SpringAnnotationOperationsService<TestClassListener> springAnnotationOperationsService =
-            mock(SpringAnnotationOperationsService.class);
+            mock();
     SpringAnnotationClassLevelOperationsScanner<TestClassListener, TestMethodListener> scanner =
             new SpringAnnotationClassLevelOperationsScanner<>(
                     TestClassListener.class,

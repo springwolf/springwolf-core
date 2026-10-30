@@ -15,7 +15,7 @@ import java.util.List;
 public class SqsOperationBindingProcessor extends AbstractOperationBindingProcessor<SqsAsyncOperationBinding> {
 
     public SqsOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, SqsAsyncOperationBinding.class);
     }
 
     @Override

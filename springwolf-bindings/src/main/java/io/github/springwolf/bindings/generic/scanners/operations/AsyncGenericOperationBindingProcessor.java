@@ -14,7 +14,7 @@ public class AsyncGenericOperationBindingProcessor
         extends AbstractOperationBindingProcessor<AsyncGenericOperationBinding> {
 
     public AsyncGenericOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, AsyncGenericOperationBinding.class);
     }
 
     @Override

@@ -492,7 +492,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
-            Schema propertySchema = new ObjectSchema();
+            Schema<Object> propertySchema = new ObjectSchema();
             propertySchema.setAnyOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("anyOfField", propertySchema);
 
@@ -507,7 +507,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
-            Schema propertySchema = new ObjectSchema();
+            Schema<Object> propertySchema = new ObjectSchema();
             propertySchema.setOneOf(List.of(new StringSchema(), new NumberSchema()));
             compositeSchema.addProperty("oneOfField", propertySchema);
 
@@ -528,7 +528,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             schema2.setProperties(Map.of("field2", new NumberSchema()));
             StringSchema skippedSchemaSinceObjectIsRequired = new StringSchema();
 
-            Schema propertySchema = new ObjectSchema();
+            Schema<Object> propertySchema = new ObjectSchema();
             propertySchema.setAllOf(List.of(schema1, schema2, skippedSchemaSinceObjectIsRequired));
             compositeSchema.addProperty("allOfField", propertySchema);
 

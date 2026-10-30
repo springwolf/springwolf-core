@@ -45,7 +45,7 @@ class AsyncAnnotationMethodLevelOperationsScannerTest {
 
     private final StringValueResolverProxy stringValueResolver = mock(StringValueResolverProxy.class);
     private final AsyncAnnotationOperationService<AsyncListener> asyncAnnotationOperationService =
-            mock(AsyncAnnotationOperationService.class);
+            mock();
 
     private final AsyncAnnotationMethodLevelOperationsScanner<AsyncListener> operationsScanner =
             new AsyncAnnotationMethodLevelOperationsScanner<>(

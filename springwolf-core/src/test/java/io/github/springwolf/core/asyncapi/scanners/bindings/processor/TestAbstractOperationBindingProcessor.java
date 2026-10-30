@@ -23,7 +23,7 @@ public class TestAbstractOperationBindingProcessor
     public static final OperationBinding BINDING = new AbstractOperationBindingBinding();
 
     public TestAbstractOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, TestOperationBinding.class);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 public class SnsOperationBindingProcessor extends AbstractOperationBindingProcessor<SnsAsyncOperationBinding> {
 
     public SnsOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, SnsAsyncOperationBinding.class);
     }
 
     @Override

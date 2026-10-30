@@ -2,26 +2,27 @@
 package io.github.springwolf.core.asyncapi.scanners.bindings.operations;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperationBinding;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @Slf4j
-@RequiredArgsConstructor
-public abstract class AbstractOperationBindingProcessor<A> implements OperationBindingProcessor {
+public abstract class AbstractOperationBindingProcessor<A extends Annotation> implements OperationBindingProcessor {
 
     private final StringValueResolver stringValueResolver;
+    private final Class<A> specificAnnotationClazz;
 
-    private final Class<A> specificAnnotationClazz =
-            (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    protected AbstractOperationBindingProcessor(
+            StringValueResolver stringValueResolver, Class<A> specificAnnotationClazz) {
+        this.stringValueResolver = stringValueResolver;
+        this.specificAnnotationClazz = specificAnnotationClazz;
+    }
 
     @Override
     public Optional<ProcessedOperationBinding> process(Method method) {

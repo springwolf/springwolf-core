@@ -17,13 +17,13 @@ class AvroSchemaPostProcessorTest {
     @Test
     void avroSchemasAreRemovedTest() {
         // given
-        var avroSchema = new Schema();
+        Schema<Object> avroSchema = new Schema<>();
         avroSchema.set$ref("#/components/schemas/org.apache.avro.Schema");
 
-        var avroSpecificData = new Schema();
+        Schema<Object> avroSpecificData = new Schema<>();
         avroSpecificData.set$ref("#/components/schemas/org.apache.avro.specific.SpecificData");
 
-        var schema = new Schema();
+        Schema<Object> schema = new Schema<>();
         schema.setProperties(new HashMap<>(
                 Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
 
@@ -45,19 +45,19 @@ class AvroSchemaPostProcessorTest {
     @Test
     void avroSchemasAreRemovedInRefsTest() {
         // given
-        var avroSchema = new Schema();
+        Schema<Object> avroSchema = new Schema<>();
         avroSchema.set$ref("#/components/schemas/org.apache.avro.Schema");
 
-        var avroSpecificData = new Schema();
+        Schema<Object> avroSpecificData = new Schema<>();
         avroSpecificData.set$ref("#/components/schemas/org.apache.avro.specific.SpecificData");
 
-        var refSchema = new Schema();
+        Schema<Object> refSchema = new Schema<>();
         refSchema.setProperties(new HashMap<>(
                 Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
 
-        var refProperty = new Schema();
+        Schema<Object> refProperty = new Schema<>();
         refProperty.set$ref("#/components/schemas/refSchema");
-        var schema = new Schema();
+        Schema<Object> schema = new Schema<>();
         schema.setProperties(new HashMap<>(Map.of("ref", refProperty)));
 
         var definitions = new HashMap<String, Schema>();
@@ -85,10 +85,10 @@ class AvroSchemaPostProcessorTest {
 
     @Test
     void handleRecursiveSchemasTest() {
-        var schema = new Schema();
+        Schema<Object> schema = new Schema<>();
         schema.set$ref("#/components/schemas/intermediateSchema");
 
-        var intermediateSchema = new Schema();
+        Schema<Object> intermediateSchema = new Schema<>();
         intermediateSchema.set$ref("#/components/schemas/schema");
 
         var definitions = new HashMap<String, Schema>();

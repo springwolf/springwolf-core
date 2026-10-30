@@ -17,9 +17,12 @@ class DefaultSchemaWalkerTest {
         DefaultSchemaWalker<Object, Object> schemaWalker = new DefaultSchemaWalker<>(null);
 
         Schema<Object> schema1 = new Schema<>(); // no types defined.
-        Schema<Object> schema2 = new Schema<>().type("string");
-        Schema<Object> schema3 = new Schema<>().types(Set.of("string", "null"));
-        Schema<Object> schema4 = new Schema<>().types(Set.of("string", "integer"));
+        Schema<Object> schema2 = new Schema<>();
+        schema2.setType("string");
+        Schema<Object> schema3 = new Schema<>();
+        schema3.setTypes(Set.of("string", "null"));
+        Schema<Object> schema4 = new Schema<>();
+        schema4.setTypes(Set.of("string", "integer"));
 
         assertThat(schemaWalker.getTypeForExampleValue(schema1)).isNull();
         assertThat(schemaWalker.getTypeForExampleValue(schema2)).isEqualTo("string");
@@ -31,10 +34,13 @@ class DefaultSchemaWalkerTest {
     void getDefaultValue() {
         DefaultSchemaWalker<Object, Object> schemaWalker = new DefaultSchemaWalker<>(new DummyExampleValueGenerator());
 
-        Schema<Object> schema1 = new Schema<Object>().type("string");
-        Schema<Object> schema2 = new Schema<Object>().type("string");
+        Schema<Object> schema1 = new Schema<>();
+        schema1.setType("string");
+        Schema<Object> schema2 = new Schema<>();
+        schema2.setType("string");
         schema2.setConst("constValue");
-        Schema<Object> schema3 = new Schema<Object>().type("string");
+        Schema<Object> schema3 = new Schema<>();
+        schema3.setType("string");
         schema3.setEnum(List.of("example1", "example2"));
 
         assertThat(schemaWalker.fromSchema(schema1, Map.of())).isEqualTo("string");

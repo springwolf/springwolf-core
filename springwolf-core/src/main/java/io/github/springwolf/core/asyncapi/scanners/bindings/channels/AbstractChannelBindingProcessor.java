@@ -2,26 +2,27 @@
 package io.github.springwolf.core.asyncapi.scanners.bindings.channels;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncChannelBinding;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @Slf4j
-@RequiredArgsConstructor
-public abstract class AbstractChannelBindingProcessor<A> implements ChannelBindingProcessor {
+public abstract class AbstractChannelBindingProcessor<A extends Annotation> implements ChannelBindingProcessor {
 
     private final StringValueResolver stringValueResolver;
+    private final Class<A> specificAnnotationClazz;
 
-    private final Class<A> specificAnnotationClazz =
-            (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    protected AbstractChannelBindingProcessor(
+            StringValueResolver stringValueResolver, Class<A> specificAnnotationClazz) {
+        this.stringValueResolver = stringValueResolver;
+        this.specificAnnotationClazz = specificAnnotationClazz;
+    }
 
     @Override
     public Optional<ProcessedChannelBinding> process(AnnotatedElement annotatedElement) {
