@@ -56,9 +56,10 @@ public class SqsProducerSystemTest {
     public static ComposeContainer environment = new ComposeContainer(new File("docker-compose.yml"))
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(LOCALSTACK_NAME)
-            .withLogConsumer(LOCALSTACK_NAME, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("LOCALSTACK: {}", m)))
+            .withLogConsumer(
+                    LOCALSTACK_NAME,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("LOCALSTACK: {}", m)))
             .waitingFor(LOCALSTACK_NAME, Wait.forLogMessage(".*Ready.*", 1));
 
     @Test

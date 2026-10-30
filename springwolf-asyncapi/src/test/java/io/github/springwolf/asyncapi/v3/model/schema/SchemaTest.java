@@ -294,12 +294,11 @@ class SchemaTest {
                                                         SchemaObject.builder()
                                                                 .type(Set.of(SchemaType.STRING.getValue()))
                                                                 .description("The measured skill for hunting")
-                                                                .enumValues(
-                                                                        List.of(
-                                                                                "clueless",
-                                                                                "lazy",
-                                                                                "adventurous",
-                                                                                "aggressive"))
+                                                                .enumValues(List.of(
+                                                                        "clueless",
+                                                                        "lazy",
+                                                                        "adventurous",
+                                                                        "aggressive"))
                                                                 .build()))
                                                 .required(List.of("huntingSkill"))
                                                 .build())))

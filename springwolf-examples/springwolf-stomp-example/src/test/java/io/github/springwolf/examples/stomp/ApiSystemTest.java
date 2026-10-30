@@ -32,9 +32,10 @@ public class ApiSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
-            .withLogConsumer(APP_NAME, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("APP: {}", m)));
+            .withLogConsumer(
+                    APP_NAME,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("APP: {}", m)));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);

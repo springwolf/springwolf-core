@@ -54,15 +54,20 @@ public class JmsProducerSystemTest {
             .withCopyFilesInContainer(".env") // do not copy all files in the directory
             .withServices(APP_JMS)
             .withExposedService(APP_JMS, 61616)
-            .withLogConsumer(APP_JMS, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("JMS: {}", m)))
+            .withLogConsumer(
+                    APP_JMS,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("JMS: {}", m)))
             .waitingFor(APP_JMS, Wait.forLogMessage(".*Artemis Console available.*", 1));
 
     @DynamicPropertySource
     static void registerActiveMqBroker(DynamicPropertyRegistry registry) {
-        registry.add("spring.artemis.broker-url", () -> "tcp://%s:%s"
-                .formatted(environment.getServiceHost(APP_JMS, 61616), environment.getServicePort(APP_JMS, 61616)));
+        registry.add(
+                "spring.artemis.broker-url",
+                () -> "tcp://%s:%s"
+                        .formatted(
+                                environment.getServiceHost(APP_JMS, 61616),
+                                environment.getServicePort(APP_JMS, 61616)));
     }
 
     @Test

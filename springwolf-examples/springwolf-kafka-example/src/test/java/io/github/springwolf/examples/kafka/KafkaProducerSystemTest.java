@@ -47,13 +47,15 @@ public class KafkaProducerSystemTest {
             .withExposedService(APP_NAME, APP_PORT)
             .waitingFor(APP_NAME, Wait.forLogMessage(".*AsyncAPI document was built.*", 1))
             .waitingFor(APP_NAME, Wait.forLogMessage(".*partitions assigned.*" + topic + ".*", 1))
-            .withLogConsumer(APP_NAME, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("APP: {}", m)))
+            .withLogConsumer(
+                    APP_NAME,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("APP: {}", m)))
             .waitingFor(KAFKA_NAME, Wait.forLogMessage(".*Kafka Server started.*", 1))
-            .withLogConsumer(KAFKA_NAME, l -> Arrays.stream(
-                            l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
-                    .forEach(m -> log.debug("KAFKA: {}", m)));
+            .withLogConsumer(
+                    KAFKA_NAME,
+                    l -> Arrays.stream(l.getUtf8StringWithoutLineEnding().split("(\n|\r\n)"))
+                            .forEach(m -> log.debug("KAFKA: {}", m)));
 
     private String baseUrl() {
         String host = environment.getServiceHost(APP_NAME, APP_PORT);
