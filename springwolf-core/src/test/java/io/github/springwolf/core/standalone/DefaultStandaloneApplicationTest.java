@@ -25,20 +25,20 @@ class DefaultStandaloneApplicationTest {
                         Map.of(
                                 "springwolf.docket.base-package",
                                 "io.github.springwolf.core.integrationtests.application.listener")));
-        DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .setEnvironment(environment)
-                .buildAndStart();
-
-        // then
-        assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
-        assertThat(standaloneApplication
-                        .getAsyncApiService()
-                        .getAsyncAPI()
-                        .getInfo()
-                        .getTitle())
-                .isEqualTo("springwolf-core-test-properties-file");
-        assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI().getChannels())
-                .containsKey("listener-channel");
+                .buildAndStart()) {
+            // then
+            assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
+            assertThat(standaloneApplication
+                            .getAsyncApiService()
+                            .getAsyncAPI()
+                            .getInfo()
+                            .getTitle())
+                    .isEqualTo("springwolf-core-test-properties-file");
+            assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI().getChannels())
+                    .containsKey("listener-channel");
+        }
     }
 
     @Test
@@ -51,14 +51,14 @@ class DefaultStandaloneApplicationTest {
                         "env", Map.of("springwolf.docket.base-package", "none.existing.package")));
 
         CustomizerMarkerConfiguration.hasCustomized = false;
-        DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .addScanPackage(CustomizerMarkerConfiguration.class.getPackageName())
                 .setEnvironment(environment)
-                .buildAndStart();
-
-        // then
-        assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
-        assertThat(CustomizerMarkerConfiguration.hasCustomized).isTrue();
+                .buildAndStart()) {
+            // then
+            assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
+            assertThat(CustomizerMarkerConfiguration.hasCustomized).isTrue();
+        }
     }
 
     @Test
@@ -67,20 +67,20 @@ class DefaultStandaloneApplicationTest {
         ConfigurableEnvironment environment = StandaloneEnvironmentLoader.load(List.of("standalone", "base-package"));
 
         // when
-        DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .setEnvironment(environment)
-                .buildAndStart();
-
-        // then
-        assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
-        assertThat(standaloneApplication
-                        .getAsyncApiService()
-                        .getAsyncAPI()
-                        .getInfo()
-                        .getTitle())
-                .isEqualTo("springwolf-core-standalone");
-        assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI().getChannels())
-                .containsKey("listener-channel");
+                .buildAndStart()) {
+            // then
+            assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI()).isNotNull();
+            assertThat(standaloneApplication
+                            .getAsyncApiService()
+                            .getAsyncAPI()
+                            .getInfo()
+                            .getTitle())
+                    .isEqualTo("springwolf-core-standalone");
+            assertThat(standaloneApplication.getAsyncApiService().getAsyncAPI().getChannels())
+                    .containsKey("listener-channel");
+        }
     }
 
     @Test
@@ -98,11 +98,11 @@ class DefaultStandaloneApplicationTest {
     @Test
     void shouldThrowWhenNoBasePackageConfigured() {
         // when
-        DefaultStandaloneApplication standaloneApplication =
-                DefaultStandaloneApplication.builder().buildAndStart();
-
-        // then
-        assertThatRuntimeException()
-                .isThrownBy(() -> standaloneApplication.getAsyncApiService().getAsyncAPI());
+        try (DefaultStandaloneApplication standaloneApplication =
+                DefaultStandaloneApplication.builder().buildAndStart()) {
+            // then
+            assertThatRuntimeException()
+                    .isThrownBy(() -> standaloneApplication.getAsyncApiService().getAsyncAPI());
+        }
     }
 }

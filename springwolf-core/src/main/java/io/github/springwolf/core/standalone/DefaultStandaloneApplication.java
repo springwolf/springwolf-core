@@ -26,8 +26,13 @@ public class DefaultStandaloneApplication implements StandaloneApplication {
         // populate ConfigurationProperties beans
         ConfigurationPropertiesBindingPostProcessor.register(diContext);
 
-        diContext.refresh();
-        this.verifyContextHasAllRequiredBeans();
+        try {
+            diContext.refresh();
+            this.verifyContextHasAllRequiredBeans();
+        } catch (RuntimeException | Error e) {
+            diContext.close();
+            throw e;
+        }
     }
 
     private void verifyContextHasAllRequiredBeans() {
@@ -41,6 +46,11 @@ public class DefaultStandaloneApplication implements StandaloneApplication {
     @Override
     public AsyncApiService getAsyncApiService() {
         return diContext.getBean(AsyncApiService.class);
+    }
+
+    @Override
+    public void close() {
+        diContext.close();
     }
 
     public static Builder builder() {

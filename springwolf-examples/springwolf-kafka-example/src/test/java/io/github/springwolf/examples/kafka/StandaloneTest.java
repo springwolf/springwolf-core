@@ -20,25 +20,25 @@ class StandaloneTest {
     @Test
     void asyncApiStandaloneArtifactTest() throws Exception {
         // given
-        StandaloneApplication standaloneApplication =
-                DefaultStandaloneApplication.builder().buildAndStart();
+        try (StandaloneApplication standaloneApplication =
+                DefaultStandaloneApplication.builder().buildAndStart()) {
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            String actualPatched = actual.replace("localhost:9092", "kafka:29092");
+            Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.actual.json"), actualPatched);
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:9092", "kafka:29092");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.actual.json"), actualPatched);
-
-        // then
-        String expected;
-        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.standalone.json")) {
-            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.standalone.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(actualPatched).isEqualTo(expected);
         }
-        assertThat(actualPatched).isEqualTo(expected);
     }
 }

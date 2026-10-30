@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.sqs;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -24,7 +25,7 @@ public class SqsTestContainerExtension implements BeforeAllCallback, AutoCloseab
             new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.7.2")).withServices(SQS);
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    public void beforeAll(@NonNull ExtensionContext extensionContext) throws Exception {
         if (!started) {
             started = true;
 

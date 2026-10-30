@@ -20,24 +20,24 @@ class StandaloneTest {
     @Test
     void asyncApiStandaloneArtifactTest() throws Exception {
         // given
-        StandaloneApplication standaloneApplication =
-                DefaultStandaloneApplication.builder().buildAndStart();
+        try (StandaloneApplication standaloneApplication =
+                DefaultStandaloneApplication.builder().buildAndStart()) {
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actual);
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actual);
-
-        // then
-        String expected;
-        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
-            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(actual).isEqualTo(expected);
         }
-        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -317,7 +317,7 @@ public class SwaggerSchemaMapper {
 
         if (asyncApiSchema.getType() != null) {
             swaggerSchema.setType(asyncApiSchema.getType().stream()
-                    .filter(type -> !type.equals(SchemaType.NULL))
+                    .filter(type -> !type.equals(SchemaType.NULL.getValue()))
                     .findFirst()
                     .orElse(null));
             swaggerSchema.setTypes(asyncApiSchema.getType());

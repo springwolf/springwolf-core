@@ -150,8 +150,10 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
     void AsyncAPI_should_map_to_a_valid_asyncapi_json(SchemaFormat schemaFormat, String expectedFile) throws Exception {
         AsyncAPI asyncapi = getAsyncAPITestObject(schemaFormat);
         String actual = serializer.toJsonString(asyncapi);
-        InputStream s = this.getClass().getResourceAsStream(expectedFile + ".json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream(expectedFile + ".json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        }
         assertThatJson(actual).isEqualTo(expected);
     }
 

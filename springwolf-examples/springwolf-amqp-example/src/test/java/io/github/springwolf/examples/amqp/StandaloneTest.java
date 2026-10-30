@@ -23,28 +23,27 @@ class StandaloneTest {
     @Test
     void asyncApiStandaloneArtifactTest() throws Exception {
         // given
-        StandaloneApplication standaloneApplication =
-                DefaultStandaloneApplication.builder().buildAndStart();
+        try (StandaloneApplication standaloneApplication =
+                DefaultStandaloneApplication.builder().buildAndStart()) {
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            String actualPatched = actual.replace("localhost:5672", "amqp:5672");
+            Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:5672", "amqp:5672");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actualPatched);
-
-        // then
-        String expected;
-        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
-            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(removeDifferencesDueToAmqpSpringBeans(serializerService, actualPatched))
+                    .isEqualTo(removeDifferencesDueToAmqpSpringBeans(serializerService, expected));
         }
-
-        assertThat(removeDifferencesDueToAmqpSpringBeans(serializerService, actualPatched))
-                .isEqualTo(removeDifferencesDueToAmqpSpringBeans(serializerService, expected));
     }
 
     /**

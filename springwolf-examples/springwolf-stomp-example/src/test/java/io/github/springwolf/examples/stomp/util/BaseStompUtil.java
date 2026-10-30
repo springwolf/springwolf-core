@@ -2,6 +2,7 @@
 package io.github.springwolf.examples.stomp.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.messaging.converter.JacksonJsonMessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -33,23 +34,23 @@ public class BaseStompUtil<R> {
 
         StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
             @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+            public void afterConnected(@NonNull StompSession session, @NonNull StompHeaders connectedHeaders) {
                 log.info("Connected to Stomp session");
             }
 
             @Override
             public void handleException(
-                    StompSession session,
+                    @NonNull StompSession session,
                     @org.jspecify.annotations.Nullable StompCommand command,
-                    StompHeaders headers,
-                    byte[] payload,
-                    Throwable exception) {
+                    @NonNull StompHeaders headers,
+                    byte @NonNull [] payload,
+                    @NonNull Throwable exception) {
                 log.error("handleException", exception);
                 super.handleException(session, command, headers, payload, exception);
             }
 
             @Override
-            public void handleTransportError(StompSession session, Throwable exception) {
+            public void handleTransportError(@NonNull StompSession session, @NonNull Throwable exception) {
                 log.error("handleTransportError", exception);
                 super.handleTransportError(session, exception);
             }
@@ -59,13 +60,13 @@ public class BaseStompUtil<R> {
 
         subscriptions.forEach(subscription -> session.subscribe(subscription, new StompFrameHandler() {
             @Override
-            public Type getPayloadType(StompHeaders headers) {
+            public @NonNull Type getPayloadType(@NonNull StompHeaders headers) {
                 return responseType;
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            public void handleFrame(StompHeaders headers, @Nullable Object payload) {
+            public void handleFrame(@NonNull StompHeaders headers, @Nullable Object payload) {
                 log.info("handleFrame {} with headers {}", payload, headers);
                 blockingQueue.add((R) payload);
             }
