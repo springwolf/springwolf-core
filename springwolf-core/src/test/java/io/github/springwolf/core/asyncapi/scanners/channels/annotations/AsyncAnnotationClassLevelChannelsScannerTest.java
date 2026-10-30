@@ -42,8 +42,7 @@ class AsyncAnnotationClassLevelChannelsScannerTest {
         }
     };
 
-    private final AsyncAnnotationChannelService<TestClassListener> asyncAnnotationChannelService =
-            mock();
+    private final AsyncAnnotationChannelService<TestClassListener> asyncAnnotationChannelService = mock();
 
     AsyncAnnotationClassLevelChannelsScanner<TestClassListener> channelScanner =
             new AsyncAnnotationClassLevelChannelsScanner<>(asyncAnnotationProvider, asyncAnnotationChannelService);

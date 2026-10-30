@@ -35,8 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AsyncAnnotationOperationServiceTest {
-    private final AsyncAnnotationProvider<TestMethodListener> asyncAnnotationProvider =
-            mock();
+    private final AsyncAnnotationProvider<TestMethodListener> asyncAnnotationProvider = mock();
     private final OperationBindingProcessor operationBindingProcessor = mock(OperationBindingProcessor.class);
     private final List<OperationBindingProcessor> operationBindingProcessors = List.of(operationBindingProcessor);
     private final AsyncAnnotationMessageService asyncAnnotationMessageService =

@@ -27,8 +27,7 @@ class OpenApiGeneratorSystemTest {
             expected = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
             actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8);
         }
-        actual = actual
-                .replace("\\u003c", "<") // openapi generator replaces "<" with its unicode representation
+        actual = actual.replace("\\u003c", "<") // openapi generator replaces "<" with its unicode representation
                 .replace("\\u003d", "=") // openapi generator replaces equal (=) with its unicode representation
                 .replace("\\u003e", ">") // openapi generator replaces ">" with its unicode representation
                 .replace(

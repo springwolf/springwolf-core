@@ -314,10 +314,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildMapExample(
-            Optional<String> name,
-            Schema<?> additionalProperties,
-            Map<String, ?> definitions,
-            Set<Schema<?>> visited) {
+            Optional<String> name, Schema<?> additionalProperties, Map<String, ?> definitions, Set<Schema<?>> visited) {
         T object = exampleValueGenerator.startObject(name);
         Map<String, Schema<?>> mapProperties = Map.of(DEFAULT_MAP_KEY_EXAMPLE, additionalProperties);
         exampleValueGenerator.addPropertyExamples(
@@ -341,10 +338,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildFromObjectSchemaWithAllOf(
-            Optional<String> name,
-            List<Schema<?>> schemasAllOf,
-            Map<String, ?> definitions,
-            Set<Schema<?>> visited) {
+            Optional<String> name, List<Schema<?>> schemasAllOf, Map<String, ?> definitions, Set<Schema<?>> visited) {
         T object = exampleValueGenerator.startObject(name);
         exampleValueGenerator.addPropertyExamples(
                 object, buildPropertyExampleListFromSchemas(schemasAllOf, definitions, visited));

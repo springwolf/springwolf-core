@@ -25,8 +25,7 @@ import static org.mockito.Mockito.when;
 
 class SpringAnnotationOperationsServiceTest {
     private final BindingFactory<TestMethodListener> bindingFactory = mock();
-    private final SpringAnnotationMessagesService<TestMethodListener> springAnnotationMessageService =
-            mock();
+    private final SpringAnnotationMessagesService<TestMethodListener> springAnnotationMessageService = mock();
     SpringAnnotationOperationsService<TestMethodListener> springAnnotationOperationsService =
             new SpringAnnotationOperationsService<>(bindingFactory, springAnnotationMessageService);
 
