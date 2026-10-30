@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components.postprocessors;
 
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.junit.jupiter.api.Test;
 
@@ -16,21 +17,21 @@ class AvroSchemaPostProcessorTest {
     @Test
     void avroSchemasAreRemovedTest() {
         // given
-        var avroSchema = new io.swagger.v3.oas.models.media.Schema();
+        var avroSchema = new Schema();
         avroSchema.set$ref("#/components/schemas/org.apache.avro.Schema");
 
-        var avroSpecificData = new io.swagger.v3.oas.models.media.Schema();
+        var avroSpecificData = new Schema();
         avroSpecificData.set$ref("#/components/schemas/org.apache.avro.specific.SpecificData");
 
-        var schema = new io.swagger.v3.oas.models.media.Schema();
+        var schema = new Schema();
         schema.setProperties(new HashMap<>(
                 Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
 
-        var definitions = new HashMap<String, io.swagger.v3.oas.models.media.Schema>();
+        var definitions = new HashMap<String, Schema>();
         definitions.put("schema", schema);
         definitions.put("customClassRefUnusedInThisTest", new StringSchema());
-        definitions.put("org.apache.avro.Schema", new io.swagger.v3.oas.models.media.Schema());
-        definitions.put("org.apache.avro.ConversionJava.lang.Object", new io.swagger.v3.oas.models.media.Schema());
+        definitions.put("org.apache.avro.Schema", new Schema());
+        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema());
 
         // when
         processor.process(schema, definitions, "content-type-ignored");
@@ -44,27 +45,27 @@ class AvroSchemaPostProcessorTest {
     @Test
     void avroSchemasAreRemovedInRefsTest() {
         // given
-        var avroSchema = new io.swagger.v3.oas.models.media.Schema();
+        var avroSchema = new Schema();
         avroSchema.set$ref("#/components/schemas/org.apache.avro.Schema");
 
-        var avroSpecificData = new io.swagger.v3.oas.models.media.Schema();
+        var avroSpecificData = new Schema();
         avroSpecificData.set$ref("#/components/schemas/org.apache.avro.specific.SpecificData");
 
-        var refSchema = new io.swagger.v3.oas.models.media.Schema();
+        var refSchema = new Schema();
         refSchema.setProperties(new HashMap<>(
                 Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
 
-        var refProperty = new io.swagger.v3.oas.models.media.Schema();
+        var refProperty = new Schema();
         refProperty.set$ref("#/components/schemas/refSchema");
-        var schema = new io.swagger.v3.oas.models.media.Schema();
+        var schema = new Schema();
         schema.setProperties(new HashMap<>(Map.of("ref", refProperty)));
 
-        var definitions = new HashMap<String, io.swagger.v3.oas.models.media.Schema>();
+        var definitions = new HashMap<String, Schema>();
         definitions.put("schema", schema);
         definitions.put("refSchema", refSchema);
         definitions.put("customClassRefUnusedInThisTest", new StringSchema());
-        definitions.put("org.apache.avro.Schema", new io.swagger.v3.oas.models.media.Schema());
-        definitions.put("org.apache.avro.ConversionJava.lang.Object", new io.swagger.v3.oas.models.media.Schema());
+        definitions.put("org.apache.avro.Schema", new Schema());
+        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema());
 
         // when
         processor.process(schema, definitions, "content-type-ignored");
@@ -84,13 +85,13 @@ class AvroSchemaPostProcessorTest {
 
     @Test
     void handleRecursiveSchemasTest() {
-        var schema = new io.swagger.v3.oas.models.media.Schema();
+        var schema = new Schema();
         schema.set$ref("#/components/schemas/intermediateSchema");
 
-        var intermediateSchema = new io.swagger.v3.oas.models.media.Schema();
+        var intermediateSchema = new Schema();
         intermediateSchema.set$ref("#/components/schemas/schema");
 
-        var definitions = new HashMap<String, io.swagger.v3.oas.models.media.Schema>();
+        var definitions = new HashMap<String, Schema>();
         definitions.put("schema", schema);
         definitions.put("intermediateSchema", new StringSchema());
 

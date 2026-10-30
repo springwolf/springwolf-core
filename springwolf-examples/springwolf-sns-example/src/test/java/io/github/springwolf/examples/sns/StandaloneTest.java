@@ -34,8 +34,10 @@ class StandaloneTest {
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.json"), actual);
 
         // then
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        org.assertj.core.api.Assertions.assertThat(actual).isEqualTo(expected);
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
+        assertThat(actual).isEqualTo(expected);
     }
 }

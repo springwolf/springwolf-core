@@ -13,9 +13,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SchemaWalkerProvider {
 
-    private final List<SchemaWalker> schemaWalkers;
+    private final List<SchemaWalker<?>> schemaWalkers;
 
-    public Optional<SchemaWalker> generatorFor(String contentType) {
+    public Optional<SchemaWalker<?>> generatorFor(String contentType) {
         return schemaWalkers.stream()
                 .filter(walker -> walker.canHandle(contentType))
                 .findFirst();

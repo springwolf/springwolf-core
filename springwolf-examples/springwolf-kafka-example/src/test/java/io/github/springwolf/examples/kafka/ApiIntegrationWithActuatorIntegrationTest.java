@@ -38,8 +38,10 @@ public class ApiIntegrationWithActuatorIntegrationTest {
         String url = "http://localhost:" + managementPort + "/actuator/springwolf";
         String actual = restTemplate.getForObject(url, String.class);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        String expectedWithoutServersKafkaUrlPatch;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+            expectedWithoutServersKafkaUrlPatch = new String(s.readAllBytes(), StandardCharsets.UTF_8);
+        }
         // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
         String expected = expectedWithoutServersKafkaUrlPatch
                 .replace("kafka:29092", bootstrapServers)

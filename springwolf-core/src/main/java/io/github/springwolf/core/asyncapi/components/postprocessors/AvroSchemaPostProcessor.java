@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Removes internal avro fields and classes from the schema.
@@ -26,13 +27,13 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
 
     @Override
-    public void process(Schema schema, Map<String, Schema> definitions, String contentType) {
+    public void process(Schema<?> schema, Map<String, Schema> definitions, String contentType) {
         removeSchemas(definitions);
 
-        Deque<Schema> queue = new LinkedList<>(List.of(schema));
-        HashSet<Schema> visited = new HashSet<>();
+        Deque<Schema<?>> queue = new LinkedList<>(List.of(schema));
+        Set<Schema<?>> visited = new HashSet<>();
         while (!queue.isEmpty()) {
-            Schema currentSchema = queue.pop();
+            Schema<?> currentSchema = queue.pop();
             if (visited.contains(currentSchema)) {
                 continue;
             }
@@ -43,22 +44,23 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
         }
     }
 
-    private void processRefSchema(Schema schema, Deque<Schema> queue, Map<String, Schema> definitions) {
+    private void processRefSchema(Schema<?> schema, Deque<Schema<?>> queue, Map<String, Schema> definitions) {
         if (schema.get$ref() != null) {
             String schemaName = ReferenceUtil.getLastSegment(schema.get$ref());
-            Schema refedSchema = definitions.get(schemaName);
+            Schema<?> refedSchema = definitions.get(schemaName);
             if (refedSchema != null) {
                 queue.add(refedSchema);
             }
         }
     }
 
-    private void processProperties(Schema schema, Deque<Schema> queue) {
-        Map<String, Schema> properties = schema.getProperties();
+    private void processProperties(Schema<?> schema, Deque<Schema<?>> queue) {
+        Map<?, ?> properties = schema.getProperties();
         if (properties != null) {
-            Schema schemaPropertySchema = properties.getOrDefault(SCHEMA_PROPERTY, null);
-            Schema specificDataPropertySchema = properties.getOrDefault(SPECIFIC_DATA_PROPERTY, null);
-            if (schemaPropertySchema != null && specificDataPropertySchema != null) {
+            Object schemaProperty = properties.get(SCHEMA_PROPERTY);
+            Object specificDataProperty = properties.get(SPECIFIC_DATA_PROPERTY);
+            if (schemaProperty instanceof Schema<?> schemaPropertySchema
+                    && specificDataProperty instanceof Schema<?> specificDataPropertySchema) {
                 if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
                         && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
                     properties.remove(SCHEMA_PROPERTY);
@@ -66,7 +68,13 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
                 }
             }
 
-            properties.forEach((key, value) -> queue.add(value));
+            properties.forEach((key, value) -> {
+                if (value instanceof Schema<?> propertySchema) {
+                    queue.add(propertySchema);
+                } else {
+                    throw new IllegalStateException("Expected a Swagger Schema for property " + key);
+                }
+            });
         }
     }
 

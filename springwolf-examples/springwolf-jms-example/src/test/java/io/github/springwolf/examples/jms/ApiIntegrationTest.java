@@ -36,8 +36,10 @@ public class ApiIntegrationTest {
         String actualPatched = actual.replace("localhost:61616", "activemq:61616");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
 
         assertThat(actualPatched).isEqualTo(expected);
     }

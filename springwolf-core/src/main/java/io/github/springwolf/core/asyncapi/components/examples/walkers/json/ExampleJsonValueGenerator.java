@@ -35,33 +35,33 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<String> lookupSchemaName(Schema schema) {
+    public Optional<String> lookupSchemaName(Schema<?> schema) {
         return Optional.ofNullable(schema.getName());
     }
 
     @NotNull
     @Override
-    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema<?> schema) {
         return Optional.of(BooleanNode.valueOf(value));
     }
 
     @Override
-    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema<?> schema) {
         return Optional.of(new IntNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
+    public Optional<JsonNode> createDoubleExample(Double value, Schema<?> schema) {
         return Optional.of(new DoubleNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createStringExample(String value, Schema schema) {
+    public Optional<JsonNode> createStringExample(String value, Schema<?> schema) {
         return Optional.of(JsonNodeFactory.instance.stringNode(value));
     }
 
     @Override
-    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema<?> schema) {
         return Optional.of(JsonNodeFactory.instance.stringNode(anEnumValue));
     }
 
@@ -83,7 +83,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode prepareForSerialization(Schema schema, JsonNode exampleObject) {
+    public JsonNode prepareForSerialization(Schema<?> schema, JsonNode exampleObject) {
         return exampleObject;
     }
 
@@ -98,7 +98,7 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
+    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema<?> schema, Object example) {
         if (example instanceof JsonNode node) {
             return node;
         }

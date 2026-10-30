@@ -20,11 +20,14 @@ class OpenApiGeneratorSystemTest {
 
     @Test
     void asyncApiResourceArtifactTest() throws Exception {
-        InputStream expectedStream = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
-
-        InputStream actualStream = this.getClass().getResourceAsStream("/openapi-generated.json");
-        String actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8)
+        String expected;
+        String actual;
+        try (InputStream expectedStream = this.getClass().getResourceAsStream("/asyncapi.json");
+                InputStream actualStream = this.getClass().getResourceAsStream("/openapi-generated.json")) {
+            expected = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
+            actual = IOUtils.toString(actualStream, StandardCharsets.UTF_8);
+        }
+        actual = actual
                 .replace("\\u003c", "<") // openapi generator replaces "<" with its unicode representation
                 .replace("\\u003d", "=") // openapi generator replaces equal (=) with its unicode representation
                 .replace("\\u003e", ">") // openapi generator replaces ">" with its unicode representation

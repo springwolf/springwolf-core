@@ -14,12 +14,12 @@ class DefaultSchemaWalkerTest {
 
     @Test
     void getTypeForExampleValue() {
-        DefaultSchemaWalker schemaWalker = new DefaultSchemaWalker<>(null);
+        DefaultSchemaWalker<Object, Object> schemaWalker = new DefaultSchemaWalker<>(null);
 
-        Schema schema1 = new Schema(); // no types defined.
-        Schema schema2 = new Schema().type("string");
-        Schema schema3 = new Schema().types(Set.of("string", "null"));
-        Schema schema4 = new Schema().types(Set.of("string", "integer"));
+        Schema<Object> schema1 = new Schema<>(); // no types defined.
+        Schema<Object> schema2 = new Schema<>().type("string");
+        Schema<Object> schema3 = new Schema<>().types(Set.of("string", "null"));
+        Schema<Object> schema4 = new Schema<>().types(Set.of("string", "integer"));
 
         assertThat(schemaWalker.getTypeForExampleValue(schema1)).isNull();
         assertThat(schemaWalker.getTypeForExampleValue(schema2)).isEqualTo("string");
@@ -29,16 +29,25 @@ class DefaultSchemaWalkerTest {
 
     @Test
     void getDefaultValue() {
-        DefaultSchemaWalker schemaWalker = new DefaultSchemaWalker<>(new DummyExampleValueGenerator());
+        DefaultSchemaWalker<Object, Object> schemaWalker = new DefaultSchemaWalker<>(new DummyExampleValueGenerator());
 
-        Schema schema1 = new Schema().type("string");
-        Schema schema2 = new Schema().type("string");
+        Schema<Object> schema1 = new Schema<Object>().type("string");
+        Schema<Object> schema2 = new Schema<Object>().type("string");
         schema2.setConst("constValue");
-        Schema schema3 = new Schema().type("string");
+        Schema<Object> schema3 = new Schema<Object>().type("string");
         schema3.setEnum(List.of("example1", "example2"));
 
         assertThat(schemaWalker.fromSchema(schema1, Map.of())).isEqualTo("string");
         assertThat(schemaWalker.fromSchema(schema2, Map.of())).isEqualTo("constValue");
         assertThat(schemaWalker.fromSchema(schema3, Map.of())).isEqualTo("example1");
+    }
+
+    @Test
+    void getDefaultValueForNonStringEnum() {
+        DefaultSchemaWalker<Object, Object> schemaWalker = new DefaultSchemaWalker<>(new DummyExampleValueGenerator());
+        Schema<Object> schema = new Schema<>();
+        schema.setEnum(List.of(7));
+
+        assertThat(schemaWalker.fromSchema(schema, Map.of())).isEqualTo("7");
     }
 }

@@ -34,12 +34,12 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<String> lookupSchemaName(Schema schema) {
+    public Optional<String> lookupSchemaName(Schema<?> schema) {
         return exampleJsonValueGenerator.lookupSchemaName(schema);
     }
 
     @Override
-    public String prepareForSerialization(Schema schema, JsonNode exampleObject) {
+    public String prepareForSerialization(Schema<?> schema, JsonNode exampleObject) {
         final String name = schema.getName();
         try {
             if (springwolfConfigProperties.isStudioCompatibility()) {
@@ -57,17 +57,17 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<JsonNode> createIntegerExample(Integer value, Schema schema) {
+    public Optional<JsonNode> createIntegerExample(Integer value, Schema<?> schema) {
         return this.exampleJsonValueGenerator.createIntegerExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createDoubleExample(Double value, Schema schema) {
+    public Optional<JsonNode> createDoubleExample(Double value, Schema<?> schema) {
         return this.exampleJsonValueGenerator.createDoubleExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createBooleanExample(Boolean value, Schema schema) {
+    public Optional<JsonNode> createBooleanExample(Boolean value, Schema<?> schema) {
         return this.exampleJsonValueGenerator.createBooleanExample(value, schema);
     }
 
@@ -87,12 +87,12 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public Optional<JsonNode> createStringExample(String value, Schema schema) {
+    public Optional<JsonNode> createStringExample(String value, Schema<?> schema) {
         return this.exampleJsonValueGenerator.createStringExample(value, schema);
     }
 
     @Override
-    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema schema) {
+    public Optional<JsonNode> createEnumExample(String anEnumValue, Schema<?> schema) {
         return this.exampleJsonValueGenerator.createEnumExample(anEnumValue, schema);
     }
 
@@ -117,7 +117,7 @@ public class ExampleYamlValueGenerator implements ExampleValueGenerator<JsonNode
     }
 
     @Override
-    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
+    public JsonNode getExampleOrNull(Optional<String> fieldName, Schema<?> schema, Object example) {
         return this.exampleJsonValueGenerator.getExampleOrNull(fieldName, schema, example);
     }
 }

@@ -35,8 +35,10 @@ class StandaloneTest {
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.standalone.actual.json"), actualPatched);
 
         // then
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.standalone.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.standalone.json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
         assertThat(actualPatched).isEqualTo(expected);
     }
 }

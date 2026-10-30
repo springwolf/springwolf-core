@@ -15,6 +15,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,17 @@ public class SwaggerSchemaMapper {
 
     private final SpringwolfConfigProperties springwolfConfigProperties;
 
-    public Map<String, ComponentSchema> mapSchemasMap(Map<String, Schema> schemaMap) {
+    public Map<String, ComponentSchema> mapSchemasMap(Map<String, ?> schemaMap) {
         return schemaMap.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(), mapSchema(entry.getValue())))
+                .map(entry -> Map.entry(entry.getKey(), mapSchema(requireSwaggerSchema(entry.getValue()))))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private Schema<?> requireSwaggerSchema(Object schema) {
+        if (schema instanceof Schema<?> swaggerSchema) {
+            return swaggerSchema;
+        }
+        throw new IllegalArgumentException("Expected a Swagger Schema but got: " + schema);
     }
 
     /**
@@ -44,7 +52,7 @@ public class SwaggerSchemaMapper {
      * @param swaggerSchema the Swagger schema to convert
      * @return ComponentSchema with either a {@link SchemaReference} or a {@link SchemaObject}.
      */
-    public ComponentSchema mapSchemaOrRef(Schema swaggerSchema) {
+    public ComponentSchema mapSchemaOrRef(Schema<?> swaggerSchema) {
         if (swaggerSchema.get$ref() != null) {
             return ComponentSchema.of(new SchemaReference(swaggerSchema.get$ref()));
         }
@@ -63,7 +71,7 @@ public class SwaggerSchemaMapper {
      * @param swaggerSchema the given Swagger schema instance
      * @return the resulting AsyncAPI SchemaObject
      */
-    public ComponentSchema mapSchema(Schema swaggerSchema) {
+    public ComponentSchema mapSchema(Schema<?> swaggerSchema) {
         PayloadSchemaFormat payloadSchemaFormat =
                 springwolfConfigProperties.getDocket().getPayloadSchemaFormat();
         return switch (payloadSchemaFormat) {
@@ -74,10 +82,7 @@ public class SwaggerSchemaMapper {
     }
 
     /**
-     * transforms the given Swagger schema to an AsyncApi schema.
-     *
-     * @param swaggerSchema
-     * @return
+     * transforms the given Swagger schema to an AsyncApi schema
      */
     private SchemaObject mapSwaggerSchemaToAsyncApiSchema(Schema<?> swaggerSchema) {
 
@@ -99,9 +104,8 @@ public class SwaggerSchemaMapper {
         boolean isNullable = Boolean.TRUE.equals(swaggerSchema.getNullable());
         assignType(swaggerSchema, builder, isNullable);
 
-        Map<String, Schema> properties = swaggerSchema.getProperties();
-        if (properties != null) {
-            Map<String, Object> propertiesMapped = properties.entrySet().stream()
+        if (swaggerSchema.getProperties() != null) {
+            Map<String, Object> propertiesMapped = swaggerSchema.getProperties().entrySet().stream()
                     .map(entry -> Map.entry(entry.getKey(), mapSchemaOrRef(entry.getValue())))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -152,10 +156,11 @@ public class SwaggerSchemaMapper {
             builder.examples(List.of(ExampleFormatter.processExampleObject(example)));
         }
 
-        List examples = swaggerSchema.getExamples();
+        List<?> examples = swaggerSchema.getExamples();
         if (examples != null && !examples.isEmpty()) {
-            List<Object> processedExamples = ((List<Object>) examples)
-                    .stream().map(ExampleFormatter::processExampleObject).collect(Collectors.toList());
+            List<Object> processedExamples = examples.stream()
+                    .map(ExampleFormatter::processExampleObject)
+                    .collect(Collectors.toList());
             builder.examples(processedExamples);
         }
 
@@ -170,31 +175,31 @@ public class SwaggerSchemaMapper {
             builder.discriminator(swaggerSchema.getDiscriminator().getPropertyName());
         }
 
-        List<Schema> allOf = swaggerSchema.getAllOf();
-        if (allOf != null) {
-            builder.allOf(allOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
+        if (swaggerSchema.getAllOf() != null) {
+            builder.allOf(
+                    swaggerSchema.getAllOf().stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
-        List<Schema> oneOf = swaggerSchema.getOneOf();
-        if (oneOf != null) {
-            builder.oneOf(oneOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
+        if (swaggerSchema.getOneOf() != null) {
+            builder.oneOf(
+                    swaggerSchema.getOneOf().stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
-        List<Schema> anyOf = swaggerSchema.getAnyOf();
-        if (anyOf != null) {
-            builder.anyOf(anyOf.stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
+        if (swaggerSchema.getAnyOf() != null) {
+            builder.anyOf(
+                    swaggerSchema.getAnyOf().stream().map(this::mapSchemaOrRef).collect(Collectors.toList()));
         }
 
         if (swaggerSchema.getConst() != null) {
             builder.constValue(swaggerSchema.getConst());
         }
 
-        Schema not = swaggerSchema.getNot();
+        Schema<?> not = swaggerSchema.getNot();
         if (not != null) {
             builder.not(mapSchemaOrRef(not));
         }
 
-        Schema items = swaggerSchema.getItems();
+        Schema<?> items = swaggerSchema.getItems();
         if (items != null && "array".equals(swaggerSchema.getType())) {
             builder.items(mapSchemaOrRef(items));
         }
@@ -206,7 +211,8 @@ public class SwaggerSchemaMapper {
         return builder.build();
     }
 
-    private static void assignType(Schema swaggerSchema, SchemaObject.SchemaObjectBuilder builder, boolean isNullable) {
+    private static void assignType(
+            Schema<?> swaggerSchema, SchemaObject.SchemaObjectBuilder builder, boolean isNullable) {
         Set<String> schemaTypes = swaggerSchema.getTypes();
         Set<String> types = schemaTypes == null ? new HashSet<>() : new HashSet<>(schemaTypes);
 
@@ -304,8 +310,8 @@ public class SwaggerSchemaMapper {
      * @param asyncApiSchema
      * @return swagger Schema
      */
-    private Schema mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
-        Schema swaggerSchema = new ObjectSchema();
+    private Schema<?> mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
+        Schema<Object> swaggerSchema = new ObjectSchema();
         swaggerSchema.setName(asyncApiSchema.getTitle());
         swaggerSchema.setTitle(asyncApiSchema.getTitle());
 
@@ -318,14 +324,18 @@ public class SwaggerSchemaMapper {
         }
         swaggerSchema.setFormat(asyncApiSchema.getFormat());
         swaggerSchema.setDescription(asyncApiSchema.getDescription());
-        swaggerSchema.setExamples(asyncApiSchema.getExamples());
-        swaggerSchema.setEnum(asyncApiSchema.getEnumValues());
+        if (asyncApiSchema.getExamples() != null) {
+            swaggerSchema.setExamples(new ArrayList<>(asyncApiSchema.getExamples()));
+        }
+        if (asyncApiSchema.getEnumValues() != null) {
+            swaggerSchema.setEnum(new ArrayList<>(asyncApiSchema.getEnumValues()));
+        }
         swaggerSchema.setConst(asyncApiSchema.getConstValue());
 
         if (asyncApiSchema.getProperties() != null) {
-            Map<String, Schema> properties = asyncApiSchema.getProperties().entrySet().stream()
-                    .map((property) -> Map.entry(property.getKey(), (Schema<?>) mapToSwagger(property.getValue())))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            // Swagger's setProperties API requires Map<String, Schema> with a raw Schema.
+            Map<String, Schema> properties = new HashMap<>();
+            asyncApiSchema.getProperties().forEach((name, property) -> properties.put(name, mapToSwagger(property)));
             swaggerSchema.setProperties(properties);
         }
 
@@ -338,8 +348,8 @@ public class SwaggerSchemaMapper {
      * @param asyncApiSchemaReference
      * @return
      */
-    private Schema mapSchemaReferenceToSwagger(SchemaReference asyncApiSchemaReference) {
-        Schema swaggerSchema = new Schema();
+    private Schema<?> mapSchemaReferenceToSwagger(SchemaReference asyncApiSchemaReference) {
+        Schema<?> swaggerSchema = new Schema<>();
         swaggerSchema.set$ref(asyncApiSchemaReference.getRef());
         return swaggerSchema;
     }

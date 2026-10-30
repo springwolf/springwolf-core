@@ -18,7 +18,7 @@ public interface SchemaWalker<R> {
      * @return the example, null if no example can be generated
      */
     @Nullable
-    R fromSchema(Schema schema, Map<String, Schema> definitions);
+    R fromSchema(Schema<?> schema, Map<String, ?> definitions);
 
     /**
      * Check if the walker can handle the given content type

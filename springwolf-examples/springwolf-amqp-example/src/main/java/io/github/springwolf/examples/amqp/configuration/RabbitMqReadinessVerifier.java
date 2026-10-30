@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.concurrent.TimeUnit;
+
 @Configuration(proxyBeanMethods = false)
 @Profile("!test")
 public class RabbitMqReadinessVerifier {
@@ -23,8 +25,8 @@ public class RabbitMqReadinessVerifier {
     }
 
     private void verifyRabbitMqIsUp() {
-        long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < RABBITMQ_MAX_CONNECT_TIMEOUT_MS) {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(RABBITMQ_MAX_CONNECT_TIMEOUT_MS);
+        while (System.nanoTime() < deadline) {
             try {
                 RabbitAdmin admin = new RabbitAdmin(connectionFactory);
                 admin.afterPropertiesSet();
@@ -32,7 +34,7 @@ public class RabbitMqReadinessVerifier {
                 RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
                 rabbitTemplate.execute(channel -> null); // dummy operation throws exception when amqp is not up
 
-                break;
+                return;
             } catch (AmqpConnectException e) {
                 try {
                     Thread.sleep(RABBITMQ_INTERVAL_WAIT_MS);
@@ -42,5 +44,7 @@ public class RabbitMqReadinessVerifier {
                 }
             }
         }
+
+        throw new IllegalStateException("Timed out waiting for RabbitMQ to become available");
     }
 }

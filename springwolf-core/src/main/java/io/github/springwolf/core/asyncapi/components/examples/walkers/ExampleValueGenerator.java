@@ -21,24 +21,24 @@ public interface ExampleValueGenerator<T, R> {
      */
     default void initialize() {}
 
-    Optional<String> lookupSchemaName(Schema schema);
+    Optional<String> lookupSchemaName(Schema<?> schema);
 
     /**
      * @return The serializable representation of the example (object for json and yaml, string for others)
      */
-    R prepareForSerialization(Schema name, T exampleObject);
+    R prepareForSerialization(Schema<?> name, T exampleObject);
 
-    Optional<T> createIntegerExample(Integer value, Schema schema);
+    Optional<T> createIntegerExample(Integer value, Schema<?> schema);
 
-    Optional<T> createDoubleExample(Double value, Schema schema);
+    Optional<T> createDoubleExample(Double value, Schema<?> schema);
 
-    Optional<T> createBooleanExample(Boolean value, Schema schema);
+    Optional<T> createBooleanExample(Boolean value, Schema<?> schema);
 
     Optional<T> createEmptyObjectExample();
 
-    Optional<T> createStringExample(String value, Schema schema);
+    Optional<T> createStringExample(String value, Schema<?> schema);
 
-    Optional<T> createEnumExample(String anEnumValue, Schema schema);
+    Optional<T> createEnumExample(String anEnumValue, Schema<?> schema);
 
     Optional<T> createUnknownSchemaStringTypeExample(String schemaType);
 
@@ -54,5 +54,5 @@ public interface ExampleValueGenerator<T, R> {
 
     T createRaw(Object exampleValueString);
 
-    T getExampleOrNull(Optional<String> fieldName, Schema schema, Object example);
+    T getExampleOrNull(Optional<String> fieldName, Schema<?> schema, Object example);
 }

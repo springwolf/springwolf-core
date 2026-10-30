@@ -66,7 +66,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Optional<String> lookupSchemaName(Schema schema) {
+    public Optional<String> lookupSchemaName(Schema<?> schema) {
         if (schema.getXml() != null && schema.getXml().getName() != null) {
             return Optional.of(schema.getXml().getName());
         }
@@ -74,17 +74,17 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Optional<Node> createIntegerExample(Integer value, Schema schema) {
+    public Optional<Node> createIntegerExample(Integer value, Schema<?> schema) {
         return createNodeOrAddAttribute(value.toString(), schema);
     }
 
     @Override
-    public Optional<Node> createDoubleExample(Double value, Schema schema) {
+    public Optional<Node> createDoubleExample(Double value, Schema<?> schema) {
         return createNodeOrAddAttribute(value.toString(), schema);
     }
 
     @Override
-    public Optional<Node> createBooleanExample(Boolean value, Schema schema) {
+    public Optional<Node> createBooleanExample(Boolean value, Schema<?> schema) {
         return createNodeOrAddAttribute(value.toString(), schema);
     }
 
@@ -134,12 +134,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Optional<Node> createStringExample(String value, Schema schema) {
+    public Optional<Node> createStringExample(String value, Schema<?> schema) {
         return createNodeOrAddAttribute(value, schema);
     }
 
     @Override
-    public Optional<Node> createEnumExample(String anEnumValue, Schema schema) {
+    public Optional<Node> createEnumExample(String anEnumValue, Schema<?> schema) {
         return createStringExample(anEnumValue, schema);
     }
 
@@ -162,7 +162,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public String prepareForSerialization(Schema schema, Node exampleObject) {
+    public String prepareForSerialization(Schema<?> schema, Node exampleObject) {
         final Optional<Node> objectToWrite;
         if (exampleObject instanceof Element) {
             objectToWrite = Optional.of(exampleObject);
@@ -197,7 +197,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     }
 
     @Override
-    public Node getExampleOrNull(Optional<String> fieldName, Schema schema, Object example) {
+    public Node getExampleOrNull(Optional<String> fieldName, Schema<?> schema, Object example) {
         String name = getCacheKey(schema);
 
         if (example instanceof Node node) {
@@ -230,7 +230,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return Optional.of(document.createTextNode(""));
     }
 
-    private String getCacheKey(Schema schema) {
+    private String getCacheKey(Schema<?> schema) {
         return schema.getName();
     }
 
@@ -251,7 +251,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return null;
     }
 
-    private Optional<Node> createNodeOrAddAttribute(String value, Schema schema) {
+    private Optional<Node> createNodeOrAddAttribute(String value, Schema<?> schema) {
         if (!nodeStack.isEmpty() && isAttribute(schema)) {
             Element currentParent = nodeStack.peek();
             lookupSchemaName(schema).ifPresent(name -> currentParent.setAttribute(name, value));
@@ -261,7 +261,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         }
     }
 
-    private boolean isAttribute(Schema schema) {
+    private boolean isAttribute(Schema<?> schema) {
         return schema.getXml() != null
                 && schema.getXml().getAttribute() != null
                 && schema.getXml().getAttribute();

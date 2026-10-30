@@ -24,7 +24,7 @@ class SchemaWalkerProviderTest {
         when(schemaWalker2.canHandle("content-type")).thenReturn(true);
 
         // when
-        Optional<SchemaWalker> schemaWalker = provider.generatorFor("content-type");
+        Optional<SchemaWalker<?>> schemaWalker = provider.generatorFor("content-type");
 
         // then
         assertThat(schemaWalker.isPresent()).isTrue();
@@ -40,7 +40,7 @@ class SchemaWalkerProviderTest {
         SchemaWalkerProvider provider = new SchemaWalkerProvider(List.of(schemaWalker1, schemaWalker2, schemaWalker3));
 
         // when
-        Optional<SchemaWalker> schemaWalker = provider.generatorFor("content-type");
+        Optional<SchemaWalker<?>> schemaWalker = provider.generatorFor("content-type");
 
         // then
         assertThat(schemaWalker.isPresent()).isFalse();

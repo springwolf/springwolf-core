@@ -44,8 +44,10 @@ public class PayloadSchemaFormatIntegrationTest {
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.openapiv31.actual.json"), actualPatched);
 
         // then
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.openapiv31.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.openapiv31.json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
         assertThat(actualPatched).isEqualTo(expected);
     }
 }

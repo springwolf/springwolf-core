@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     @Override
-    public R fromSchema(Schema schema, Map<String, Schema> definitions) {
+    public R fromSchema(Schema<?> schema, Map<String, ?> definitions) {
         exampleValueGenerator.initialize();
 
         Optional<String> schemaName = exampleValueGenerator.lookupSchemaName(schema);
@@ -70,7 +72,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildExample(
-            Optional<String> name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+            Optional<String> name, Schema<?> schema, Map<String, ?> definitions, Set<Schema<?>> visited) {
         log.trace("Building example for schema {}", schema);
 
         Optional<T> exampleValue = getExampleFromSchemaAnnotation(name, schema);
@@ -87,13 +89,13 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return example;
     }
 
-    private Optional<T> getExampleFromSchemaAnnotation(Optional<String> fieldName, Schema schema) {
+    private Optional<T> getExampleFromSchemaAnnotation(Optional<String> fieldName, Schema<?> schema) {
         return getExampleValueFromSchemaAnnotation(fieldName, schema, schema.getExample())
                 .or(() -> getExampleValueFromSchemaAnnotation(fieldName, schema, schema.getDefault()));
     }
 
     private Optional<T> getExampleValueFromSchemaAnnotation(
-            Optional<String> fieldName, Schema schema, Object exampleValue) {
+            Optional<String> fieldName, Schema<?> schema, Object exampleValue) {
         // schema is a map of properties from a nested object, whose example cannot be inferred
         if (exampleValue == null) {
             return Optional.empty();
@@ -154,7 +156,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
      * The caller must ensure that the schema has not been visited before to avoid infinite recursion
      */
     private Optional<T> buildExampleFromUnvisitedSchema(
-            Optional<String> name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+            Optional<String> name, Schema<?> schema, Map<String, ?> definitions, Set<Schema<?>> visited) {
         Optional<Schema<?>> resolvedSchema = resolveSchemaFromRef(schema, definitions);
         if (resolvedSchema.isPresent()) {
             return buildExample(name, resolvedSchema.get(), definitions, visited);
@@ -187,8 +189,8 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         };
     }
 
-    private Optional<T> buildArrayExample(Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        Schema arrayItemSchema =
+    private Optional<T> buildArrayExample(Schema<?> schema, Map<String, ?> definitions, Set<Schema<?>> visited) {
+        Schema<?> arrayItemSchema =
                 resolveSchemaFromRef(schema.getItems(), definitions).orElse(schema.getItems());
 
         Optional<String> arrayName = exampleValueGenerator.lookupSchemaName(schema);
@@ -201,7 +203,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
                 .map(arrayItem -> exampleValueGenerator.createArrayExample(arrayName, arrayItem));
     }
 
-    private Optional<T> buildFromStringSchema(Schema schema) {
+    private Optional<T> buildFromStringSchema(Schema<?> schema) {
         String format = schema.getFormat();
         if (format == null) {
             return exampleValueGenerator.createStringExample(DEFAULT_STRING_EXAMPLE, schema);
@@ -219,7 +221,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         };
     }
 
-    private Optional<T> buildFromConstOrEnum(Schema schema) {
+    private Optional<T> buildFromConstOrEnum(Schema<?> schema) {
         Object constValue = schema.getConst();
         if (constValue != null) {
             return exampleValueGenerator.createStringExample(constValue.toString(), schema);
@@ -233,18 +235,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
         return Optional.empty();
     }
 
-    private String getFirstEnumValue(Schema schema) {
-        List<String> enums = schema.getEnum();
+    private String getFirstEnumValue(Schema<?> schema) {
+        List<?> enums = schema.getEnum();
         if (enums != null) {
-            Optional<String> firstEnumEntry = enums.stream().findFirst();
-            if (firstEnumEntry.isPresent()) {
-                return firstEnumEntry.get();
-            }
+            return enums.stream().findFirst().map(Object::toString).orElse(null);
         }
         return null;
     }
 
-    private Optional<T> getFallbackExampleSchemaStringForFormat(String schemaFormat, Schema schema) {
+    private Optional<T> getFallbackExampleSchemaStringForFormat(String schemaFormat, Schema<?> schema) {
         return switch (schemaFormat) {
             case "int32", "int64" ->
                 exampleValueGenerator.createStringExample(DEFAULT_INTEGER_EXAMPLE.toString(), schema);
@@ -262,7 +261,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
      * @return the type to use for example values, or null if no suitable type was found.
      */
     @Nullable
-    String getTypeForExampleValue(Schema schema) {
+    String getTypeForExampleValue(Schema<?> schema) {
         // if the single type field is present, it has precedence over the types field
         if (schema.getType() != null) {
             return schema.getType();
@@ -282,10 +281,10 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildFromComposedSchema(
-            Optional<String> name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
-        final List<Schema> schemasAllOf = schema.getAllOf();
-        final List<Schema> schemasAnyOf = schema.getAnyOf();
-        final List<Schema> schemasOneOf = schema.getOneOf();
+            Optional<String> name, Schema<?> schema, Map<String, ?> definitions, Set<Schema<?>> visited) {
+        final List<Schema<?>> schemasAllOf = schemasOf(schema.getAllOf());
+        final List<Schema<?>> schemasAnyOf = schemasOf(schema.getAnyOf());
+        final List<Schema<?>> schemasOneOf = schemasOf(schema.getOneOf());
         if (!CollectionUtils.isEmpty(schemasAllOf)) {
             return buildFromObjectSchemaWithAllOf(name, schemasAllOf, definitions, visited);
         } else if (!CollectionUtils.isEmpty(schemasAnyOf)) {
@@ -298,15 +297,15 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildFromObjectSchema(
-            Optional<String> name, Schema schema, Map<String, Schema> definitions, Set<Schema> visited) {
+            Optional<String> name, Schema<?> schema, Map<String, ?> definitions, Set<Schema<?>> visited) {
         final Optional<T> exampleValue;
 
-        final Map<String, Schema> properties = schema.getProperties();
+        final Map<String, Schema<?>> properties = getProperties(schema);
         final Object additionalProperties = schema.getAdditionalProperties();
         if (properties != null) {
             exampleValue = buildFromObjectSchemaWithProperties(name, properties, definitions, visited);
-        } else if (schema instanceof MapSchema && additionalProperties instanceof Schema schema1) {
-            exampleValue = buildMapExample(name, schema1, definitions, visited);
+        } else if (schema instanceof MapSchema && additionalProperties instanceof Schema<?> additionalPropertySchema) {
+            exampleValue = buildMapExample(name, additionalPropertySchema, definitions, visited);
         } else {
             exampleValue = exampleValueGenerator.createEmptyObjectExample();
         }
@@ -315,9 +314,12 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildMapExample(
-            Optional<String> name, Schema additionalProperties, Map<String, Schema> definitions, Set<Schema> visited) {
+            Optional<String> name,
+            Schema<?> additionalProperties,
+            Map<String, ?> definitions,
+            Set<Schema<?>> visited) {
         T object = exampleValueGenerator.startObject(name);
-        Map<String, Schema> mapProperties = Map.of(DEFAULT_MAP_KEY_EXAMPLE, additionalProperties);
+        Map<String, Schema<?>> mapProperties = Map.of(DEFAULT_MAP_KEY_EXAMPLE, additionalProperties);
         exampleValueGenerator.addPropertyExamples(
                 object, buildPropertyExampleListFromSchema(mapProperties, definitions, visited));
         exampleValueGenerator.endObject();
@@ -327,9 +329,9 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
 
     private Optional<T> buildFromObjectSchemaWithProperties(
             Optional<String> name,
-            Map<String, Schema> properties,
-            Map<String, Schema> definitions,
-            Set<Schema> visited) {
+            Map<String, Schema<?>> properties,
+            Map<String, ?> definitions,
+            Set<Schema<?>> visited) {
         T object = exampleValueGenerator.startObject(name);
         exampleValueGenerator.addPropertyExamples(
                 object, buildPropertyExampleListFromSchema(properties, definitions, visited));
@@ -339,7 +341,10 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private Optional<T> buildFromObjectSchemaWithAllOf(
-            Optional<String> name, List<Schema> schemasAllOf, Map<String, Schema> definitions, Set<Schema> visited) {
+            Optional<String> name,
+            List<Schema<?>> schemasAllOf,
+            Map<String, ?> definitions,
+            Set<Schema<?>> visited) {
         T object = exampleValueGenerator.startObject(name);
         exampleValueGenerator.addPropertyExamples(
                 object, buildPropertyExampleListFromSchemas(schemasAllOf, definitions, visited));
@@ -349,7 +354,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchema(
-            Map<String, Schema> properties, Map<String, Schema> definitions, Set<Schema> visited) {
+            Map<String, Schema<?>> properties, Map<String, ?> definitions, Set<Schema<?>> visited) {
         return properties.entrySet().stream()
                 .map(propertySchema -> {
                     // There can be instances where the schema has no name and only the property is named
@@ -371,10 +376,10 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
     }
 
     private List<PropertyExample<T>> buildPropertyExampleListFromSchemas(
-            List<Schema> schemas, Map<String, Schema> definitions, Set<Schema> visited) {
+            List<Schema<?>> schemas, Map<String, ?> definitions, Set<Schema<?>> visited) {
         return schemas.stream()
                 .map(schema -> resolveSchemaFromRef(schema, definitions).orElse(schema))
-                .map(Schema::getProperties)
+                .map(DefaultSchemaWalker::getProperties)
                 .filter(Objects::nonNull)
                 .flatMap(propertiesFromSchema ->
                         buildPropertyExampleListFromSchema(propertiesFromSchema, definitions, visited).stream())
@@ -382,17 +387,54 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
                 .toList();
     }
 
-    private Optional<Schema<?>> resolveSchemaFromRef(Schema schema, Map<String, Schema> definitions) {
+    private Optional<Schema<?>> resolveSchemaFromRef(Schema<?> schema, Map<String, ?> definitions) {
         String ref = schema.get$ref();
         if (ref != null) {
             String schemaName = ReferenceUtil.getLastSegment(ref);
-            Schema<?> resolvedSchema = definitions.get(schemaName);
+            Object resolvedSchema = definitions.get(schemaName);
             if (resolvedSchema == null) {
                 throw new ExampleGeneratingException(
                         "Missing schema (name = %s) during example generation".formatted(schemaName));
             }
-            return Optional.of(resolvedSchema);
+            if (resolvedSchema instanceof Schema<?> swaggerSchema) {
+                return Optional.of(swaggerSchema);
+            }
+            throw new ExampleGeneratingException(
+                    "Invalid schema (name = %s) during example generation".formatted(schemaName));
         }
         return Optional.empty();
+    }
+
+    private static List<Schema<?>> schemasOf(List<?> schemas) {
+        if (schemas == null) {
+            return List.of();
+        }
+
+        List<Schema<?>> typedSchemas = new ArrayList<>(schemas.size());
+        for (Object schema : schemas) {
+            if (schema instanceof Schema<?> swaggerSchema) {
+                typedSchemas.add(swaggerSchema);
+            } else {
+                throw new IllegalStateException("Expected a Swagger Schema in composed schema");
+            }
+        }
+        return typedSchemas;
+    }
+
+    private static Map<String, Schema<?>> getProperties(Schema<?> schema) {
+        Map<?, ?> properties = schema.getProperties();
+        if (properties == null) {
+            return null;
+        }
+
+        Map<String, Schema<?>> typedProperties = new HashMap<>();
+        properties.forEach((name, property) -> {
+            if (name instanceof String propertyName && property instanceof Schema<?> propertySchema) {
+                typedProperties.put(propertyName, propertySchema);
+            } else {
+                throw new IllegalStateException("Expected a named Swagger Schema property");
+            }
+        });
+        return typedProperties;
     }
 }
