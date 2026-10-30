@@ -33,7 +33,7 @@ public class SpringContextControllerIntegrationTest {
         private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
 
         @Test
-        void contextWithApplicationProperties() throws Exception {
+        void contextWithApplicationProperties() {
             assertThat(context).isNotNull();
 
             assertThat(asyncApiController).isPresent();
@@ -60,7 +60,7 @@ public class SpringContextControllerIntegrationTest {
         private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
 
         @Test
-        void contextWithApplicationProperties() throws Exception {
+        void contextWithApplicationProperties() {
             assertThat(context).isNotNull();
 
             assertThat(asyncApiController).isNotPresent();

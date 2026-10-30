@@ -104,14 +104,8 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         if (object == null) {
             throw new IllegalArgumentException("Element to add properties must not be empty");
         }
-        try {
-
-            for (PropertyExample<Node> propertyExample : properties) {
-                object.appendChild(handlePropertyExample(propertyExample));
-            }
-
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
+        for (PropertyExample<Node> propertyExample : properties) {
+            object.appendChild(handlePropertyExample(propertyExample));
         }
     }
 
@@ -121,7 +115,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         return rootElement;
     }
 
-    private Element handlePropertyExample(PropertyExample<Node> propertyExample) throws ParserConfigurationException {
+    private Element handlePropertyExample(PropertyExample<Node> propertyExample) {
         final Node exampleValue = propertyExample.example();
         if (exampleValue instanceof Element element) {
             return element;

@@ -72,7 +72,7 @@ class SwaggerSchemaServiceTest {
     }
 
     @Test
-    void getDefinitionWithoutFqnClassName() throws Exception {
+    void getDefinitionWithoutFqnClassName() {
         // given
         SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
         properties.setUseFqn(false);

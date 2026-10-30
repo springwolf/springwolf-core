@@ -14,7 +14,7 @@ class MessageDtoTest {
     private static final JsonMapper jsonMapper = JsonMapper.builder().build();
 
     @Test
-    void canBeSerialized() throws Exception {
+    void canBeSerialized() {
         String content = "{" + "\"headers\": { \"some-header-key\" : \"some-header-value\" }, "
                 + "\"payload\": \"{\\\"some-payload-key\\\":\\\"some-payload-value\\\"}\", "
                 + "\"type\": \""
@@ -31,7 +31,7 @@ class MessageDtoTest {
     }
 
     @Test
-    void serializationWithDifferentNamingStrategiesIsIndifferent() throws Exception {
+    void serializationWithDifferentNamingStrategiesIsIndifferent() {
         // https://github.com/springwolf/springwolf-core/issues/1535
         MessageDto messageDto = MessageDto.builder()
                 .headers(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")))
@@ -46,7 +46,7 @@ class MessageDtoTest {
     }
 
     @Test
-    void canDeserializeStringHeaderValue() throws Exception {
+    void canDeserializeStringHeaderValue() {
         // given
         String content = "\"12345\"";
 
@@ -58,7 +58,7 @@ class MessageDtoTest {
     }
 
     @Test
-    void canDeserializeNumericHeaderValue() throws Exception {
+    void canDeserializeNumericHeaderValue() {
         // given
         String content = "12345";
 

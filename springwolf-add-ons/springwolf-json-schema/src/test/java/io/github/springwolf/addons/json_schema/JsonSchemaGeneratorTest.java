@@ -46,7 +46,7 @@ class JsonSchemaGeneratorTest {
 
     @ParameterizedTest
     @MethodSource
-    void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) throws Exception {
+    void validateJsonSchemaTest(String expectedJsonSchema, Supplier<Schema<?>> asyncApiSchema) {
         // given
         ComponentSchema actualSchema = swaggerSchemaMapper.mapSchema(asyncApiSchema.get());
 

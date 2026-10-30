@@ -150,7 +150,7 @@ public class ApplicationIntegrationTest {
         }
 
         @Test
-        void allClassesHaveSimpleNameNotFullQualifiedTest() throws Exception {
+        void allClassesHaveSimpleNameNotFullQualifiedTest() {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             String serialized = asyncApiSerializerService.toJsonString(asyncAPI);
 
@@ -266,7 +266,7 @@ public class ApplicationIntegrationTest {
         private AsyncApiSerializerService asyncApiSerializerService;
 
         @Test
-        void oneOfPropertyIsGeneratedFromTheApplication() throws Exception {
+        void oneOfPropertyIsGeneratedFromTheApplication() {
             // when
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
 

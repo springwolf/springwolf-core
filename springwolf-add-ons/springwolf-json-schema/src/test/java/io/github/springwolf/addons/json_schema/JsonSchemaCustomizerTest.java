@@ -41,7 +41,7 @@ class JsonSchemaCustomizerTest {
     }
 
     @Test
-    void shouldAddJsonSchemaExtensionTest() throws Exception {
+    void shouldAddJsonSchemaExtensionTest() {
         // given
         AsyncAPI asyncAPI = createAsyncApi();
         SchemaObject schemaObject = new SchemaObject();

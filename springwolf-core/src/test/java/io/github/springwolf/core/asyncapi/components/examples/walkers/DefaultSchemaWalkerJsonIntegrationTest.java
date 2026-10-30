@@ -63,7 +63,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     class FromSchema {
 
         @Test
-        void build(TestInfo testInfo) throws Exception {
+        void build(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -90,7 +90,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     @Nested
     class TestSimpleSchema {
         @Test
-        void type_boolean(TestInfo testInfo) throws Exception {
+        void type_boolean(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -101,7 +101,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_boolean_default_set(TestInfo testInfo) throws Exception {
+        void type_boolean_default_set(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setDefault(Boolean.FALSE);
@@ -113,7 +113,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_boolean_example_set(TestInfo testInfo) throws Exception {
+        void type_boolean_example_set(TestInfo testInfo) {
             BooleanSchema schema = new BooleanSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setExample(Boolean.FALSE);
@@ -125,7 +125,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer(TestInfo testInfo) throws Exception {
+        void type_integer(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -136,7 +136,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer_default_set(TestInfo testInfo) throws Exception {
+        void type_integer_default_set(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setDefault(Integer.parseInt("123"));
@@ -148,7 +148,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer_example_set(TestInfo testInfo) throws Exception {
+        void type_integer_example_set(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setExample(Integer.parseInt("123"));
@@ -160,7 +160,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_integer_format_long(TestInfo testInfo) throws Exception {
+        void type_integer_format_long(TestInfo testInfo) {
             IntegerSchema schema = new IntegerSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("int64");
@@ -172,7 +172,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_format_float(TestInfo testInfo) throws Exception {
+        void type_number_format_float(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("float");
@@ -184,7 +184,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_format_double(TestInfo testInfo) throws Exception {
+        void type_number_format_double(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("double");
@@ -196,7 +196,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_default_set(TestInfo testInfo) throws Exception {
+        void type_number_default_set(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setDefault(new BigDecimal("123.45"));
@@ -208,7 +208,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_number_example_set(TestInfo testInfo) throws Exception {
+        void type_number_example_set(TestInfo testInfo) {
             Schema<BigDecimal> schema = new NumberSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setExample(new BigDecimal("123.45"));
@@ -220,7 +220,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string(TestInfo testInfo) throws Exception {
+        void type_string(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -231,7 +231,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_default_set(TestInfo testInfo) throws Exception {
+        void type_string_default_set(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setDefault("custom-example-value");
@@ -243,7 +243,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_example_set(TestInfo testInfo) throws Exception {
+        void type_string_example_set(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setExample("custom-example-value");
@@ -255,7 +255,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_from_enum(TestInfo testInfo) throws Exception {
+        void type_string_from_enum(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.addEnumItem("EnumItem1");
@@ -268,7 +268,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_byte(TestInfo testInfo) throws Exception {
+        void type_string_format_byte(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("byte");
@@ -280,7 +280,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_binary(TestInfo testInfo) throws Exception {
+        void type_string_format_binary(TestInfo testInfo) {
             BinarySchema schema = new BinarySchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -293,7 +293,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_date(TestInfo testInfo) throws Exception {
+        void type_string_format_date(TestInfo testInfo) {
             DateSchema schema = new DateSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -304,7 +304,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_datetime(TestInfo testInfo) throws Exception {
+        void type_string_format_datetime(TestInfo testInfo) {
             DateTimeSchema schema = new DateTimeSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -315,7 +315,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_email(TestInfo testInfo) throws Exception {
+        void type_string_format_email(TestInfo testInfo) {
             EmailSchema schema = new EmailSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -326,7 +326,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_password(TestInfo testInfo) throws Exception {
+        void type_string_format_password(TestInfo testInfo) {
             PasswordSchema schema = new PasswordSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -337,7 +337,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_uuid(TestInfo testInfo) throws Exception {
+        void type_string_format_uuid(TestInfo testInfo) {
             UUIDSchema schema = new UUIDSchema();
             schema.setName(testInfo.getDisplayName());
 
@@ -348,7 +348,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_int32(TestInfo testInfo) throws Exception {
+        void type_string_format_int32(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("int32");
@@ -360,7 +360,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_int64(TestInfo testInfo) throws Exception {
+        void type_string_format_int64(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("int32");
@@ -372,7 +372,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_float(TestInfo testInfo) throws Exception {
+        void type_string_format_float(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("float");
@@ -384,7 +384,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_double(TestInfo testInfo) throws Exception {
+        void type_string_format_double(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("double");
@@ -396,7 +396,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_string_format_unknown(TestInfo testInfo) throws Exception {
+        void type_string_format_unknown(TestInfo testInfo) {
             StringSchema schema = new StringSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setFormat("unknown");
@@ -408,7 +408,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_unknown_schema(TestInfo testInfo) throws Exception {
+        void type_unknown_schema(TestInfo testInfo) {
             class TestSchema extends Schema<StringSchema> {
                 TestSchema() {
                     super("test-schema", null);
@@ -425,7 +425,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void type_primitive_array(TestInfo testInfo) throws Exception {
+        void type_primitive_array(TestInfo testInfo) {
             ArraySchema schema = new ArraySchema();
             schema.setName(testInfo.getDisplayName());
             schema.setItems(new StringSchema());
@@ -440,7 +440,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
     @Nested
     class TestObjectSchema {
         @Test
-        void type_object_array(TestInfo testInfo) throws Exception {
+        void type_object_array(TestInfo testInfo) {
             ObjectSchema itemSchema = new ObjectSchema();
             itemSchema.addProperty("s", new StringSchema());
             itemSchema.addProperty("b", new BooleanSchema());
@@ -456,7 +456,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void composite_object_without_references(TestInfo testInfo) throws Exception {
+        void composite_object_without_references(TestInfo testInfo) {
             ObjectSchema schema = new ObjectSchema();
             schema.setName(testInfo.getDisplayName());
             schema.addProperty("s", new StringSchema());
@@ -469,7 +469,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void composite_object_with_references(TestInfo testInfo) throws Exception {
+        void composite_object_with_references(TestInfo testInfo) {
             Schema referenceSchema = new Schema();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
@@ -488,7 +488,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_anyOf(TestInfo testInfo) throws Exception {
+        void object_with_anyOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
@@ -503,7 +503,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_oneOf(TestInfo testInfo) throws Exception {
+        void object_with_oneOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
@@ -518,7 +518,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_allOf(TestInfo testInfo) throws Exception {
+        void object_with_allOf(TestInfo testInfo) {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
@@ -539,7 +539,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_map(TestInfo testInfo) throws Exception {
+        void object_with_map(TestInfo testInfo) {
             MapSchema mapSchema = new MapSchema();
             mapSchema.setName(testInfo.getDisplayName());
 
@@ -553,7 +553,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void object_with_map_and_set(TestInfo testInfo) throws Exception {
+        void object_with_map_and_set(TestInfo testInfo) {
             // Example: Map<String, Set<String>>
             Schema<?> objectSchema = new ObjectSchema();
             objectSchema.setName("objectName");
@@ -573,7 +573,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
         }
 
         @Test
-        void schema_with_problematic_object_toString_example(TestInfo testInfo) throws Exception {
+        void schema_with_problematic_object_toString_example(TestInfo testInfo) {
             ObjectSchema schema = new ObjectSchema();
             schema.setName(testInfo.getDisplayName());
             schema.setExample(new ClassWithToString());

@@ -64,7 +64,7 @@ public class KafkaProducerSystemTest {
     }
 
     @Test
-    void producerCanUseSpringwolfConfigurationToSendMessage() throws Exception {
+    void producerCanUseSpringwolfConfigurationToSendMessage() {
         // given
         HttpHeaders headers = new HttpHeaders();
         headers.put("Content-Type", List.of("application/json"));
@@ -102,7 +102,7 @@ public class KafkaProducerSystemTest {
     @DisabledIf(
             value = "withoutSchemaRegistry",
             disabledReason = "because it requires a running kafka-schema-registry instance (docker image= ~1GB).")
-    void producerCanUseSpringwolfConfigurationToSendAvroMessage() throws Exception {
+    void producerCanUseSpringwolfConfigurationToSendAvroMessage() {
         // given
         HttpHeaders headers = new HttpHeaders();
         headers.put("Content-Type", List.of("application/json"));

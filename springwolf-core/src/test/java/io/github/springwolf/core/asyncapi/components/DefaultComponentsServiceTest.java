@@ -29,7 +29,7 @@ class DefaultComponentsServiceTest {
     }
 
     @Test
-    void getMessages() throws Exception {
+    void getMessages() {
         componentsService.registerMessage(
                 MessageObject.builder().name("messageName1").build());
         componentsService.registerMessage(
