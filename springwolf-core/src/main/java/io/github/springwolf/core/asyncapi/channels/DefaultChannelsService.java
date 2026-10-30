@@ -31,8 +31,7 @@ public class DefaultChannelsService implements ChannelsService {
 
         for (ChannelsScanner scanner : channelsScanners) {
             try {
-                Map<String, ChannelObject> channels = scanner.scan();
-                foundChannelItems.addAll(channels.values());
+                foundChannelItems.addAll(scanner.scan());
             } catch (Exception e) {
                 log.warn("An error was encountered during channel scanning with {}: {}", scanner, e.getMessage(), e);
             }
