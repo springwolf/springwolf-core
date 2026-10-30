@@ -43,8 +43,8 @@ class SpringAnnotationOperationServiceTest {
     @BeforeEach
     void setUp() {
         // when
-        when(bindingFactory.getChannelId(any(), any())).thenReturn(CHANNEL_ID);
-        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any(), any());
+        when(bindingFactory.getChannelId(any(BindingContext.class))).thenReturn(CHANNEL_ID);
+        doReturn(defaultOperationBinding).when(bindingFactory).buildOperationBinding(any(BindingContext.class));
     }
 
     @Test
@@ -53,7 +53,8 @@ class SpringAnnotationOperationServiceTest {
         Method method = ClassWithTestListenerAnnotation.class.getDeclaredMethod("methodWithAnnotation", String.class);
         MethodAndAnnotation<TestMethodListener> methodAndAnnotation =
                 new MethodAndAnnotation<>(method, method.getAnnotation(TestMethodListener.class));
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(ClassWithTestListenerAnnotation.class, method);
+        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(
+                ClassWithTestListenerAnnotation.class, method, methodAndAnnotation.annotation());
         PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject("name", "full.name", null);
         SchemaObject headerSchema = new SchemaObject();
         MessageObject messageObject =

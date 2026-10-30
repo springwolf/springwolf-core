@@ -36,7 +36,7 @@ class KafkaListenerBeanRefResolverTest {
 
         // when
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class, annotation));
 
         // then
         assertThat(stringValueResolver.resolveStringValue("#{__listener.topic}"))
@@ -51,7 +51,7 @@ class KafkaListenerBeanRefResolverTest {
 
         // when
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithCustomBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithCustomBeanRef.class, annotation));
 
         // then
         assertThat(stringValueResolver.resolveStringValue("#{myListener.topic}"))
@@ -66,7 +66,7 @@ class KafkaListenerBeanRefResolverTest {
 
         // when
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class, annotation));
 
         // then
         assertThat(stringValueResolver.resolveStringValue("topic")).isEqualTo("topic");
@@ -81,7 +81,7 @@ class KafkaListenerBeanRefResolverTest {
         refreshContext(ListenerWithDefaultBeanRef.class, ListenerWithDefaultBeanRef.class);
         KafkaListener annotation = getAnnotation(ListenerWithDefaultBeanRef.class);
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class, annotation));
 
         // when + then
         assertThatThrownBy(() -> stringValueResolver.resolveStringValue("#{__listener.topic}"))
@@ -100,7 +100,7 @@ class KafkaListenerBeanRefResolverTest {
 
         // when
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class, annotation));
 
         // then
         assertThat(stringValueResolver.resolveStringValue("${topic.property}")).isEqualTo("topic-from-fallback");
@@ -115,7 +115,7 @@ class KafkaListenerBeanRefResolverTest {
 
         // when
         StringValueResolver stringValueResolver = resolver.getStringValueResolver(
-                annotation, BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class));
+                BindingContext.ofAnnotatedClass(ListenerWithDefaultBeanRef.class, annotation));
 
         // then
         assertThat(stringValueResolver.resolveStringValue("#{__listener.topic}"))

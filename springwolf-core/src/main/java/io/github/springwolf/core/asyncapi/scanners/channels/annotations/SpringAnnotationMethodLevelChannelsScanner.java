@@ -43,13 +43,14 @@ public class SpringAnnotationMethodLevelChannelsScanner<MethodAnnotation extends
 
     private ChannelObject mapMethodToChannel(Class<?> clazz, MethodAndAnnotation<MethodAnnotation> method) {
         MethodAnnotation annotation = AnnotationUtil.findFirstAnnotationOrThrow(methodAnnotationClass, method.method());
+        BindingContext<MethodAnnotation> bindingContext =
+                BindingContext.ofAnnotatedMethod(clazz, method.method(), method.annotation());
 
         PayloadSchemaObject payloadSchema = payloadMethodService.extractSchema(method.method());
         SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
         MessageObject message = springAnnotationMessageService.buildMessage(annotation, payloadSchema, headerSchema);
         Map<String, Message> messages = Map.of(message.getMessageId(), MessageReference.toComponentMessage(message));
 
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(clazz, method.method());
-        return springAnnotationChannelService.buildChannel(annotation, bindingContext, messages);
+        return springAnnotationChannelService.buildChannel(bindingContext, messages);
     }
 }

@@ -40,16 +40,13 @@ class SpringAnnotationOperationsServiceTest {
         Class<ClassWithTestListenerAnnotation> clazz = ClassWithTestListenerAnnotation.class;
         TestMethodListener clazzAnnotation = clazz.getAnnotation(TestMethodListener.class);
         Set<Method> methods = Set.of(clazz.getDeclaredMethods());
-        BindingContext bindingContext = BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class);
+        BindingContext<TestMethodListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, clazzAnnotation);
 
-        when(bindingFactory.getChannelId(clazzAnnotation, bindingContext)).thenReturn(CHANNEL_ID);
-        when(bindingFactory.buildOperationBinding(clazzAnnotation, bindingContext))
-                .thenReturn(defaultOperationBinding);
+        when(bindingFactory.getChannelId(bindingContext)).thenReturn(CHANNEL_ID);
+        when(bindingFactory.buildOperationBinding(bindingContext)).thenReturn(defaultOperationBinding);
         when(springAnnotationMessageService.buildMessages(
-                        clazzAnnotation,
-                        bindingContext,
-                        methods,
-                        SpringAnnotationMessagesService.MessageType.OPERATION))
+                        bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
                 .thenReturn(Map.of("message", MessageReference.toComponentMessage("messageId")));
 
         // when
@@ -73,16 +70,13 @@ class SpringAnnotationOperationsServiceTest {
         Class<?> clazz = ClassWithMultipleTestListenerAnnotation.class;
         TestMethodListener clazzAnnotation = clazz.getAnnotation(TestMethodListener.class);
         Set<Method> methods = Set.of(clazz.getDeclaredMethods());
-        BindingContext bindingContext = BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class);
+        BindingContext<TestMethodListener> bindingContext =
+                BindingContext.ofAnnotatedClass(ClassWithTestListenerAnnotation.class, clazzAnnotation);
 
-        when(bindingFactory.getChannelId(clazzAnnotation, bindingContext)).thenReturn(CHANNEL_ID);
-        when(bindingFactory.buildOperationBinding(clazzAnnotation, bindingContext))
-                .thenReturn(defaultOperationBinding);
+        when(bindingFactory.getChannelId(bindingContext)).thenReturn(CHANNEL_ID);
+        when(bindingFactory.buildOperationBinding(bindingContext)).thenReturn(defaultOperationBinding);
         when(springAnnotationMessageService.buildMessages(
-                        clazzAnnotation,
-                        bindingContext,
-                        methods,
-                        SpringAnnotationMessagesService.MessageType.OPERATION))
+                        bindingContext, methods, SpringAnnotationMessagesService.MessageType.OPERATION))
                 .thenReturn(Map.of(
                         "message1",
                         MessageReference.toComponentMessage("messageId1"),

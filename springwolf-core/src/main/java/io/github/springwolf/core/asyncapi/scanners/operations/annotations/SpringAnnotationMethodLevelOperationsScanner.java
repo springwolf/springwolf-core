@@ -37,10 +37,11 @@ public class SpringAnnotationMethodLevelOperationsScanner<MethodAnnotation exten
     }
 
     private Operation mapMethodToOperation(Class<?> clazz, MethodAndAnnotation<MethodAnnotation> method) {
+        BindingContext<MethodAnnotation> bindingContext =
+                BindingContext.ofAnnotatedMethod(clazz, method.method(), method.annotation());
         PayloadSchemaObject payloadSchema = payloadMethodParameterService.extractSchema(method.method());
-        SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
-        BindingContext bindingContext = BindingContext.ofAnnotatedMethod(clazz, method.method());
+        SchemaObject headerSchema = headerClassExtractor.extractHeader(method.method(), payloadSchema);
 
         Operation operation =
                 springAnnotationOperationService.buildOperation(method, bindingContext, payloadSchema, headerSchema);
