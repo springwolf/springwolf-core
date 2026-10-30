@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.SendToUserUtil;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.SendToUtil;
@@ -21,22 +22,24 @@ public class StompBindingSendToUserFactory implements BindingFactory<SendToUser>
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(SendToUser annotation) {
-        return properties.getEndpoint().getUser() + SendToUserUtil.getChannelName(annotation, stringValueResolver);
+    public String getChannelName(BindingContext<SendToUser> bindingContext) {
+        return properties.getEndpoint().getUser()
+                + SendToUserUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, ChannelBinding> buildChannelBinding(SendToUser annotation) {
+    public Map<String, ChannelBinding> buildChannelBinding(BindingContext<SendToUser> bindingContext) {
         return SendToUserUtil.buildChannelBinding();
     }
 
     @Override
-    public Map<String, OperationBinding> buildOperationBinding(SendToUser annotation) {
-        return SendToUserUtil.buildOperationBinding(annotation, stringValueResolver);
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<SendToUser> bindingContext) {
+        return SendToUserUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(SendToUser annotation, SchemaObject headerSchema) {
+    public Map<String, MessageBinding> buildMessageBinding(
+            BindingContext<SendToUser> bindingContext, SchemaObject headerSchema) {
         return SendToUtil.buildMessageBinding();
     }
 }

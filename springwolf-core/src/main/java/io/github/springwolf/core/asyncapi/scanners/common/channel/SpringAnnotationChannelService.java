@@ -20,7 +20,7 @@ public class SpringAnnotationChannelService<Annotation extends java.lang.annotat
     private final BindingFactory<Annotation> bindingFactory;
 
     public ChannelObject buildChannel(BindingContext<Annotation> bindingContext, Map<String, Message> messages) {
-        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(bindingContext.annotation());
+        Map<String, ChannelBinding> channelBinding = bindingFactory.buildChannelBinding(bindingContext);
         Map<String, ChannelBinding> chBinding = channelBinding != null ? new HashMap<>(channelBinding) : null;
         String channelName = bindingFactory.getChannelName(bindingContext);
         return ChannelObject.builder()

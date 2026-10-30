@@ -9,6 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
@@ -33,7 +34,9 @@ public class SpringAnnotationMessageService<MethodAnnotation extends Annotation>
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
         String headerModelName = componentsService.registerSchema(mergedHeaderSchema);
 
-        Map<String, MessageBinding> messageBinding = bindingFactory.buildMessageBinding(annotation, mergedHeaderSchema);
+        BindingContext<MethodAnnotation> bindingContext = BindingContext.of(annotation);
+        Map<String, MessageBinding> messageBinding =
+                bindingFactory.buildMessageBinding(bindingContext, mergedHeaderSchema);
 
         MessagePayload payload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());

@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
 import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
@@ -290,23 +291,23 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                 Map.of(CHANNEL_ID, new TestBindingFactory.TestOperationBinding());
 
         @Override
-        public String getChannelName(TestClassListener annotation) {
+        public String getChannelName(BindingContext<TestClassListener> bindingContext) {
             return CHANNEL;
         }
 
         @Override
-        public Map<String, ChannelBinding> buildChannelBinding(TestClassListener annotation) {
+        public Map<String, ChannelBinding> buildChannelBinding(BindingContext<TestClassListener> bindingContext) {
             return defaultChannelBinding;
         }
 
         @Override
-        public Map<String, OperationBinding> buildOperationBinding(TestClassListener annotation) {
+        public Map<String, OperationBinding> buildOperationBinding(BindingContext<TestClassListener> bindingContext) {
             return defaultOperationBinding;
         }
 
         @Override
         public Map<String, MessageBinding> buildMessageBinding(
-                TestClassListener annotation, SchemaObject headerSchema) {
+                BindingContext<TestClassListener> bindingContext, SchemaObject headerSchema) {
             return defaultMessageBinding;
         }
 
