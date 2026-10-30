@@ -23,7 +23,7 @@ dependencies {
 
 
     implementation libs.slf4j.api
-    implementation libs.swagger.annotations.jakarta
+    implementation libs.swagger.annotations
 
     implementation libs.spring.cloud.aws.sqs
     runtimeOnly libs.spring.cloud.aws.starter.sqs

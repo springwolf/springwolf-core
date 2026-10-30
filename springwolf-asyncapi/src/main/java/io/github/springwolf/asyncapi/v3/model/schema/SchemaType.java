@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3.model.schema;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.util.Collection;
 
 @Getter
@@ -32,11 +31,11 @@ public enum SchemaType {
         throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
 
-    public static class Serializer extends JsonSerializer<Object> {
+    public static class Serializer extends ValueSerializer<Object> {
         public Serializer() {}
 
         @Override
-        public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(Object value, JsonGenerator gen, SerializationContext ctxt) {
             if (value == null) {
                 gen.writeNull();
                 return;

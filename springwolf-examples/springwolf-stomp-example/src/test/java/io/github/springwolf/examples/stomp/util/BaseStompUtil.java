@@ -3,7 +3,7 @@ package io.github.springwolf.examples.stomp.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.JacksonJsonMessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class BaseStompUtil<R> {
-    private final MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+    private final JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
     private final StompSession session;
     private final BlockingQueue<R> blockingQueue = new ArrayBlockingQueue<>(1);
 

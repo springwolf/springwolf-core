@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.schemas.converters;
 
-import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -10,6 +9,7 @@ import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.JavaType;
 
 import java.util.Iterator;
 

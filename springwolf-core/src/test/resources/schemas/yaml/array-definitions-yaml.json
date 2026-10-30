@@ -3,7 +3,7 @@
     "title" : "ArrayFoo",
     "type" : "string",
     "properties" : {
-      "flist" : {
+      "fList" : {
         "title" : "List",
         "type" : "array",
         "items" : {
@@ -11,7 +11,7 @@
         }
       }
     },
-    "examples" : [ "flist:\n- b: true\n  s: string\n" ]
+    "examples" : [ "fList:\n- b: true\n  s: string\n" ]
   },
   "io.github.springwolf.core.asyncapi.components.DefaultYamlComponentsServiceIntegrationTest.SimpleFoo" : {
     "title" : "SimpleFoo",

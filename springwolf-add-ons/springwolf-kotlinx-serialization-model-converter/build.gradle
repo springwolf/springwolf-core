@@ -17,8 +17,8 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.boot.autoconfigure
 
-    implementation libs.swagger.core.jakarta
-    implementation libs.swagger.models.jakarta
+    implementation libs.swagger.core
+    implementation libs.swagger.models
 
     implementation libs.jetbrains.annotations
     implementation libs.kotlinx.serialization.core.jvm

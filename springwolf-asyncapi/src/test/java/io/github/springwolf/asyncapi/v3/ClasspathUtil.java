@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.asyncapi.v3;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
+import tools.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.io.InputStream;
