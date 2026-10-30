@@ -52,9 +52,6 @@ public class SwaggerSchemaService {
      * property hierarchy will result in a corrupted result.
      * <br/>
      * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
-     *
-     * @param schemaWithoutRef
-     * @return
      */
     public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
         Schema headerSchema = swaggerSchemaMapper.mapToSwagger(schemaWithoutRef);
@@ -73,11 +70,7 @@ public class SwaggerSchemaService {
 
     /**
      * creates a {@link ExtractedSchemas} from the given type. The resulting ExtractedSchemas will contain the root
-     * schema (which is always a schema ref) and a List of conrecte schemas referenced from the root schema.
-     *
-     * @param type
-     * @param contentType
-     * @return
+     * schema (which is always a schema ref) and a List of concrete schemas referenced from the root schema.
      */
     public ExtractedSchemas resolveSchema(Type type, String contentType) {
         String actualContentType =
@@ -111,7 +104,6 @@ public class SwaggerSchemaService {
      *
      * @param rootSchema        Swagger root schema
      * @param referencedSchemas all referenced swagger schemas
-     * @return
      */
     private ExtractedSchemas createExtractedSchemas(Schema rootSchema, Map<String, Schema> referencedSchemas) {
         ComponentSchema rootComponentSchema = swaggerSchemaMapper.mapSchemaOrRef(rootSchema);

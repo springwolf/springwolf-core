@@ -118,7 +118,7 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
         }
 
         @Override
-        public Object get(@NonNull String name, ObjectFactory<?> objectFactory) {
+        public @NonNull Object get(@NonNull String name, ObjectFactory<?> objectFactory) {
             return objectFactory.getObject();
         }
 

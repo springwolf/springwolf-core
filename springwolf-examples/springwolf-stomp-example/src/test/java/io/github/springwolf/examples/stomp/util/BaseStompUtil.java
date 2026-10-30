@@ -68,7 +68,9 @@ public class BaseStompUtil<R> {
             @SuppressWarnings("unchecked")
             public void handleFrame(@NonNull StompHeaders headers, @Nullable Object payload) {
                 log.info("handleFrame {} with headers {}", payload, headers);
-                blockingQueue.add((R) payload);
+                if(payload != null) {
+                    blockingQueue.add((R) payload);
+                }
             }
         }));
     }

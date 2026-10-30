@@ -67,7 +67,6 @@ public class SwaggerSchemaMapper {
      * as long as the child schemas are 'real' schemas and not schema references. So this method performs a deep conversion
      * of the entire Swagger schema.
      *
-     * @param
      * @param swaggerSchema the given Swagger schema instance
      * @return the resulting AsyncAPI SchemaObject
      */
@@ -250,9 +249,6 @@ public class SwaggerSchemaMapper {
     /**
      * expects an object representing a schema and tries to unwrap this schema, if it is a
      * ComponentSchema or MultiFormatSchema. The method works recursive on unwrapped Objects.
-     *
-     * @param schema
-     * @return
      */
     private Object unwrapSchema(Object schema) {
         if (schema instanceof ComponentSchema componentSchema) {
@@ -306,9 +302,6 @@ public class SwaggerSchemaMapper {
      * <p>Note</p>
      * This method does not perform a 'deep' transformation, only the root attributes of asyncApiSchema
      * are mapped to the Swagger schema (best-effort).
-     *
-     * @param asyncApiSchema
-     * @return swagger Schema
      */
     private Schema<?> mapSchemaObjectToSwagger(SchemaObject asyncApiSchema) {
         Schema<Object> swaggerSchema = new ObjectSchema();
@@ -344,9 +337,6 @@ public class SwaggerSchemaMapper {
 
     /**
      * transforms the given asyncapi {@link SchemaReference} to a Swagger Schema Object.
-     *
-     * @param asyncApiSchemaReference
-     * @return
      */
     private Schema<?> mapSchemaReferenceToSwagger(SchemaReference asyncApiSchemaReference) {
         Schema<?> swaggerSchema = new Schema<>();

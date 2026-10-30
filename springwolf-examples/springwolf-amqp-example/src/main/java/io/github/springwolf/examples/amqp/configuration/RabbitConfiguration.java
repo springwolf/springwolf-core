@@ -3,6 +3,7 @@ package io.github.springwolf.examples.amqp.configuration;
 
 import io.github.springwolf.examples.amqp.AmqpConstants;
 import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
+import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -51,7 +52,7 @@ public class RabbitConfiguration {
     }
 
     /**
-     * Defined by @RabbitListener annotation in {@link io.github.springwolf.examples.amqp.consumers.ExampleConsumer#bindingsExample(AnotherPayloadDto)}
+     * Defined by @RabbitListener annotation in {@link io.github.springwolf.examples.amqp.consumers.ExampleConsumer#bindingsExample(ExamplePayloadDto)}
      */
     @Bean
     public Queue exampleBindingsQueue() {
@@ -59,7 +60,7 @@ public class RabbitConfiguration {
     }
 
     /**
-     * Defined by @RabbitListener annotation in {@link io.github.springwolf.examples.amqp.consumers.ExampleConsumer#bindingsExample(AnotherPayloadDto)}
+     * Defined by @RabbitListener annotation in {@link io.github.springwolf.examples.amqp.consumers.ExampleConsumer#bindingsExample(ExamplePayloadDto)}
      */
     @Bean
     public Binding exampleTopicBinding(Queue exampleBindingsQueue, Exchange exampleTopicExchange) {

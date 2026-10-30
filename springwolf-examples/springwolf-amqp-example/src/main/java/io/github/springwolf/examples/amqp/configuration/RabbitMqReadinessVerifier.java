@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 @Configuration(proxyBeanMethods = false)
 @Profile("!test")
@@ -36,11 +37,9 @@ public class RabbitMqReadinessVerifier {
 
                 return;
             } catch (AmqpConnectException e) {
-                try {
-                    Thread.sleep(RABBITMQ_INTERVAL_WAIT_MS);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                    throw new IllegalStateException("RabbitMQ is not running", ie);
+                LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(RABBITMQ_INTERVAL_WAIT_MS));
+                if (Thread.currentThread().isInterrupted()) {
+                    throw new IllegalStateException("RabbitMQ is not running", new InterruptedException());
                 }
             }
         }

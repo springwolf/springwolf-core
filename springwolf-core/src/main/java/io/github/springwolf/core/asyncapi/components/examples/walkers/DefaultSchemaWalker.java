@@ -257,7 +257,6 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
      * looks in schemas openapi-v3 'type' and openapi-v3.1 'types' fields to
      * find the best candidate to use as an example value.
      *
-     * @param schema
      * @return the type to use for example values, or null if no suitable type was found.
      */
     @Nullable
