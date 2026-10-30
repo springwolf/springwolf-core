@@ -81,8 +81,7 @@ public class SpringwolfConfigProperties {
      */
     private UI ui = new UI();
 
-    @Nullable
-    private Scanner scanner;
+    private Scanner scanner = new Scanner();
 
     @Nullable
     private Payload payload = new Payload();
@@ -252,11 +251,9 @@ public class SpringwolfConfigProperties {
     @Setter
     public static class Scanner {
 
-        @Nullable
-        private static AsyncListener asyncListener;
+        private AsyncListener asyncListener = new AsyncListener();
 
-        @Nullable
-        private static AsyncPublisher asyncPublisher;
+        private AsyncPublisher asyncPublisher = new AsyncPublisher();
 
         @Getter
         @Setter
