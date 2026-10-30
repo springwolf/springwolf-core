@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.addons.generic_binding.annotation.configuration;
+package io.github.springwolf.bindings.generic.configuration;
 
-import io.github.springwolf.addons.generic_binding.annotation.processor.AsyncGenericOperationBindingProcessor;
+import io.github.springwolf.bindings.generic.scanners.operations.AsyncGenericOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingProcessorPriority;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;

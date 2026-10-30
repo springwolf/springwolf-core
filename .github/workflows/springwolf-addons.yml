@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        addon: [ "common-model-converters", "generic-binding", "json-schema", "kotlinx-serialization-model-converter" ]
+        addon: [ "common-model-converters", "json-schema", "kotlinx-serialization-model-converter" ]
 
     env:
       addon: springwolf-add-ons/springwolf-${{ matrix.addon }}
