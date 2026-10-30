@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.jms.producers;
 
-import io.github.springwolf.addons.generic_binding.annotation.AsyncGenericOperationBinding;
+import io.github.springwolf.bindings.generic.annotation.AsyncGenericOperationBinding;
 import io.github.springwolf.bindings.jms.annotations.JmsAsyncOperationBinding;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;

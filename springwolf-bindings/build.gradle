@@ -15,6 +15,7 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.core
     implementation libs.spring.boot.autoconfigure
+    implementation libs.slf4j.api
     implementation libs.commons.lang3
     implementation libs.jakarta.annotation.api
 
@@ -23,6 +24,7 @@ dependencies {
 
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
+    testImplementation libs.junit.jupiter.params
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter

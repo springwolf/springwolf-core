@@ -5,3 +5,4 @@ io.github.springwolf.bindings.kafka.configuration.SpringwolfKafkaBindingAutoConf
 io.github.springwolf.bindings.sns.configuration.SpringwolfSnsBindingAutoConfiguration
 io.github.springwolf.bindings.sqs.configuration.SpringwolfSqsBindingAutoConfiguration
 io.github.springwolf.bindings.stomp.configuration.SpringwolfStompBindingAutoConfiguration
+io.github.springwolf.bindings.generic.configuration.SpringwolfGenericBindingAutoConfiguration

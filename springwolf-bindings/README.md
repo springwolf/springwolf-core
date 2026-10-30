@@ -1,4 +1,4 @@
-# Springwolf Generic Binding Add-on
+# Springwolf Generic Binding
 
 ### Table Of Contents
 
@@ -24,7 +24,7 @@ Add the following dependency:
 
 ```groovy
 dependencies {
-    implementation 'io.github.springwolf:springwolf-generic-binding:<springwolf-version>'
+    implementation 'io.github.springwolf:springwolf-bindings:<springwolf-version>'
 }
 ```
 
