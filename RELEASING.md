@@ -1,6 +1,6 @@
 # Releasing
 
-The following list describe the steps necessary to release a new version.
+The following checklist describes the steps necessary to release a new version.
 
 1. Run all tests (including all examples + integration)
 2. Run docker compose and manually test ui (or verify on website):
@@ -11,7 +11,10 @@ The following list describe the steps necessary to release a new version.
    5. SNS: https://sns.demo.springwolf.dev/
    6. SQS: https://sqs.demo.springwolf.dev/
    7. STOMP (WebSocket): https://stomp.demo.springwolf.dev/
-3. Update `all-contributors` in [README.md](README.md#-contributors)
+3. Update the [contributors list](README.md#contributors) when needed:
+   1. Add each new contributor: `npx all-contributors-cli add <username> code`
+   2. Regenerate the list: `npx all-contributors-cli generate`
+   3. Verify the list: `npx all-contributors-cli check`
 4. Create a new branch `release/2.<minor-version-number>.X`, remove the `-SNAPHSOT` postfix in `.env`, commit & push
 5. Run GitHub `Publish releases` pipeline from the newly created release branch
 6. Update the version number in `.env` for next snapshot on branch `main`, commit & push
@@ -20,12 +23,12 @@ The following list describe the steps necessary to release a new version.
 
 ## GPG Key for signing the release artifacts
 
-A valid and published GPG key is required for publishing to Sonatype maven.
+A valid and published GPG key is required for publishing to Sonatype Maven.
 
 > The current key can be obtained via:
 > `gpg --keyserver keyserver.ubuntu.com --search-keys 5A86573F7588809B50EB8EF475ABBF11907B8027`
 
-As documented in [gradle signing plugin](https://docs.gradle.org/current/userguide/signing_plugin.html),
+As documented in the [Gradle signing plugin](https://docs.gradle.org/current/userguide/signing_plugin.html),
 `gpg` is used for artifact signing.
 
 Steps to create a new key:

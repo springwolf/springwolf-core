@@ -1,124 +1,124 @@
+<p align="center">
+  <a href="https://github.com/springwolf/springwolf-core/releases"><img src="https://img.shields.io/github/v/release/springwolf/springwolf-core" alt="Latest release"/></a>
+  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"/></a>
+  <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg" alt="Core build"/></a>
+  <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml/badge.svg" alt="Plugins build"/></a>
+  <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg" alt="UI build"/></a>
+</p>
+
 <h1 align="center">
-<img src="logo.png" alt="Logo" width="100"/> Springwolf
+<img src=".github/img/logo.png" alt="Springwolf logo" width="100"/> Springwolf
 </h1>
 
 <p align="center">
-<strong>Automated documentation for event-driven applications built with Spring Boot</strong>
+<strong>Generate AsyncAPI documentation from your Spring Boot event-driven application</strong>
 </p>
 
-![Last Version](https://img.shields.io/github/tag-pre/springwolf/springwolf-core.svg)
-![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/springwolf/springwolf-core/latest)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+<p align="center">
+  <a href="https://www.springwolf.dev/docs/quickstart">Get started</a> ·
+  <a href="https://demo.springwolf.dev/">Try the demo</a> ·
+  <a href="springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json">View a generated AsyncAPI document</a> ·
+  <a href="https://www.springwolf.dev/docs">Read the documentation</a> ·
+  <a href="https://discord.gg/HZYqd5RPTd">Join Discord</a>
+</p>
 
-[![springwolf-core](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml)
-[![springwolf-asyncapi](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-asyncapi.yml)
-[![springwolf-ui](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml)
-[![springwolf-plugins](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml)
-[![springwolf-addons](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml/badge.svg)](https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-addons.yml)
-> We are on discord for any question, discussion, request etc.
-> Join us at https://discord.gg/HZYqd5RPTd
+## What Springwolf does
 
-### Contents
+Springwolf generates an [AsyncAPI](https://www.asyncapi.com/) document from your event-driven Spring application.
+For supported brokers, it discovers endpoints from listener annotations such as `@KafkaListener`, `@RabbitListener`, and `@SqsListener`.
+It is inspired by [Springfox](https://github.com/springfox/springfox), but focuses on asynchronous APIs rather than HTTP/OpenAPI APIs.
 
-- [About](#about)
-- [Demo & Documentation](#-demo---documentation)
-- [Why You Should Use Springwolf](#-why-you-should-use-springwolf)
-- [Usage & Example](#-usage--example)
-- [Who's Using Springwolf](#-whos-using-springwolf)
-- [How To Participate](#-how-to-participate)
-- [Contributors](#-contributors)
+The [generated document](springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json) can be shared as JSON or YAML or integrated into API hubs such as [Backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/).
 
-### About
+### `springwolf-ui`
 
-This project is inspired by [Springfox](https://github.com/springfox/springfox).
-It documents asynchronous APIs using the [AsyncAPI specification](https://www.asyncapi.com/).
+The optional `springwolf-ui` provides a browser UI with example payloads and can publish messages for testing.
 
-`springwolf-ui` adds a web UI, much like that of Springfox, and allows easy publishing of auto-generated payload examples.
+| Springwolf UI | Message publishing |
+|:---:|:---:|
+| <a href="https://demo.springwolf.dev/"><img src=".github/img/ui.jpg" alt="Springwolf UI displaying generated channels, schemas, and example payloads" width="480"/></a> | <a href="https://demo.springwolf.dev"><img src=".github/img/publishing.jpg" alt="Springwolf UI showing the publish button for an example message" width="480"/></a> |
+| [Click to try the demo](https://demo.springwolf.dev/) | Due to security concerns, publishing must be enabled in the configuration |
 
-### 🪇 Demo & 📖 Documentation
+## Supported integrations
 
-Take a look at the Springwolf [live demo](https://demo.springwolf.dev/) and a [generated AsyncAPI document](springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json).
+All Springwolf plugins, artifacts, bindings, and add-ons use the same version.
+Use the release or snapshot version shown here for every artifact listed below.
 
-[springwolf.dev](https://www.springwolf.dev) includes the [quickstart guide](https://www.springwolf.dev/docs/quickstart) and full documentation.
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-core?label=release)](https://central.sonatype.com/artifact/io.github.springwolf/springwolf-core)
+[![Sonatype snapshots](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-core%2Fmaven-metadata.xml&label=snapshot)](https://central.sonatype.com/repository/maven-snapshots/io/github/springwolf/springwolf-core/)
 
-### ✨ Why You Should Use Springwolf
+| Integration | Detected listeners / endpoints | Artifact | Example |
+|---|---|---|---|
+| [AMQP](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-amqp-plugin) | `@RabbitListener` | `io.github.springwolf:springwolf-amqp` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-amqp-example) |
+| [AWS SNS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-sns-plugin) | N/A | `io.github.springwolf:springwolf-sns` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-sns-example) |
+| [AWS SQS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-sqs-plugin) | `@SqsListener` | `io.github.springwolf:springwolf-sqs` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-sqs-example) |
+| [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-cloud-stream-plugin) | Functional `@Bean` | `io.github.springwolf:springwolf-cloud-stream` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-cloud-stream-example) |
+| [JMS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-jms-plugin) | `@JmsListener` | `io.github.springwolf:springwolf-jms` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-jms-example) |
+| [Kafka](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-kafka-plugin) | `@KafkaListener`, `@KafkaHandler` | `io.github.springwolf:springwolf-kafka` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-kafka-example) |
+| [STOMP / WebSocket](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-stomp-plugin) | `@MessageMapping`, `@SendTo`, `@SendToUser` | `io.github.springwolf:springwolf-stomp` | [Example code](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-stomp-example) |
 
-Springwolf exploits the fact that you already fully described your consumer endpoint (with listener annotations, such as
-`@KafkaListener`, `@RabbitListener`, `@SqsListener`, etc.) and generates the documentation based on this information.
+For protocols without native listener detection, document consumers and publishers with [`@AsyncListener` and `@AsyncPublisher`](https://www.springwolf.dev/docs/configuration/documenting-consumers).
 
-<details><summary>Share API Schema Definition</summary>
+## Quick start
 
-The AsyncAPI conform documentation can be integrated into API hubs (like [backstage](https://backstage.io/docs/features/software-catalog/descriptor-format/))
-or be shared as a `json`/`yaml` file with others.
-</details>
+For a Spring Boot application using Kafka, add the Springwolf Kafka plugin:
 
-<details><summary>UI Based API Testing</summary>
+```groovy
+dependencies {
+    implementation 'io.github.springwolf:springwolf-kafka:<springwolf-version>'
+    implementation 'io.github.springwolf:springwolf-ui:<springwolf-version>' // optional
+}
+```
 
-In projects using asynchronous APIs, you may often find yourself needing to manually send a message to some topic,
-whether you are manually testing a new feature, debugging or trying to understand some flow.
+At startup, Springwolf scans your application for supported listener and publisher annotations (such as `@KafkaListener`) and generates an AsyncAPI document at `/springwolf/docs`.
+Alternatively use the standalone mode to generate or verify an existing AsyncAPI document [as part of your tests](springwolf-examples/springwolf-kafka-example/src/test/java/io/github/springwolf/examples/kafka/StandaloneTest.java).
 
-Using the automatically generated example payload object as a suggestion, you can publish it to the correct channel with a single click.
-</details>
+Use `springwolf-ui` to browse the document in a UI at `/springwolf/asyncapi-ui.html`.
 
-### 🔬 Usage & Example
+### Configuration
 
-Protocols not supported natively can still be documented using `@AsyncListener` and `@AsyncPublisher` annotation.
-More details in the documentation.
+Configuration has sensible defaults, but can be adjusted.
+See the [configuration reference](https://www.springwolf.dev/docs/configuration) for details.
 
-| Plugin                                                                                                                      | Example project                                                                                                                       | Current version                                                                                                                                               | SNAPSHOT version                                                                                                                                                                                                                                                           |
-|-----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [AMQP](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-amqp-plugin)                 | [AMQP Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-amqp-example)                 | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-amqp?color=green&label=springwolf-amqp&style=plastic)                 | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-amqp%2Fmaven-metadata.xml&label=springwolf-amqp&style=plastic)                 |
-| [AWS SNS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-sns-plugin)               | [AWS SNS Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-sns-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-sns?color=green&label=springwolf-sns&style=plastic)                   | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-sns%2Fmaven-metadata.xml&label=springwolf-sns&style=plastic)                   |
-| [AWS SQS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-sqs-plugin)               | [AWS SQS Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-sqs-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-sqs?color=green&label=springwolf-sqs&style=plastic)                   | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-sqs%2Fmaven-metadata.xml&label=springwolf-sqs&style=plastic)                   |
-| [Cloud Stream](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-cloud-stream-plugin) | [Cloud Stream Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-cloud-stream-example) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-cloud-stream?color=green&label=springwolf-cloud-stream&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-cloud-stream%2Fmaven-metadata.xml&label=springwolf-cloud-stream&style=plastic) |
-| [JMS](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-jms-plugin)                   | [JMS Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-jms-example)                   | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-jms?color=green&label=springwolf-jms&style=plastic)                   | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-jms%2Fmaven-metadata.xml&label=springwolf-jms&style=plastic)                   |
-| [Kafka](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-kafka-plugin)               | [Kafka Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-kafka-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kafka?color=green&label=springwolf-kafka&style=plastic)               | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-kafka%2Fmaven-metadata.xml&label=springwolf-kafka&style=plastic)               |
-| [STOMP (WebSocket)](https://github.com/springwolf/springwolf-core/tree/main/springwolf-plugins/springwolf-stomp-plugin)   | [STOMP Example](https://github.com/springwolf/springwolf-core/tree/main/springwolf-examples/springwolf-stomp-example)               | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-stomp?color=green&label=springwolf-stomp&style=plastic)               | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-stomp%2Fmaven-metadata.xml&label=springwolf-stomp&style=plastic)               |
 
-<details>
-<summary>Click to expand all artifacts, bindings and add-ons</summary>
+<p align="center">
+  <a href="https://www.springwolf.dev/docs/configuration">
+    <img src=".github/img/configuration.jpg" alt="Springwolf configuration documentation showing optional application properties" width="720"/>
+  </a>
+</p>
 
-| Artifact                                                                                               | Current version                                                                                                                                       | SNAPSHOT version                                                                                                                                                                                                                                                   |
-|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [AsyncAPI implementation](https://github.com/springwolf/springwolf-core/tree/main/springwolf-asyncapi) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-asyncapi?color=green&label=springwolf-asyncapi&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-asyncapi%2Fmaven-metadata.xml&label=springwolf-asyncapi&style=plastic) |
-| [Bindings](https://github.com/springwolf/springwolf-core/tree/main/springwolf-bindings)                | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-bindings?color=green&label=springwolf-bindings&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-bindings%2Fmaven-metadata.xml&label=springwolf-bindings&style=plastic) |
-| [Core](https://github.com/springwolf/springwolf-core/tree/main/springwolf-core)                        | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-core?color=green&label=springwolf-core&style=plastic)         | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-core%2Fmaven-metadata.xml&label=springwolf-core&style=plastic)         |
-| [UI](https://github.com/springwolf/springwolf-core/tree/main/springwolf-ui)                            | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-ui?color=green&label=springwolf-ui&style=plastic)             | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-ui%2Fmaven-metadata.xml&label=springwolf-ui&style=plastic)             |
+## Releases
 
-| Add-on                                                                                                                                                                 | Current version                                                                                                                                                                                                 | SNAPSHOT version                                                                                                                                                                                                                                   |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Common Model Converter](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-common-model-converters)                              | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-common-model-converters?color=green&label=springwolf-common-model-converters&style=plastic)                             | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-common-model-converters%2Fmaven-metadata.xml&label=springwolf-common-model-converters&style=plastic)                             |
-| [Generic Binding](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-generic-binding)                                             | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-generic-binding?color=green&label=springwolf-generic-binding&style=plastic)                                             | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-generic-binding%2Fmaven-metadata.xml&label=springwolf-generic-binding&style=plastic)                                             |
-| [Json Schema](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-json-schema)                                                     | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-json-schema?color=green&label=springwolf-json-schema&style=plastic)                                                     | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-json-schema%2Fmaven-metadata.xml&label=springwolf-json-schema&style=plastic)                                                     |
-| [Kotlinx Serialization Model Converter](https://github.com/springwolf/springwolf-core/tree/main/springwolf-add-ons/springwolf-kotlinx-serialization-model-converter) | ![Maven Central](https://img.shields.io/maven-central/v/io.github.springwolf/springwolf-kotlinx-serialization-model-converter?color=green&label=springwolf-kotlinx-serialization-model-converter&style=plastic) | ![Sonatype Nexus (Snapshots)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fio%2Fgithub%2Fspringwolf%2Fspringwolf-kotlinx-serialization-model-converter%2Fmaven-metadata.xml&label=springwolf-kotlinx-serialization-model-converter&style=plastic) |
-</details>
+Browse [GitHub releases](https://github.com/springwolf/springwolf-core/releases) for release notes, changes, and migration guidance.
 
-### 🚀 Who's Using Springwolf
+### Artifacts
 
-- [2bPrecise](https://2bprecisehealth.com/)
-- [aconium](https://www.aconium.eu)
-- [Alten Italia](https://www.alten.it/)
-- [b.well Connected Health](https://www.icanbwell.com/)
-- [DGARNE - Public Service of Wallonia (BE)](https://agriculture.wallonie.be/accueil)
-- [Eclipse xpanse](https://eclipse.dev/xpanse/)
-- [ITA-Social-Projects](https://github.com/ita-social-projects/GreenCityUBS)
-- [LVM Versicherung](https://www.lvm.de/privatkunden/)
-- [PagoPA](https://www.pagopa.it/en/homepage/)
-- [OTTO](https://www.otto.de)
-- [OTTO Payments](https://www.ottogroup.com/en/careers/kgen/ottopayments.php)
-- [Teambank](https://www.teambank.de)
+Further artifacts apart from the integration plugins above:
 
-Comment in [this PR](https://github.com/springwolf/springwolf-core/issues/342) to add your company and spread the word
+| Artifact | Contents |
+|---|---|
+| `io.github.springwolf:springwolf-asyncapi` | JVM model and builders for the AsyncAPI specification. |
+| `io.github.springwolf:springwolf-core` | Spring integration that scans endpoints and generates the AsyncAPI document. |
+| `io.github.springwolf:springwolf-ui` | Browser UI for viewing the generated document and example payloads. |
+| `io.github.springwolf:springwolf-bindings` | Annotations and models for protocol-specific AsyncAPI bindings. |
+| `io.github.springwolf:springwolf-common-model-converters` | Shared converters for mapping Java types to AsyncAPI schemas. |
+| `io.github.springwolf:springwolf-json-schema` | Adds JSON Schema representations to detected AsyncAPI schemas. |
+| `io.github.springwolf:springwolf-kotlinx-serialization-model-converter` | Converts Kotlinx-serialized classes to AsyncAPI schemas, including `@SerialName` values. |
 
-### ✏️ How To Participate
+### Compatibility
 
-Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+The current release line targets Spring Boot 4.
 
-<details><summary>Testing SNAPSHOT version</summary>
+| Spring Boot | Springwolf versions | Support status |
+|---|---|---|
+| 4.x | 2.x | Current release line |
+| 3.x | Up to 1.20.0 | Legacy; no further updates |
+| 2.x | Older, plugin-specific versions | [Legacy; no further updates](https://www.springwolf.dev/docs/faq#is-spring-boot-2x-supported) |
 
-#### Sonatype snapshots
+### Using `SNAPSHOT` version
 
-Add the following to the `repositories` closure in `build.gradle`:
+
+For Sonatype snapshots, add the snapshot repository to your Gradle build:
 
 ```groovy
 repositories {
@@ -130,10 +130,9 @@ repositories {
 }
 ```
 
-Or add the `repository` to your `pom.xml` if you are using maven:
+For Maven, add the snapshot repository to your `pom.xml`:
 
 ```xml
-
 <repositories>
     <repository>
         <id>oss-sonatype</id>
@@ -144,18 +143,23 @@ Or add the `repository` to your `pom.xml` if you are using maven:
         </snapshots>
     </repository>
 </repositories>
- ```
+```
 
-#### Local Snapshot Build
+For local builds, run the `publishToMavenLocal` Gradle task.
 
-To test with local builds, run the `publishToMavenLocal` gradle task. The current version number is set in [`.env`](.env) file.
+The current version number is set in the [`.env`](.env) file.
 
-Do not forget to add `mavenLocal()` to the `repositories` section.
-</details>
+Add `mavenLocal()` to the `repositories` section.
 
-### 👏  Contributors
+## Help and contributing
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+For setup problems, see the [FAQ](https://www.springwolf.dev/docs/faq), including [UI troubleshooting](https://www.springwolf.dev/docs/faq#the-springwolf-ui-isnt-showing).
+
+To report a bug or request a feature, [open an issue](https://github.com/springwolf/springwolf-core/issues); for questions and discussion, [join Discord](https://discord.gg/HZYqd5RPTd).
+
+To contribute, start with the [contribution guide](CONTRIBUTING.md).
+
+## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -236,8 +240,3 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
-To add yourself as a contributor, install the [all-contributors CLI](https://allcontributors.org/docs/en/cli/installation) and run:
-1. `npx all-contributors-cli check` 
-2. `npx all-contributors-cli add <username> code`
-3. `npx all-contributors-cli generate`
