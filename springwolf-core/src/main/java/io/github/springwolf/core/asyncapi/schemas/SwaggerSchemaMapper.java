@@ -326,10 +326,10 @@ public class SwaggerSchemaMapper {
         swaggerSchema.setConst(asyncApiSchema.getConstValue());
 
         if (asyncApiSchema.getProperties() != null) {
-            // Swagger's setProperties API requires Map<String, Schema> with a raw Schema.
-            Map<String, Schema> properties = new HashMap<>();
-            asyncApiSchema.getProperties().forEach((name, property) -> properties.put(name, mapToSwagger(property)));
-            swaggerSchema.setProperties(properties);
+            swaggerSchema.setProperties(new HashMap<>());
+            asyncApiSchema
+                    .getProperties()
+                    .forEach((name, property) -> swaggerSchema.addProperty(name, mapToSwagger(property)));
         }
 
         return swaggerSchema;

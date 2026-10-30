@@ -28,7 +28,7 @@ public class SimpleClassModelConverter implements ModelConverter {
     }
 
     @Override
-    public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         Class<?> rawClass = getRawClass(type);
         boolean isNativeType = isNativeType(rawClass);
 
@@ -50,7 +50,8 @@ public class SimpleClassModelConverter implements ModelConverter {
         return javaType != null ? javaType.getRawClass() : null;
     }
 
-    private Schema proceedWithChain(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    private Schema<?> proceedWithChain(
+            AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
     }
 

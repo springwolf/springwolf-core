@@ -17,7 +17,7 @@ import java.util.Iterator;
 public class NameInReffedSchemaModelConverter implements ModelConverter {
 
     @Override
-    public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         JavaType javaType = Json.mapper().constructType(type.getType());
         if (chain.hasNext()) {
             Schema<?> schema = chain.next().resolve(type, context, chain);

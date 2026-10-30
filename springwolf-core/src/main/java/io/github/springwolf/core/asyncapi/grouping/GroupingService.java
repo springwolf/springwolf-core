@@ -230,7 +230,7 @@ public class GroupingService {
             }
             if ((schemaFormat.startsWith(SchemaFormat.OPENAPI_V3.toString())
                             || schemaFormat.startsWith(SchemaFormat.OPENAPI_V3_1.toString()))
-                    && multiFormatSchema.getSchema() instanceof Schema openapiSchema) {
+                    && multiFormatSchema.getSchema() instanceof Schema<?> openapiSchema) {
                 return findUnmarkedNestedSchemasForOpenAPISchema(markingContext, openapiSchema);
             }
         }
@@ -289,21 +289,25 @@ public class GroupingService {
      */
     private static Set<String> findUnmarkedNestedSchemasForOpenAPISchema(
             MarkingContext markingContext, Schema<?> openapiSchema) {
-        Stream<Schema> propertySchemas = openapiSchema.getProperties() == null
+        Stream<Schema<?>> propertySchemas = openapiSchema.getProperties() == null
                 ? Stream.empty()
-                : openapiSchema.getProperties().values().stream().flatMap(schema -> {
-                    Stream<Schema> base = Stream.of(schema);
-                    Schema<?> items = schema.getItems();
-                    return items != null ? Stream.concat(base, Stream.of(items)) : base;
-                });
+                : openapiSchema.getProperties().values().stream()
+                        .map(schema -> (Schema<?>) schema)
+                        .flatMap(schema -> {
+                            Stream<Schema<?>> base = Stream.of(schema);
+                            Schema<?> items = schema.getItems();
+                            return items != null ? Stream.concat(base, Stream.of(items)) : base;
+                        });
 
-        Stream<Schema> referencedSchemas = Stream.of(
+        Stream<Schema<?>> referencedSchemas = Stream.of(
                         openapiSchema.getAllOf(), openapiSchema.getAnyOf(), openapiSchema.getOneOf())
                 .filter(Objects::nonNull)
-                .flatMap(List::stream);
+                .flatMap(List::stream)
+                .map(schema -> (Schema<?>) schema);
 
-        Stream<Schema> referencedSchemaElements =
-                Stream.of(openapiSchema.getNot(), openapiSchema.getItems()).filter(Objects::nonNull);
+        Stream<Schema<?>> referencedSchemaElements = Stream.of(openapiSchema.getNot(), openapiSchema.getItems())
+                .filter(Objects::nonNull)
+                .map(schema -> (Schema<?>) schema);
 
         return Stream.concat(propertySchemas, Stream.concat(referencedSchemas, referencedSchemaElements))
                 .map(Schema::get$ref)

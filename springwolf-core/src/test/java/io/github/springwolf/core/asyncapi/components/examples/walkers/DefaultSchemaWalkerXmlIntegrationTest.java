@@ -86,7 +86,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName("composite-schema");
 
-            Schema referenceSchema = new Schema();
+            Schema<?> referenceSchema = new Schema<>();
             referenceSchema.set$ref("#/components/schemas/Nested");
             compositeSchema.addProperty("f", referenceSchema);
 
@@ -453,7 +453,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             nestedSchema.addProperty("s", new StringSchema());
             nestedSchema.addProperty("b", new BooleanSchema());
 
-            Schema referenceSchema = new Schema();
+            Schema<?> referenceSchema = new Schema<>();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
             ObjectSchema compositeSchema = new ObjectSchema();
@@ -557,7 +557,7 @@ class DefaultSchemaWalkerXmlIntegrationTest {
             MapSchema mapSchema = new MapSchema();
             mapSchema.setName("object_with_map");
 
-            Schema propertySchema = new StringSchema();
+            Schema<?> propertySchema = new StringSchema();
             mapSchema.setAdditionalProperties(propertySchema);
 
             String actual = xmlSchemaWalker.fromSchema(mapSchema, Map.of());

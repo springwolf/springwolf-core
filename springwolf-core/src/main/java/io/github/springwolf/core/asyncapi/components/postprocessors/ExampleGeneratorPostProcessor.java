@@ -15,7 +15,7 @@ public class ExampleGeneratorPostProcessor implements SchemasPostProcessor {
     private final SchemaWalkerProvider schemaWalkerProvider;
 
     @Override
-    public void process(Schema<?> schema, Map<String, Schema> definitions, String contentType) {
+    public void process(Schema<?> schema, Map<String, Schema<?>> definitions, String contentType) {
         if (schema.getExample() == null) {
             log.trace("Generate example for {}", schema.getName());
 

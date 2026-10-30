@@ -27,7 +27,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     private static final String SPECIFIC_DAT_REF = "org.apache.avro.specific.SpecificData";
 
     @Override
-    public void process(Schema<?> schema, Map<String, Schema> definitions, String contentType) {
+    public void process(Schema<?> schema, Map<String, Schema<?>> definitions, String contentType) {
         removeSchemas(definitions);
 
         Deque<Schema<?>> queue = new LinkedList<>(List.of(schema));
@@ -44,7 +44,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
         }
     }
 
-    private void processRefSchema(Schema<?> schema, Deque<Schema<?>> queue, Map<String, Schema> definitions) {
+    private void processRefSchema(Schema<?> schema, Deque<Schema<?>> queue, Map<String, Schema<?>> definitions) {
         if (schema.get$ref() != null) {
             String schemaName = ReferenceUtil.getLastSegment(schema.get$ref());
             Schema<?> refedSchema = definitions.get(schemaName);
@@ -78,7 +78,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
         }
     }
 
-    private void removeSchemas(Map<String, Schema> definitions) {
+    private void removeSchemas(Map<String, Schema<?>> definitions) {
         definitions.entrySet().removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), SCHEMA_AVRO_PREFIX));
     }
 }

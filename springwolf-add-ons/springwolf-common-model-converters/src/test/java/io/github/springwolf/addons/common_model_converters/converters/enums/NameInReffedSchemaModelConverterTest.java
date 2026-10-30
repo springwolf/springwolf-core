@@ -21,19 +21,19 @@ class NameInReffedSchemaModelConverterTest {
         converters.addConverter(modelsConverter);
 
         // when
-        final Map<String, Schema> models = converters.readAll(MyRootObject.class);
+        final Map<String, ?> models = converters.readAll(MyRootObject.class);
 
         // then
         assertThat(models).isNotNull();
         assertThat(models.size()).isEqualTo(2);
-        Schema myRootObject = models.get("MyRootObject");
+        Schema<?> myRootObject = (Schema<?>) models.get("MyRootObject");
         assertThat(myRootObject).isNotNull();
         assertThat(myRootObject.getName()).isEqualTo("MyRootObject");
-        Schema myEnumObjectField = (Schema) myRootObject.getProperties().get("myEnumObjectField");
+        Schema<?> myEnumObjectField = (Schema<?>) myRootObject.getProperties().get("myEnumObjectField");
         assertThat(myEnumObjectField.getName()).isEqualTo("myEnumObjectField");
         assertThat(myEnumObjectField.get$ref()).isEqualTo("#/components/schemas/MyEnumObject");
 
-        Schema myEnumObject = models.get("MyEnumObject");
+        Schema<?> myEnumObject = (Schema<?>) models.get("MyEnumObject");
         assertThat(myEnumObject).isNotNull();
         assertThat(myEnumObject.getName()).isEqualTo("MyEnumObject");
     }

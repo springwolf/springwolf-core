@@ -116,7 +116,7 @@ class SwaggerSchemaServiceTest {
     @Test
     void postProcessorIsSkippedWhenSchemaWasRemoved() {
         doAnswer(invocationOnMock -> {
-                    Map<String, Schema> schemas = invocationOnMock.getArgument(1);
+                    Map<String, ?> schemas = invocationOnMock.getArgument(1);
                     schemas.clear();
                     return null;
                 })
@@ -212,7 +212,7 @@ class SwaggerSchemaServiceTest {
         public static class Converter implements ModelConverter {
 
             @Override
-            public io.swagger.v3.oas.models.media.Schema resolve(
+            public io.swagger.v3.oas.models.media.Schema<?> resolve(
                     AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
                 Class<?> rawClass = getRawClass(type);
                 boolean isNativeType = isNativeType(rawClass);
@@ -235,7 +235,7 @@ class SwaggerSchemaServiceTest {
                 return javaType != null ? javaType.getRawClass() : null;
             }
 
-            private io.swagger.v3.oas.models.media.Schema proceedWithChain(
+            private io.swagger.v3.oas.models.media.Schema<?> proceedWithChain(
                     AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
                 return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
             }

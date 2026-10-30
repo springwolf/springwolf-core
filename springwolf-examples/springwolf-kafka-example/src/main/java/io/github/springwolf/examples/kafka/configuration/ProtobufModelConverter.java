@@ -54,7 +54,7 @@ class ProtobufModelConverter implements ModelConverter {
         model.setName(name);
         model.setTitle(rawClass.getSimpleName());
         model.setType("object");
-        model.setProperties(new LinkedHashMap<String, Schema>());
+        model.setProperties(new LinkedHashMap<>());
 
         for (FieldDescriptor field : descriptor.getFields()) {
             Method getter = getter(rawClass, field);

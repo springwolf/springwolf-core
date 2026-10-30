@@ -78,7 +78,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             ObjectSchema compositeSchema = new ObjectSchema();
             compositeSchema.setName(testInfo.getDisplayName());
 
-            Schema referenceSchema = new Schema();
+            Schema<?> referenceSchema = new Schema<>();
             referenceSchema.set$ref("#/components/schemas/Nested");
             compositeSchema.addProperty("f", referenceSchema);
 
@@ -470,7 +470,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
 
         @Test
         void composite_object_with_references(TestInfo testInfo) {
-            Schema referenceSchema = new Schema();
+            Schema<?> referenceSchema = new Schema<>();
             referenceSchema.set$ref("#/components/schemas/Nested");
 
             ObjectSchema compositeSchema = new ObjectSchema();
@@ -543,7 +543,7 @@ class DefaultSchemaWalkerJsonIntegrationTest {
             MapSchema mapSchema = new MapSchema();
             mapSchema.setName(testInfo.getDisplayName());
 
-            Schema propertySchema = new StringSchema();
+            Schema<?> propertySchema = new StringSchema();
             mapSchema.setAdditionalProperties(propertySchema);
 
             JsonNode actual = jsonSchemaWalker.fromSchema(mapSchema, Map.of());

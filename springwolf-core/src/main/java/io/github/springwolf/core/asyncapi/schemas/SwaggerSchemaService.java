@@ -54,10 +54,10 @@ public class SwaggerSchemaService {
      * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
      */
     public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
-        Schema headerSchema = swaggerSchemaMapper.mapToSwagger(schemaWithoutRef);
+        Schema<?> headerSchema = swaggerSchemaMapper.mapToSwagger(schemaWithoutRef);
 
         // call postprocessors
-        Map<String, Schema> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
+        Map<String, Schema<?>> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
         postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
 
         // convert Swagger schema back to an AsyncAPI SchemaObject
@@ -88,11 +88,12 @@ public class SwaggerSchemaService {
             ComponentSchema stringComponentSchema = swaggerSchemaMapper.mapSchema(stringPropertySchema);
             return new ExtractedSchemas(stringComponentSchema, Map.of());
         } else {
-            Map<String, Schema> newSchemasToProcess = new LinkedHashMap<>(resolvedSchema.referencedSchemas);
+            Map<String, Schema<?>> newSchemasToProcess = new LinkedHashMap<>();
+            resolvedSchema.referencedSchemas.forEach(newSchemasToProcess::put);
             newSchemasToProcess.putIfAbsent(getNameFromType(type), resolvedSchema.schema);
 
             preProcessSchemas(resolvedSchema.schema, newSchemasToProcess, type);
-            HashMap<String, Schema> processedSchemas = new HashMap<>(newSchemasToProcess);
+            HashMap<String, Schema<?>> processedSchemas = new HashMap<>(newSchemasToProcess);
             postProcessSchemas(newSchemasToProcess, processedSchemas, actualContentType);
 
             return createExtractedSchemas(resolvedSchema.schema, processedSchemas);
@@ -105,21 +106,21 @@ public class SwaggerSchemaService {
      * @param rootSchema        Swagger root schema
      * @param referencedSchemas all referenced swagger schemas
      */
-    private ExtractedSchemas createExtractedSchemas(Schema rootSchema, Map<String, Schema> referencedSchemas) {
+    private ExtractedSchemas createExtractedSchemas(Schema<?> rootSchema, Map<String, Schema<?>> referencedSchemas) {
         ComponentSchema rootComponentSchema = swaggerSchemaMapper.mapSchemaOrRef(rootSchema);
         Map<String, ComponentSchema> referencedComponentSchemas = swaggerSchemaMapper.mapSchemasMap(referencedSchemas);
 
         return new ExtractedSchemas(rootComponentSchema, referencedComponentSchemas);
     }
 
-    private void preProcessSchemas(Schema payloadSchema, Map<String, Schema> schemas, Type type) {
+    private void preProcessSchemas(Schema<?> payloadSchema, Map<String, Schema<?>> schemas, Type type) {
         removeEmptySchemas(schemas);
         processCommonModelConverters(payloadSchema, schemas);
         processAsyncApiPayloadAnnotation(schemas, type);
         processSchemaAnnotation(payloadSchema, type);
     }
 
-    private void removeEmptySchemas(Map<String, Schema> schemas) {
+    private void removeEmptySchemas(Map<String, Schema<?>> schemas) {
         schemas.entrySet().stream().toList().forEach(e -> {
             if (e.getValue().getType() == null
                     && e.getValue().getTypes() == null
@@ -138,7 +139,7 @@ public class SwaggerSchemaService {
      * <p>
      * This method will remove the native and puts the target, converted schema in place.
      */
-    private void processCommonModelConverters(Schema payloadSchema, Map<String, Schema> schemas) {
+    private void processCommonModelConverters(Schema<?> payloadSchema, Map<String, Schema<?>> schemas) {
         schemas.values().stream()
                 .filter(schema -> schema.getType() == null)
                 .filter(schema -> schema.get$ref() != null)
@@ -158,7 +159,7 @@ public class SwaggerSchemaService {
                 });
     }
 
-    private void updatePayloadSchemaRef(Schema schema, String targetSchemaName, String sourceSchemaName) {
+    private void updatePayloadSchemaRef(Schema<?> schema, String targetSchemaName, String sourceSchemaName) {
         if (schema != null && schema.get$ref() != null) {
             String refTypeName = ReferenceUtil.getLastSegment(schema.get$ref());
             if (refTypeName.equals(sourceSchemaName)) {
@@ -167,7 +168,7 @@ public class SwaggerSchemaService {
         }
     }
 
-    private void processSchemaAnnotation(Schema payloadSchema, Type type) {
+    private void processSchemaAnnotation(Schema<?> payloadSchema, Type type) {
         JavaType javaType = Json.mapper().constructType(type);
         Class<?> clazz = javaType.getRawClass();
         if (payloadSchema != null) {
@@ -178,7 +179,7 @@ public class SwaggerSchemaService {
         }
     }
 
-    private void processAsyncApiPayloadAnnotation(Map<String, Schema> schemas, Type type) {
+    private void processAsyncApiPayloadAnnotation(Map<String, Schema<?>> schemas, Type type) {
         JavaType javaType = Json.mapper().constructType(type);
         Class<?> clazz = javaType.getRawClass();
         List<Field> withPayloadAnnotatedFields = Arrays.stream(clazz.getDeclaredFields())
@@ -217,9 +218,9 @@ public class SwaggerSchemaService {
     }
 
     private void postProcessSchemas(
-            Map<String, Schema> schemasToProcess, Map<String, Schema> schemas, String contentType) {
+            Map<String, Schema<?>> schemasToProcess, Map<String, Schema<?>> schemas, String contentType) {
         for (SchemasPostProcessor processor : schemaPostProcessors) {
-            for (Schema schema : schemasToProcess.values()) {
+            for (Schema<?> schema : schemasToProcess.values()) {
                 if (!schemas.containsValue(schema)) {
                     // If the post-processor removed the schema, we can skip it
                     continue;

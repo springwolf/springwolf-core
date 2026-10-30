@@ -27,11 +27,11 @@ class AvroSchemaPostProcessorTest {
         schema.setProperties(new HashMap<>(
                 Map.of("foo", new StringSchema(), "schema", avroSchema, "specificData", avroSpecificData)));
 
-        var definitions = new HashMap<String, Schema>();
+        var definitions = new HashMap<String, Schema<?>>();
         definitions.put("schema", schema);
         definitions.put("customClassRefUnusedInThisTest", new StringSchema());
-        definitions.put("org.apache.avro.Schema", new Schema());
-        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema());
+        definitions.put("org.apache.avro.Schema", new Schema<>());
+        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema<>());
 
         // when
         processor.process(schema, definitions, "content-type-ignored");
@@ -60,12 +60,12 @@ class AvroSchemaPostProcessorTest {
         Schema<Object> schema = new Schema<>();
         schema.setProperties(new HashMap<>(Map.of("ref", refProperty)));
 
-        var definitions = new HashMap<String, Schema>();
+        var definitions = new HashMap<String, Schema<?>>();
         definitions.put("schema", schema);
         definitions.put("refSchema", refSchema);
         definitions.put("customClassRefUnusedInThisTest", new StringSchema());
-        definitions.put("org.apache.avro.Schema", new Schema());
-        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema());
+        definitions.put("org.apache.avro.Schema", new Schema<>());
+        definitions.put("org.apache.avro.ConversionJava.lang.Object", new Schema<>());
 
         // when
         processor.process(schema, definitions, "content-type-ignored");
@@ -91,7 +91,7 @@ class AvroSchemaPostProcessorTest {
         Schema<Object> intermediateSchema = new Schema<>();
         intermediateSchema.set$ref("#/components/schemas/schema");
 
-        var definitions = new HashMap<String, Schema>();
+        var definitions = new HashMap<String, Schema<?>>();
         definitions.put("schema", schema);
         definitions.put("intermediateSchema", new StringSchema());
 
