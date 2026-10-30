@@ -20,7 +20,7 @@ public class ListenerApplication {
         return new ClassListener();
     }
 
-    static class Listener {
+    public static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
         public void listen(String payload) {}
 

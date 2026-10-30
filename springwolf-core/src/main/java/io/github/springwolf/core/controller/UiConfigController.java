@@ -43,9 +43,9 @@ public class UiConfigController {
         return new UiConfig.InitialConfig(defaults.isShowBindings(), defaults.isShowHeaders());
     }
 
-    private record UiConfig(InitialConfig initialConfig, List<UiConfigGroup> groups) {
-        private record InitialConfig(boolean showBindings, boolean showHeaders) {}
+    public record UiConfig(InitialConfig initialConfig, List<UiConfigGroup> groups) {
+        public record InitialConfig(boolean showBindings, boolean showHeaders) {}
 
-        private record UiConfigGroup(String name) {}
+        public record UiConfigGroup(String name) {}
     }
 }

@@ -127,7 +127,7 @@ class HeaderClassExtractorIntegrationTest {
         assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED); // currently not supported
     }
 
-    public static class TestClass {
+    static class TestClass {
 
         public void consumeWithoutHeadersAnnotation(String simpleValue) {}
 

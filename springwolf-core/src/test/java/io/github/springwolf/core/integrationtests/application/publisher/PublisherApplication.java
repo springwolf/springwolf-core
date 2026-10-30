@@ -21,7 +21,7 @@ public class PublisherApplication {
         return new ClassPublisher();
     }
 
-    static class Publisher {
+    public static class Publisher {
         @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-channel"))
         public void publish(String payload) {}
 
@@ -36,7 +36,7 @@ public class PublisherApplication {
     }
 
     @AsyncPublisher(operation = @AsyncOperation(channelName = "publisher-class-channel"))
-    static class ClassPublisher {
+    public static class ClassPublisher {
         public void publish(Integer payload) {}
     }
 }
