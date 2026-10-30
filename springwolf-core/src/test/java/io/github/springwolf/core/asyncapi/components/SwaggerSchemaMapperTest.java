@@ -228,14 +228,15 @@ class SwaggerSchemaMapperTest {
             // given
             Schema<?> schema = new Schema<>();
             // no type set - simulates a composed schema (allOf/oneOf/anyOf) with null type
+            // Regression for issues #1834 and #1914: null type should not produce an invalid "type: []".
             schema.addAllOfItem(new Schema<>());
 
             // when
             ComponentSchema componentSchema = swaggerSchemaMapper.mapSchema(schema);
 
-            // then - should not throw NPE, type should be empty
+            // then - omit the type when a composed schema does not declare one
             assertThat(componentSchema.getSchema()).isNotNull();
-            assertThat(componentSchema.getSchema().getType()).isNullOrEmpty();
+            assertThat(componentSchema.getSchema().getType()).isNull();
         }
 
         @Test
