@@ -49,6 +49,19 @@
         }
       }
     },
+    "bean-ref-topic": {
+      "address": "bean-ref-topic",
+      "messages": {
+        "java.lang.Object": {
+          "$ref": "#/components/messages/java.lang.Object"
+        }
+      },
+      "bindings": {
+        "kafka": {
+          "bindingVersion": "0.5.0"
+        }
+      }
+    },
     "example-topic": {
       "address": "example-topic",
       "messages": {
@@ -661,6 +674,39 @@
             }
           },
           "title": "SpringKafkaDefaultHeaders-MonetaryAmount",
+          "type": "object"
+        }
+      },
+      "SpringKafkaDefaultHeaders-Object": {
+        "title": "SpringKafkaDefaultHeaders-Object",
+        "type": "object",
+        "properties": {
+          "__TypeId__": {
+            "title": "__TypeId__",
+            "type": "string",
+            "description": "Spring Type Id Header",
+            "examples": [
+              "java.lang.Object"
+            ],
+            "const": "java.lang.Object"
+          }
+        },
+        "examples": [
+          {
+            "__TypeId__": "java.lang.Object"
+          }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-07/schema#",
+          "properties": {
+            "__TypeId__": {
+              "const": "java.lang.Object",
+              "description": "Spring Type Id Header",
+              "title": "__TypeId__",
+              "type": "string"
+            }
+          },
+          "title": "SpringKafkaDefaultHeaders-Object",
           "type": "object"
         }
       },
@@ -1823,6 +1869,16 @@
           "type": "integer"
         }
       },
+      "java.lang.Object": {
+        "type": "object",
+        "examples": [
+          { }
+        ],
+        "x-json-schema": {
+          "$schema": "https://json-schema.org/draft-07/schema#",
+          "type": "object"
+        }
+      },
       "java.lang.String": {
         "type": "string",
         "examples": [
@@ -2107,6 +2163,27 @@
           }
         }
       },
+      "java.lang.Object": {
+        "headers": {
+          "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-Object"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.1.0",
+          "schema": {
+            "type": "object",
+            "examples": [
+              { }
+            ]
+          }
+        },
+        "name": "java.lang.Object",
+        "title": "Object",
+        "bindings": {
+          "kafka": {
+            "bindingVersion": "0.5.0"
+          }
+        }
+      },
       "java.lang.String": {
         "headers": {
           "$ref": "#/components/schemas/SpringKafkaDefaultHeaders-string"
@@ -2209,6 +2286,26 @@
       "messages": [
         {
           "$ref": "#/channels/avro-topic/messages/io.github.springwolf.examples.kafka.dto.avro.AnotherPayloadAvroDto"
+        }
+      ]
+    },
+    "bean-ref-topic_receive_listen": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/bean-ref-topic"
+      },
+      "bindings": {
+        "kafka": {
+          "groupId": {
+            "type": "string",
+            "const": "bean-ref-group"
+          },
+          "bindingVersion": "0.5.0"
+        }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/bean-ref-topic/messages/java.lang.Object"
         }
       ]
     },

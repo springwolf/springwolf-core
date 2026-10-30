@@ -37,7 +37,7 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
     void scan_componentHasTestListenerMethods() {
         // given
         Operation operation = Operation.builder().operationId("operationId").build();
-        when(springAnnotationOperationService.buildOperation(any(), any(), any()))
+        when(springAnnotationOperationService.buildOperation(any(), any(), any(), any()))
                 .thenReturn(operation);
 
         // when
@@ -52,7 +52,7 @@ class SpringAnnotationMethodLevelOperationsScannerTest {
     void operationCustomizerIsCalled() {
         // given
         Operation operation = Operation.builder().operationId("operationId").build();
-        when(springAnnotationOperationService.buildOperation(any(), any(), any()))
+        when(springAnnotationOperationService.buildOperation(any(), any(), any(), any()))
                 .thenReturn(operation);
 
         // when

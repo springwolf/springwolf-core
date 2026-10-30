@@ -23,6 +23,7 @@ import io.github.springwolf.core.asyncapi.scanners.operations.annotations.Spring
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaBindingFactory;
+import io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings.KafkaListenerBeanRefResolver;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.header.AsyncHeadersForKafkaBuilder;
 import io.github.springwolf.plugins.kafka.asyncapi.scanners.common.inferrer.KafkaChannelNameInferrer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -50,9 +51,20 @@ public class SpringwolfKafkaScannerConfiguration {
             name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
             havingValue = "true",
             matchIfMissing = true)
+    @ConditionalOnMissingBean(name = "kafkaListenerBeanRefResolver")
+    public KafkaListenerBeanRefResolver kafkaListenerBeanRefResolver(StringValueResolver stringValueResolver) {
+        return new KafkaListenerBeanRefResolver(stringValueResolver);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = SPRINGWOLF_SCANNER_KAFKA_LISTENER_ENABLED,
+            havingValue = "true",
+            matchIfMissing = true)
     @ConditionalOnMissingBean(name = "kafkaBindingFactory")
-    public KafkaBindingFactory kafkaBindingFactory(StringValueResolver stringValueResolver) {
-        return new KafkaBindingFactory(stringValueResolver);
+    public KafkaBindingFactory kafkaBindingFactory(
+            StringValueResolver stringValueResolver, KafkaListenerBeanRefResolver kafkaListenerBeanRefResolver) {
+        return new KafkaBindingFactory(stringValueResolver, kafkaListenerBeanRefResolver);
     }
 
     @Bean

@@ -43,6 +43,7 @@ public class SpringContextIntegrationTest {
                     .containsExactlyInAnyOrder(
                             "another-topic",
                             "avro-topic",
+                            "bean-ref-topic",
                             "example-topic",
                             "integer-topic",
                             "nullable-topic",
