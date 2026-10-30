@@ -71,6 +71,21 @@ class DefaultComponentsServiceIntegrationTest {
         }
 
         @Test
+        void getOpenApi31NullTypeSchemas() {
+            io.swagger.v3.oas.models.media.Schema<?> swaggerSchema = new io.swagger.v3.oas.models.media.Schema<>();
+            Set<String> types = Set.of(SchemaType.STRING.getValue(), SchemaType.NULL.getValue());
+            swaggerSchema.setTypes(types);
+            SwaggerSchemaMapper mapper = new SwaggerSchemaMapper(configProperties);
+
+            assertThat(mapper.mapSchema(swaggerSchema).getSchema())
+                    .isEqualTo(SchemaObject.builder().type(types).build());
+
+            swaggerSchema.setType(SchemaType.STRING.getValue());
+            assertThat(mapper.mapSchema(swaggerSchema).getSchema())
+                    .isEqualTo(SchemaObject.builder().type(types).build());
+        }
+
+        @Test
         void getArraySchemas() {
             componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
@@ -235,7 +250,6 @@ class DefaultComponentsServiceIntegrationTest {
             @Schema(
                     hidden = true, // currently not supported
                     defaultValue = "default", // currently not supported
-                    nullable = true, // currently not supported
                     contains = Void.class, // currently not supported
                     additionalItems = Void.class, // currently not supported
                     additionalProperties = Schema.AdditionalPropertiesValue.TRUE, // currently not supported
