@@ -46,7 +46,7 @@ public class OperationMerger {
     private static Operation mergeOperation(Operation operation, Operation otherOperation) {
         Operation mergedOperation = operation != null ? operation : otherOperation;
 
-        if(operation != null) {
+        if (operation != null) {
             List<MessageReference> mergedMessages =
                     mergeMessageReferences(operation.getMessages(), otherOperation.getMessages());
             if (!mergedMessages.isEmpty()) {

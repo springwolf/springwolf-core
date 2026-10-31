@@ -44,7 +44,7 @@ public class ChannelMerger {
     private static ChannelObject mergeChannel(ChannelObject channel, ChannelObject otherChannel) {
         ChannelObject mergedChannel = channel != null ? channel : otherChannel;
 
-        if(channel != null) {
+        if (channel != null) {
             mergeMessages(channel, otherChannel, mergedChannel);
             mergeBindings(channel, otherChannel, mergedChannel);
         }

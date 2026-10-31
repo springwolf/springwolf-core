@@ -2,7 +2,6 @@
 package io.github.springwolf.examples.amqp.configuration;
 
 import io.github.springwolf.examples.amqp.AmqpConstants;
-import io.github.springwolf.examples.amqp.dtos.AnotherPayloadDto;
 import io.github.springwolf.examples.amqp.dtos.ExamplePayloadDto;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
