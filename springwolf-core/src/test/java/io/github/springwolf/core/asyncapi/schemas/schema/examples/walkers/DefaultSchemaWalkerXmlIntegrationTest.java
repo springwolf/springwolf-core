@@ -73,12 +73,28 @@ class DefaultSchemaWalkerXmlIntegrationTest {
         void build() {
             StringSchema schema = new StringSchema();
             schema.setName("build_schema_test");
-            // TODO should throw exception, just a raw value does not work in xml
-            // TODO duplicate with number schema
 
             String actualXmlString =
                     xmlSchemaWalker.fromSchema(schema, emptyMap()).trim();
             assertThat(actualXmlString).isEqualTo("<build_schema_test>string</build_schema_test>");
+        }
+
+        @Test
+        void buildWithoutNameReturnsNull() {
+            StringSchema schema = new StringSchema();
+
+            Object actualXmlString = xmlSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualXmlString).isNull();
+        }
+
+        @Test
+        void buildNumberWithoutNameReturnsNull() {
+            NumberSchema schema = new NumberSchema();
+
+            Object actualXmlString = xmlSchemaWalker.fromSchema(schema, emptyMap());
+
+            assertThat(actualXmlString).isNull();
         }
 
         @Test

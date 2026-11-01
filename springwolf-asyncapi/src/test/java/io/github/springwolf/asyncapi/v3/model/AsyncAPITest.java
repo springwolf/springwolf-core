@@ -382,7 +382,4 @@ class AsyncAPITest {
                 .whenIgnoringPaths("components.operationTraits.kafka.bindings.kafka.bindingVersion")
                 .isEqualTo(example);
     }
-
-    // FIXME: We should have the capability to serialize automatically creating the $ref values with the proper keys
-    //        Current approach forces the developer to manually create the structure, which is limiting
 }

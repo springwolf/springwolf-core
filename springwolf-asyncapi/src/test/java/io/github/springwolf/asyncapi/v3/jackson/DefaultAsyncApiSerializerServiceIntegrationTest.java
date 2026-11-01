@@ -79,7 +79,6 @@ class DefaultAsyncApiSerializerServiceIntegrationTest {
                 .bindings(Map.of(
                         "kafka",
                         KafkaMessageBinding.builder()
-                                // FIXME: We should have a SchemaString (Schema<String>)
                                 .key(SchemaObject.builder()
                                         .type(Set.of(SchemaType.STRING.getValue()))
                                         .build())

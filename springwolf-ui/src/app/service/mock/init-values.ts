@@ -6,7 +6,8 @@ import { Binding, Bindings } from "../../models/bindings.model";
 import { Message } from "../../models/message.model";
 import { Info } from "../../models/info.model";
 
-// TODO: are the init values needed?
+// These default values initialize Angular signals/components before async API data is loaded.
+// They provide an empty, valid state while the real model is being fetched.
 export const initExample = new Example("init");
 export const noExample = new Example("");
 export const initBindings: Bindings = {};

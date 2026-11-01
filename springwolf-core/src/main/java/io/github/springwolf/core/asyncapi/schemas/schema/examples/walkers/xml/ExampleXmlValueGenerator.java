@@ -161,7 +161,12 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         if (exampleObject instanceof Element) {
             objectToWrite = Optional.of(exampleObject);
         } else {
-            objectToWrite = lookupSchemaName(schema).map(name -> wrapNode(name, exampleObject));
+            Optional<String> schemaName = lookupSchemaName(schema);
+            if (schemaName.isEmpty()) {
+                throw new SchemaWalker.ExampleGeneratingException(
+                        "Unable to generate XML example for schema without a name; raw values cannot be serialized as XML");
+            }
+            objectToWrite = schemaName.map(name -> wrapNode(name, exampleObject));
         }
 
         if (objectToWrite.isEmpty()) {

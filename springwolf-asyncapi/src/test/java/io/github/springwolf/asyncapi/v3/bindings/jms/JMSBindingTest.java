@@ -44,7 +44,7 @@ class JMSBindingTest {
                 .isEqualTo(example);
     }
 
-    // FIXME: See https://github.com/asyncapi/bindings/issues/232
+    // Bug report, see https://github.com/asyncapi/bindings/issues/232
     @Test
     void shouldSerializeJMSServerBinding() throws Exception {
         var asyncapi = AsyncAPI.builder()
