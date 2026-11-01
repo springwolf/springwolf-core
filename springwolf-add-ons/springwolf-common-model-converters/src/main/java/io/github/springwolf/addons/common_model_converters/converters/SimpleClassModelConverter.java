@@ -14,7 +14,7 @@ import java.util.Iterator;
  * Sometimes adding documentation annotation is not possible on classes, i.e. they are marked as final or are from external libraries.
  * This converter allows to add documentation to such classes. Duplicate the _target_ class as _native_ into your project and add documentation annotations.
  * Then, create an instance (@Bean, @Component) of this converter in your configuration mapping the classes.
- *
+ * <p/>
  * Example: {@link io.github.springwolf.addons.common_model_converters.converters.monetaryamount.MonetaryAmountConverter}
  */
 public class SimpleClassModelConverter implements ModelConverter {

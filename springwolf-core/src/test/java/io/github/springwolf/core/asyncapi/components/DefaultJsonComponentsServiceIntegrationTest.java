@@ -66,7 +66,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/definitions.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -78,7 +77,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/documented-definitions.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -90,7 +88,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/array-definitions.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -102,7 +99,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/complex-definitions.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -114,7 +110,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/json/generics-wrapper-definitions.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -238,7 +233,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/annotation-definitions.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 
@@ -318,7 +312,6 @@ class DefaultJsonComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/json/json-type-definitions.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 

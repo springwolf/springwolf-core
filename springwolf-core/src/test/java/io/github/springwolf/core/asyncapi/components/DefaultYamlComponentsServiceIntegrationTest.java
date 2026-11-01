@@ -70,7 +70,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/definitions-yaml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -82,7 +81,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/documented-definitions-yaml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -94,7 +92,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/array-definitions-yaml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -106,7 +103,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/complex-definitions-yaml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -118,7 +114,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinitions("/schemas/yaml/generics-wrapper-definitions-yaml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -242,7 +237,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinitions("/schemas/yaml/annotation-definitions-yaml.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 
@@ -323,7 +317,6 @@ class DefaultYamlComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinitions("/schemas/yaml/json-type-definitions-yaml.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 

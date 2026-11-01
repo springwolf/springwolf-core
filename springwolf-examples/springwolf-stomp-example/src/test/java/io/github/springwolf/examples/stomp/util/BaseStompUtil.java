@@ -23,14 +23,14 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class BaseStompUtil<R> {
-    private final JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
+    private static final JacksonJsonMessageConverter CONVERTER = new JacksonJsonMessageConverter();
     private final StompSession session;
     private final BlockingQueue<R> blockingQueue = new ArrayBlockingQueue<>(1);
 
     public BaseStompUtil(
             WebSocketStompClient webSocketStompClient, String wsPath, List<String> subscriptions, Type responseType)
             throws ExecutionException, InterruptedException, TimeoutException {
-        webSocketStompClient.setMessageConverter(converter);
+        webSocketStompClient.setMessageConverter(CONVERTER);
 
         StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
             @Override

@@ -47,7 +47,6 @@ class DefaultComponentsServiceTest {
                           }
                         }""".stripIndent();
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 }

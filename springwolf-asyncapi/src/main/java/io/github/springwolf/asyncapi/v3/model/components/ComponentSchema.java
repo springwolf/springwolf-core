@@ -14,9 +14,9 @@ import tools.jackson.databind.annotation.JsonSerialize;
 /**
  * Container class representing a schema in the 'components' block of an AsyncAPI document. Contains either
  * <ul>
- *     <li>a {@link SchemaObject} instance, which represents an schema formatted with the default asyncapi schema format</li>
- *     <li>a {@link SchemaReference}} instance, pointing to an other schema </li>
- *     <li>a {@link MultiFormatSchema} instance, which includes a schema an a corresponding schema format </li>
+ *     <li>a {@link SchemaObject} instance, which represents a schema formatted with the default asyncapi schema format</li>
+ *     <li>a {@link SchemaReference}} instance, pointing to another schema </li>
+ *     <li>a {@link MultiFormatSchema} instance, which includes a schema and a corresponding schema format </li>
  * </ul>
  *  Json Serialization removes this container class and serializes the content Object directly.
  */

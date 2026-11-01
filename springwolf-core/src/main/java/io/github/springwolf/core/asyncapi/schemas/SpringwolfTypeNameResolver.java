@@ -6,7 +6,7 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 /**
  * Subclass of {@link TypeNameResolver} with a public constructor to
  * create new instances of TypeNameResolvers.
- *
+ * <p/>
  * Avoids interference with other libraries usages of the TypeNameResolver
  */
 public class SpringwolfTypeNameResolver extends TypeNameResolver {

@@ -118,7 +118,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
     /**
      * checks whether asyncApi has internally already been initialized or not.
      *
-     * @return true if asyncApi has not allready been created and initialized.
+     * @return true if asyncApi has not already been created and initialized.
      */
     public boolean isNotInitialized() {
         return this.asyncAPIResult == null;

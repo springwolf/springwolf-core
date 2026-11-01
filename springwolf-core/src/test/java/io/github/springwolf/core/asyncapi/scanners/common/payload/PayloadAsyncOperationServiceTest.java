@@ -29,12 +29,11 @@ class PayloadAsyncOperationServiceTest {
     private ComponentsService componentsService = mock(ComponentsService.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
-    private PayloadService payloadService;
     private PayloadAsyncOperationService payloadAsyncOperationService;
 
     @BeforeEach
     void setUp() {
-        payloadService = new PayloadService(componentsService, properties);
+        PayloadService payloadService = new PayloadService(componentsService, properties);
         payloadAsyncOperationService = new PayloadAsyncOperationService(payloadExtractor, payloadService);
     }
 

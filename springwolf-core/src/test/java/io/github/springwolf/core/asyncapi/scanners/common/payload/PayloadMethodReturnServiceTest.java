@@ -23,12 +23,11 @@ class PayloadMethodReturnServiceTest {
     private SpringwolfConfigProperties.ConfigDocket docket = mock(SpringwolfConfigProperties.ConfigDocket.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
-    private PayloadService payloadService;
     private PayloadMethodReturnService payloadMethodReturnService;
 
     @BeforeEach
     void setUp() {
-        payloadService = new PayloadService(componentsService, properties);
+        PayloadService payloadService = new PayloadService(componentsService, properties);
         payloadMethodReturnService = new PayloadMethodReturnService(payloadService);
     }
 

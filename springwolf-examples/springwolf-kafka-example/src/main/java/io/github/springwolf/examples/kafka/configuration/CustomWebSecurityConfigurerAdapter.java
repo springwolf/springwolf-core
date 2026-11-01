@@ -19,7 +19,7 @@ public class CustomWebSecurityConfigurerAdapter {
     private static final String UI_RESOURCES = "/springwolf/**";
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         return http.authorizeHttpRequests(it -> it
                         // allow anonymous access to all actuator endpoint
                         .requestMatchers("/actuator/**")

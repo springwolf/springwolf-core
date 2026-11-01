@@ -92,7 +92,6 @@ class SwaggerSchemaServiceTest {
         String actualDefinitions = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemas);
 
         // then
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).contains(clazz.getSimpleName());
         assertThat(actualDefinitions).doesNotContain(clazz.getCanonicalName());
     }

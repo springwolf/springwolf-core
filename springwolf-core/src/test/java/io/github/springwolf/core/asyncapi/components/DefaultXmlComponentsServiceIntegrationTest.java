@@ -60,7 +60,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -72,7 +71,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/documented-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -84,7 +82,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/array-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -96,7 +93,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/complex-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -109,7 +105,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
         String expected =
                 loadDefinition("/schemas/xml/complex-definitions-with-attributes-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -121,7 +116,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/generics-wrapper-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -255,7 +249,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/annotation-definitions-xml.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 
@@ -356,7 +349,6 @@ class DefaultXmlComponentsServiceIntegrationTest {
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/schema-with-shared-property.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 

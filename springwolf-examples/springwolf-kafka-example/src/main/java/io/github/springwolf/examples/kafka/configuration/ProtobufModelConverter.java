@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.kafka.configuration;
 
+import com.google.protobuf.Descriptors;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -100,7 +101,7 @@ class ProtobufModelConverter implements ModelConverter {
                     .toList());
         } else {
             schema.setEnum(field.getEnumType().getValues().stream()
-                    .map(value -> value.getName())
+                    .map(Descriptors.EnumValueDescriptor::getName)
                     .toList());
         }
         return schema;

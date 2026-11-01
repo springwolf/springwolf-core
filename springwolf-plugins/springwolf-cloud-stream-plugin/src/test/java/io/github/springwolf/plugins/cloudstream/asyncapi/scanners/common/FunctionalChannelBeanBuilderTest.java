@@ -419,12 +419,16 @@ class FunctionalChannelBeanBuilderTest {
 
             interface BiConsumerChild extends BiConsumer<String, String> {}
 
+            @SuppressWarnings("rawtypes")
             interface BiConsumerRawChild extends BiConsumer {}
 
+            @SuppressWarnings("rawtypes")
             interface SupplierRawChild extends Supplier {}
 
+            @SuppressWarnings("rawtypes")
             interface FunctionRawChild extends Function {}
 
+            @SuppressWarnings("rawtypes")
             interface BiFunctionRawChild extends BiFunction {}
 
             interface BiConsumerChildChild extends BiConsumerChild {}

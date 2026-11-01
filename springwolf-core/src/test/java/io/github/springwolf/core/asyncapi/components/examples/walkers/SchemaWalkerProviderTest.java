@@ -16,9 +16,9 @@ class SchemaWalkerProviderTest {
     @Test
     void returnsSchemaWalkerForContentType() {
         // given
-        SchemaWalker schemaWalker1 = mock(SchemaWalker.class);
-        SchemaWalker schemaWalker2 = mock(SchemaWalker.class);
-        SchemaWalker schemaWalker3 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker1 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker2 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker3 = mock(SchemaWalker.class);
         SchemaWalkerProvider provider = new SchemaWalkerProvider(List.of(schemaWalker1, schemaWalker2, schemaWalker3));
 
         when(schemaWalker2.canHandle("content-type")).thenReturn(true);
@@ -34,9 +34,9 @@ class SchemaWalkerProviderTest {
     @Test
     void doesNotReturnWalkerForUnknownContentType() {
         // given
-        SchemaWalker schemaWalker1 = mock(SchemaWalker.class);
-        SchemaWalker schemaWalker2 = mock(SchemaWalker.class);
-        SchemaWalker schemaWalker3 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker1 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker2 = mock(SchemaWalker.class);
+        SchemaWalker<?> schemaWalker3 = mock(SchemaWalker.class);
         SchemaWalkerProvider provider = new SchemaWalkerProvider(List.of(schemaWalker1, schemaWalker2, schemaWalker3));
 
         // when

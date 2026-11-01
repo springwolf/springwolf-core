@@ -30,18 +30,15 @@ class DefaultAsyncApiServiceTest {
 
     private DefaultAsyncApiService defaultAsyncApiService;
     private AsyncApiDocketService asyncApiDocketService;
-    private ChannelsService channelsService;
-    private OperationsService operationsService;
-    private ComponentsService componentsService;
-    private List<AsyncApiCustomizer> customizers = new ArrayList<>();
     private AsyncApiGroupService groupService;
 
     @BeforeEach
     void setup() {
         asyncApiDocketService = mock(AsyncApiDocketService.class);
-        channelsService = mock(ChannelsService.class);
-        operationsService = mock(OperationsService.class);
-        componentsService = mock(ComponentsService.class);
+        ChannelsService channelsService = mock(ChannelsService.class);
+        OperationsService operationsService = mock(OperationsService.class);
+        ComponentsService componentsService = mock(ComponentsService.class);
+        List<AsyncApiCustomizer> customizers = new ArrayList<>();
         groupService = mock(AsyncApiGroupService.class);
 
         when(channelsService.findChannels()).thenReturn(Map.of());
