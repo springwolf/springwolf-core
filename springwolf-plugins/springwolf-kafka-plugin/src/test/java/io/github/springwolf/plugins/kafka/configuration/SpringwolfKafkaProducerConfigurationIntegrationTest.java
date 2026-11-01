@@ -2,9 +2,11 @@
 package io.github.springwolf.plugins.kafka.configuration;
 
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
@@ -40,6 +42,8 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             types = {
                 SpringwolfClassScanner.class,
                 ComponentsService.class,
+                MessagesService.class,
+                SchemasService.class,
                 HeaderClassExtractor.class,
                 PayloadMethodParameterService.class,
                 StringValueResolver.class
@@ -77,6 +81,8 @@ public class SpringwolfKafkaProducerConfigurationIntegrationTest {
             types = {
                 SpringwolfClassScanner.class,
                 ComponentsService.class,
+                MessagesService.class,
+                SchemasService.class,
                 HeaderClassExtractor.class,
                 PayloadMethodParameterService.class,
                 StringValueResolver.class

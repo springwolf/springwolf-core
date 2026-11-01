@@ -18,7 +18,7 @@ public class KafkaChannelBindingProcessor extends AbstractChannelBindingProcesso
             KafkaChannelTopicConfiguration.builder().build();
 
     public KafkaChannelBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, KafkaAsyncChannelBinding.class);
     }
 
     protected ProcessedChannelBinding mapToChannelBinding(KafkaAsyncChannelBinding bindingAnnotation) {

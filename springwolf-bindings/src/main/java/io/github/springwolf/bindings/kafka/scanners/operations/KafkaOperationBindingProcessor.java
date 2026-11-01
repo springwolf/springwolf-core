@@ -16,7 +16,7 @@ import java.util.Set;
 public class KafkaOperationBindingProcessor extends AbstractOperationBindingProcessor<KafkaAsyncOperationBinding> {
 
     public KafkaOperationBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, KafkaAsyncOperationBinding.class);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class PolymorphicPayloadApplication {
         return new Listener();
     }
 
-    static class Listener {
+    public static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "listener-channel"))
         public void listen(Payload payload) {}
     }

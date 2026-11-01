@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.plugins.stomp.asyncapi.scanners.common.MessageMappingUtil;
 import io.github.springwolf.plugins.stomp.configuration.properties.SpringwolfStompConfigProperties;
@@ -20,22 +21,24 @@ public class StompBindingMessageMappingFactory implements BindingFactory<Message
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(MessageMapping annotation) {
-        return properties.getEndpoint().getApp() + MessageMappingUtil.getChannelName(annotation, stringValueResolver);
+    public String getChannelName(BindingContext<MessageMapping> bindingContext) {
+        return properties.getEndpoint().getApp()
+                + MessageMappingUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, ChannelBinding> buildChannelBinding(MessageMapping annotation) {
+    public Map<String, ChannelBinding> buildChannelBinding(BindingContext<MessageMapping> bindingContext) {
         return MessageMappingUtil.buildChannelBinding();
     }
 
     @Override
-    public Map<String, OperationBinding> buildOperationBinding(MessageMapping annotation) {
-        return MessageMappingUtil.buildOperationBinding(annotation, stringValueResolver);
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<MessageMapping> bindingContext) {
+        return MessageMappingUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(MessageMapping annotation, SchemaObject headerSchema) {
+    public Map<String, MessageBinding> buildMessageBinding(
+            BindingContext<MessageMapping> bindingContext, SchemaObject headerSchema) {
         return MessageMappingUtil.buildMessageBinding();
     }
 }

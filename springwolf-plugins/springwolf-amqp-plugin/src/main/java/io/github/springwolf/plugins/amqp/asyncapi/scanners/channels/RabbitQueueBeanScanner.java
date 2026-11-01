@@ -9,8 +9,6 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -19,12 +17,12 @@ public class RabbitQueueBeanScanner implements ChannelsScanner {
     private final List<Binding> bindings;
 
     @Override
-    public Map<String, ChannelObject> scan() {
+    public List<ChannelObject> scan() {
         return Stream.concat(
                         queues.stream().map(RabbitListenerUtil::buildChannelObject),
                         bindings.stream()
                                 .map(RabbitListenerUtil::buildChannelObject)
                                 .flatMap(List::stream))
-                .collect(Collectors.toMap(ChannelObject::getChannelId, c -> c, (a, b) -> a));
+                .toList();
     }
 }

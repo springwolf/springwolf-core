@@ -14,12 +14,12 @@ public class SchemaEnumAsRefApplication {
         return new Listener();
     }
 
-    static class Listener {
+    public static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "enum-channel"))
         public void listen(Schemas.MyEnumRoot payload) {}
     }
 
-    public class Schemas {
+    public static class Schemas {
         public record MyEnumRoot(MyEnumObject myEnumObjectField) {}
 
         @Schema(enumAsRef = true)

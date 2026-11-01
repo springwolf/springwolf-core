@@ -33,24 +33,28 @@ public class PayloadSchemaFormatIntegrationTest {
                                 "openapi_v3",
                                 "springwolf.docket.base-package",
                                 "io.github.springwolf.core.integrationtests.application.listener")));
-        StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .setEnvironment(environment)
-                .buildAndStart();
+                .buildAndStart()) {
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        Files.writeString(Path.of("src", "test", "resources", "application", "asyncapi.openapiv3.actual.json"), actual);
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            Files.writeString(
+                    Path.of("src", "test", "resources", "application", "asyncapi.openapiv3.actual.json"), actual);
 
-        // then
-        InputStream s = this.getClass().getResourceAsStream("/application/asyncapi.openapiv3.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertThat(actual).isEqualTo(expected);
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/application/asyncapi.openapiv3.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(actual).isEqualTo(expected);
+        }
     }
 
     @Test
@@ -66,24 +70,27 @@ public class PayloadSchemaFormatIntegrationTest {
                                 "openapi_v3_1",
                                 "springwolf.docket.base-package",
                                 "io.github.springwolf.core.integrationtests.application.listener")));
-        StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .setEnvironment(environment)
-                .buildAndStart();
+                .buildAndStart()) {
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        Files.writeString(
-                Path.of("src", "test", "resources", "application", "asyncapi.openapiv31.actual.json"), actual);
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            Files.writeString(
+                    Path.of("src", "test", "resources", "application", "asyncapi.openapiv31.actual.json"), actual);
 
-        // then
-        InputStream s = this.getClass().getResourceAsStream("/application/asyncapi.openapiv31.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertThat(actual).isEqualTo(expected);
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/application/asyncapi.openapiv31.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(actual).isEqualTo(expected);
+        }
     }
 }

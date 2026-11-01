@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.examples.jms;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.GenericContainer;
@@ -21,7 +22,7 @@ public class JmsTestContainerExtension implements BeforeAllCallback, AutoCloseab
             .withExposedPorts(61616);
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) {
+    public void beforeAll(@NonNull ExtensionContext extensionContext) {
         if (!started) {
             started = true;
 

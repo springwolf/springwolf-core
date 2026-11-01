@@ -32,7 +32,7 @@ public class JMSServerBinding extends ServerBinding {
     /**
      * OPTIONAL. Additional properties to set on the JMS ConnectionFactory implementation for the JMS Provider.
      */
-    // FIXME: See https://github.com/asyncapi/bindings/issues/232
+    // Bug report, see https://github.com/asyncapi/bindings/issues/232
     @JsonProperty("properties")
     private List<Map<String, Object>> properties;
 

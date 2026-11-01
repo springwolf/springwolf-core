@@ -50,7 +50,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveBooleanPayload() throws Exception {
+    void shouldResolveBooleanPayload() {
         // given
         String type = Boolean.class.getName();
         String payload = "true";
@@ -75,7 +75,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveIntegerPayload() throws Exception {
+    void shouldResolveIntegerPayload() {
         // given
         String type = Integer.class.getName();
         String payload = "12345678";
@@ -100,7 +100,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveLongPayload() throws Exception {
+    void shouldResolveLongPayload() {
         // given
         String type = Long.class.getName();
         String payload = Long.valueOf(Long.MAX_VALUE).toString();
@@ -125,7 +125,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveFloatPayload() throws Exception {
+    void shouldResolveFloatPayload() {
         // given
         String type = Float.class.getName();
         String payload = "12345678.123";
@@ -150,7 +150,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveDoublePayload() throws Exception {
+    void shouldResolveDoublePayload() {
         // given
         String type = Double.class.getName();
         String payload = Double.valueOf(Double.MAX_VALUE).toString();
@@ -175,7 +175,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveObjectPayload() throws Exception {
+    void shouldResolveObjectPayload() {
         // given
         String type = ObjectClass.class.getName();
         String payload = "{\"value\":\"test\"}";
@@ -200,7 +200,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldResolveStringPayload() throws Exception {
+    void shouldResolveStringPayload() {
         // given
         String type = String.class.getName();
         String payload = "\"test\"";
@@ -249,7 +249,7 @@ class PublishingPayloadCreatorTest {
     }
 
     @Test
-    void shouldReturnEmptyPayloadForInvalidJson() throws Exception {
+    void shouldReturnEmptyPayloadForInvalidJson() {
         // given
         String type = ObjectClass.class.getName();
         String payload = "---invalid-json---";

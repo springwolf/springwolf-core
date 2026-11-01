@@ -51,6 +51,15 @@ jobs:
       - name: Run build, check, analyzeDependencies on add-on
         run: ./gradlew -p ${{ env.addon }} build
 
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure()
+        with:
+          check_name: test-addon-${{ matrix.addon }}
+          require_tests: true
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          annotate_only: github.event.pull_request.head.repo.full_name != github.repository # for forks
+
       - name: Publish package
         if: github.ref == 'refs/heads/main'
         run: ./gradlew -p ${{ env.addon }} publish

@@ -5,10 +5,10 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.AfterAll;
@@ -33,7 +33,7 @@ class HeaderClassExtractorIntegrationTest {
             configProperties,
             List.of(),
             new SwaggerSchemaMapper(configProperties),
-            new ModelConvertersProvider(configProperties, List.of(titleModelConverter), List.of()));
+            new ModelConvertersRegisterer(configProperties, List.of(titleModelConverter), List.of()));
     private final HeaderClassExtractor headerClassExtractor = new HeaderClassExtractor(schemaService);
 
     private final PayloadSchemaObject payloadSchemaName = new PayloadSchemaObject(
@@ -127,7 +127,7 @@ class HeaderClassExtractorIntegrationTest {
         assertThat(result).isEqualTo(AsyncHeadersNotDocumented.NOT_DOCUMENTED); // currently not supported
     }
 
-    public static class TestClass {
+    static class TestClass {
 
         public void consumeWithoutHeadersAnnotation(String simpleValue) {}
 

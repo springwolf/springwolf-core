@@ -198,6 +198,26 @@ public class SpringwolfConfigPropertiesIntegrationTest {
     @Nested
     @ExtendWith(SpringExtension.class)
     @EnableConfigurationProperties(SpringwolfConfigProperties.class)
+    @TestPropertySource(
+            properties = {
+                "springwolf.scanner.async-listener.enabled=false",
+                "springwolf.scanner.async-publisher.enabled=false"
+            })
+    class ScannerConfigTest {
+
+        @Autowired
+        private SpringwolfConfigProperties properties;
+
+        @Test
+        void scannerConfigIsMappedCorrectly() {
+            assertThat(properties.getScanner().getAsyncListener().isEnabled()).isFalse();
+            assertThat(properties.getScanner().getAsyncPublisher().isEnabled()).isFalse();
+        }
+    }
+
+    @Nested
+    @ExtendWith(SpringExtension.class)
+    @EnableConfigurationProperties(SpringwolfConfigProperties.class)
     class DefaultConfigTest {
 
         @Autowired
@@ -211,6 +231,8 @@ public class SpringwolfConfigPropertiesIntegrationTest {
             // then
             assertThat(actual.getDefaults().isShowBindings()).isTrue();
             assertThat(actual.getDefaults().isShowHeaders()).isTrue();
+            assertThat(properties.getScanner().getAsyncListener().isEnabled()).isTrue();
+            assertThat(properties.getScanner().getAsyncPublisher().isEnabled()).isTrue();
         }
     }
 }

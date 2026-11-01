@@ -15,6 +15,10 @@ import java.lang.reflect.Method;
 public record BindingContext<T extends Annotation>(
         T annotation, Class<?> annotatedClass, @Nullable Method annotatedMethod) {
 
+    public static <U extends Annotation> BindingContext<U> of(U annotation) {
+        return new BindingContext<>(annotation, null, null);
+    }
+
     public static <U extends Annotation> BindingContext<U> ofAnnotatedClass(Class<?> annotatedClass, U annotation) {
         return new BindingContext<>(annotation, annotatedClass, null);
     }

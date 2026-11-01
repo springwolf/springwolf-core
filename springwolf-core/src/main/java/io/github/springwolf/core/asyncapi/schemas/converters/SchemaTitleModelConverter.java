@@ -17,7 +17,7 @@ import java.util.Iterator;
 @Slf4j
 public class SchemaTitleModelConverter implements ModelConverter {
     @Override
-    public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         if (!chain.hasNext()) return null;
 
         Schema<?> schema = chain.next().resolve(type, context, chain);

@@ -26,24 +26,14 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     }
 
     @Override
-    public String getChannelName(KafkaListener annotation) {
-        return KafkaListenerUtil.getChannelName(annotation, stringValueResolver);
-    }
-
-    @Override
     public String getChannelName(BindingContext<KafkaListener> bindingContext) {
         StringValueResolver stringValueResolver = beanRefResolver.getStringValueResolver(bindingContext);
         return KafkaListenerUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, ChannelBinding> buildChannelBinding(KafkaListener annotation) {
+    public Map<String, ChannelBinding> buildChannelBinding(BindingContext<KafkaListener> bindingContext) {
         return KafkaListenerUtil.buildChannelBinding();
-    }
-
-    @Override
-    public Map<String, OperationBinding> buildOperationBinding(KafkaListener annotation) {
-        return KafkaListenerUtil.buildOperationBinding(annotation, stringValueResolver);
     }
 
     @Override
@@ -53,7 +43,8 @@ public class KafkaBindingFactory implements BindingFactory<KafkaListener> {
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(KafkaListener annotation, SchemaObject headerSchema) {
+    public Map<String, MessageBinding> buildMessageBinding(
+            BindingContext<KafkaListener> bindingContext, SchemaObject headerSchema) {
         return KafkaListenerUtil.buildMessageBinding(headerSchema);
     }
 }

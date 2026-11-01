@@ -8,10 +8,11 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -34,11 +35,16 @@ import static org.mockito.Mockito.when;
 class AsyncAnnotationMessageServiceTest {
 
     private final PayloadAsyncOperationService payloadAsyncOperationService = mock(PayloadAsyncOperationService.class);
-    private final ComponentsService componentsService = mock(ComponentsService.class);
+    private final MessagesService messagesService = mock(MessagesService.class);
+    private final SchemasService schemasService = mock(SchemasService.class);
     private final MessageBindingProcessor messageBindingProcessor = mock(MessageBindingProcessor.class);
     private final StringValueResolver stringValueResolver = mock(StringValueResolver.class);
     AsyncAnnotationMessageService asyncAnnotationMessageService = new AsyncAnnotationMessageService(
-            payloadAsyncOperationService, componentsService, List.of(messageBindingProcessor), stringValueResolver);
+            payloadAsyncOperationService,
+            messagesService,
+            schemasService,
+            List.of(messageBindingProcessor),
+            stringValueResolver);
 
     private final PayloadSchemaObject payloadSchema = new PayloadSchemaObject("full.name", "name", null);
 
@@ -48,7 +54,7 @@ class AsyncAnnotationMessageServiceTest {
                 .when(stringValueResolver)
                 .resolveStringValue(any());
 
-        when(componentsService.registerSchema(any())).thenReturn("headerSchemaName");
+        when(schemasService.registerSchema(any())).thenReturn("headerSchemaName");
         when(messageBindingProcessor.process(any())).thenReturn(Optional.empty());
 
         when(payloadAsyncOperationService.extractSchema(any(), any())).thenReturn(payloadSchema);

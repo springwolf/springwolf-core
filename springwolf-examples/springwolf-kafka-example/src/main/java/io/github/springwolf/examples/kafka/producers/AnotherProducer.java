@@ -7,17 +7,17 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import io.github.springwolf.examples.kafka.configuration.KafkaConfiguration;
 import io.github.springwolf.examples.kafka.dtos.AnotherPayloadDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.kafka.support.mapping.DefaultJacksonJavaTypeMapper.DEFAULT_CLASSID_FIELD_NAME;
 
 @Component
+@RequiredArgsConstructor
 public class AnotherProducer {
 
-    @Autowired
-    private KafkaTemplate<String, AnotherPayloadDto> kafkaTemplate;
+    private final KafkaTemplate<String, AnotherPayloadDto> kafkaTemplate;
 
     @AsyncPublisher(
             operation =

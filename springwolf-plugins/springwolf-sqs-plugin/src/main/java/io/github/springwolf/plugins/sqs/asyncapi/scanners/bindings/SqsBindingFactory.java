@@ -6,6 +6,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringValueResolver;
@@ -17,22 +18,23 @@ public class SqsBindingFactory implements BindingFactory<SqsListener> {
     private final StringValueResolver stringValueResolver;
 
     @Override
-    public String getChannelName(SqsListener annotation) {
-        return SqsListenerUtil.getChannelName(annotation, stringValueResolver);
+    public String getChannelName(BindingContext<SqsListener> bindingContext) {
+        return SqsListenerUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, ChannelBinding> buildChannelBinding(SqsListener annotation) {
-        return SqsListenerUtil.buildChannelBinding(annotation, stringValueResolver);
+    public Map<String, ChannelBinding> buildChannelBinding(BindingContext<SqsListener> bindingContext) {
+        return SqsListenerUtil.buildChannelBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, OperationBinding> buildOperationBinding(SqsListener annotation) {
-        return SqsListenerUtil.buildOperationBinding(annotation, stringValueResolver);
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<SqsListener> bindingContext) {
+        return SqsListenerUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(SqsListener annotation, SchemaObject headerSchema) {
+    public Map<String, MessageBinding> buildMessageBinding(
+            BindingContext<SqsListener> bindingContext, SchemaObject headerSchema) {
         return SqsListenerUtil.buildMessageBinding();
     }
 }

@@ -12,12 +12,12 @@ import tools.jackson.databind.JavaType;
 import java.util.Iterator;
 
 /**
- * Workaround for https://github.com/swagger-api/swagger-core/pull/4727
+ * Workaround for <a href="https://github.com/swagger-api/swagger-core/pull/4727">swagger-core PR 4727</a>
  */
 public class NameInReffedSchemaModelConverter implements ModelConverter {
 
     @Override
-    public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         JavaType javaType = Json.mapper().constructType(type.getType());
         if (chain.hasNext()) {
             Schema<?> schema = chain.next().resolve(type, context, chain);

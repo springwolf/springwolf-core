@@ -5,9 +5,9 @@ import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.core.asyncapi.annotations.AsyncMessage;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,15 +26,14 @@ import static org.mockito.Mockito.when;
 
 class PayloadAsyncOperationServiceTest {
     private PayloadExtractor payloadExtractor = mock(PayloadExtractor.class);
-    private ComponentsService componentsService = mock(ComponentsService.class);
+    private SchemasService schemasService = mock(SchemasService.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
-    private PayloadService payloadService;
     private PayloadAsyncOperationService payloadAsyncOperationService;
 
     @BeforeEach
     void setUp() {
-        payloadService = new PayloadService(componentsService, properties);
+        PayloadService payloadService = new PayloadService(schemasService, properties);
         payloadAsyncOperationService = new PayloadAsyncOperationService(payloadExtractor, payloadService);
     }
 
@@ -49,10 +48,10 @@ class PayloadAsyncOperationServiceTest {
         when(asyncOperation.message()).thenReturn(asyncMessage);
 
         String schemaName = "my-schema-name";
-        when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
+        when(schemasService.getSchemaName(String.class)).thenReturn(schemaName);
 
         ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
-        when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);
+        when(schemasService.registerType(eq(String.class), any())).thenReturn(schemaObject);
 
         // when
         var result = payloadAsyncOperationService.extractSchema(asyncOperation, null);
@@ -76,10 +75,10 @@ class PayloadAsyncOperationServiceTest {
         when(payloadExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
 
         String schemaName = "my-schema-name";
-        when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
+        when(schemasService.getSchemaName(String.class)).thenReturn(schemaName);
 
         ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
-        when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);
+        when(schemasService.registerType(eq(String.class), any())).thenReturn(schemaObject);
 
         // when
         var result = payloadAsyncOperationService.extractSchema(asyncOperation, method);
@@ -111,6 +110,6 @@ class PayloadAsyncOperationServiceTest {
         SchemaObject schema = result.schema().getSchema();
         assertThat(schema.getTitle()).isEqualTo("PayloadNotUsed");
         assertThat(schema.getDescription()).isEqualTo("No payload specified");
-        verify(componentsService).registerSchema(PAYLOAD_NOT_USED.schema().getSchema());
+        verify(schemasService).registerSchema(PAYLOAD_NOT_USED.schema().getSchema());
     }
 }

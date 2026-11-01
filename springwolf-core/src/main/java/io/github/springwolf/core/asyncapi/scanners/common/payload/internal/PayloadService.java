@@ -4,8 +4,8 @@ package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class PayloadService {
-    private final ComponentsService componentsService;
+    private final SchemasService schemasService;
     private final SpringwolfConfigProperties properties;
 
     private static final String PAYLOAD_NOT_USED_KEY = "PayloadNotUsed";
@@ -39,24 +39,20 @@ public class PayloadService {
 
     /**
      * creates a {@link PayloadSchemaObject} from the given type and content type. Registers the created schema objects
-     * with this {@link ComponentsService}.
-     *
-     * @param contentType
-     * @param payloadType
-     * @return
+     * with this {@link SchemasService}.
      */
     public PayloadSchemaObject buildSchema(String contentType, Type payloadType) {
-        String schemaName = componentsService.getSchemaName(payloadType);
-        String simpleSchemaName = componentsService.getSimpleSchemaName(payloadType);
+        String schemaName = schemasService.getSchemaName(payloadType);
+        String simpleSchemaName = schemasService.getSimpleSchemaName(payloadType);
 
-        ComponentSchema schema = componentsService.resolvePayloadSchema(payloadType, contentType);
+        ComponentSchema schema = schemasService.registerType(payloadType, contentType);
         return new PayloadSchemaObject(schemaName, simpleSchemaName, schema);
     }
 
     public PayloadSchemaObject useUnusedPayload() {
         ComponentSchema schema = PAYLOAD_NOT_USED.schema();
         if (schema != null && schema.getSchema() != null) {
-            this.componentsService.registerSchema(schema.getSchema());
+            this.schemasService.registerSchema(schema.getSchema());
         }
         return PAYLOAD_NOT_USED;
     }

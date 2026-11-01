@@ -9,21 +9,8 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.channels.DefaultChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.SchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueGenerator;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueSerializer;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueGenerator;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.yaml.ExampleYamlValueSerializer;
-import io.github.springwolf.core.asyncapi.components.postprocessors.AvroSchemaPostProcessor;
-import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
-import io.github.springwolf.core.asyncapi.components.postprocessors.SchemasPostProcessor;
-import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
-import io.github.springwolf.core.asyncapi.grouping.GroupingService;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
 import io.github.springwolf.core.asyncapi.operations.OperationsService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
@@ -38,13 +25,30 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.Paylo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.StringValueResolverProxy;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.SchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.xml.DefaultExampleXmlValueSerializer;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.xml.ExampleXmlValueGenerator;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.xml.ExampleXmlValueSerializer;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.yaml.DefaultExampleYamlValueSerializer;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.yaml.ExampleYamlValueGenerator;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.yaml.ExampleYamlValueSerializer;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.AvroSchemaPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.ExampleGeneratorPostProcessor;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.SchemasPostProcessor;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.grouping.GroupingService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -118,8 +122,20 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ComponentsService componentsService(SwaggerSchemaService schemaService) {
-        return new DefaultComponentsService(schemaService);
+    public ComponentsService componentsService(SchemasService schemasService, MessagesService messagesService) {
+        return new DefaultComponentsService(schemasService, messagesService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MessagesService messageService() {
+        return new DefaultMessagesService();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SchemasService defaultSchemasService(SwaggerSchemaService schemaService) {
+        return new DefaultSchemasService(schemaService);
     }
 
     @Bean
@@ -128,18 +144,18 @@ public class SpringwolfCoreConfiguration {
             SpringwolfConfigProperties springwolfConfigProperties,
             List<SchemasPostProcessor> schemaPostProcessors,
             SwaggerSchemaMapper swaggerSchemaMapper,
-            ModelConvertersProvider modelConvertersProvider) {
+            ModelConvertersRegisterer modelConvertersRegisterer) {
         return new SwaggerSchemaService(
-                springwolfConfigProperties, schemaPostProcessors, swaggerSchemaMapper, modelConvertersProvider);
+                springwolfConfigProperties, schemaPostProcessors, swaggerSchemaMapper, modelConvertersRegisterer);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ModelConvertersProvider modelConvertersProvider(
+    public ModelConvertersRegisterer modelConvertersProvider(
             SpringwolfConfigProperties springwolfConfigProperties,
             List<ModelConverter> modelConverters,
             List<JacksonModule> jacksonModules) {
-        return new ModelConvertersProvider(springwolfConfigProperties, modelConverters, jacksonModules);
+        return new ModelConvertersRegisterer(springwolfConfigProperties, modelConverters, jacksonModules);
     }
 
     @Bean
@@ -171,13 +187,13 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SchemaWalkerProvider schemaWalkerProvider(List<SchemaWalker> schemaWalkers) {
+    public SchemaWalkerProvider schemaWalkerProvider(List<SchemaWalker<?>> schemaWalkers) {
         return new SchemaWalkerProvider(schemaWalkers);
     }
 
     @Bean
     @ConditionalOnMissingBean(name = "jsonSchemaWalker")
-    public SchemaWalker jsonSchemaWalker() {
+    public SchemaWalker<?> jsonSchemaWalker() {
         return new DefaultSchemaWalker<>(new ExampleJsonValueGenerator());
     }
 
@@ -189,7 +205,7 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "xmlSchemaWalker")
-    public SchemaWalker xmlSchemaWalker(ExampleXmlValueSerializer exampleXmlValueSerializer) {
+    public SchemaWalker<?> xmlSchemaWalker(ExampleXmlValueSerializer exampleXmlValueSerializer) {
         return new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(exampleXmlValueSerializer));
     }
 
@@ -201,7 +217,7 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "yamlSchemaWalker")
-    public SchemaWalker yamlSchemaWalker(
+    public SchemaWalker<?> yamlSchemaWalker(
             ExampleYamlValueSerializer exampleYamlValueSerializer,
             SpringwolfConfigProperties springwolfConfigProperties) {
         return new DefaultSchemaWalker<>(new ExampleYamlValueGenerator(
@@ -229,8 +245,8 @@ public class SpringwolfCoreConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PayloadService payloadService(
-            ComponentsService componentsService, SpringwolfConfigProperties springwolfConfigProperties) {
-        return new PayloadService(componentsService, springwolfConfigProperties);
+            SchemasService schemasService, SpringwolfConfigProperties springwolfConfigProperties) {
+        return new PayloadService(schemasService, springwolfConfigProperties);
     }
 
     @Bean
@@ -262,11 +278,16 @@ public class SpringwolfCoreConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AsyncAnnotationMessageService asyncAnnotationMessageService(
-            ComponentsService componentsService,
+            MessagesService messagesService,
+            SchemasService schemasService,
             PayloadAsyncOperationService payloadAsyncOperationService,
             List<MessageBindingProcessor> messageBindingProcessors,
             StringValueResolverProxy stringValueResolver) {
         return new AsyncAnnotationMessageService(
-                payloadAsyncOperationService, componentsService, messageBindingProcessors, stringValueResolver);
+                payloadAsyncOperationService,
+                messagesService,
+                schemasService,
+                messageBindingProcessors,
+                stringValueResolver);
     }
 }

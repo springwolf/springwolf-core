@@ -4,6 +4,7 @@ package io.github.springwolf.core.configuration;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -22,7 +23,7 @@ public class SpringwolfUiResourceConfigurer implements WebMvcConfigurer {
     private final SpringwolfConfigProperties springwolfConfigProperties;
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         String springwolfBasePath = springwolfConfigProperties.getPath().getBase();
 
         log.debug("Serving Springwolf with base-path: {}", springwolfBasePath);

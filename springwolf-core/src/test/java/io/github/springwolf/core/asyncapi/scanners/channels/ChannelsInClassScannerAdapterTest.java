@@ -6,7 +6,6 @@ import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +24,7 @@ class ChannelsInClassScannerAdapterTest {
     @Test
     void noClassFoundTest() {
         // when
-        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
+        List<ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).isEmpty();
@@ -35,37 +34,30 @@ class ChannelsInClassScannerAdapterTest {
     void processClassTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        Map.Entry<String, ChannelObject> channel1 = Map.entry(
-                "channel1", ChannelObject.builder().channelId("channel1").build());
-        Map.Entry<String, ChannelObject> channel2 = Map.entry(
-                "channel2", ChannelObject.builder().channelId("channel2").build());
-        when(channelsInClassScanner.scan(any())).thenReturn(List.of(channel1.getValue(), channel2.getValue()));
+        ChannelObject channel1 = ChannelObject.builder().channelId("channel1").build();
+        ChannelObject channel2 = ChannelObject.builder().channelId("channel2").build();
+        when(channelsInClassScanner.scan(any())).thenReturn(List.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
+        List<ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).containsExactly(channel1, channel2);
     }
 
     @Test
-    void sameChannelsAreMergedTest() {
+    void sameChannelsAreReturnedUnmergedTest() {
         // given
         when(classScanner.scan()).thenReturn(Set.of(String.class));
-        Map.Entry<String, ChannelObject> channel1 = Map.entry(
-                "channel1", ChannelObject.builder().channelId("channel1").build());
-        Map.Entry<String, ChannelObject> channel2 = Map.entry(
-                "channel1", ChannelObject.builder().channelId("channel1").build());
-        when(channelsInClassScanner.scan(any())).thenReturn(List.of(channel1.getValue(), channel2.getValue()));
+        ChannelObject channel1 = ChannelObject.builder().channelId("channel1").build();
+        ChannelObject channel2 = ChannelObject.builder().channelId("channel1").build();
+        when(channelsInClassScanner.scan(any())).thenReturn(List.of(channel1, channel2));
 
         // when
-        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
+        List<ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
-        assertThat(channels)
-                .containsExactly(Map.entry(
-                        "channel1",
-                        ChannelObject.builder().channelId("channel1").build()));
+        assertThat(channels).containsExactly(channel1, channel2);
     }
 
     @Test
@@ -75,7 +67,7 @@ class ChannelsInClassScannerAdapterTest {
         when(channelsInClassScanner.scan(any())).thenReturn(List.of());
 
         // when
-        Map<String, ChannelObject> channels = channelsInClassScannerAdapter.scan();
+        List<ChannelObject> channels = channelsInClassScannerAdapter.scan();
 
         // then
         assertThat(channels).isEmpty();

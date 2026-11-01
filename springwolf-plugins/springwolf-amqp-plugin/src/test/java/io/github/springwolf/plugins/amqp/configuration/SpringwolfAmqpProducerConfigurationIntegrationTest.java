@@ -3,9 +3,11 @@ package io.github.springwolf.plugins.amqp.configuration;
 
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.classes.SpringwolfClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodParameterService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.plugins.amqp.controller.SpringwolfAmqpController;
 import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
@@ -42,6 +44,8 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             types = {
                 SpringwolfClassScanner.class,
                 ComponentsService.class,
+                MessagesService.class,
+                SchemasService.class,
                 HeaderClassExtractor.class,
                 PayloadMethodParameterService.class,
                 StringValueResolver.class,
@@ -81,6 +85,8 @@ public class SpringwolfAmqpProducerConfigurationIntegrationTest {
             types = {
                 SpringwolfClassScanner.class,
                 ComponentsService.class,
+                MessagesService.class,
+                SchemasService.class,
                 HeaderClassExtractor.class,
                 PayloadMethodParameterService.class,
                 StringValueResolver.class,

@@ -28,24 +28,26 @@ public class PayloadSchemaFormatIntegrationTest {
                 .getPropertySources()
                 .addFirst(new MapPropertySource(
                         "env", Map.of("springwolf.docket.payload-schema-format", "openapi_v3_1")));
-        StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+        try (StandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .setEnvironment(environment)
-                .buildAndStart();
+                .buildAndStart()) {
+            // when
+            AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
 
-        // when
-        AsyncAPI asyncApi = standaloneApplication.getAsyncApiService().getAsyncAPI();
+            // then
+            assertThat(asyncApi).isNotNull();
 
-        // then
-        assertThat(asyncApi).isNotNull();
+            AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
+            String actual = serializerService.toJsonString(asyncApi);
+            String actualPatched = actual.replace("localhost:5672", "amqp:5672");
+            Files.writeString(Path.of("src", "test", "resources", "asyncapi.openapiv31.actual.json"), actualPatched);
 
-        AsyncApiSerializerService serializerService = new DefaultAsyncApiSerializerService();
-        String actual = serializerService.toJsonString(asyncApi);
-        String actualPatched = actual.replace("localhost:5672", "amqp:5672");
-        Files.writeString(Path.of("src", "test", "resources", "asyncapi.openapiv31.actual.json"), actualPatched);
-
-        // then
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.openapiv31.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
-        assertThat(actualPatched).isEqualTo(expected);
+            // then
+            String expected;
+            try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.openapiv31.json")) {
+                expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            assertThat(actualPatched).isEqualTo(expected);
+        }
     }
 }

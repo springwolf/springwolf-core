@@ -23,7 +23,7 @@ public class TestAbstractChannelBindingProcessor
     public static final ChannelBinding BINDING = new AbstractChannelBindingBinding();
 
     public TestAbstractChannelBindingProcessor(StringValueResolver stringValueResolver) {
-        super(stringValueResolver);
+        super(stringValueResolver, TestChannelBinding.class);
     }
 
     @Override

@@ -17,6 +17,7 @@ dependencies {
     permitUnusedDeclared libs.swagger.models
     implementation libs.kafka.clients
 
+    implementation libs.jspecify
     implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api
 

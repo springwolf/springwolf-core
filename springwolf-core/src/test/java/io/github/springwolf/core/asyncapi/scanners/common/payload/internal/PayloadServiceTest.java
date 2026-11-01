@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +11,10 @@ import static org.mockito.Mockito.when;
 
 class PayloadServiceTest {
 
-    private ComponentsService componentsService = mock(ComponentsService.class);
+    private SchemasService schemasService = mock(SchemasService.class);
     private SpringwolfConfigProperties.ConfigDocket docket = mock(SpringwolfConfigProperties.ConfigDocket.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
-    private PayloadService payloadService = new PayloadService(componentsService, properties);
+    private PayloadService payloadService = new PayloadService(schemasService, properties);
 
     @Test
     void shouldExtractSchemaForInteger() {
@@ -23,7 +23,7 @@ class PayloadServiceTest {
         when(docket.getDefaultContentType()).thenReturn("application/json");
 
         String schemaName = "my-schema-name";
-        when(componentsService.getSchemaName(Integer.class)).thenReturn(schemaName);
+        when(schemasService.getSchemaName(Integer.class)).thenReturn(schemaName);
 
         // when
         var result = payloadService.buildSchema(Integer.class);

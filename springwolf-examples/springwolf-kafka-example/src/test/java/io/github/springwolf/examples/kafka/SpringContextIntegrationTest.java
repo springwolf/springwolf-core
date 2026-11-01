@@ -63,7 +63,7 @@ public class SpringContextIntegrationTest {
         }
 
         @Test
-        void protobufSchemaContainsOnlyProtobufFields() throws Exception {
+        void protobufSchemaContainsOnlyProtobufFields() {
             var protobufSchemaName =
                     ExamplePayloadProtobufDto.Message.class.getName().replace("$", ".");
             assertThat(asyncApiService

@@ -65,14 +65,10 @@ public class ApplicationIntegrationTest {
         @Test
         void ensureThatStandaloneResultIsIdentical() {
             // given
-            AsyncApiService asyncApiService =
-                    createStandaloneAsyncApiService(environment, ListenerApplication.class.getPackageName());
+            AsyncAPI standaloneAsyncAPI =
+                    createStandaloneAsyncAPI(environment, ListenerApplication.class.getPackageName());
 
-            // when
-            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
-
-            // then
-            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
+            assertThat(standaloneAsyncAPI).isEqualTo(asyncApiService.getAsyncAPI());
         }
     }
 
@@ -111,14 +107,10 @@ public class ApplicationIntegrationTest {
         @Test
         void ensureThatStandaloneResultIsIdentical() {
             // given
-            AsyncApiService asyncApiService =
-                    createStandaloneAsyncApiService(environment, PublisherApplication.class.getPackageName());
+            AsyncAPI standaloneAsyncAPI =
+                    createStandaloneAsyncAPI(environment, PublisherApplication.class.getPackageName());
 
-            // when
-            AsyncAPI asyncApi = asyncApiService.getAsyncAPI();
-
-            // then
-            assertThat(asyncApi).isEqualTo(asyncApiService.getAsyncAPI());
+            assertThat(standaloneAsyncAPI).isEqualTo(asyncApiService.getAsyncAPI());
         }
     }
 
@@ -150,7 +142,7 @@ public class ApplicationIntegrationTest {
         }
 
         @Test
-        void allClassesHaveSimpleNameNotFullQualifiedTest() throws Exception {
+        void allClassesHaveSimpleNameNotFullQualifiedTest() {
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
             String serialized = asyncApiSerializerService.toJsonString(asyncAPI);
 
@@ -266,7 +258,7 @@ public class ApplicationIntegrationTest {
         private AsyncApiSerializerService asyncApiSerializerService;
 
         @Test
-        void oneOfPropertyIsGeneratedFromTheApplication() throws Exception {
+        void oneOfPropertyIsGeneratedFromTheApplication() {
             // when
             AsyncAPI asyncAPI = asyncApiService.getAsyncAPI();
 
@@ -345,11 +337,12 @@ public class ApplicationIntegrationTest {
         }
     }
 
-    private AsyncApiService createStandaloneAsyncApiService(ConfigurableEnvironment environment, String basePackage) {
-        DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
+    private AsyncAPI createStandaloneAsyncAPI(ConfigurableEnvironment environment, String basePackage) {
+        try (DefaultStandaloneApplication standaloneApplication = DefaultStandaloneApplication.builder()
                 .addScanPackage(basePackage)
                 .setEnvironment(environment)
-                .buildAndStart();
-        return standaloneApplication.getAsyncApiService();
+                .buildAndStart()) {
+            return standaloneApplication.getAsyncApiService().getAsyncAPI();
+        }
     }
 }

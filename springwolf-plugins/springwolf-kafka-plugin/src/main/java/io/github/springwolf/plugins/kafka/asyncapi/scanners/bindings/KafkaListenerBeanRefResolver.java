@@ -4,6 +4,7 @@ package io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanExpressionException;
 import org.springframework.beans.factory.BeanFactory;
@@ -37,7 +38,7 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
     private ConfigurableBeanFactory beanFactory;
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) {
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) {
         if (beanFactory instanceof ConfigurableBeanFactory configurableBeanFactory) {
             this.beanFactory = configurableBeanFactory;
         }
@@ -104,7 +105,7 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
     private record BeanRefScope(BeanFactory beanFactory, String beanRef, Class<?> listenerClass) implements Scope {
         @Override
         @Nullable
-        public Object resolveContextualObject(String key) {
+        public Object resolveContextualObject(@NonNull String key) {
             if (!beanRef.equals(key)) {
                 return null;
             }
@@ -117,18 +118,18 @@ public class KafkaListenerBeanRefResolver implements BeanFactoryAware {
         }
 
         @Override
-        public Object get(String name, ObjectFactory<?> objectFactory) {
+        public @NonNull Object get(@NonNull String name, ObjectFactory<?> objectFactory) {
             return objectFactory.getObject();
         }
 
         @Override
         @Nullable
-        public Object remove(String name) {
+        public Object remove(@NonNull String name) {
             return null;
         }
 
         @Override
-        public void registerDestructionCallback(String name, Runnable callback) {}
+        public void registerDestructionCallback(@NonNull String name, @NonNull Runnable callback) {}
 
         @Override
         @Nullable

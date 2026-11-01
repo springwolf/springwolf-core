@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -19,12 +18,10 @@ public class ChannelsInClassScannerAdapter implements ChannelsScanner {
     private final ChannelsInClassScanner channelsInClassScanner;
 
     @Override
-    public Map<String, ChannelObject> scan() {
+    public List<ChannelObject> scan() {
         Set<Class<?>> components = classScanner.scan();
 
-        List<ChannelObject> channels = mapToChannels(components);
-
-        return ChannelMerger.mergeChannels(channels);
+        return mapToChannels(components);
     }
 
     private List<ChannelObject> mapToChannels(Set<Class<?>> components) {

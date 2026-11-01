@@ -20,8 +20,7 @@ import static org.mockito.Mockito.when;
 class SpringAnnotationClassLevelOperationsScannerTest {
 
     private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
-    private final SpringAnnotationOperationsService<TestClassListener> springAnnotationOperationsService =
-            mock(SpringAnnotationOperationsService.class);
+    private final SpringAnnotationOperationsService<TestClassListener> springAnnotationOperationsService = mock();
     SpringAnnotationClassLevelOperationsScanner<TestClassListener, TestMethodListener> scanner =
             new SpringAnnotationClassLevelOperationsScanner<>(
                     TestClassListener.class,

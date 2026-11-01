@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -76,12 +75,17 @@ public class AmqpProducerSystemTest {
     @Test
     @Order(1)
     void verifyAmqpIsAvailable() {
-        ConnectionFactory factory = new CachingConnectionFactory("localhost");
+        CachingConnectionFactory factory = new CachingConnectionFactory("localhost");
 
-        await().atMost(60, SECONDS)
-                .ignoreException(AmqpIOException.class)
-                .untilAsserted(
-                        () -> assertThat(factory.createConnection().isOpen()).isTrue());
+        try {
+            await().atMost(60, SECONDS).ignoreException(AmqpIOException.class).untilAsserted(() -> {
+                try (var connection = factory.createConnection()) {
+                    assertThat(connection.isOpen()).isTrue();
+                }
+            });
+        } finally {
+            factory.destroy();
+        }
     }
 
     @Test

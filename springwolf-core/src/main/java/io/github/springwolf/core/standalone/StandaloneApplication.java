@@ -9,6 +9,9 @@ import io.github.springwolf.core.asyncapi.AsyncApiService;
  * <p>
  * Allows usage of Springwolf at build time, for example in unit test.
  */
-public interface StandaloneApplication {
+public interface StandaloneApplication extends AutoCloseable {
     AsyncApiService getAsyncApiService();
+
+    @Override
+    void close();
 }

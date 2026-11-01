@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,9 +33,10 @@ class DefaultOperationsServiceIntegrationTest {
     @Test
     void getOperations() {
         Map<String, Operation> actualChannels = defaultOperationsService.findOperations();
+        Operation simpleOperation = simpleOperationsScanner.scan().get(0);
 
         assertThat(actualChannels)
-                .containsAllEntriesOf(simpleOperationsScanner.scan())
+                .containsEntry(simpleOperation.getOperationId(), simpleOperation)
                 .containsEntry("receive", SameTopic.ReceiveOperationScanner.receiveOperation)
                 .containsEntry("send", SameTopic.SendOperationScanner.sentOperation);
     }
@@ -42,14 +44,14 @@ class DefaultOperationsServiceIntegrationTest {
     @Component
     static class SimpleOperationScanner implements OperationsScanner {
         @Override
-        public Map<String, Operation> scan() {
+        public List<Operation> scan() {
             Operation operation = Operation.builder()
                     .operationId("foo")
                     .channel(ChannelReference.fromChannel("foo"))
                     .action(OperationAction.RECEIVE)
                     .build();
 
-            return Map.of(operation.getOperationId(), operation);
+            return List.of(operation);
         }
     }
 
@@ -65,8 +67,8 @@ class DefaultOperationsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, Operation> scan() {
-                return Map.of(sentOperation.getOperationId(), sentOperation);
+            public List<Operation> scan() {
+                return List.of(sentOperation);
             }
         }
 
@@ -79,8 +81,8 @@ class DefaultOperationsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, Operation> scan() {
-                return Map.of(receiveOperation.getOperationId(), receiveOperation);
+            public List<Operation> scan() {
+                return List.of(receiveOperation);
             }
         }
     }

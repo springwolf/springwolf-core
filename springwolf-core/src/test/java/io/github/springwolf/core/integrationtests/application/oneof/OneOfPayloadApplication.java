@@ -14,7 +14,7 @@ public class OneOfPayloadApplication {
         return new Listener();
     }
 
-    static class Listener {
+    public static class Listener {
         @AsyncListener(operation = @AsyncOperation(channelName = "oneof-channel"))
         public void listen(Payload payload) {}
     }

@@ -22,25 +22,25 @@ class MonetaryAmountConverterTest {
         converters.addConverter(modelsConverter);
 
         // when
-        final Map<String, Schema> models = converters.readAll(new AnnotatedType(javax.money.MonetaryAmount.class));
+        final Map<String, ?> models = converters.readAll(new AnnotatedType(javax.money.MonetaryAmount.class));
 
         // then
-        final Schema model = models.get("MonetaryAmount");
+        final Schema<?> model = (Schema<?>) models.get("MonetaryAmount");
         assertThat(model).isNotNull();
 
         assertThat(model.getProperties().size()).isEqualTo(2);
 
-        final Schema amountProperty = (Schema) model.getProperties().get("amount");
+        final Schema<?> amountProperty = (Schema<?>) model.getProperties().get("amount");
         assertThat(amountProperty).isNotNull();
 
-        final Schema currencyProperty = (Schema) model.getProperties().get("currency");
+        final Schema<?> currencyProperty = (Schema<?>) model.getProperties().get("currency");
         assertThat(currencyProperty).isNotNull();
 
-        final Schema missingProperty = (Schema) model.getProperties().get("missing");
+        final Schema<?> missingProperty = (Schema<?>) model.getProperties().get("missing");
         assertThat(missingProperty).isNull();
 
         // then
-        final Schema originalModel = models.get("javax.money.MonetaryAmount");
+        final Schema<?> originalModel = (Schema<?>) models.get("javax.money.MonetaryAmount");
         assertThat(originalModel).isNotNull();
 
         assertThat(originalModel.getType()).isNull();

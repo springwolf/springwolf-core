@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.components;
 
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.DefaultExampleXmlValueSerializer;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.xml.ExampleXmlValueGenerator;
-import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.xml.DefaultExampleXmlValueSerializer;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.xml.ExampleXmlValueGenerator;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
@@ -48,80 +51,76 @@ class DefaultXmlComponentsServiceIntegrationTest {
             List.of(new ExampleGeneratorPostProcessor(new SchemaWalkerProvider(List.of(
                     new DefaultSchemaWalker<>(new ExampleXmlValueGenerator(new DefaultExampleXmlValueSerializer())))))),
             new SwaggerSchemaMapper(configProperties),
-            new ModelConvertersProvider(configProperties, List.of(new SchemaTitleModelConverter()), List.of()));
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
+            new ModelConvertersRegisterer(configProperties, List.of(new SchemaTitleModelConverter()), List.of()));
+    private final SchemasService schemasService = new DefaultSchemasService(schemaService);
+    private final ComponentsService componentsService =
+            new DefaultComponentsService(schemasService, new DefaultMessagesService());
 
     @Test
     void getSchemas() throws Exception {
-        componentsService.resolvePayloadSchema(CompositeFoo.class, "text/xml");
-        componentsService.resolvePayloadSchema(FooWithEnum.class, "text/xml");
+        schemasService.registerType(CompositeFoo.class, "text/xml");
+        schemasService.registerType(FooWithEnum.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
     void getDocumentedDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, "text/xml");
+        schemasService.registerType(DocumentedSimpleFoo.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/documented-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
     void getArrayDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ArrayFoo.class, "text/xml");
+        schemasService.registerType(ArrayFoo.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/array-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
     void getComplexDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ComplexFoo.class, "text/xml");
+        schemasService.registerType(ComplexFoo.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/complex-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
     void getComplexDefinitionsWithAttributes() throws Exception {
-        componentsService.resolvePayloadSchema(ComplexAttributesFoo.class, "text/xml");
+        schemasService.registerType(ComplexAttributesFoo.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected =
                 loadDefinition("/schemas/xml/complex-definitions-with-attributes-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
     @Test
     void getListWrapperDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ListWrapper.class, "text/xml");
+        schemasService.registerType(ListWrapper.class, "text/xml");
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
         String expected = loadDefinition("/schemas/xml/generics-wrapper-definitions-xml.json", actualDefinitions);
 
-        System.out.println("Got: " + actualDefinitions);
         assertThat(actualDefinitions).isEqualTo(expected);
     }
 
@@ -249,13 +248,12 @@ class DefaultXmlComponentsServiceIntegrationTest {
     class SchemaWithOneOf {
         @Test
         void schemaWithOneOf() throws Exception {
-            componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, "text/xml");
+            schemasService.registerType(SchemaAnnotationFoo.class, "text/xml");
 
             String actualDefinitions =
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/annotation-definitions-xml.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 
@@ -349,14 +347,13 @@ class DefaultXmlComponentsServiceIntegrationTest {
     class XmlSchemaName {
         @Test
         void schemasWithSharedProperty() throws Exception {
-            componentsService.resolvePayloadSchema(XmlSchemaName.ClassB.class, "text/xml");
-            componentsService.resolvePayloadSchema(XmlSchemaName.ClassA.class, "text/xml");
+            schemasService.registerType(XmlSchemaName.ClassB.class, "text/xml");
+            schemasService.registerType(XmlSchemaName.ClassA.class, "text/xml");
 
             String actualDefinitions =
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
             String expected = loadDefinition("/schemas/xml/schema-with-shared-property.json", actualDefinitions);
 
-            System.out.println("Got: " + actualDefinitions);
             assertThat(actualDefinitions).isEqualTo(expected);
         }
 

@@ -15,15 +15,17 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
+import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationMerger;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
@@ -46,13 +49,15 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
     private final ComponentClassScanner componentClassScanner;
-    private final ComponentsService componentsService;
+    private final SchemasService schemasService;
     private final PayloadService payloadService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
+    private final List<MessageBindingProcessor> messageBindingProcessors;
+    private final List<OperationBindingProcessor> operationBindingProcessors;
 
     @Override
-    public Map<String, Operation> scan() {
+    public List<Operation> scan() {
         Set<AnnotatedElement> elements = new HashSet<>();
         elements.addAll(componentClassScanner.scan());
         elements.addAll(beanMethodsScanner.getBeanMethods());
@@ -64,7 +69,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .map(this::buildOperation)
                 .toList();
 
-        return OperationMerger.mergeOperations(operations);
+        return operations;
     }
 
     private boolean isChannelBean(FunctionalChannelBeanData beanData) {
@@ -85,7 +90,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         MessagePayload payload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
-        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        String headerModelName = schemasService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
         MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         MessageObject message = MessageObject.builder()
@@ -93,7 +98,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .title(payloadSchema.title())
                 .payload(payload)
                 .headers(messageHeaders)
-                .bindings(buildMessageBinding())
+                .bindings(buildMessageBinding(beanData.annotatedElement()))
                 .build();
 
         return Operation.builder()
@@ -102,18 +107,29 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(channelId))
                 .messages(List.of(MessageReference.toChannelMessage(channelId, message)))
-                .bindings(buildOperationBinding())
+                .bindings(buildOperationBinding(beanData.annotatedElement()))
                 .build();
     }
 
-    private Map<String, MessageBinding> buildMessageBinding() {
-        // FIXME: handle messageBindings from annotations as for the channel
+    private Map<String, MessageBinding> buildMessageBinding(AnnotatedElement annotatedElement) {
+        Map<String, MessageBinding> messageBindings =
+                AsyncAnnotationUtil.processMessageBindingFromAnnotation(annotatedElement, messageBindingProcessors);
+        if (!messageBindings.isEmpty()) {
+            return messageBindings;
+        }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyMessageBinding());
     }
 
-    private Map<String, OperationBinding> buildOperationBinding() {
-        // FIXME: handle operationBindings from annotations as for the channel
+    private Map<String, OperationBinding> buildOperationBinding(AnnotatedElement annotatedElement) {
+        Map<String, OperationBinding> operationBindings = annotatedElement instanceof Method method
+                ? AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors)
+                : Map.of();
+        if (!operationBindings.isEmpty()) {
+            return operationBindings;
+        }
+
         String protocolName = getProtocolName();
         return Map.of(protocolName, new EmptyOperationBinding());
     }

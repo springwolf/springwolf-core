@@ -13,7 +13,7 @@ import org.springframework.amqp.core.Queue;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class RabbitQueueBeanScannerTest {
 
@@ -29,8 +29,7 @@ class RabbitQueueBeanScannerTest {
 
         // then
         assertThat(result)
-                .isEqualTo(Map.of(
-                        "name",
+                .containsExactly(
                         ChannelObject.builder()
                                 .channelId("name")
                                 .address("name")
@@ -46,7 +45,6 @@ class RabbitQueueBeanScannerTest {
                                                         .build())
                                                 .build()))
                                 .build(),
-                        "exchange_routingKey",
                         ChannelObject.builder()
                                 .channelId("exchange_routingKey")
                                 .address("routingKey")
@@ -59,7 +57,6 @@ class RabbitQueueBeanScannerTest {
                                                         .build())
                                                 .build()))
                                 .build(),
-                        "destination",
                         ChannelObject.builder()
                                 .channelId("destination")
                                 .address("destination")
@@ -71,6 +68,6 @@ class RabbitQueueBeanScannerTest {
                                                         .name("destination")
                                                         .build())
                                                 .build()))
-                                .build()));
+                                .build());
     }
 }

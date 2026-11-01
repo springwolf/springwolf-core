@@ -6,6 +6,7 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.InitMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 
@@ -22,7 +23,7 @@ public class SpringwolfInitApplicationListener implements ApplicationListener<Ap
     private final SpringwolfConfigProperties configProperties;
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         if (configProperties.getInitMode() == InitMode.BACKGROUND) {
             log.debug("Triggering background asyncapi creation");
             new Thread(asyncApiService::getAsyncAPI).start();

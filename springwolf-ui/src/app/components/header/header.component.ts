@@ -8,6 +8,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatIconModule } from "@angular/material/icon";
+import { NgOptimizedImage } from "@angular/common";
 
 interface Group {
   value: string;
@@ -18,7 +19,13 @@ interface Group {
   selector: "app-header",
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.css"],
-  imports: [MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    NgOptimizedImage,
+  ],
 })
 export class HeaderComponent implements OnInit {
   groups = signal<Group[]>([]);

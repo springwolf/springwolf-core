@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringValueResolver;
 
@@ -11,12 +12,12 @@ public class StringValueResolverProxy implements StringValueResolver, EmbeddedVa
     private StringValueResolver delegate;
 
     @Override
-    public void setEmbeddedValueResolver(StringValueResolver stringValueResolver) {
+    public void setEmbeddedValueResolver(@NonNull StringValueResolver stringValueResolver) {
         this.delegate = stringValueResolver;
     }
 
     @Override
-    public String resolveStringValue(String strVal) {
+    public String resolveStringValue(@NonNull String strVal) {
         return delegate.resolveStringValue(strVal);
     }
 }

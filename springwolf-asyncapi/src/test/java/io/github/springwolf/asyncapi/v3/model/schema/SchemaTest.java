@@ -16,7 +16,7 @@ class SchemaTest {
     private static final DefaultAsyncApiSerializerService serializer = new DefaultAsyncApiSerializerService();
 
     @Test
-    void shouldSerializePrimitiveSample() throws Exception {
+    void shouldSerializePrimitiveSample() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.STRING.getValue()))
                 .format("email")
@@ -32,7 +32,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeSimpleModel() throws Exception {
+    void shouldSerializeSimpleModel() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.OBJECT.getValue()))
                 .required(List.of("name"))
@@ -75,7 +75,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeStringToStringMapping() throws Exception {
+    void shouldSerializeStringToStringMapping() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.OBJECT.getValue()))
                 .additionalProperties(ComponentSchema.of(SchemaObject.builder()
@@ -95,7 +95,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelMapping() throws Exception {
+    void shouldSerializeModelMapping() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.OBJECT.getValue()))
                 .additionalProperties(ComponentSchema.of(SchemaReference.toSchema("ComplexModel")))
@@ -113,7 +113,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelWithExample() throws Exception {
+    void shouldSerializeModelWithExample() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.OBJECT.getValue()))
                 .properties(Map.of(
@@ -157,7 +157,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelWithBooleans() throws Exception {
+    void shouldSerializeModelWithBooleans() {
         var schema = SchemaObject.builder()
                 .type(Set.of(SchemaType.OBJECT.getValue()))
                 .properties(Map.of(
@@ -182,7 +182,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelsWithComposition() throws Exception {
+    void shouldSerializeModelsWithComposition() {
         var schemas = Map.of(
                 "schemas",
                 Map.of(
@@ -262,7 +262,7 @@ class SchemaTest {
     }
 
     @Test
-    void shouldSerializeModelsWithPolimorphismSupport() throws Exception {
+    void shouldSerializeModelsWithPolimorphismSupport() {
         var schemas = Map.of(
                 "schemas",
                 Map.of(

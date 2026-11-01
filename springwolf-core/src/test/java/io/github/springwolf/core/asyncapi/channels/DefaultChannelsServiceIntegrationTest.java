@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,9 +42,8 @@ class DefaultChannelsServiceIntegrationTest {
     @Component
     static class SimpleChannelScanner implements ChannelsScanner {
         @Override
-        public Map<String, ChannelObject> scan() {
-            return Map.of(
-                    channelId, ChannelObject.builder().channelId(channelId).build());
+        public List<ChannelObject> scan() {
+            return List.of(ChannelObject.builder().channelId(channelId).build());
         }
     }
 
@@ -67,13 +67,11 @@ class DefaultChannelsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, ChannelObject> scan() {
-                return Map.of(
-                        channelId,
-                        ChannelObject.builder()
-                                .channelId(channelId)
-                                .messages(Map.of("sendMessage", MessageReference.toComponentMessage("sendMessage")))
-                                .build());
+            public List<ChannelObject> scan() {
+                return List.of(ChannelObject.builder()
+                        .channelId(channelId)
+                        .messages(Map.of("sendMessage", MessageReference.toComponentMessage("sendMessage")))
+                        .build());
             }
         }
 
@@ -85,14 +83,11 @@ class DefaultChannelsServiceIntegrationTest {
                     .build();
 
             @Override
-            public Map<String, ChannelObject> scan() {
-                return Map.of(
-                        channelId,
-                        ChannelObject.builder()
-                                .channelId(channelId)
-                                .messages(
-                                        Map.of("receiveMessage", MessageReference.toComponentMessage("receiveMessage")))
-                                .build());
+            public List<ChannelObject> scan() {
+                return List.of(ChannelObject.builder()
+                        .channelId(channelId)
+                        .messages(Map.of("receiveMessage", MessageReference.toComponentMessage("receiveMessage")))
+                        .build());
             }
         }
     }

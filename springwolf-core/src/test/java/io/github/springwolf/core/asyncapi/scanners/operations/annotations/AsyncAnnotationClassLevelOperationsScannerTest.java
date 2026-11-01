@@ -41,8 +41,7 @@ class AsyncAnnotationClassLevelOperationsScannerTest {
             return OperationAction.SEND;
         }
     };
-    private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService =
-            mock(AsyncAnnotationOperationService.class);
+    private final AsyncAnnotationOperationService<TestListener> asyncAnnotationOperationService = mock();
     private final OperationCustomizer operationCustomizer = mock(OperationCustomizer.class);
 
     private final AsyncAnnotationClassLevelOperationsScanner<TestListener> operationsScanner =

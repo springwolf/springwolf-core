@@ -21,24 +21,31 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.OperationBindingProcessor;
+import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ConfigurationClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.operations.CloudStreamFunctionOperationsScanner;
 import org.apache.kafka.streams.kstream.KStream;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -51,9 +58,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -70,6 +79,8 @@ import static org.mockito.Mockito.when;
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultComponentsService.class,
+            DefaultSchemasService.class,
+            DefaultMessagesService.class,
             SwaggerSchemaService.class,
             PayloadService.class,
             PayloadExtractor.class,
@@ -83,7 +94,7 @@ import static org.mockito.Mockito.when;
             CloudStreamFunctionOperationsScanner.class,
             FunctionalChannelBeanBuilder.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersRegisterer.class
         })
 @TestPropertySource(
         properties = {
@@ -114,10 +125,15 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
     private Map<String, OperationBinding> operationBinding = Map.of("kafka", new EmptyOperationBinding());
     private Map<String, ChannelBinding> channelBinding = Map.of("kafka", new EmptyChannelBinding());
 
+    @BeforeEach
+    void clearRegisteredMessages() {
+        componentsService.getMessages().clear();
+    }
+
     @Test
     void noBindings() {
         when(bindingServiceProperties.getBindings()).thenReturn(Collections.emptyMap());
-        Map<String, ChannelObject> channels = channelsScanner.scan();
+        List<ChannelObject> channels = channelsScanner.scan();
         assertThat(channels).isEmpty();
     }
 
@@ -130,8 +146,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testConsumer-in-0", testConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -144,7 +160,7 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         .build()))
                 .headers(MessageHeaders.of(
                         SchemaReference.toSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED.getTitle())))
-                .bindings(messageBinding)
+                .bindings(Map.of("test", new EmptyMessageBinding()))
                 .build();
 
         ChannelObject expectedChannel = ChannelObject.builder()
@@ -157,15 +173,14 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         Operation expectedOperation = Operation.builder()
                 .operationId("test-consumer-input-topic_receive_testConsumer")
                 .action(OperationAction.RECEIVE)
-                .bindings(operationBinding)
+                .bindings(Map.of("test", new EmptyOperationBinding()))
                 .description("Auto-generated description")
                 .channel(ChannelReference.fromChannel(topicName))
                 .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-consumer-input-topic_receive_testConsumer", expectedOperation));
+        assertThat(actualChannels).containsExactly(expectedChannel);
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -178,8 +193,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testBiConsumer-in-0", testBiConsumerInBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
         MessageObject message = MessageObject.builder()
@@ -211,9 +226,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(List.of(MessageReference.toChannelMessage(topicName, message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-biconsumer-input-topic_receive_testBiConsumer", expectedOperation));
+        assertThat(actualChannels).containsExactly(expectedChannel);
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -226,8 +240,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
         when(bindingServiceProperties.getBindings()).thenReturn(Map.of("testSupplier-out-0", testSupplierOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a ChannelItem with the correct data
 
@@ -260,9 +274,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(Map.of(message.getMessageId(), MessageReference.toComponentMessage(message)))
                 .build();
 
-        assertThat(actualChannels).containsExactly(Map.entry(topicName, expectedChannel));
-        assertThat(actualOperations)
-                .containsExactly(Map.entry("test-supplier-output-topic_send_testSupplier", expectedOperation));
+        assertThat(actualChannels).containsExactly(expectedChannel);
+        assertThat(actualOperations).containsExactly(expectedOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), message));
     }
 
@@ -283,8 +296,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -342,12 +355,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
-        assertThat(actualChannels)
-                .contains(Map.entry(inputTopicName, subscribeChannel), Map.entry(outputTopicName, publishChannel));
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_testFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testFunction", publishOperation));
+        assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
     }
 
     @Test
@@ -367,8 +376,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testBiFunction-out-0", testBiFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -426,12 +435,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
-        assertThat(actualChannels)
-                .contains(Map.entry(outputTopicName, publishChannel), Map.entry(inputTopicName, subscribeChannel));
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_testBiFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_testBiFunction", publishOperation));
+        assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
     }
 
     @Test
@@ -451,8 +456,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "kStreamTestFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
         // Then the returned channels contain a publish ChannelItem and a subscribe ChannelItem
         MessageObject subscribeMessage = MessageObject.builder()
@@ -515,12 +520,8 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
                 .build();
 
-        assertThat(actualChannels)
-                .contains(Map.entry(outputTopicName, publishChannel), Map.entry(inputTopicName, subscribeChannel));
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-in-topic_receive_kStreamTestFunction", subscribeOperation),
-                        Map.entry("test-out-topic_send_kStreamTestFunction", publishOperation));
+        assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
     }
@@ -541,10 +542,10 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                         "testFunction-out-0", testFunctionOutBinding));
 
         // When scan is called
-        Map<String, ChannelObject> actualChannels = channelsScanner.scan();
-        Map<String, Operation> actualOperations = operationsScanner.scan();
+        List<ChannelObject> actualChannels = channelsScanner.scan();
+        List<Operation> actualOperations = operationsScanner.scan();
 
-        // Then the returned merged channels contain a publish operation and  a subscribe operation
+        // Then the returned channels contain a publish and a subscribe channel
         MessageObject subscribeMessage = MessageObject.builder()
                 .name(String.class.getName())
                 .title("string")
@@ -589,28 +590,44 @@ class CloudStreamFunctionChannelsScannerIntegrationTest {
                 .messages(List.of(MessageReference.toChannelMessage(topicName, publishMessage)))
                 .build();
 
-        ChannelObject mergedChannel = ChannelObject.builder()
+        ChannelObject subscribeChannel = ChannelObject.builder()
                 .channelId(topicName)
                 .address(topicName)
                 .bindings(channelBinding)
-                .messages(Map.of(
-                        publishMessage.getMessageId(),
-                        MessageReference.toComponentMessage(publishMessage),
-                        subscribeMessage.getMessageId(),
-                        MessageReference.toComponentMessage(subscribeMessage)))
+                .messages(
+                        Map.of(subscribeMessage.getMessageId(), MessageReference.toComponentMessage(subscribeMessage)))
                 .build();
 
-        assertThat(actualChannels).contains(Map.entry(topicName, mergedChannel));
-        assertThat(actualOperations)
-                .contains(
-                        Map.entry("test-topic_send_testFunction", publishOperation),
-                        Map.entry("test-topic_receive_testFunction", subscribeOperation));
+        ChannelObject publishChannel = ChannelObject.builder()
+                .channelId(topicName)
+                .address(topicName)
+                .bindings(channelBinding)
+                .messages(Map.of(publishMessage.getMessageId(), MessageReference.toComponentMessage(publishMessage)))
+                .build();
+
+        assertThat(actualChannels).containsExactlyInAnyOrder(subscribeChannel, publishChannel);
+        assertThat(actualOperations).containsExactlyInAnyOrder(subscribeOperation, publishOperation);
         assertThat(componentsService.getMessages()).contains(Map.entry(String.class.getName(), subscribeMessage));
         assertThat(componentsService.getMessages()).contains(Map.entry(Integer.class.getName(), publishMessage));
     }
 
     @TestConfiguration
     public static class Configuration {
+        @Bean
+        public MessageBindingProcessor testMessageBindingProcessor() {
+            return annotatedElement -> annotatedElement instanceof Method method
+                            && method.getName().equals("testConsumer")
+                    ? Optional.of(new ProcessedMessageBinding("test", new EmptyMessageBinding()))
+                    : Optional.empty();
+        }
+
+        @Bean
+        public OperationBindingProcessor testOperationBindingProcessor() {
+            return method -> method.getName().equals("testConsumer")
+                    ? Optional.of(new ProcessedOperationBinding("test", new EmptyOperationBinding()))
+                    : Optional.empty();
+        }
+
         @Bean
         public Consumer<String> testConsumer() {
             return System.out::println;

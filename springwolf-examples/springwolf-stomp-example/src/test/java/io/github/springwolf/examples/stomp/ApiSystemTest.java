@@ -48,8 +48,10 @@ public class ApiSystemTest {
         String url = baseUrl() + "/springwolf/docs";
         String actual = restTemplate.getForObject(url, String.class);
 
-        InputStream s = this.getClass().getResourceAsStream("/asyncapi.json");
-        String expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        String expected;
+        try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {
+            expected = new String(s.readAllBytes(), StandardCharsets.UTF_8).trim();
+        }
 
         assertThat(actual).isEqualTo(expected);
     }

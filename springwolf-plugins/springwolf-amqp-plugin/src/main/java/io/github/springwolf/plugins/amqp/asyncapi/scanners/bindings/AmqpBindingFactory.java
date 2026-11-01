@@ -5,6 +5,7 @@ import io.github.springwolf.asyncapi.v3.bindings.ChannelBinding;
 import io.github.springwolf.asyncapi.v3.bindings.MessageBinding;
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
@@ -29,27 +30,28 @@ public class AmqpBindingFactory implements BindingFactory<RabbitListener> {
     }
 
     @Override
-    public String getChannelName(RabbitListener annotation) {
-        return RabbitListenerUtil.getChannelName(annotation, stringValueResolver);
+    public String getChannelName(BindingContext<RabbitListener> bindingContext) {
+        return RabbitListenerUtil.getChannelName(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public String getChannelId(RabbitListener annotation) {
-        return RabbitListenerUtil.getChannelId(annotation, stringValueResolver);
+    public String getChannelId(BindingContext<RabbitListener> bindingContext) {
+        return RabbitListenerUtil.getChannelId(bindingContext.annotation(), stringValueResolver);
     }
 
     @Override
-    public Map<String, ChannelBinding> buildChannelBinding(RabbitListener annotation) {
-        return RabbitListenerUtil.buildChannelBinding(annotation, stringValueResolver, context);
+    public Map<String, ChannelBinding> buildChannelBinding(BindingContext<RabbitListener> bindingContext) {
+        return RabbitListenerUtil.buildChannelBinding(bindingContext.annotation(), stringValueResolver, context);
     }
 
     @Override
-    public Map<String, OperationBinding> buildOperationBinding(RabbitListener annotation) {
-        return RabbitListenerUtil.buildOperationBinding(annotation, stringValueResolver, context);
+    public Map<String, OperationBinding> buildOperationBinding(BindingContext<RabbitListener> bindingContext) {
+        return RabbitListenerUtil.buildOperationBinding(bindingContext.annotation(), stringValueResolver, context);
     }
 
     @Override
-    public Map<String, MessageBinding> buildMessageBinding(RabbitListener annotation, SchemaObject headerSchema) {
+    public Map<String, MessageBinding> buildMessageBinding(
+            BindingContext<RabbitListener> bindingContext, SchemaObject headerSchema) {
         return RabbitListenerUtil.buildMessageBinding();
     }
 }
