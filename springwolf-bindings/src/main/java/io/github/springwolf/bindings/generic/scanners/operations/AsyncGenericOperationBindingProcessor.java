@@ -2,7 +2,7 @@
 package io.github.springwolf.bindings.generic.scanners.operations;
 
 import io.github.springwolf.asyncapi.v3.bindings.OperationBinding;
-import io.github.springwolf.bindings.generic.annotation.AsyncGenericOperationBinding;
+import io.github.springwolf.bindings.generic.annotations.AsyncGenericOperationBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.AbstractOperationBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.operations.ProcessedOperationBinding;
 import org.springframework.util.StringValueResolver;

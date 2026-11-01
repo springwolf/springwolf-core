@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.controller.dtos;
+package io.github.springwolf.core.controller.dtos;
 
-import io.github.springwolf.core.controller.dtos.MessageDto;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;

@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.controller;
+package io.github.springwolf.core.controller;
 
 import io.github.springwolf.core.configuration.SpringwolfWebConfiguration;
-import io.github.springwolf.core.controller.ActuatorAsyncApiController;
-import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.fixtures.SpringwolfApplicationIntegrationTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

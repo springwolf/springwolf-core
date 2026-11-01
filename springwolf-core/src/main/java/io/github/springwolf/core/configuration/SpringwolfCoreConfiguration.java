@@ -9,8 +9,6 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.channels.DefaultChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
-import io.github.springwolf.core.asyncapi.grouping.GroupingService;
 import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
 import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
@@ -49,6 +47,8 @@ import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.SchemasP
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.grouping.GroupingService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
