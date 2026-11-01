@@ -56,6 +56,8 @@ dependencies {
     testImplementation libs.testcontainers
     testImplementation libs.testcontainers.junit.jupiter
 
+    testImplementation libs.jspecify
+
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
 

@@ -58,6 +58,8 @@ dependencies {
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
 
+    testImplementation libs.jspecify
+
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
