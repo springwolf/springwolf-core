@@ -8,12 +8,13 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessagePayload;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,13 +27,14 @@ public class SpringAnnotationMessageService<MethodAnnotation extends Annotation>
 
     private final BindingFactory<MethodAnnotation> bindingFactory;
     private final AsyncHeadersBuilder asyncHeadersBuilder;
-    private final ComponentsService componentsService;
+    private final MessagesService messagesService;
+    private final SchemasService schemasService;
 
     public MessageObject buildMessage(
             MethodAnnotation annotation, PayloadSchemaObject payloadSchema, SchemaObject headers) {
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
-        String headerModelName = componentsService.registerSchema(mergedHeaderSchema);
+        String headerModelName = schemasService.registerSchema(mergedHeaderSchema);
 
         BindingContext<MethodAnnotation> bindingContext = BindingContext.of(annotation);
         Map<String, MessageBinding> messageBinding =
@@ -51,7 +53,7 @@ public class SpringAnnotationMessageService<MethodAnnotation extends Annotation>
                 .bindings(messageBinding)
                 .build();
 
-        this.componentsService.registerMessage(message);
+        this.messagesService.registerMessage(message);
         return message;
     }
 }

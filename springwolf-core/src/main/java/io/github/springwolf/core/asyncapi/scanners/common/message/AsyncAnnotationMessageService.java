@@ -9,12 +9,13 @@ import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadAsyncOperationService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,8 @@ import java.util.Map;
 public class AsyncAnnotationMessageService {
 
     private final PayloadAsyncOperationService payloadAsyncOperationService;
-    private final ComponentsService componentsService;
+    private final MessagesService messagesService;
+    private final SchemasService schemasService;
     private final List<MessageBindingProcessor> messageBindingProcessors;
     private final StringValueResolver stringValueResolver;
 
@@ -37,7 +39,7 @@ public class AsyncAnnotationMessageService {
         PayloadSchemaObject payloadSchema = payloadAsyncOperationService.extractSchema(operationData, method);
 
         SchemaObject headerSchema = AsyncAnnotationUtil.getAsyncHeaders(operationData, stringValueResolver);
-        String headerSchemaName = this.componentsService.registerSchema(headerSchema);
+        String headerSchemaName = this.schemasService.registerSchema(headerSchema);
 
         Map<String, MessageBinding> messageBinding =
                 AsyncAnnotationUtil.processMessageBindingFromAnnotation(method, messageBindingProcessors);
@@ -58,7 +60,7 @@ public class AsyncAnnotationMessageService {
         AsyncAnnotationUtil.processAsyncMessageAnnotation(builder, operationData.message(), this.stringValueResolver);
         MessageObject message = builder.build();
 
-        this.componentsService.registerMessage(message);
+        this.messagesService.registerMessage(message);
         return message;
     }
 

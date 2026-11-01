@@ -3,9 +3,9 @@ package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 class PayloadMethodParameterServiceTest {
     private PayloadExtractor payloadExtractor = mock(PayloadExtractor.class);
-    private ComponentsService componentsService = mock(ComponentsService.class);
+    private SchemasService schemasService = mock(SchemasService.class);
     private SpringwolfConfigProperties.ConfigDocket docket = mock(SpringwolfConfigProperties.ConfigDocket.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
@@ -29,7 +29,7 @@ class PayloadMethodParameterServiceTest {
 
     @BeforeEach
     void setUp() {
-        PayloadService payloadService = new PayloadService(componentsService, properties);
+        PayloadService payloadService = new PayloadService(schemasService, properties);
         payloadMethodParameterService = new PayloadMethodParameterService(payloadExtractor, payloadService);
     }
 
@@ -43,10 +43,10 @@ class PayloadMethodParameterServiceTest {
         when(payloadExtractor.extractFrom(method)).thenReturn(Optional.of(String.class));
 
         String schemaName = "my-schema-name";
-        when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
+        when(schemasService.getSchemaName(String.class)).thenReturn(schemaName);
 
         ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
-        when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);
+        when(schemasService.registerType(eq(String.class), any())).thenReturn(schemaObject);
 
         // when
         var result = payloadMethodParameterService.extractSchema(method);

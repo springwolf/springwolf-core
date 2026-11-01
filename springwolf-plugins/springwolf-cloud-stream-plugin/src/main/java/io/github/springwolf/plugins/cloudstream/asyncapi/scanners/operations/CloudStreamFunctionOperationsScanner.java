@@ -15,7 +15,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
@@ -26,6 +25,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -49,7 +49,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
     private final ComponentClassScanner componentClassScanner;
-    private final ComponentsService componentsService;
+    private final SchemasService schemasService;
     private final PayloadService payloadService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
@@ -90,7 +90,7 @@ public class CloudStreamFunctionOperationsScanner implements OperationsScanner {
         MessagePayload payload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
-        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        String headerModelName = schemasService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
         MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         MessageObject message = MessageObject.builder()

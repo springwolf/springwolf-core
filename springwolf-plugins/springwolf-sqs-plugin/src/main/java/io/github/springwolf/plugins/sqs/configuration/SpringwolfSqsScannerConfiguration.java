@@ -2,7 +2,7 @@
 package io.github.springwolf.plugins.sqs.configuration;
 
 import io.awspring.cloud.sqs.annotation.SqsListener;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
@@ -18,6 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodP
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.sqs.asyncapi.scanners.bindings.SqsBindingFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -54,10 +55,11 @@ public class SpringwolfSqsScannerConfiguration {
             SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            MessagesService messagesService,
+            SchemasService schemasService) {
         final var springAnnotationChannelService = new SpringAnnotationChannelService<>(sqsBindingFactory);
         final var springAnnotationMessageService = new SpringAnnotationMessageService<>(
-                sqsBindingFactory, new AsyncHeadersNotDocumented(), componentsService);
+                sqsBindingFactory, new AsyncHeadersNotDocumented(), messagesService, schemasService);
         SpringAnnotationMethodLevelChannelsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         SqsListener.class,
@@ -77,12 +79,13 @@ public class SpringwolfSqsScannerConfiguration {
             SqsBindingFactory sqsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService,
+            MessagesService messagesService,
+            SchemasService schemasService,
             List<OperationCustomizer> operationCustomizers) {
         final var springAnnotationOperationService = new SpringAnnotationOperationService<>(
                 sqsBindingFactory,
                 new SpringAnnotationMessageService<>(
-                        sqsBindingFactory, new AsyncHeadersNotDocumented(), componentsService));
+                        sqsBindingFactory, new AsyncHeadersNotDocumented(), messagesService, schemasService));
         SpringAnnotationMethodLevelOperationsScanner<SqsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         SqsListener.class,

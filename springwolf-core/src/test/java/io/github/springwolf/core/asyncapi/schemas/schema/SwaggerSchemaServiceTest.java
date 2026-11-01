@@ -1,0 +1,248 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.core.asyncapi.schemas.schema;
+
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.configuration.properties.PayloadSchemaFormat;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import tools.jackson.core.PrettyPrinter;
+import tools.jackson.core.util.DefaultIndenter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.json.JsonMapper;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+
+class SwaggerSchemaServiceTest {
+
+    private static final PrettyPrinter printer =
+            new DefaultPrettyPrinter().withObjectIndenter(new DefaultIndenter("  ", DefaultIndenter.SYS_LF));
+    private static final JsonMapper jsonMapper =
+            JsonMapper.builder().defaultPrettyPrinter(printer).build();
+
+    private final SchemasPostProcessor schemasPostProcessor = mock();
+    private final SchemasPostProcessor schemasPostProcessor2 = mock();
+
+    private SwaggerSchemaService schemaService;
+
+    @BeforeEach
+    void setUp() {
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+        schemaService = new SwaggerSchemaService(
+                configProperties,
+                List.of(schemasPostProcessor, schemasPostProcessor2),
+                new SwaggerSchemaMapper(configProperties),
+                new ModelConvertersRegisterer(
+                        configProperties, List.of(new ModelConverterNativeClass.Converter()), List.of()));
+    }
+
+    @Test
+    void classWithSchemaAnnotationWithAsyncapiSchemaformat() {
+        SwaggerSchemaService.ExtractedSchemas extractedSchemas =
+                schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+
+        assertThat(extractedSchemas.referencedSchemas()).hasSize(1);
+        ComponentSchema modelSchema = extractedSchemas.referencedSchemas().get("DifferentName");
+        assertThat(modelSchema.getSchema()).isNotNull(); // we expect an asyncapi schema
+        assertThat(modelSchema.getMultiFormatSchema()).isNull();
+
+        ComponentSchema rootSchema = extractedSchemas.rootSchema();
+        assertThat(rootSchema.getReference().getRef()).isEqualTo("#/components/schemas/DifferentName");
+    }
+
+    @Test
+    void getDefinitionWithoutFqnClassName() {
+        // given
+        SpringwolfConfigProperties properties = new SpringwolfConfigProperties();
+        properties.setUseFqn(false);
+
+        SwaggerSchemaService schemaServiceWithFqn = new SwaggerSchemaService(
+                properties,
+                List.of(),
+                new SwaggerSchemaMapper(properties),
+                new ModelConvertersRegisterer(properties, List.of(), List.of()));
+
+        // when
+        Class<?> clazz =
+                OneFieldFooWithoutFqn.class; // swagger seems to cache results. Therefore, a new class must be used.
+        Map<String, ComponentSchema> schemas = schemaServiceWithFqn
+                .resolveSchema(clazz, "content-type-not-relevant")
+                .referencedSchemas();
+        String actualDefinitions = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemas);
+
+        // then
+        assertThat(actualDefinitions).contains(clazz.getSimpleName());
+        assertThat(actualDefinitions).doesNotContain(clazz.getCanonicalName());
+    }
+
+    @Test
+    void postProcessorsAreCalledWithAsyncapiSchemaformat() {
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+
+        verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
+        verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
+    }
+
+    @Test
+    void postProcessorsAreCalledWithOpenapiSchemaformat() {
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "some-content-type");
+
+        verify(schemasPostProcessor).process(any(), any(), eq("some-content-type"));
+        verify(schemasPostProcessor2).process(any(), any(), eq("some-content-type"));
+    }
+
+    @Test
+    void postProcessorIsSkippedWhenSchemaWasRemoved() {
+        doAnswer(invocationOnMock -> {
+                    Map<String, ?> schemas = invocationOnMock.getArgument(1);
+                    schemas.clear();
+                    return null;
+                })
+                .when(schemasPostProcessor)
+                .process(any(), any(), any());
+
+        schemaService.resolveSchema(ClassWithSchemaAnnotation.class, "content-type-not-relevant");
+
+        verifyNoInteractions(schemasPostProcessor2);
+    }
+
+    @Test
+    void modelConvertersRefsAreResolved() {
+        SwaggerSchemaService.ExtractedSchemas schema =
+                schemaService.resolveSchema(ModelConverterNativeClass.class, "content-type-not-relevant");
+
+        assertThat(schema.rootSchema().getReference().getRef())
+                .contains(ModelConverterNativeClass.class.getName().replace("$", "."));
+        assertThat(schema.referencedSchemas())
+                .hasSize(1)
+                .containsKey(ModelConverterNativeClass.class.getName().replace("$", "."));
+        assertThat(schema.referencedSchemas()
+                        .get(ModelConverterNativeClass.class.getName().replace("$", ".")))
+                .satisfies((el) -> assertThat(el.getSchema().getType()).containsExactly(SchemaType.OBJECT.getValue()))
+                .satisfies((el) -> assertThat(el.getSchema().getProperties()).containsOnlyKeys("actual"));
+    }
+
+    @Test
+    void ignoreNonSerializableClassesInOpenApi31() {
+        // given
+        SpringwolfConfigProperties configProperties = new SpringwolfConfigProperties();
+        configProperties.getDocket().setPayloadSchemaFormat(PayloadSchemaFormat.OPENAPI_V3_1);
+        schemaService = new SwaggerSchemaService(
+                configProperties,
+                List.of(schemasPostProcessor, schemasPostProcessor2),
+                new SwaggerSchemaMapper(configProperties),
+                new ModelConvertersRegisterer(
+                        configProperties, List.of(new ModelConverterNativeClass.Converter()), List.of()));
+
+        // when
+        SwaggerSchemaService.ExtractedSchemas resolvedSchemas =
+                schemaService.resolveSchema(NonSerializableClass.class, "some-content-type");
+
+        // then the empty referencedSchema is removed. No cleanup of dangling $ref implemented at this point
+        assertThat(resolvedSchemas.rootSchema())
+                .isEqualTo(
+                        ComponentSchema.of(
+                                new SchemaReference(
+                                        "#/components/schemas/io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaServiceTest.NonSerializableClass")));
+        assertThat(resolvedSchemas.referencedSchemas()).isEmpty();
+    }
+
+    @Data
+    @NoArgsConstructor
+    @Schema(name = "DifferentName")
+    private static class ClassWithSchemaAnnotation {
+        private String s;
+        private boolean b;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private static class OneFieldFooWithoutFqn {
+        private String s;
+    }
+
+    @NoArgsConstructor
+    private static class NonSerializableClass {
+        private String field;
+
+        public String field() {
+            return field;
+        }
+    }
+
+    /**
+     * When a model converter is used, all usage of {@link ModelConverterNativeClass} should be replaced with {@link ModelConverterActualClass}
+     */
+    @Data
+    @NoArgsConstructor
+    private static class ModelConverterNativeClass {
+        private ModelConverterActualClass target;
+
+        @Data
+        @NoArgsConstructor
+        private static class ModelConverterActualClass {
+            private String actual;
+        }
+
+        /**
+         * Copied from SimpleClassModelConverter.java
+         */
+        public static class Converter implements ModelConverter {
+
+            @Override
+            public io.swagger.v3.oas.models.media.Schema<?> resolve(
+                    AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+                Class<?> rawClass = getRawClass(type);
+                boolean isNativeType = isNativeType(rawClass);
+
+                if (isNativeType) {
+                    type = new AnnotatedType(ModelConverterActualClass.class).resolveAsRef(true);
+                }
+
+                io.swagger.v3.oas.models.media.Schema<?> schema = proceedWithChain(type, context, chain);
+
+                if (isNativeType && schema != null && rawClass != null) {
+                    schema.name(rawClass.getName().replace("$", "."));
+                }
+
+                return schema;
+            }
+
+            private Class<?> getRawClass(AnnotatedType type) {
+                JavaType javaType = Json.mapper().constructType(type.getType());
+                return javaType != null ? javaType.getRawClass() : null;
+            }
+
+            private io.swagger.v3.oas.models.media.Schema<?> proceedWithChain(
+                    AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+                return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
+            }
+
+            private boolean isNativeType(Class<?> rawClass) {
+                return ModelConverterNativeClass.class.isAssignableFrom(rawClass);
+            }
+        }
+    }
+}

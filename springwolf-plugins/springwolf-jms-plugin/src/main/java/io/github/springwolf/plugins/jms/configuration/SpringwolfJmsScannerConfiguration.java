@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.jms.configuration;
 
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
 import io.github.springwolf.core.asyncapi.scanners.channels.ChannelPriority;
@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodP
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationCustomizer;
 import io.github.springwolf.core.asyncapi.scanners.operations.OperationsInClassScannerAdapter;
 import io.github.springwolf.core.asyncapi.scanners.operations.annotations.SpringAnnotationMethodLevelOperationsScanner;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.jms.asyncapi.scanners.bindings.JmsBindingFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -54,10 +55,11 @@ public class SpringwolfJmsScannerConfiguration {
             JmsBindingFactory jmsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService) {
+            MessagesService messagesService,
+            SchemasService schemasService) {
         final var springAnnotationChannelService = new SpringAnnotationChannelService<>(jmsBindingFactory);
         final var springAnnotationMessageService = new SpringAnnotationMessageService<>(
-                jmsBindingFactory, new AsyncHeadersNotDocumented(), componentsService);
+                jmsBindingFactory, new AsyncHeadersNotDocumented(), messagesService, schemasService);
         SpringAnnotationMethodLevelChannelsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelChannelsScanner<>(
                         JmsListener.class,
@@ -78,12 +80,13 @@ public class SpringwolfJmsScannerConfiguration {
             JmsBindingFactory jmsBindingFactory,
             PayloadMethodParameterService payloadMethodParameterService,
             HeaderClassExtractor headerClassExtractor,
-            ComponentsService componentsService,
+            MessagesService messagesService,
+            SchemasService schemasService,
             List<OperationCustomizer> operationCustomizers) {
         final var springAnnotationOperationService = new SpringAnnotationOperationService<>(
                 jmsBindingFactory,
                 new SpringAnnotationMessageService<>(
-                        jmsBindingFactory, new AsyncHeadersNotDocumented(), componentsService));
+                        jmsBindingFactory, new AsyncHeadersNotDocumented(), messagesService, schemasService));
         SpringAnnotationMethodLevelOperationsScanner<JmsListener> strategy =
                 new SpringAnnotationMethodLevelOperationsScanner<>(
                         JmsListener.class,

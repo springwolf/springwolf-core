@@ -21,9 +21,7 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.beans.DefaultBeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
@@ -35,9 +33,13 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -77,6 +79,8 @@ import static org.mockito.Mockito.when;
             ComponentClassScanner.class,
             DefaultBeanMethodsScanner.class,
             DefaultComponentsService.class,
+            DefaultSchemasService.class,
+            DefaultMessagesService.class,
             SwaggerSchemaService.class,
             PayloadService.class,
             PayloadExtractor.class,
@@ -90,7 +94,7 @@ import static org.mockito.Mockito.when;
             CloudStreamFunctionOperationsScanner.class,
             FunctionalChannelBeanBuilder.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersRegisterer.class
         })
 @TestPropertySource(
         properties = {

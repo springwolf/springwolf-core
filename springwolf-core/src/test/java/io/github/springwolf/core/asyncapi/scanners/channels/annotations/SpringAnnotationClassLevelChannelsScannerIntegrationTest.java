@@ -15,9 +15,8 @@ import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.channel.SpringAnnotationChannelService;
@@ -30,9 +29,14 @@ import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodS
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
@@ -58,6 +62,8 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = {
             SpringAnnotationClassLevelChannelsScannerIntegrationTest.TestBindingFactory.class,
             DefaultComponentsService.class,
+            DefaultSchemasService.class,
+            DefaultMessagesService.class,
             SwaggerSchemaService.class,
             SwaggerSchemaMapper.class,
             PayloadMethodParameterService.class,
@@ -70,7 +76,7 @@ import static org.assertj.core.api.Assertions.assertThat;
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class
+            ModelConvertersRegisterer.class
         })
 class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
 
@@ -86,6 +92,12 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
     @Autowired
     ComponentsService componentsService;
 
+    @Autowired
+    MessagesService messagesService;
+
+    @Autowired
+    SchemasService schemasService;
+
     private SpringAnnotationClassLevelChannelsScanner<TestClassListener, TestMethodListener> scanner;
 
     @BeforeEach
@@ -98,7 +110,8 @@ class SpringAnnotationClassLevelChannelsScannerIntegrationTest {
                         new AsyncHeadersNotDocumented(),
                         payloadMethodService,
                         headerClassExtractor,
-                        componentsService),
+                        messagesService,
+                        schemasService),
                 new SpringAnnotationChannelService<>(this.bindingFactory));
     }
 

@@ -9,7 +9,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersBuilder;
@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderClassExt
 import io.github.springwolf.core.asyncapi.scanners.common.headers.HeaderSchemaObjectMerger;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadMethodService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +38,8 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
     private final AsyncHeadersBuilder asyncHeadersBuilder;
     private final PayloadMethodService payloadMethodService;
     private final HeaderClassExtractor headerClassExtractor;
-    private final ComponentsService componentsService;
+    private final MessagesService messagesService;
+    private final SchemasService schemasService;
 
     public enum MessageType {
         CHANNEL,
@@ -63,7 +65,7 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
         SchemaObject headerSchema = asyncHeadersBuilder.buildHeaders(payloadSchema);
         SchemaObject headers = headerClassExtractor.extractHeader(method, payloadSchema);
         SchemaObject mergedHeaderSchema = HeaderSchemaObjectMerger.merge(headerSchema, headers);
-        String headerSchemaName = componentsService.registerSchema(mergedHeaderSchema);
+        String headerSchemaName = schemasService.registerSchema(mergedHeaderSchema);
 
         BindingContext<ClassAnnotation> bindingContext =
                 BindingContext.ofAnnotatedMethod(method.getDeclaringClass(), method, classAnnotation);
@@ -82,7 +84,7 @@ public class SpringAnnotationMessagesService<ClassAnnotation extends Annotation>
                 .bindings(messageBinding)
                 .build();
 
-        this.componentsService.registerMessage(message);
+        this.messagesService.registerMessage(message);
         return message;
     }
 }

@@ -3,17 +3,19 @@ package io.github.springwolf.plugins.jms.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadExtractor;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.controller.PublishingPayloadCreator;
 import io.github.springwolf.core.controller.dtos.MessageDto;
@@ -60,6 +62,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             PayloadExtractor.class,
             TypeExtractor.class,
             DefaultComponentsService.class,
+            DefaultSchemasService.class,
+            DefaultMessagesService.class,
             SwaggerSchemaService.class,
             PayloadService.class,
             SwaggerSchemaMapper.class,
@@ -67,7 +71,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             SchemaWalkerProvider.class,
             ExampleJsonValueGenerator.class,
             SpringwolfConfigProperties.class,
-            ModelConvertersProvider.class,
+            ModelConvertersRegisterer.class,
             JsonMapperTestConfiguration.class,
         })
 @ExtendWith(MockitoExtension.class)
@@ -84,7 +88,7 @@ class SpringwolfJmsControllerIntegrationTest {
     private MockMvc mvc;
 
     @Autowired
-    private ComponentsService componentsService;
+    private SchemasService schemasService;
 
     @MockitoBean
     private SpringwolfJmsProducer springwolfJmsProducer;
@@ -99,7 +103,7 @@ class SpringwolfJmsControllerIntegrationTest {
     void setup() {
         when(springwolfJmsProducer.isEnabled()).thenReturn(true);
 
-        componentsService.registerSchema(SchemaObject.builder()
+        schemasService.registerSchema(SchemaObject.builder()
                 .title(PayloadDto.class.getName())
                 .properties(new HashMap<>())
                 .build());

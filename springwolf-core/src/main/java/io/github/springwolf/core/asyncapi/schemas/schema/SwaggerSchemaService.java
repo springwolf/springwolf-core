@@ -1,0 +1,234 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.core.asyncapi.schemas.schema;
+
+import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.core.asyncapi.annotations.AsyncApiPayload;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.SchemasPostProcessor;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.jackson.TypeNameResolver;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.PrimitiveType;
+import io.swagger.v3.core.util.RefUtils;
+import io.swagger.v3.oas.models.media.Schema;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import tools.jackson.databind.JavaType;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE;
+
+@Slf4j
+@RequiredArgsConstructor
+public class SwaggerSchemaService {
+
+    private final SpringwolfConfigProperties properties;
+    private final List<SchemasPostProcessor> schemaPostProcessors;
+    private final SwaggerSchemaMapper swaggerSchemaMapper;
+    private final ModelConvertersRegisterer modelConvertersRegisterer;
+    private final TypeNameResolver simpleNameTypeNameResolver = new SpringwolfTypeNameResolver(false);
+
+    public record ExtractedSchemas(ComponentSchema rootSchema, Map<String, ComponentSchema> referencedSchemas) {}
+
+    /**
+     * Invokes all postprocessors for the given schema (headers). As the {@link SchemasPostProcessor} interface processes
+     * *Swagger* schemas, this method converts the given {@link SchemaObject} to a Swagger schema, invokes all
+     * postprocessors and converts the result back to a {@link SchemaObject}
+     * <p>NOTE</p>
+     * The conversion between the AsyncAPI {@link SchemaObject} and Swagger schema instance is not a 'full conversion'. Only
+     * root attributes of the schema and the first level of properties are converted. Providing {@link SchemaObject}s with deep
+     * property hierarchy will result in a corrupted result.
+     * <br/>
+     * A typical usecase for this method is postprocessing of header schemas, which have typically a simple structure.
+     */
+    public ComponentSchema postProcessSchemaWithoutRef(SchemaObject schemaWithoutRef) {
+        Schema<?> headerSchema = swaggerSchemaMapper.mapToSwagger(schemaWithoutRef);
+
+        // call postprocessors
+        Map<String, Schema<?>> newSchemasToProcess = Map.of(headerSchema.getName(), headerSchema);
+        postProcessSchemas(newSchemasToProcess, new HashMap<>(newSchemasToProcess), DEFAULT_CONTENT_TYPE);
+
+        // convert Swagger schema back to an AsyncAPI SchemaObject
+        return swaggerSchemaMapper.mapSchema(headerSchema);
+    }
+
+    public ExtractedSchemas postProcessSimpleSchema(Class<?> type) {
+        return this.resolveSchema(type, "");
+    }
+
+    /**
+     * creates a {@link ExtractedSchemas} from the given type. The resulting ExtractedSchemas will contain the root
+     * schema (which is always a schema ref) and a List of concrete schemas referenced from the root schema.
+     */
+    public ExtractedSchemas resolveSchema(Type type, String contentType) {
+        String actualContentType =
+                StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
+
+        // use swagger to resolve type to a swagger ResolvedSchema Object.
+        ModelConverters converterToUse = modelConvertersRegisterer.getModelConverters();
+
+        ResolvedSchema resolvedSchema =
+                converterToUse.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true));
+        if (resolvedSchema == null) {
+            // defaulting to stringSchema when resolvedSchema is null
+            Schema<?> stringPropertySchema =
+                    PrimitiveType.fromType(String.class).createProperty();
+            ComponentSchema stringComponentSchema = swaggerSchemaMapper.mapSchema(stringPropertySchema);
+            return new ExtractedSchemas(stringComponentSchema, Map.of());
+        } else {
+            Map<String, Schema<?>> newSchemasToProcess = new LinkedHashMap<>();
+            resolvedSchema.referencedSchemas.forEach(newSchemasToProcess::put);
+            newSchemasToProcess.putIfAbsent(getNameFromType(type), resolvedSchema.schema);
+
+            preProcessSchemas(resolvedSchema.schema, newSchemasToProcess, type);
+            HashMap<String, Schema<?>> processedSchemas = new HashMap<>(newSchemasToProcess);
+            postProcessSchemas(newSchemasToProcess, processedSchemas, actualContentType);
+
+            return createExtractedSchemas(resolvedSchema.schema, processedSchemas);
+        }
+    }
+
+    /**
+     * creates an {@link ExtractedSchemas} return type for the given swagger root schema and swagger referenced schemas.
+     *
+     * @param rootSchema        Swagger root schema
+     * @param referencedSchemas all referenced swagger schemas
+     */
+    private ExtractedSchemas createExtractedSchemas(Schema<?> rootSchema, Map<String, Schema<?>> referencedSchemas) {
+        ComponentSchema rootComponentSchema = swaggerSchemaMapper.mapSchemaOrRef(rootSchema);
+        Map<String, ComponentSchema> referencedComponentSchemas = swaggerSchemaMapper.mapSchemasMap(referencedSchemas);
+
+        return new ExtractedSchemas(rootComponentSchema, referencedComponentSchemas);
+    }
+
+    private void preProcessSchemas(Schema<?> payloadSchema, Map<String, Schema<?>> schemas, Type type) {
+        removeEmptySchemas(schemas);
+        processCommonModelConverters(payloadSchema, schemas);
+        processAsyncApiPayloadAnnotation(schemas, type);
+        processSchemaAnnotation(payloadSchema, type);
+    }
+
+    private void removeEmptySchemas(Map<String, Schema<?>> schemas) {
+        schemas.entrySet().stream().toList().forEach(e -> {
+            if (e.getValue().getType() == null
+                    && e.getValue().getTypes() == null
+                    && e.getValue().get$ref() == null
+                    && e.getValue().getAllOf() == null
+                    && e.getValue().getAnyOf() == null
+                    && e.getValue().getOneOf() == null) {
+                schemas.remove(e.getKey());
+            }
+        });
+    }
+
+    /**
+     * When (springwolf common) model converters are used,
+     * the native schema is {@param payloadSchema} and the target, converted to schema is part of {@param schemas}.
+     * <p>
+     * This method will remove the native and puts the target, converted schema in place.
+     */
+    private void processCommonModelConverters(Schema<?> payloadSchema, Map<String, Schema<?>> schemas) {
+        schemas.values().stream()
+                .filter(schema -> schema.getType() == null)
+                .filter(schema -> schema.get$ref() != null)
+                .toList()
+                .forEach(schema -> {
+                    String targetSchemaName = schema.getName();
+                    String sourceSchemaName = ReferenceUtil.getLastSegment(schema.get$ref());
+
+                    Schema<?> actualSchema = schemas.get(sourceSchemaName);
+
+                    if (actualSchema != null) {
+                        schemas.put(targetSchemaName, actualSchema);
+                        schemas.remove(sourceSchemaName);
+
+                        updatePayloadSchemaRef(payloadSchema, targetSchemaName, sourceSchemaName);
+                    }
+                });
+    }
+
+    private void updatePayloadSchemaRef(Schema<?> schema, String targetSchemaName, String sourceSchemaName) {
+        if (schema != null && schema.get$ref() != null) {
+            String refTypeName = ReferenceUtil.getLastSegment(schema.get$ref());
+            if (refTypeName.equals(sourceSchemaName)) {
+                schema.$ref(RefUtils.constructRef(targetSchemaName));
+            }
+        }
+    }
+
+    private void processSchemaAnnotation(Schema<?> payloadSchema, Type type) {
+        JavaType javaType = Json.mapper().constructType(type);
+        Class<?> clazz = javaType.getRawClass();
+        if (payloadSchema != null) {
+            var schemaAnnotation = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+            if (schemaAnnotation != null && StringUtils.isNotBlank(schemaAnnotation.description())) {
+                payloadSchema.setDescription(schemaAnnotation.description());
+            }
+        }
+    }
+
+    private void processAsyncApiPayloadAnnotation(Map<String, Schema<?>> schemas, Type type) {
+        JavaType javaType = Json.mapper().constructType(type);
+        Class<?> clazz = javaType.getRawClass();
+        List<Field> withPayloadAnnotatedFields = Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(AsyncApiPayload.class))
+                .toList();
+
+        if (withPayloadAnnotatedFields.size() == 1) {
+            String schemaName = getNameFromType(type);
+            String fieldName = withPayloadAnnotatedFields.get(0).getName();
+            schemas.entrySet().stream()
+                    .filter(e -> e.getKey().equals(schemaName))
+                    .filter(e -> e.getValue() != null)
+                    .filter(e -> e.getValue().getProperties() != null)
+                    .forEach(e ->
+                            e.setValue((Schema<?>) e.getValue().getProperties().get(fieldName)));
+        } else if (withPayloadAnnotatedFields.size() > 1) {
+            log.warn(
+                    ("Found more than one field with @AsyncApiPayload annotation in class {}. "
+                            + "Falling back and ignoring annotation."),
+                    type.getTypeName());
+        }
+    }
+
+    public String getNameFromType(Type type) {
+        PrimitiveType primitiveType = PrimitiveType.fromType(type);
+        if (primitiveType != null && properties.isUseFqn()) {
+            return primitiveType.getKeyClass().getName();
+        }
+        JavaType javaType = Json.mapper().constructType(type);
+        return modelConvertersRegisterer.getTypeNameResolver().nameForType(javaType);
+    }
+
+    public String getSimpleNameFromType(Type type) {
+        JavaType javaType = Json.mapper().constructType(type);
+        return simpleNameTypeNameResolver.nameForType(javaType);
+    }
+
+    private void postProcessSchemas(
+            Map<String, Schema<?>> schemasToProcess, Map<String, Schema<?>> schemas, String contentType) {
+        for (SchemasPostProcessor processor : schemaPostProcessors) {
+            for (Schema<?> schema : schemasToProcess.values()) {
+                if (!schemas.containsValue(schema)) {
+                    // If the post-processor removed the schema, we can skip it
+                    continue;
+                }
+
+                processor.process(schema, schemas, contentType);
+            }
+        }
+    }
+}

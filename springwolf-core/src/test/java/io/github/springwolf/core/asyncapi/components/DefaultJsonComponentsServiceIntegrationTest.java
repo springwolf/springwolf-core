@@ -5,14 +5,17 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
-import io.github.springwolf.core.asyncapi.components.examples.SchemaWalkerProvider;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.DefaultSchemaWalker;
-import io.github.springwolf.core.asyncapi.components.examples.walkers.json.ExampleJsonValueGenerator;
-import io.github.springwolf.core.asyncapi.components.postprocessors.ExampleGeneratorPostProcessor;
-import io.github.springwolf.core.asyncapi.schemas.ModelConvertersProvider;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaMapper;
-import io.github.springwolf.core.asyncapi.schemas.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
+import io.github.springwolf.core.asyncapi.schemas.DefaultSchemasService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.asyncapi.schemas.converters.ModelConvertersRegisterer;
 import io.github.springwolf.core.asyncapi.schemas.converters.SchemaTitleModelConverter;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaMapper;
+import io.github.springwolf.core.asyncapi.schemas.schema.SwaggerSchemaService;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerProvider;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
+import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.ExampleGeneratorPostProcessor;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
@@ -51,16 +54,18 @@ class DefaultJsonComponentsServiceIntegrationTest {
             List.of(new ExampleGeneratorPostProcessor(
                     new SchemaWalkerProvider(List.of(new DefaultSchemaWalker<>(new ExampleJsonValueGenerator()))))),
             new SwaggerSchemaMapper(springwolfConfigProperties),
-            new ModelConvertersProvider(
+            new ModelConvertersRegisterer(
                     springwolfConfigProperties, List.of(new SchemaTitleModelConverter()), List.of()));
-    private final ComponentsService componentsService = new DefaultComponentsService(schemaService);
+    private final SchemasService schemasService = new DefaultSchemasService(schemaService);
+    private final ComponentsService componentsService =
+            new DefaultComponentsService(schemasService, new DefaultMessagesService());
 
     private static final JsonMapper jsonMapper = JsonMapperTestConfiguration.jsonMapper;
 
     @Test
     void getSchemas() throws Exception {
-        componentsService.resolvePayloadSchema(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
-        componentsService.resolvePayloadSchema(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(CompositeFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(FooWithEnum.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -71,7 +76,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getDocumentedDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(DocumentedSimpleFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -82,7 +87,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getArrayDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(ArrayFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -93,7 +98,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getComplexDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(ComplexFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -104,7 +109,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
 
     @Test
     void getListWrapperDefinitions() throws Exception {
-        componentsService.resolvePayloadSchema(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
+        schemasService.registerType(ListWrapper.class, CONTENT_TYPE_APPLICATION_JSON);
 
         String actualDefinitions =
                 jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -227,7 +232,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class SchemaWithOneOf {
         @Test
         void schemaWithOneOf() throws Exception {
-            componentsService.resolvePayloadSchema(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
+            schemasService.registerType(SchemaAnnotationFoo.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions =
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());
@@ -273,7 +278,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class JsonSubTypesRecursionTest {
         @Test
         void registerSchemaWithoutStackOverflowException() {
-            componentsService.resolvePayloadSchema(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
+            schemasService.registerType(CriteriaMessage.class, CONTENT_TYPE_APPLICATION_JSON);
 
             Map<String, ComponentSchema> schemas = componentsService.getSchemas();
             assertThat(schemas)
@@ -306,7 +311,7 @@ class DefaultJsonComponentsServiceIntegrationTest {
     class JsonTypeTest {
         @Test
         void getJsonTypeDefinitions() throws Exception {
-            componentsService.resolvePayloadSchema(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
+            schemasService.registerType(JsonTypeInfoPayloadDto.class, CONTENT_TYPE_APPLICATION_JSON);
 
             String actualDefinitions =
                     jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(componentsService.getSchemas());

@@ -14,7 +14,7 @@ import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.schema.MultiFormatSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
@@ -24,6 +24,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnota
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -46,7 +47,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private final AsyncApiDocketService asyncApiDocketService;
     private final BeanMethodsScanner beanMethodsScanner;
     private final ComponentClassScanner componentClassScanner;
-    private final ComponentsService componentsService;
+    private final MessagesService messagesService;
+    private final SchemasService schemasService;
     private final PayloadService payloadService;
     private final BindingServiceProperties cloudStreamBindingsProperties;
     private final FunctionalChannelBeanBuilder functionalChannelBeanBuilder;
@@ -87,7 +89,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
         var messagePayload = MessagePayload.of(
                 MultiFormatSchema.builder().schema(payloadSchema.payload()).build());
 
-        String headerModelName = componentsService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
+        String headerModelName = schemasService.registerSchema(AsyncHeadersNotDocumented.NOT_DOCUMENTED);
         MessageHeaders messageHeaders = MessageHeaders.of(SchemaReference.toSchema(headerModelName));
 
         Map<String, MessageBinding> messageBinding = buildMessageBinding(beanData.annotatedElement());
@@ -98,7 +100,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .headers(messageHeaders)
                 .bindings(messageBinding)
                 .build();
-        this.componentsService.registerMessage(message);
+        this.messagesService.registerMessage(message);
 
         Map<String, ChannelBinding> channelBinding = buildChannelBinding(beanData.annotatedElement());
 

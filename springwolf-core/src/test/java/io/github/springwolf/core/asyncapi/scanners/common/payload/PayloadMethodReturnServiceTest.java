@@ -3,8 +3,8 @@ package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PayloadMethodReturnServiceTest {
-    private ComponentsService componentsService = mock(ComponentsService.class);
+    private SchemasService schemasService = mock(SchemasService.class);
     private SpringwolfConfigProperties.ConfigDocket docket = mock(SpringwolfConfigProperties.ConfigDocket.class);
     private SpringwolfConfigProperties properties = mock(SpringwolfConfigProperties.class);
 
@@ -27,7 +27,7 @@ class PayloadMethodReturnServiceTest {
 
     @BeforeEach
     void setUp() {
-        PayloadService payloadService = new PayloadService(componentsService, properties);
+        PayloadService payloadService = new PayloadService(schemasService, properties);
         payloadMethodReturnService = new PayloadMethodReturnService(payloadService);
     }
 
@@ -41,10 +41,10 @@ class PayloadMethodReturnServiceTest {
         doReturn(String.class).when(method).getReturnType();
 
         String schemaName = "my-schema-name";
-        when(componentsService.getSchemaName(String.class)).thenReturn(schemaName);
+        when(schemasService.getSchemaName(String.class)).thenReturn(schemaName);
 
         ComponentSchema schemaObject = ComponentSchema.of(SchemaObject.builder().build());
-        when(componentsService.resolvePayloadSchema(eq(String.class), any())).thenReturn(schemaObject);
+        when(schemasService.registerType(eq(String.class), any())).thenReturn(schemaObject);
 
         // when
         var result = payloadMethodReturnService.extractSchema(method);

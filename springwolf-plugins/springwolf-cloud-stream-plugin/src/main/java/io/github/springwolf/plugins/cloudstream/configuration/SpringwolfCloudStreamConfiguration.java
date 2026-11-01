@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.cloudstream.configuration;
 
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.scanners.beans.BeanMethodsScanner;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
@@ -9,6 +9,7 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Operation
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.TypeExtractor;
+import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.channels.CloudStreamFunctionChannelsScanner;
@@ -31,7 +32,8 @@ public class SpringwolfCloudStreamConfiguration {
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
             ComponentClassScanner componentClassScanner,
-            ComponentsService componentsService,
+            MessagesService messagesService,
+            SchemasService schemasService,
             PayloadService payloadService,
             BindingServiceProperties bindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
@@ -41,7 +43,8 @@ public class SpringwolfCloudStreamConfiguration {
                 asyncApiDocketService,
                 beanMethodsScanner,
                 componentClassScanner,
-                componentsService,
+                messagesService,
+                schemasService,
                 payloadService,
                 bindingServiceProperties,
                 functionalChannelBeanBuilder,
@@ -55,7 +58,7 @@ public class SpringwolfCloudStreamConfiguration {
             AsyncApiDocketService asyncApiDocketService,
             BeanMethodsScanner beanMethodsScanner,
             ComponentClassScanner componentClassScanner,
-            ComponentsService componentsService,
+            SchemasService schemasService,
             PayloadService payloadService,
             BindingServiceProperties cloudstreamBindingServiceProperties,
             FunctionalChannelBeanBuilder functionalChannelBeanBuilder,
@@ -65,7 +68,7 @@ public class SpringwolfCloudStreamConfiguration {
                 asyncApiDocketService,
                 beanMethodsScanner,
                 componentClassScanner,
-                componentsService,
+                schemasService,
                 payloadService,
                 cloudstreamBindingServiceProperties,
                 functionalChannelBeanBuilder,
