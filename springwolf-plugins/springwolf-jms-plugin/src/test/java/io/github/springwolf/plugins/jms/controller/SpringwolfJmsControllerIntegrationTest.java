@@ -17,10 +17,10 @@ import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerPr
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.publish.dtos.MessageDto;
 import io.github.springwolf.plugins.jms.configuration.JsonMapperTestConfiguration;
-import io.github.springwolf.plugins.jms.producer.SpringwolfJmsProducer;
+import io.github.springwolf.plugins.jms.publish.SpringwolfJmsPublisher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = {
             SpringwolfJmsController.class,
             PublishingPayloadCreator.class,
-            SpringwolfJmsProducer.class,
+            SpringwolfJmsPublisher.class,
             PayloadExtractor.class,
             TypeExtractor.class,
             DefaultComponentsService.class,
@@ -91,7 +91,7 @@ class SpringwolfJmsControllerIntegrationTest {
     private SchemasService schemasService;
 
     @MockitoBean
-    private SpringwolfJmsProducer springwolfJmsProducer;
+    private SpringwolfJmsPublisher springwolfJmsPublisher;
 
     @Captor
     private ArgumentCaptor<Object> payloadCaptor;
@@ -101,7 +101,7 @@ class SpringwolfJmsControllerIntegrationTest {
 
     @BeforeEach
     void setup() {
-        when(springwolfJmsProducer.isEnabled()).thenReturn(true);
+        when(springwolfJmsPublisher.isEnabled()).thenReturn(true);
 
         schemasService.registerSchema(SchemaObject.builder()
                 .title(PayloadDto.class.getName())
@@ -119,7 +119,7 @@ class SpringwolfJmsControllerIntegrationTest {
 
         @Test
         void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
-            when(springwolfJmsProducer.isEnabled()).thenReturn(false);
+            when(springwolfJmsPublisher.isEnabled()).thenReturn(false);
 
             mvc.perform(get("/springwolf/plugin/jms/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is4xxClientError());
@@ -139,7 +139,7 @@ class SpringwolfJmsControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfJmsProducer).send(eq("test-topic"), isNull(), eq(null));
+        verify(springwolfJmsPublisher).send(eq("test-topic"), isNull(), eq(null));
     }
 
     @Test
@@ -154,12 +154,12 @@ class SpringwolfJmsControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfJmsProducer).send(eq("test-topic"), isNull(), isNull());
+        verify(springwolfJmsPublisher).send(eq("test-topic"), isNull(), isNull());
     }
 
     @Test
-    void controllerShouldReturnNotFoundIfNoJmsProducerIsEnabled() throws Exception {
-        when(springwolfJmsProducer.isEnabled()).thenReturn(false);
+    void controllerShouldReturnNotFoundIfNoJmsPublisherIsEnabled() throws Exception {
+        when(springwolfJmsPublisher.isEnabled()).thenReturn(false);
 
         String content = """
                         {
@@ -174,8 +174,8 @@ class SpringwolfJmsControllerIntegrationTest {
     }
 
     @Test
-    void controllerShouldCallJmsProducerIfOnlyPayloadIsSend() throws Exception {
-        when(springwolfJmsProducer.isEnabled()).thenReturn(true);
+    void controllerShouldCallJmsPublisherIfOnlyPayloadIsSend() throws Exception {
+        when(springwolfJmsPublisher.isEnabled()).thenReturn(true);
 
         String content = """
                         {
@@ -191,14 +191,14 @@ class SpringwolfJmsControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfJmsProducer).send(eq("test-topic"), isNull(), payloadCaptor.capture());
+        verify(springwolfJmsPublisher).send(eq("test-topic"), isNull(), payloadCaptor.capture());
 
         assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
     @Test
-    void controllerShouldCallJmsProducerIfPayloadAndHeadersAreSend() throws Exception {
-        when(springwolfJmsProducer.isEnabled()).thenReturn(true);
+    void controllerShouldCallJmsPublisherIfPayloadAndHeadersAreSend() throws Exception {
+        when(springwolfJmsPublisher.isEnabled()).thenReturn(true);
 
         String content = """
                         {
@@ -216,7 +216,7 @@ class SpringwolfJmsControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfJmsProducer).send(eq("test-topic"), headerCaptor.capture(), payloadCaptor.capture());
+        verify(springwolfJmsPublisher).send(eq("test-topic"), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue())
                 .isEqualTo(singletonMap("some-header-key", new MessageDto.HeaderValue("some-header-value")));

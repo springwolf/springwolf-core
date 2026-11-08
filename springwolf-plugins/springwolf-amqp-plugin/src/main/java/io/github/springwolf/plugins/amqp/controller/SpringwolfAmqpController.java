@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.amqp.controller;
 
-import io.github.springwolf.core.controller.PublishingBaseController;
-import io.github.springwolf.core.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.controller.dtos.MessageDto;
-import io.github.springwolf.plugins.amqp.producer.SpringwolfAmqpProducer;
+import io.github.springwolf.core.controller.publish.PublishingBaseController;
+import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.publish.dtos.MessageDto;
+import io.github.springwolf.plugins.amqp.publish.SpringwolfAmqpPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class SpringwolfAmqpController extends PublishingBaseController {
 
-    private final SpringwolfAmqpProducer producer;
+    private final SpringwolfAmqpPublisher producer;
 
     public SpringwolfAmqpController(
-            PublishingPayloadCreator publishingPayloadCreator, SpringwolfAmqpProducer producer) {
+            PublishingPayloadCreator publishingPayloadCreator, SpringwolfAmqpPublisher producer) {
         super(publishingPayloadCreator);
         this.producer = producer;
     }

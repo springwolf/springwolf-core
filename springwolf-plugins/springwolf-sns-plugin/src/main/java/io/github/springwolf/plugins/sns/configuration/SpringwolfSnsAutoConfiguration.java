@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Import;
  * Autoconfiguration for the springwolf sns plugin.
  */
 @AutoConfiguration
-@Import({SpringwolfSnsPropertiesConfiguration.class, SpringwolfSnsProducerConfiguration.class})
+@Import({SpringwolfSnsPropertiesConfiguration.class, SpringwolfSnsPublisherConfiguration.class})
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfSnsAutoConfiguration {}
