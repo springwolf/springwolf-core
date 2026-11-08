@@ -2,7 +2,8 @@
 package io.github.springwolf.core.asyncapi;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupNotFoundException;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -101,11 +102,11 @@ class DefaultAsyncApiServiceTest {
 
         // when
         try {
-            defaultAsyncApiService.getForGroupName("group");
+            defaultAsyncApiService.getForGroupName("testGroup");
             fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException exc) {
+        } catch (AsyncApiGroupNotFoundException exc) {
             // then
-            assertThat(exc.getMessage()).isEqualTo("AsyncAPI group group was not found");
+            assertThat(exc.getMessage()).isEqualTo("AsyncAPI group testGroup was not found");
         }
     }
 }

@@ -55,6 +55,7 @@ dependencies {
     testImplementation libs.mockito.junit.jupiter
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.test
+    testRuntimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params

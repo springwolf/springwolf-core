@@ -2,8 +2,8 @@
 package io.github.springwolf.core.asyncapi;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
-import io.github.springwolf.core.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupNotFoundException;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
@@ -28,7 +28,7 @@ public class DefaultAsyncApiService implements AsyncApiService {
         if (groups != null && groups.containsKey(groupName)) {
             return groups.get(groupName);
         }
-        throw new SpringwolfConfigurationException("AsyncAPI group %s was not found".formatted(groupName));
+        throw new AsyncApiGroupNotFoundException(groupName);
     }
 
     private AsyncAPIResult getAsyncAPIResult() {
