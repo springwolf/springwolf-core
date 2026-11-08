@@ -2,6 +2,7 @@
 package io.github.springwolf.core.configuration;
 
 import io.github.springwolf.core.SpringwolfInitApplicationListener;
+import io.github.springwolf.core.asyncapi.AsyncApiCreator;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
@@ -86,20 +87,20 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AsyncApiService asyncApiService(
+    public AsyncApiCreator asyncApiCreator(
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
             OperationsService operationsService,
             ComponentsService componentsService,
-            List<AsyncApiCustomizer> customizers,
-            AsyncApiGroupService groupService) {
-        return new DefaultAsyncApiService(
-                asyncApiDocketService,
-                channelsService,
-                operationsService,
-                componentsService,
-                customizers,
-                groupService);
+            List<AsyncApiCustomizer> customizers) {
+        return new AsyncApiCreator(
+                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncApiService asyncApiService(AsyncApiCreator asyncApiCreator, AsyncApiGroupService groupService) {
+        return new DefaultAsyncApiService(asyncApiCreator, groupService);
     }
 
     @Bean

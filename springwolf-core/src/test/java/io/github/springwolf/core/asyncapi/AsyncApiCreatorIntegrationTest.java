@@ -32,11 +32,11 @@ import static org.mockito.Mockito.when;
         classes = {
             SpringwolfConfigProperties.class,
             DefaultAsyncApiDocketService.class,
-            DefaultAsyncApiService.class,
+            AsyncApiCreator.class,
         })
 @Import({
-    DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer.class,
-    DefaultAsyncApiServiceIntegrationTest.TestDescriptionCustomizer2.class
+    AsyncApiCreatorIntegrationTest.TestDescriptionCustomizer.class,
+    AsyncApiCreatorIntegrationTest.TestDescriptionCustomizer2.class
 })
 @EnableConfigurationProperties
 @TestPropertySource(
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
             "springwolf.docket.servers.test-protocol.protocol=test",
             "springwolf.docket.servers.test-protocol.host=some-server:1234",
         })
-class DefaultAsyncApiServiceIntegrationTest {
+class AsyncApiCreatorIntegrationTest {
 
     @MockitoBean
     private ChannelsService channelsService;
@@ -63,7 +63,7 @@ class DefaultAsyncApiServiceIntegrationTest {
     private AsyncApiGroupService groupService;
 
     @Autowired
-    private AsyncApiService asyncApiService;
+    private AsyncApiCreator asyncApiCreator;
 
     @BeforeEach
     void setUp() {
@@ -83,7 +83,7 @@ class DefaultAsyncApiServiceIntegrationTest {
 
     @Test
     void getAsyncAPI_info_should_be_correct() {
-        Info actualInfo = asyncApiService.getAsyncAPI().getInfo();
+        Info actualInfo = asyncApiCreator.createAsyncApi().getInfo();
 
         assertThat(actualInfo.getTitle()).isEqualTo("Info title was loaded from spring properties");
         assertThat(actualInfo.getVersion()).isEqualTo("2.2.2");
@@ -92,7 +92,7 @@ class DefaultAsyncApiServiceIntegrationTest {
 
     @Test
     void getAsyncAPI_servers_should_be_correct() {
-        Map<String, Server> actualServers = asyncApiService.getAsyncAPI().getServers();
+        Map<String, Server> actualServers = asyncApiCreator.createAsyncApi().getServers();
 
         assertThat(actualServers.get("test-protocol").getProtocol()).isEqualTo("test");
         assertThat(actualServers.get("test-protocol").getHost()).isEqualTo("some-server:1234");
@@ -101,7 +101,7 @@ class DefaultAsyncApiServiceIntegrationTest {
     @Test
     void getAsyncAPI_channels_should_be_correct() {
         Map<String, ChannelObject> actualChannels =
-                asyncApiService.getAsyncAPI().getChannels();
+                asyncApiCreator.createAsyncApi().getChannels();
 
         assertThat(actualChannels).hasSize(2);
 

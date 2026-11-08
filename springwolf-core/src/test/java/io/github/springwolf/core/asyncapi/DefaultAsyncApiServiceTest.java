@@ -2,20 +2,11 @@
 package io.github.springwolf.core.asyncapi;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
-import io.github.springwolf.core.asyncapi.channels.ChannelsService;
-import io.github.springwolf.core.asyncapi.components.ComponentsService;
-import io.github.springwolf.core.asyncapi.operations.OperationsService;
-import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
-import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
-import io.github.springwolf.core.fixtures.AsyncApiDocketFixture;
 import io.github.springwolf.core.grouping.AsyncApiGroupService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -29,34 +20,21 @@ import static org.mockito.Mockito.when;
 class DefaultAsyncApiServiceTest {
 
     private DefaultAsyncApiService defaultAsyncApiService;
-    private AsyncApiDocketService asyncApiDocketService;
+    private AsyncApiCreator asyncApiCreator;
     private AsyncApiGroupService groupService;
 
     @BeforeEach
     void setup() {
-        asyncApiDocketService = mock(AsyncApiDocketService.class);
-        ChannelsService channelsService = mock(ChannelsService.class);
-        OperationsService operationsService = mock(OperationsService.class);
-        ComponentsService componentsService = mock(ComponentsService.class);
-        List<AsyncApiCustomizer> customizers = new ArrayList<>();
+        asyncApiCreator = mock(AsyncApiCreator.class);
         groupService = mock(AsyncApiGroupService.class);
 
-        when(channelsService.findChannels()).thenReturn(Map.of());
-        when(componentsService.getSchemas()).thenReturn(Map.of());
-
-        defaultAsyncApiService = new DefaultAsyncApiService(
-                asyncApiDocketService,
-                channelsService,
-                operationsService,
-                componentsService,
-                customizers,
-                groupService);
+        defaultAsyncApiService = new DefaultAsyncApiService(asyncApiCreator, groupService);
     }
 
     @Test
     void shouldThrowExceptionOnSubsequentGetAsyncApi() {
-        // Given an AsyncApiDocketService which throws an exception on 'getAsyncApiDocket()'
-        when(asyncApiDocketService.getAsyncApiDocket()).thenThrow(new RuntimeException("test exception"));
+        // Given an AsyncApiDocketService which throws an exception
+        when(asyncApiCreator.createAsyncApi()).thenThrow(new RuntimeException("test exception"));
 
         // When getAsyncAPI is invoked the first time
         Throwable cause = null;
@@ -84,9 +62,8 @@ class DefaultAsyncApiServiceTest {
 
     @Test
     void shouldLazyInitializeOnLoadingModeLazy() {
-        // Given a valid Docket-Specification
-        AsyncApiDocket docket = AsyncApiDocketFixture.createMinimal();
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
+        AsyncAPI expectedAsyncApi = mock(AsyncAPI.class);
+        when(asyncApiCreator.createAsyncApi()).thenReturn(expectedAsyncApi);
 
         // When getAsyncAPI() isn't called yet
         // Then isNotInitilized() returns 'true'.
@@ -97,36 +74,38 @@ class DefaultAsyncApiServiceTest {
 
         // Then the result is a non-null AsyncAPI instance and
         // isNotInitialized() return 'false'.
-        assertThat(asyncAPI).isNotNull();
+        assertThat(asyncAPI).isEqualTo(expectedAsyncApi);
         assertThat(defaultAsyncApiService.isNotInitialized()).isFalse();
     }
 
     @Test
     void shouldGetGroupedAsyncApi() {
         // given
-        AsyncApiDocket docket = AsyncApiDocketFixture.createMinimal();
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
-        AsyncAPI asyncAPI = AsyncAPI.builder().build();
-        when(groupService.group(any())).thenReturn(Map.of("group", asyncAPI));
+        AsyncAPI expectedAsyncApi = mock(AsyncAPI.class);
+        when(asyncApiCreator.createAsyncApi()).thenReturn(expectedAsyncApi);
+        AsyncAPI groupedAsyncAPI = mock(AsyncAPI.class);
+        when(groupService.group(any())).thenReturn(Map.of("group", groupedAsyncAPI));
 
         // when
-        Optional<AsyncAPI> result = defaultAsyncApiService.getForGroupName("group");
+        AsyncAPI result = defaultAsyncApiService.getForGroupName("group");
 
         // then
-        assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(asyncAPI);
+        assertThat(result).isEqualTo(groupedAsyncAPI);
     }
 
     @Test
     void shouldNotThrowWhenAsyncApiGroupDoesNotExist() {
         // given
-        AsyncApiDocket docket = AsyncApiDocketFixture.createMinimal();
-        when(asyncApiDocketService.getAsyncApiDocket()).thenReturn(docket);
+        AsyncAPI expectedAsyncApi = mock(AsyncAPI.class);
+        when(asyncApiCreator.createAsyncApi()).thenReturn(expectedAsyncApi);
 
         // when
-        Optional<AsyncAPI> result = defaultAsyncApiService.getForGroupName("group");
-
-        // then
-        assertThat(result).isEmpty();
+        try {
+            defaultAsyncApiService.getForGroupName("group");
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException exc) {
+            // then
+            assertThat(exc.getMessage()).isEqualTo("AsyncAPI group group was not found");
+        }
     }
 }

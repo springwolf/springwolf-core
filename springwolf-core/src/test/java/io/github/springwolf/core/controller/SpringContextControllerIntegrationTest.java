@@ -28,7 +28,7 @@ public class SpringContextControllerIntegrationTest {
         private Optional<AsyncApiController> asyncApiController;
 
         @Autowired
-        private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
+        private Optional<ActuatorController> actuatorAsyncApiController;
 
         @Test
         void contextWithApplicationProperties() {
@@ -55,7 +55,7 @@ public class SpringContextControllerIntegrationTest {
         private Optional<AsyncApiController> asyncApiController;
 
         @Autowired
-        private Optional<ActuatorAsyncApiController> actuatorAsyncApiController;
+        private Optional<ActuatorController> actuatorAsyncApiController;
 
         @Test
         void contextWithApplicationProperties() {

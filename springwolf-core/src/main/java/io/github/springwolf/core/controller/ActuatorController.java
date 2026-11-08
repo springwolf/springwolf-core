@@ -12,7 +12,7 @@ import tools.jackson.core.JacksonException;
 @Slf4j
 @WebEndpoint(id = "springwolf")
 @RequiredArgsConstructor
-public class ActuatorAsyncApiController {
+public class ActuatorController {
 
     private final AsyncApiService asyncApiService;
     private final AsyncApiSerializerService serializer;
