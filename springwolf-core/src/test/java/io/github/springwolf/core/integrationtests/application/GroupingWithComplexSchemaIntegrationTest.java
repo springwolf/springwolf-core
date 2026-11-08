@@ -36,7 +36,7 @@ class GroupingWithComplexSchemaIntegrationTest {
 
     @Test
     void shouldFindOnlyForGroupUserMessage() {
-        AsyncAPI asyncAPI = asyncApiService.getForGroupName("UserMessage").get();
+        AsyncAPI asyncAPI = asyncApiService.getForGroupName("UserMessage");
 
         assertThat(asyncAPI.getChannels().keySet()).containsExactlyInAnyOrder("publisher-channel2");
         assertThat(asyncAPI.getChannels().get("publisher-channel2").getMessages())
@@ -85,8 +85,7 @@ class GroupingWithComplexSchemaIntegrationTest {
         AsyncAPI fullApi = asyncApiService.getAsyncAPI();
 
         // when
-        AsyncAPI asyncAPIOpt =
-                asyncApiService.getForGroupName("all & everything").get();
+        AsyncAPI asyncAPIOpt = asyncApiService.getForGroupName("all & everything");
 
         // then
 

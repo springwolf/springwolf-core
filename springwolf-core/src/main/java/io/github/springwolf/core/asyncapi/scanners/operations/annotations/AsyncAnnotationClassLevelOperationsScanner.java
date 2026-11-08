@@ -33,14 +33,8 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
 
     @Override
     public Stream<Operation> scan(Class<?> clazz) {
-        Set<MethodAndAnnotation<ClassAnnotation>> methodAndAnnotation = AnnotationScannerUtil.findAnnotatedMethods(
-                        clazz, classAnnotationClass, AllMethods.class, (cl, m) -> {
-                            ClassAnnotation classAnnotation =
-                                    AnnotationUtil.findFirstAnnotation(classAnnotationClass, clazz);
-                            return m.stream()
-                                    .map(method -> new MethodAndAnnotation<>(method.method(), classAnnotation));
-                        })
-                .collect(Collectors.toSet());
+        Set<MethodAndAnnotation<AllMethods>> methodAndAnnotation =
+                AnnotationScannerUtil.findAnnotatedMethods(clazz, classAnnotationClass, AllMethods.class);
         if (methodAndAnnotation.isEmpty()) {
             return Stream.empty();
         }
@@ -49,8 +43,8 @@ public class AsyncAnnotationClassLevelOperationsScanner<ClassAnnotation extends 
     }
 
     private Stream<Operation> mapClassToOperation(
-            Class<?> component, Set<MethodAndAnnotation<ClassAnnotation>> annotatedMethods) {
-        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotationOrThrow(classAnnotationClass, component);
+            Class<?> clazz, Set<MethodAndAnnotation<AllMethods>> annotatedMethods) {
+        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotation(classAnnotationClass, clazz);
         AsyncOperation asyncOperation = asyncAnnotationProvider.getAsyncOperation(classAnnotation);
 
         Set<Method> methods =

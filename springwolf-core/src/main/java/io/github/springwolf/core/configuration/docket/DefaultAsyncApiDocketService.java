@@ -3,10 +3,11 @@ package io.github.springwolf.core.configuration.docket;
 
 import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
@@ -30,7 +31,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
     private AsyncApiDocket docket;
 
     @Override
-    public AsyncApiDocket getAsyncApiDocket() {
+    public synchronized AsyncApiDocket getAsyncApiDocket() {
         if (docket == null) {
             docket = createDocket();
         }
@@ -65,9 +66,10 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         }
 
         if (!StringUtils.hasText(info.getVersion()) || !StringUtils.hasText(info.getTitle())) {
-            throw new IllegalArgumentException("One or more required fields of the info object (title, version) "
-                    + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX
-                    + " is not set.");
+            throw new SpringwolfConfigurationException(
+                    "One or more required fields of the info object (title, version) "
+                            + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX
+                            + " is not set.");
         }
 
         return info;
@@ -77,7 +79,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
         if (servers != null) {
             servers.forEach((serverName, server) -> {
                 if (!StringUtils.hasText(server.getProtocol()) || !StringUtils.hasText(server.getHost())) {
-                    throw new IllegalArgumentException(
+                    throw new SpringwolfConfigurationException(
                             "One or more required fields (protocol, host) " + "of the server object (name="
                                     + serverName + ") " + "has not been defined in application.properties "
                                     + "with path prefix " + SPRINGWOLF_CONFIG_PREFIX);
@@ -100,7 +102,7 @@ public class DefaultAsyncApiDocketService implements AsyncApiDocketService {
             return applications.iterator().next().getClass().getPackageName();
         }
 
-        throw new IllegalArgumentException("One or more required fields (docket, basePackage) "
+        throw new SpringwolfConfigurationException("One or more required fields (docket, basePackage) "
                 + "in application.properties with path prefix " + SPRINGWOLF_CONFIG_PREFIX + " is not set.");
     }
 }

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
-import jakarta.annotation.Nullable;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotationCollectors;
 import org.springframework.core.annotation.MergedAnnotationPredicates;
@@ -19,7 +20,7 @@ public class AnnotationUtil {
             Class<T> annotationClass, AnnotatedElement element) {
         T annotation = findFirstAnnotation(annotationClass, element);
         if (annotation == null) {
-            throw new IllegalArgumentException(
+            throw new SpringwolfConfigurationException(
                     "Method must be annotated with " + element.getClass().getName());
         }
         return annotation;

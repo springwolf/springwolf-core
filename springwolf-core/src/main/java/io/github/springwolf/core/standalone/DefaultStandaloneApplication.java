@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.standalone;
 
+import io.github.springwolf.core.asyncapi.AsyncApiCreationException;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants;
-import jakarta.annotation.Nullable;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -39,7 +40,7 @@ public class DefaultStandaloneApplication implements StandaloneApplication {
         try {
             this.getAsyncApiService();
         } catch (Exception e) {
-            throw new IllegalStateException("Missing required beans in Springwolf standalone context", e);
+            throw new AsyncApiCreationException(e);
         }
     }
 

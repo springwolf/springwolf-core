@@ -1,0 +1,98 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.core.controller.publish;
+
+import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
+import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.controller.publish.dtos.MessageDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
+
+import java.text.MessageFormat;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+/**
+ * Used in plugins with publishing enabled.
+ * Located in springwolf-core to allow sharing of code
+ */
+@RequiredArgsConstructor
+@Slf4j
+public class PublishingPayloadCreator {
+
+    private final ComponentsService componentsService;
+    private final JsonMapper jsonMapper;
+
+    public Result createPayloadObject(MessageDto message) {
+        String messageType = message.getType();
+
+        if (message.getPayload() == null || Objects.equals(MessageDto.EMPTY, message.getPayload())) {
+            return new Result(null, Optional.empty());
+        }
+
+        Map<String, ComponentSchema> knownSchemas = componentsService.getSchemas();
+        Set<String> knownSchemaNames = knownSchemas.keySet();
+        for (Map.Entry<String, ComponentSchema> schemaEntry : knownSchemas.entrySet()) {
+            String schemaName = schemaEntry.getKey();
+            ComponentSchema componentSchema = schemaEntry.getValue();
+            SchemaObject schema = componentSchema.getSchema();
+
+            // security: match against user input, but always use our controlled data from the DefaultSchemaService
+            if (schemaName != null && schemaName.equals(messageType)) {
+                try {
+                    Object payload = resolveActualPayload(message, schema, schemaName);
+                    return new Result(payload, Optional.empty());
+                } catch (ClassNotFoundException | JacksonException | IllegalArgumentException ex) {
+                    String errorMessage = MessageFormat.format(
+                            "Unable to create payload {0} from data: {1}", schemaName, message.getPayload());
+                    log.info(errorMessage, ex);
+                    return new Result(null, Optional.of(errorMessage));
+                }
+            }
+        }
+
+        String errorMessage =
+                MessageFormat.format("Specified type {0} is not a registered springwolf schema.", messageType);
+        String knownPayloadsMessage =
+                MessageFormat.format(" Known types: [{0}]", StringUtils.join(knownSchemaNames, ", "));
+        log.info("{}{}", errorMessage, knownPayloadsMessage);
+        return new Result(null, Optional.of(errorMessage));
+    }
+
+    private Object resolveActualPayload(MessageDto message, SchemaObject schema, String schemaName)
+            throws ClassNotFoundException, IllegalArgumentException {
+        SchemaType firstNonNullType = schema.getType().stream()
+                .filter(type -> !Objects.equals(type, SchemaType.NULL.getValue()))
+                .findFirst()
+                .map(SchemaType::fromValue)
+                .orElseThrow(() -> new IllegalArgumentException("Unsupported schema type: null"));
+        switch (firstNonNullType) {
+            case BOOLEAN -> {
+                return jsonMapper.readValue(message.getPayload(), Boolean.class);
+            }
+            case INTEGER -> {
+                return jsonMapper.readValue(message.getPayload(), Long.class);
+            }
+            case NUMBER -> {
+                return jsonMapper.readValue(message.getPayload(), Double.class);
+            }
+            case OBJECT -> {
+                Class<?> payloadClass = Class.forName(schemaName);
+                return jsonMapper.readValue(message.getPayload(), payloadClass);
+            }
+            case STRING -> {
+                return jsonMapper.readValue(message.getPayload(), String.class);
+            }
+            default -> throw new IllegalArgumentException("Unsupported schema type: " + firstNonNullType);
+        }
+    }
+
+    public record Result(@Nullable Object payload, Optional<String> errorMessage) {}
+}

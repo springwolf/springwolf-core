@@ -13,7 +13,6 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAnnotation;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;

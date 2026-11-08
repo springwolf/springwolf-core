@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.payload.internal;
 
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -39,7 +40,7 @@ public class PayloadExtractor {
                             + " but none was found: "
                             + methodName;
 
-                    throw new IllegalArgumentException(msg);
+                    throw new SpringwolfConfigurationException(msg);
                 }
                 yield Optional.of(payloadAnnotatedParameterIndex);
             }

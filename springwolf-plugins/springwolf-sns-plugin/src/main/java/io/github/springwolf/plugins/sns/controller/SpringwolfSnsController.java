@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.sns.controller;
 
-import io.github.springwolf.core.controller.PublishingBaseController;
-import io.github.springwolf.core.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.controller.dtos.MessageDto;
-import io.github.springwolf.plugins.sns.producer.SpringwolfSnsProducer;
+import io.github.springwolf.core.controller.publish.PublishingBaseController;
+import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.publish.dtos.MessageDto;
+import io.github.springwolf.plugins.sns.publish.SpringwolfSnsPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${springwolf.path.base:/springwolf}/plugin/sns")
 public class SpringwolfSnsController extends PublishingBaseController {
 
-    private final SpringwolfSnsProducer producer;
+    private final SpringwolfSnsPublisher producer;
 
-    public SpringwolfSnsController(PublishingPayloadCreator publishingPayloadCreator, SpringwolfSnsProducer producer) {
+    public SpringwolfSnsController(PublishingPayloadCreator publishingPayloadCreator, SpringwolfSnsPublisher producer) {
         super(publishingPayloadCreator);
         this.producer = producer;
     }

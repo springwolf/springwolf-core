@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.plugins.kafka.producer;
 
-import io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaProducerConfiguration;
+import io.github.springwolf.plugins.kafka.configuration.SpringwolfKafkaPublisherConfiguration;
 import io.github.springwolf.plugins.kafka.configuration.properties.SpringwolfKafkaConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@ConditionalOnBean(value = SpringwolfKafkaProducerConfiguration.class)
+@ConditionalOnBean(value = SpringwolfKafkaPublisherConfiguration.class)
 public class SpringwolfKafkaTemplateFromProperties implements SpringwolfKafkaTemplateProvider {
 
     private final Optional<KafkaTemplate<Object, Object>> kafkaTemplate;

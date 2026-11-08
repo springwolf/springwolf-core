@@ -17,10 +17,10 @@ import io.github.springwolf.core.asyncapi.schemas.schema.examples.SchemaWalkerPr
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.DefaultSchemaWalker;
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json.ExampleJsonValueGenerator;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.controller.PublishingPayloadCreator;
-import io.github.springwolf.core.controller.dtos.MessageDto;
+import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
+import io.github.springwolf.core.controller.publish.dtos.MessageDto;
 import io.github.springwolf.plugins.kafka.configuration.JsonMapperTestConfiguration;
-import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaProducer;
+import io.github.springwolf.plugins.kafka.publish.SpringwolfKafkaPublisher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = {
             SpringwolfKafkaController.class,
             PublishingPayloadCreator.class,
-            SpringwolfKafkaProducer.class,
+            SpringwolfKafkaPublisher.class,
             DefaultComponentsService.class,
             DefaultSchemasService.class,
             DefaultMessagesService.class,
@@ -91,7 +91,7 @@ class SpringwolfKafkaControllerIntegrationTest {
     private SchemasService schemasService;
 
     @MockitoBean
-    private SpringwolfKafkaProducer springwolfKafkaProducer;
+    private SpringwolfKafkaPublisher springwolfKafkaPublisher;
 
     @Captor
     private ArgumentCaptor<Object> payloadCaptor;
@@ -101,7 +101,7 @@ class SpringwolfKafkaControllerIntegrationTest {
 
     @BeforeEach
     void setup() {
-        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+        when(springwolfKafkaPublisher.isEnabled()).thenReturn(true);
 
         schemasService.registerSchema(SchemaObject.builder()
                 .title(PayloadDto.class.getName())
@@ -119,7 +119,7 @@ class SpringwolfKafkaControllerIntegrationTest {
 
         @Test
         void controllerShouldReturnNotFoundWhenPublishingIsDisabled() throws Exception {
-            when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
+            when(springwolfKafkaPublisher.isEnabled()).thenReturn(false);
 
             mvc.perform(get("/springwolf/plugin/kafka/publish").contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is4xxClientError());
@@ -139,7 +139,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), eq(null));
+        verify(springwolfKafkaPublisher).send(eq("test-topic"), isNull(), isNull(), eq(null));
     }
 
     @Test
@@ -154,12 +154,12 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), isNull());
+        verify(springwolfKafkaPublisher).send(eq("test-topic"), isNull(), isNull(), isNull());
     }
 
     @Test
-    void controllerShouldReturnNotFoundIfNoKafkaProducerIsEnabled() throws Exception {
-        when(springwolfKafkaProducer.isEnabled()).thenReturn(false);
+    void controllerShouldReturnNotFoundIfNoKafkaPublisherIsEnabled() throws Exception {
+        when(springwolfKafkaPublisher.isEnabled()).thenReturn(false);
 
         String content = """
                         {
@@ -174,8 +174,8 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void controllerShouldCallKafkaProducerIfOnlyPayloadIsSend() throws Exception {
-        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+    void controllerShouldCallKafkaPublisherIfOnlyPayloadIsSend() throws Exception {
+        when(springwolfKafkaPublisher.isEnabled()).thenReturn(true);
 
         String content = """
                         {
@@ -191,14 +191,14 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfKafkaProducer).send(eq("test-topic"), isNull(), isNull(), payloadCaptor.capture());
+        verify(springwolfKafkaPublisher).send(eq("test-topic"), isNull(), isNull(), payloadCaptor.capture());
 
         assertThat(payloadCaptor.getValue()).isEqualTo(new PayloadDto("some-payload-value"));
     }
 
     @Test
-    void controllerShouldCallKafkaProducerIfPayloadAndHeadersAreSend() throws Exception {
-        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+    void controllerShouldCallKafkaPublisherIfPayloadAndHeadersAreSend() throws Exception {
+        when(springwolfKafkaPublisher.isEnabled()).thenReturn(true);
 
         String content = """
                         {
@@ -216,7 +216,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfKafkaProducer)
+        verify(springwolfKafkaPublisher)
                 .send(eq("test-topic"), isNull(), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue())
@@ -225,8 +225,8 @@ class SpringwolfKafkaControllerIntegrationTest {
     }
 
     @Test
-    void controllerShouldCallKafkaProducerIfPayloadAndHeadersAndBindingsAreSend() throws Exception {
-        when(springwolfKafkaProducer.isEnabled()).thenReturn(true);
+    void controllerShouldCallKafkaPublisherIfPayloadAndHeadersAndBindingsAreSend() throws Exception {
+        when(springwolfKafkaPublisher.isEnabled()).thenReturn(true);
 
         String content = """
                         {
@@ -245,7 +245,7 @@ class SpringwolfKafkaControllerIntegrationTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        verify(springwolfKafkaProducer)
+        verify(springwolfKafkaPublisher)
                 .send(eq("test-topic"), eq("kafka-key-value"), headerCaptor.capture(), payloadCaptor.capture());
 
         assertThat(headerCaptor.getValue())

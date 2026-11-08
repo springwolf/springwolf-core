@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.controller;
 
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.grouping.AsyncApiGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

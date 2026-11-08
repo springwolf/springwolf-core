@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @Import({
     SpringwolfJmsPropertiesConfiguration.class,
     SpringwolfJmsScannerConfiguration.class,
-    SpringwolfJmsProducerConfiguration.class
+    SpringwolfJmsPublisherConfiguration.class
 })
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)
 public class SpringwolfJmsAutoConfiguration {}

@@ -22,13 +22,13 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.json.JsonMapper;

@@ -2,6 +2,7 @@
 package io.github.springwolf.core.configuration;
 
 import io.github.springwolf.core.SpringwolfInitApplicationListener;
+import io.github.springwolf.core.asyncapi.AsyncApiCreator;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
 import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
@@ -9,6 +10,8 @@ import io.github.springwolf.core.asyncapi.channels.ChannelsService;
 import io.github.springwolf.core.asyncapi.channels.DefaultChannelsService;
 import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.asyncapi.components.DefaultComponentsService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.asyncapi.grouping.GroupingService;
 import io.github.springwolf.core.asyncapi.messages.DefaultMessagesService;
 import io.github.springwolf.core.asyncapi.messages.MessagesService;
 import io.github.springwolf.core.asyncapi.operations.DefaultOperationsService;
@@ -47,8 +50,6 @@ import io.github.springwolf.core.asyncapi.schemas.schema.postprocessors.SchemasP
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.core.configuration.docket.DefaultAsyncApiDocketService;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
-import io.github.springwolf.core.grouping.AsyncApiGroupService;
-import io.github.springwolf.core.grouping.GroupingService;
 import io.github.springwolf.core.standalone.StandaloneConfiguration;
 import io.swagger.v3.core.converter.ModelConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -86,20 +87,20 @@ public class SpringwolfCoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AsyncApiService asyncApiService(
+    public AsyncApiCreator asyncApiCreator(
             AsyncApiDocketService asyncApiDocketService,
             ChannelsService channelsService,
             OperationsService operationsService,
             ComponentsService componentsService,
-            List<AsyncApiCustomizer> customizers,
-            AsyncApiGroupService groupService) {
-        return new DefaultAsyncApiService(
-                asyncApiDocketService,
-                channelsService,
-                operationsService,
-                componentsService,
-                customizers,
-                groupService);
+            List<AsyncApiCustomizer> customizers) {
+        return new AsyncApiCreator(
+                asyncApiDocketService, channelsService, operationsService, componentsService, customizers);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncApiService asyncApiService(AsyncApiCreator asyncApiCreator, AsyncApiGroupService groupService) {
+        return new DefaultAsyncApiService(asyncApiCreator, groupService);
     }
 
     @Bean
