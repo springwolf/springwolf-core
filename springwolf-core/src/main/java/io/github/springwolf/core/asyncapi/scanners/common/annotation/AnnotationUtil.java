@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotationCollectors;
 import org.springframework.core.annotation.MergedAnnotationPredicates;

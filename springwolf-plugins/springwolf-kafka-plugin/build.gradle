@@ -18,7 +18,6 @@ dependencies {
     implementation libs.kafka.clients
 
     implementation libs.jspecify
-    implementation libs.jakarta.annotation.api
     implementation libs.slf4j.api
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)

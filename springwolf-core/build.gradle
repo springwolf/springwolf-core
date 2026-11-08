@@ -34,7 +34,7 @@ dependencies {
     implementation libs.spring.webmvc
 
     implementation libs.swagger.models
-    implementation libs.jakarta.annotation.api
+    implementation libs.jspecify
     implementation libs.jakarta.validation.api
 
     implementation libs.commons.lang3

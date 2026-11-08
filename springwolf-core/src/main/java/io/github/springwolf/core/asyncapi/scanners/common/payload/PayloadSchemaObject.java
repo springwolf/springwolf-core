@@ -3,7 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.common.payload;
 
 import io.github.springwolf.asyncapi.v3.model.components.ComponentSchema;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaReference;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Encapsulates the resolved name for the contained schema.

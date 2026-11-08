@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers;
 
 import io.swagger.v3.oas.models.media.Schema;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 

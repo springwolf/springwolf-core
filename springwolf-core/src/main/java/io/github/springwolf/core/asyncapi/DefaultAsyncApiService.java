@@ -4,8 +4,8 @@ package io.github.springwolf.core.asyncapi;
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
 import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.grouping.AsyncApiGroupService;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
