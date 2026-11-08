@@ -31,8 +31,13 @@ public class SpringAnnotationClassLevelOperationsScanner<
 
     @Override
     public Stream<Operation> scan(Class<?> clazz) {
-        return AnnotationScannerUtil.findAnnotatedMethods(
-                clazz, classAnnotationClass, methodAnnotationClass, this::mapClassToOperation);
+        Set<MethodAndAnnotation<MethodAnnotation>> methods =
+                AnnotationScannerUtil.findAnnotatedMethods(clazz, classAnnotationClass, methodAnnotationClass);
+        if (methods.isEmpty()) {
+            return Stream.of();
+        }
+
+        return mapClassToOperation(clazz, methods);
     }
 
     private Stream<Operation> mapClassToOperation(

@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-package io.github.springwolf.core.asyncapi.scanners.operations;
+package io.github.springwolf.core.asyncapi.operations;
 
-import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import io.github.springwolf.core.asyncapi.scanners.channels.ChannelMerger;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OperationMergerTest {
 
     @Test
-    void shouldNotMergeDifferentoperationIds() {
+    void shouldNotMergeDifferentOperationIds() {
         // given
         Operation publisherOperation =
                 Operation.builder().operationId("operation1").build();
@@ -130,35 +128,6 @@ class OperationMergerTest {
                 .hasSize(1)
                 .hasEntrySatisfying(
                         operationId, it -> assertThat(it.getMessages()).containsExactly(messageRef2, messageRef1));
-    }
-
-    @Test
-    void shouldUseOtherMessageIfFirstMessageIsMissingForChannels() {
-        // given
-        String channelId = "channel";
-        MessageObject message2 = MessageObject.builder()
-                .messageId(String.class.getCanonicalName())
-                .name(String.class.getCanonicalName())
-                .description("This is a string")
-                .build();
-        ChannelObject publisherChannel1 =
-                ChannelObject.builder().channelId(channelId).build();
-        ChannelObject publisherChannel2 = ChannelObject.builder()
-                .channelId(channelId)
-                .messages(Map.of(message2.getMessageId(), message2))
-                .build();
-
-        // when
-        Map<String, ChannelObject> mergedChannels =
-                ChannelMerger.mergeChannels(Arrays.asList(publisherChannel1, publisherChannel2));
-
-        // then expectedMessage message2
-        var expectedMessages = Map.of(message2.getMessageId(), message2);
-
-        assertThat(mergedChannels).hasSize(1).hasEntrySatisfying(channelId, it -> {
-            assertThat(it.getMessages()).hasSize(1);
-            assertThat(it.getMessages()).containsExactlyInAnyOrderEntriesOf(expectedMessages);
-        });
     }
 
     @Test
