@@ -28,6 +28,10 @@ public interface SchemaWalker<R> {
     boolean canHandle(String contentType);
 
     class ExampleGeneratingException extends RuntimeException {
+        public ExampleGeneratingException(String message, Throwable throwable) {
+            super(message, throwable);
+        }
+
         public ExampleGeneratingException(String message) {
             super(message);
         }

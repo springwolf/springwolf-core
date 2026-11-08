@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.json;
 
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.ExampleValueGenerator;
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.PropertyExample;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.SchemaWalker;
 import io.swagger.v3.oas.models.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -114,13 +115,13 @@ public class ExampleJsonValueGenerator implements ExampleValueGenerator<JsonNode
     @Override
     public void addPropertyExamples(JsonNode object, List<PropertyExample<JsonNode>> properties) {
         if (object == null) {
-            throw new IllegalArgumentException("JsonNode to add properties must not be empty");
+            throw new SchemaWalker.ExampleGeneratingException("JsonNode to add properties must not be empty");
         }
 
         if (object instanceof ObjectNode objectNode) {
             properties.forEach(property -> objectNode.set(property.name(), property.example()));
         } else {
-            throw new IllegalArgumentException("JsonNode to add properties must be of type ObjectNode");
+            throw new SchemaWalker.ExampleGeneratingException("JsonNode to add properties must be of type ObjectNode");
         }
     }
 

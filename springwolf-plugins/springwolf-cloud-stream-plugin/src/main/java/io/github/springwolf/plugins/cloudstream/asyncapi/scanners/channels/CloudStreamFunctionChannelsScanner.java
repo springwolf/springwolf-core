@@ -25,6 +25,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNo
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
 import io.github.springwolf.core.asyncapi.schemas.SchemasService;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import io.github.springwolf.plugins.cloudstream.asyncapi.scanners.common.FunctionalChannelBeanBuilder;
@@ -136,7 +137,8 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
     private String getProtocolName() {
         AsyncApiDocket docket = asyncApiDocketService.getAsyncApiDocket();
         if (docket.getServers() == null || docket.getServers().isEmpty()) {
-            throw new IllegalStateException("There must be at least one server define in the Springwolf configuration");
+            throw new SpringwolfConfigurationException(
+                    "There must be at least one server define in the Springwolf configuration");
         } else if (docket.getServers().size() > 1) {
             log.warn(
                     "More than one server has been defined - the channels protocol will be determined by the first one");
@@ -146,7 +148,7 @@ public class CloudStreamFunctionChannelsScanner implements ChannelsScanner {
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .map(Server::getProtocol)
-                .orElseThrow(() ->
-                        new IllegalStateException("There must be at least one server define in the AsyncApiDocker"));
+                .orElseThrow(() -> new SpringwolfConfigurationException(
+                        "There must be at least one server define in the AsyncApiDocker"));
     }
 }

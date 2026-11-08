@@ -2,6 +2,7 @@
 package io.github.springwolf.core.grouping;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class AsyncApiGroupService {
                 group.getMessageNameToMatch().stream().map(Pattern::compile).toList();
 
         if (!StringUtils.hasText(groupName)) {
-            throw new IllegalArgumentException("AsyncApiGroup must have a name set in configuration");
+            throw new SpringwolfConfigurationException("AsyncApiGroup must have a name set in configuration");
         }
 
         int allItemCount = group.getActionToMatch().size()
@@ -51,7 +52,7 @@ public class AsyncApiGroupService {
                 && group.getActionToMatch().size() != allItemCount
                 && channelNameToMatch.size() != allItemCount
                 && messageNameToMatch.size() != allItemCount) {
-            throw new IllegalArgumentException(
+            throw new SpringwolfConfigurationException(
                     "AsyncApiGroup %s must specify at most one filter criteria".formatted(groupName));
         }
 

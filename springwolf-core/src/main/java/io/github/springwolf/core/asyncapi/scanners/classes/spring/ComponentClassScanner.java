@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.classes.spring;
 
 import io.github.springwolf.core.asyncapi.scanners.classes.ClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.annotations.ClassScannerUtil;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -24,7 +25,7 @@ public class ComponentClassScanner implements ClassScanner {
     public Set<Class<?>> scan() {
         String basePackages = asyncApiDocketService.getAsyncApiDocket().getBasePackage();
         if (!StringUtils.hasText(basePackages)) {
-            throw new IllegalArgumentException("Base package must not be blank");
+            throw new SpringwolfConfigurationException("Base package must not be blank");
         }
 
         AnnotationTypeFilter filter = new AnnotationTypeFilter(Component.class);

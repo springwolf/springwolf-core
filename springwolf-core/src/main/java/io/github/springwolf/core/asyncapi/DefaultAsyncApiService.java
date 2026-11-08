@@ -2,12 +2,12 @@
 package io.github.springwolf.core.asyncapi;
 
 import io.github.springwolf.asyncapi.v3.model.AsyncAPI;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.grouping.AsyncApiGroupService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class DefaultAsyncApiService implements AsyncApiService {
@@ -23,13 +23,12 @@ public class DefaultAsyncApiService implements AsyncApiService {
 
     @Override
     public AsyncAPI getForGroupName(String groupName) {
-        Map<String, AsyncAPI> groups = Optional.ofNullable(getAsyncAPIResult().groupedApi)
-                .orElseThrow(() -> new IllegalArgumentException("AsyncAPI groups were not found"));
+        Map<String, AsyncAPI> groups = getAsyncAPIResult().groupedApi;
 
-        if (groups.containsKey(groupName)) {
+        if (groups != null && groups.containsKey(groupName)) {
             return groups.get(groupName);
         }
-        throw new IllegalArgumentException("AsyncAPI group %s was not found".formatted(groupName));
+        throw new SpringwolfConfigurationException("AsyncAPI group %s was not found".formatted(groupName));
     }
 
     private AsyncAPIResult getAsyncAPIResult() {
@@ -37,10 +36,8 @@ public class DefaultAsyncApiService implements AsyncApiService {
             initAsyncAPI();
         }
 
-        if (asyncAPIResult == null) {
-            throw new RuntimeException("Error occurred during creation of AsyncAPI", asyncAPIResult.exception);
-        } else if (asyncAPIResult.exception != null) {
-            throw new RuntimeException("Error occurred during creation of AsyncAPI", asyncAPIResult.exception);
+        if (asyncAPIResult == null || asyncAPIResult.exception != null) {
+            throw new AsyncApiCreationException(asyncAPIResult.exception);
         } else {
             return asyncAPIResult;
         }

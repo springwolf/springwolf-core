@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.schemas.schema.postprocessors;
 
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
+import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.SchemaWalker;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.util.StringUtils;
 
@@ -72,7 +73,7 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
                 if (value instanceof Schema<?> propertySchema) {
                     queue.add(propertySchema);
                 } else {
-                    throw new IllegalStateException("Expected a Swagger Schema for property " + key);
+                    throw new SchemaWalker.ExampleGeneratingException("Expected a Swagger Schema for property " + key);
                 }
             });
         }

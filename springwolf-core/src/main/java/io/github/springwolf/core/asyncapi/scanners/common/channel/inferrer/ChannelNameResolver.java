@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer;
 
 import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,6 @@ public class ChannelNameResolver {
         String message = String.format(
                 "No channelName could be resolved for method %s#%s The field @AsyncOperation.channelName() is blank and no ChannelNameInferrer provided a value",
                 method.getDeclaringClass().getName(), method.getName());
-        throw new IllegalArgumentException(message);
+        throw new SpringwolfConfigurationException(message);
     }
 }
