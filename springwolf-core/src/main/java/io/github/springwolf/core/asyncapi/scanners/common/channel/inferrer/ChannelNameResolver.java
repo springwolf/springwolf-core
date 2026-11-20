@@ -5,7 +5,7 @@ import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
 import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -31,7 +31,7 @@ public class ChannelNameResolver {
 
     public String resolve(AsyncOperation operationAnnotation, Method method) {
         String channelNameFromAnnotation = stringValueResolver.resolveStringValue(operationAnnotation.channelName());
-        if (StringUtils.isNotBlank(channelNameFromAnnotation)) {
+        if (StringUtils.hasText(channelNameFromAnnotation)) {
             log.trace(
                     "Using explicit channelName '{}' for method {}#{}",
                     channelNameFromAnnotation,
@@ -42,7 +42,7 @@ public class ChannelNameResolver {
 
         for (ChannelNameInferrer inferrer : channelNameInferrers) {
             Optional<String> inferred = inferrer.inferChannelName(method);
-            if (inferred.isPresent() && StringUtils.isNotBlank(inferred.get())) {
+            if (inferred.isPresent() && StringUtils.hasText(inferred.get())) {
                 log.trace(
                         "Inferred channelName '{}' for method {}#{} via {}",
                         inferred.get(),

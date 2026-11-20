@@ -5,7 +5,6 @@ import io.github.springwolf.asyncapi.v3.model.info.Info;
 import io.github.springwolf.asyncapi.v3.model.server.Server;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.MediaType;
 
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class AsyncApiDocket {
      * @see <a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0#defaultContentTypeString">Default Content Type</a>
      */
     @Builder.Default
-    private final String defaultContentType = MediaType.APPLICATION_JSON_VALUE;
+    private final String defaultContentType = "application/json";
 
     /**
      * A string representing the default content type to use when encoding/decoding a message's payload.

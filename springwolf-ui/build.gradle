@@ -153,13 +153,8 @@ tasks.named('spotlessStyling').configure {
   it.dependsOn('nodeSetup', 'pnpmSetup', 'pnpm_run_lint')
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      pom {
-        name = 'springwolf-ui'
-        description = 'Web UI for Springwolf'
-      }
-    }
-  }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+  name = 'springwolf-ui'
+  description = 'Web UI for Springwolf'
 }

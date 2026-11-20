@@ -1,5 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+
 plugins {
     id 'java-library'
 
@@ -28,19 +29,15 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.messaging
     implementation libs.spring.beans
-    implementation libs.spring.boot.webmvc
     implementation libs.spring.core
-    implementation libs.spring.web
-    implementation libs.spring.webmvc
+    compileOnly libs.spring.web
 
     implementation libs.swagger.models
     implementation libs.jspecify
     implementation libs.jakarta.validation.api
 
-    implementation libs.commons.lang3
     implementation libs.slf4j.api
 
-    compileOnly libs.spring.boot.starter.actuator
     compileOnly libs.lombok
 
     annotationProcessor libs.lombok
@@ -55,7 +52,6 @@ dependencies {
     testImplementation libs.mockito.junit.jupiter
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.test
-    testRuntimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
@@ -76,13 +72,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-core'
-                description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-core'
+    description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
 }

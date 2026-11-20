@@ -8,7 +8,6 @@ import io.github.springwolf.core.asyncapi.components.ComponentsService;
 import io.github.springwolf.core.controller.publish.dtos.MessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.json.JsonMapper;
@@ -60,8 +59,7 @@ public class PublishingPayloadCreator {
 
         String errorMessage =
                 MessageFormat.format("Specified type {0} is not a registered springwolf schema.", messageType);
-        String knownPayloadsMessage =
-                MessageFormat.format(" Known types: [{0}]", StringUtils.join(knownSchemaNames, ", "));
+        String knownPayloadsMessage = MessageFormat.format(" Known types: [{0}]", String.join(", ", knownSchemaNames));
         log.info("{}{}", errorMessage, knownPayloadsMessage);
         return new Result(null, Optional.of(errorMessage));
     }

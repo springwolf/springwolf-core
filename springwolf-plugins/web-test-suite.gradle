@@ -1,0 +1,24 @@
+import org.gradle.api.NamedDomainObjectProvider
+import org.gradle.api.plugins.jvm.JvmTestSuite
+
+project.ext.configureWebTestSuite = {
+    NamedDomainObjectProvider<JvmTestSuite> webTest = testing.suites.register('webTest', JvmTestSuite)
+    webTest.configure { JvmTestSuite suite ->
+        suite.useJUnitJupiter()
+    }
+
+    tasks.matching { it.name == 'check' }.configureEach {
+        dependsOn(webTest)
+    }
+
+    tasks.matching { it.name == 'analyzeWebTestClassesDependencies' }.configureEach {
+        enabled = sourceSets.webTest.allSource.files.any { sourceFile -> sourceFile.exists() }
+    }
+
+    configurations {
+        webTestImplementation.extendsFrom(testImplementation)
+        webTestRuntimeOnly.extendsFrom(testRuntimeOnly)
+        webTestCompileOnly.extendsFrom(testCompileOnly)
+        webTestAnnotationProcessor.extendsFrom(testAnnotationProcessor)
+    }
+}

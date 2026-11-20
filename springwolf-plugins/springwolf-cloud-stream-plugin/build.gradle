@@ -53,13 +53,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-cloud-stream'
-                description = 'Automated JSON API documentation for Spring Boot cloud stream functions'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-cloud-stream'
+    description = 'Automated JSON API documentation for Spring Boot cloud stream functions'
 }

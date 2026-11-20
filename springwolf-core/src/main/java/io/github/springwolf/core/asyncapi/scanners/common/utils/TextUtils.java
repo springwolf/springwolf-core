@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.asyncapi.scanners.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Strings;
-
 import java.util.Arrays;
 
 /**
@@ -35,9 +32,9 @@ public class TextUtils {
         var result = Arrays.stream(lines)
                 .map(line -> line.substring(Math.min(line.length(), minIndent)))
                 .reduce((a, b) -> a + newLine + b)
-                .orElse(StringUtils.EMPTY);
+                .orElse("");
 
-        if (Strings.CS.endsWith(text, "\n")) {
+        if (text.endsWith("\n")) {
             result = result.concat(newLine);
         }
 
@@ -59,9 +56,18 @@ public class TextUtils {
     private static int resolveMinIndent(String[] lines) {
         return Arrays.stream(lines)
                 .filter(line -> !line.trim().isEmpty())
-                .mapToInt(line -> StringUtils.indexOfAnyBut(line, ' '))
+                .mapToInt(TextUtils::indexOfNonSpaceCharacter)
                 .filter(i -> i >= 0)
                 .min()
                 .orElse(0);
+    }
+
+    private static int indexOfNonSpaceCharacter(String line) {
+        for (int i = 0; i < line.length(); i++) {
+            if (line.charAt(i) != ' ') {
+                return i;
+            }
+        }
+        return -1;
     }
 }

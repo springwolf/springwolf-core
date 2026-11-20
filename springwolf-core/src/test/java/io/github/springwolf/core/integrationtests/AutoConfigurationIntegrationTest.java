@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.integrationtests;
 
-import io.github.springwolf.core.controller.AsyncApiController;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
 import io.github.springwolf.core.fixtures.SpringwolfApplicationIntegrationTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,11 +20,11 @@ public class AutoConfigurationIntegrationTest {
     @SpringwolfApplicationIntegrationTest
     class TestSpringwolfEnabled {
         @Autowired
-        private AsyncApiController asyncApiController;
+        private AsyncApiService asyncApiService;
 
         @Test
         void autoconfigurationShouldBeLoaded() {
-            assertThat(asyncApiController).isNotNull();
+            assertThat(asyncApiService).isNotNull();
         }
     }
 
@@ -34,11 +34,11 @@ public class AutoConfigurationIntegrationTest {
     class TestSpringwolfDisabled {
 
         @Autowired
-        private ObjectProvider<AsyncApiController> asyncApiControllerObjectProvider;
+        private ObjectProvider<AsyncApiService> asyncApiServiceObjectProvider;
 
         @Test
         void autoconfigurationShouldNotBeLoaded() {
-            assertThat(asyncApiControllerObjectProvider.getIfAvailable()).isNull();
+            assertThat(asyncApiServiceObjectProvider.getIfAvailable()).isNull();
         }
     }
 }

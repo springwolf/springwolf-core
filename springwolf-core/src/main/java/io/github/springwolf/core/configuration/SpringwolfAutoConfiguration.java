@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import;
 @Import({
     SpringwolfCoreConfiguration.class,
     SpringwolfPropertiesConfiguration.class,
-    SpringwolfWebConfiguration.class,
     SpringwolfScannerConfiguration.class
 })
 @ConditionalOnProperty(name = SpringwolfConfigConstants.SPRINGWOLF_ENABLED, havingValue = "true", matchIfMissing = true)

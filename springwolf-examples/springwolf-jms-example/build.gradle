@@ -16,6 +16,7 @@ dependencies {
     permitUnusedDeclared project(":springwolf-plugins:springwolf-jms")
     permitUsedUndeclared project(":springwolf-bindings")
 
+    runtimeOnly project(":springwolf-web")
     annotationProcessor project(":springwolf-plugins:springwolf-jms")
     runtimeOnly project(":springwolf-ui")
 

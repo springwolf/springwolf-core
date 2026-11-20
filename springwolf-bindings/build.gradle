@@ -16,7 +16,6 @@ dependencies {
     implementation libs.spring.core
     implementation libs.spring.boot.autoconfigure
     implementation libs.slf4j.api
-    implementation libs.commons.lang3
     implementation libs.jspecify
 
     compileOnly libs.lombok
@@ -43,13 +42,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-bindings'
-                description = 'Automated JSON API documentation bindings'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-bindings'
+    description = 'Automated JSON API documentation bindings'
 }

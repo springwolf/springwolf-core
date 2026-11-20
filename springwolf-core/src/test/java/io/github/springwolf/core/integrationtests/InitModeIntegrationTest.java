@@ -2,7 +2,6 @@
 package io.github.springwolf.core.integrationtests;
 
 import io.github.springwolf.core.asyncapi.DefaultAsyncApiService;
-import io.github.springwolf.core.controller.AsyncApiController;
 import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.github.springwolf.core.fixtures.SpringwolfIntegrationTest;
 import io.github.springwolf.core.integrationtests.application.basic.TestApplication;
@@ -75,21 +74,6 @@ public class InitModeIntegrationTest {
             } catch (Exception ex) {
                 assertThat(ex.getMessage()).contains("Error occurred during creation of AsyncAPI");
             }
-        }
-    }
-
-    @Nested
-    @SpringBootTest(classes = TestApplication.class)
-    @TestPropertySource(properties = {"springwolf.enabled=false"})
-    @SpringwolfIntegrationTest
-    class TestSpringwolfDisabled {
-
-        @Autowired(required = false)
-        private AsyncApiController asyncApiController;
-
-        @Test
-        void autoconfigurationShouldNotBeLoaded() {
-            assertThat(asyncApiController).isNull();
         }
     }
 }
