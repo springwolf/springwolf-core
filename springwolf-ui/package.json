@@ -36,7 +36,7 @@
     "@angular/build": "^22.2.4",
     "@angular/cli": "^22.2.4",
     "@angular/compiler-cli": "^22.2.3",
-    "@asyncapi/parser": "^3.6.3",
+    "@asyncapi/parser": "^3.6.6",
     "@testing-library/angular": "^19.6.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.19.17",
