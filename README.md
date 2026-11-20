@@ -78,7 +78,7 @@ Alternatively use the standalone mode to generate or verify an existing AsyncAPI
 
 ### Configuration
 
-Configuration has sensible defaults and is [documented](https://www.springwolf.dev/docs/configuration).
+Configuration comes with sensible defaults and is documented on [springwolf.dev](https://www.springwolf.dev/docs/configuration).
 
 <p align="center">
   <a href="https://www.springwolf.dev/docs/configuration">
