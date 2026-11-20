@@ -2,9 +2,9 @@
 package io.github.springwolf.plugins.kafka.asyncapi.scanners.bindings;
 
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanExpressionException;
 import org.springframework.beans.factory.BeanFactory;

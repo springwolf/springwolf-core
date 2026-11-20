@@ -22,9 +22,9 @@ import io.github.springwolf.core.asyncapi.scanners.bindings.operations.Operation
 import io.github.springwolf.core.asyncapi.scanners.classes.spring.ComponentClassScanner;
 import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnotationUtil;
 import io.github.springwolf.core.asyncapi.scanners.common.headers.AsyncHeadersNotDocumented;
+import io.github.springwolf.core.asyncapi.scanners.common.operation.OperationIdHelper;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.PayloadSchemaObject;
 import io.github.springwolf.core.asyncapi.scanners.common.payload.internal.PayloadService;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocket;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;

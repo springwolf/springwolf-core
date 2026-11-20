@@ -3,6 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.common;
 
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MessageHelper {
 
     public static Map<String, MessageReference> toOperationsMessagesMap(String channelId, Set<MessageObject> messages) {
         if (channelId == null || channelId.isBlank()) {
-            throw new IllegalArgumentException("channelId must not be empty");
+            throw new SpringwolfConfigurationException("channelId must not be empty");
         }
 
         Function<MessageObject, MessageReference> aggregator =
@@ -40,7 +41,7 @@ public class MessageHelper {
     private static Map<String, MessageReference> toMessageReferences(
             Set<MessageObject> messages, Function<MessageObject, MessageReference> messageReferenceFunction) {
         if (messages.isEmpty()) {
-            throw new IllegalArgumentException("messages must not be empty");
+            throw new SpringwolfConfigurationException("messages must not be empty");
         }
 
         return new ArrayList<>(messages.stream().collect(Collectors.toCollection(messageSupplier)))

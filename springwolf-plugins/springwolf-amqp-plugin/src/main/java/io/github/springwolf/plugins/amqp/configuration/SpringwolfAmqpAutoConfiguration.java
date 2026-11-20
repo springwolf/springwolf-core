@@ -14,6 +14,6 @@ import org.springframework.context.annotation.Import;
 @Import({
     SpringwolfAmqpPropertiesConfiguration.class,
     SpringwolfAmqpScannerConfiguration.class,
-    SpringwolfAmqpProducerConfiguration.class
+    SpringwolfAmqpPublisherConfiguration.class
 })
 public class SpringwolfAmqpAutoConfiguration {}

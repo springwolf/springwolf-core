@@ -17,6 +17,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.annotation.MethodAndAn
 import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.operation.AsyncAnnotationOperationService;
+import io.github.springwolf.core.configuration.SpringwolfConfigurationException;
 import io.github.springwolf.core.configuration.docket.AsyncApiDocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,13 +91,13 @@ public class AsyncAnnotationChannelService<Annotation extends java.lang.annotati
             Map<String, Server> asyncApiServers =
                     this.asyncApiDocketService.getAsyncApiDocket().getServers();
             if (asyncApiServers == null || asyncApiServers.isEmpty()) {
-                throw new IllegalArgumentException(
+                throw new SpringwolfConfigurationException(
                         "Operation '%s' defines server refs (%s) but there are no servers defined in this AsyncAPI."
                                 .formatted(operationId, serversFromOperation));
             }
             for (String server : serversFromOperation) {
                 if (!asyncApiServers.containsKey(server)) {
-                    throw new IllegalArgumentException(
+                    throw new SpringwolfConfigurationException(
                             "Operation '%s' defines unknown server ref '%s'. This AsyncApi defines these server(s): %s"
                                     .formatted(
                                             operationId,

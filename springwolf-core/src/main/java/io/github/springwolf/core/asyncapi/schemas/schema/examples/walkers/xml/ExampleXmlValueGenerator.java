@@ -61,7 +61,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
             nodeStack.clear();
             document = createDocument();
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
+            throw new SchemaWalker.ExampleGeneratingException("Unable to init xml document", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
     @Override
     public void addPropertyExamples(Node object, List<PropertyExample<Node>> properties) {
         if (object == null) {
-            throw new IllegalArgumentException("Element to add properties must not be empty");
+            throw new SchemaWalker.ExampleGeneratingException("Element to add properties must not be empty");
         }
         for (PropertyExample<Node> propertyExample : properties) {
             object.appendChild(handlePropertyExample(propertyExample));
@@ -122,7 +122,7 @@ public class ExampleXmlValueGenerator implements ExampleValueGenerator<Node, Str
         } else if (exampleValue instanceof Text) {
             return wrapNode(propertyExample.name(), exampleValue);
         } else {
-            throw new IllegalArgumentException(
+            throw new SchemaWalker.ExampleGeneratingException(
                     "Unsupported type " + exampleValue.getClass().getSimpleName());
         }
     }

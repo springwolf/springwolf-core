@@ -17,7 +17,7 @@ dependencies {
     implementation libs.spring.boot.autoconfigure
     implementation libs.slf4j.api
     implementation libs.commons.lang3
-    implementation libs.jakarta.annotation.api
+    implementation libs.jspecify
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok

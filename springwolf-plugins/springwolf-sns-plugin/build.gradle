@@ -12,7 +12,7 @@ dependencies {
     api project(":springwolf-bindings")
     permitUnusedDeclared project(":springwolf-bindings")
 
-    implementation libs.jakarta.annotation.api
+    implementation libs.jspecify
     implementation libs.slf4j.api
 
     implementation libs.spring.cloud.aws.sns

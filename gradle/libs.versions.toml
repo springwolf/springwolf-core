@@ -41,7 +41,6 @@ jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jack
 jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson-core" }
 jackson-dataformat-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-core" }
 jackson-datatype-protobuf = "com.hubspot.jackson:jackson3-datatype-protobuf:1.0.0"
-jakarta-annotation-api = "jakarta.annotation:jakarta.annotation-api:3.0.0"
 jakarta-jms-api = "jakarta.jms:jakarta.jms-api:3.1.0"
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 jakarta-validation-api = "jakarta.validation:jakarta.validation-api:3.1.1"

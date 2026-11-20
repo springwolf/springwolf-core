@@ -45,10 +45,6 @@ public class AsyncApiController {
     private AsyncAPI getAsyncAPI(Optional<String> group) {
         log.debug("Returning AsyncApi document for group {}", group.orElse("default"));
 
-        return group.map(groupName -> asyncApiService
-                        .getForGroupName(groupName)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException("AsyncAPI group %s was not found".formatted(groupName))))
-                .orElseGet(asyncApiService::getAsyncAPI);
+        return group.map(asyncApiService::getForGroupName).orElseGet(asyncApiService::getAsyncAPI);
     }
 }

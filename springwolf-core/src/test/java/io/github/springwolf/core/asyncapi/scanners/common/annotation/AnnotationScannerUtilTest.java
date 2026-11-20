@@ -2,6 +2,7 @@
 package io.github.springwolf.core.asyncapi.scanners.common.annotation;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -9,63 +10,52 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AnnotationScannerUtilTest {
 
+    private static Condition<MethodAndAnnotation<?>> usesMethod(Method method) {
+        return new Condition<>(entry -> entry.method().equals(method), "uses method <%s>", method);
+    }
+
     @Nested
     class FindAnnotatedMethodsWithClassAnnotation {
         @Test
         void getRelevantMethods() throws Exception {
-            List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
-                            ClassWithMethodAnnotation.class,
-                            ClassAnnotation.class,
-                            MethodAnnotation.class,
-                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
-                    .toList();
+            Set<MethodAndAnnotation<MethodAnnotation>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                    ClassWithMethodAnnotation.class, ClassAnnotation.class, MethodAnnotation.class);
 
             assertThat(methods)
                     .hasSize(1)
-                    .contains(ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod"));
+                    .haveAtLeastOne(usesMethod(ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod")));
         }
 
         @Test
         void getAllMethods() throws Exception {
-            List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
-                            ClassWithMethodAnnotation.class,
-                            ClassAnnotation.class,
-                            AllMethods.class,
-                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
-                    .toList();
+            Set<MethodAndAnnotation<AllMethods>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                    ClassWithMethodAnnotation.class, ClassAnnotation.class, AllMethods.class);
 
             assertThat(methods)
                     .hasSize(2)
-                    .contains(ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod"))
-                    .contains(ClassWithMethodAnnotation.class.getDeclaredMethod("nonAnnotatedMethod"))
-                    .doesNotContain(ClassWithMethodAnnotation.class.getDeclaredMethod("hiddenAnnotatedMethod"));
+                    .haveAtLeastOne(usesMethod(ClassWithMethodAnnotation.class.getDeclaredMethod("annotatedMethod")))
+                    .haveAtLeastOne(usesMethod(ClassWithMethodAnnotation.class.getDeclaredMethod("nonAnnotatedMethod")))
+                    .doNotHave(usesMethod(ClassWithMethodAnnotation.class.getDeclaredMethod("hiddenAnnotatedMethod")));
         }
 
         @Test
         void findNoRelevantMethodsOnClassWithMissingClassAnnotation() {
-            List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
-                            ClassWithoutClassAnnotation.class,
-                            ClassAnnotation.class,
-                            MethodAnnotation.class,
-                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
-                    .toList();
+            Set<MethodAndAnnotation<MethodAnnotation>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                    ClassWithoutClassAnnotation.class, ClassAnnotation.class, MethodAnnotation.class);
 
             assertThat(methods).isEmpty();
         }
 
         @Test
         void findNoAllMethodsOnClassWithMissingClassAnnotation() {
-            List<Method> methods = AnnotationScannerUtil.findAnnotatedMethods(
-                            ClassWithoutClassAnnotation.class,
-                            ClassAnnotation.class,
-                            AllMethods.class,
-                            (c, m) -> m.stream().map(MethodAndAnnotation::method))
-                    .toList();
+            Set<MethodAndAnnotation<AllMethods>> methods = AnnotationScannerUtil.findAnnotatedMethods(
+                    ClassWithoutClassAnnotation.class, ClassAnnotation.class, AllMethods.class);
 
             assertThat(methods).isEmpty();
         }

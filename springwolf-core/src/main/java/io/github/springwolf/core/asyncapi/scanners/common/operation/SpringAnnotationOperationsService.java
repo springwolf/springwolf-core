@@ -8,7 +8,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingContext;
 import io.github.springwolf.core.asyncapi.scanners.bindings.BindingFactory;
 import io.github.springwolf.core.asyncapi.scanners.common.message.SpringAnnotationMessagesService;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;

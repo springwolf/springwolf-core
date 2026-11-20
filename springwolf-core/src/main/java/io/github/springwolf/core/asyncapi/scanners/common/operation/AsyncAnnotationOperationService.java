@@ -13,7 +13,6 @@ import io.github.springwolf.core.asyncapi.scanners.common.annotation.AsyncAnnota
 import io.github.springwolf.core.asyncapi.scanners.common.channel.inferrer.ChannelNameResolver;
 import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotationMessageService;
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
-import io.github.springwolf.core.asyncapi.scanners.operations.OperationIdHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

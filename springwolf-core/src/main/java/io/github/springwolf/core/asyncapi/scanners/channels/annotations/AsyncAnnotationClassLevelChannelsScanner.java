@@ -26,10 +26,9 @@ public class AsyncAnnotationClassLevelChannelsScanner<ClassAnnotation extends An
     @Override
     public List<ChannelObject> scan(Class<?> clazz) {
         Class<ClassAnnotation> annotation = this.asyncAnnotationProvider.getAnnotation();
-        return AnnotationScannerUtil.findAnnotatedMethods(clazz, annotation, AllMethods.class, (cl, m) -> {
-                    ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotation(annotation, clazz);
-                    return m.stream().map(method -> new MethodAndAnnotation<>(method.method(), classAnnotation));
-                })
+        ClassAnnotation classAnnotation = AnnotationUtil.findFirstAnnotation(annotation, clazz);
+        return AnnotationScannerUtil.findAnnotatedMethods(clazz, annotation, AllMethods.class).stream()
+                .map((method) -> new MethodAndAnnotation<>(method.method(), classAnnotation))
                 .map(this::mapMethodToChannel)
                 .toList();
     }

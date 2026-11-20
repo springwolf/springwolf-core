@@ -28,7 +28,7 @@ dependencies {
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
-    implementation libs.jakarta.annotation.api
+    implementation libs.jspecify
 
     annotationProcessor libs.spring.boot.configuration.processor
 

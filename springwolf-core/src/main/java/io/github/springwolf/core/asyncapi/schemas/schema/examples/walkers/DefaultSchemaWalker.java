@@ -6,9 +6,9 @@ import io.github.springwolf.core.asyncapi.schemas.schema.examples.formatter.Exam
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -408,7 +408,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             if (schema instanceof Schema<?> swaggerSchema) {
                 typedSchemas.add(swaggerSchema);
             } else {
-                throw new IllegalStateException("Expected a Swagger Schema in composed schema");
+                throw new ExampleGeneratingException("Expected a Swagger Schema in composed schema");
             }
         }
         return typedSchemas;
@@ -425,7 +425,7 @@ public class DefaultSchemaWalker<T, R> implements SchemaWalker<R> {
             if (name instanceof String propertyName && property instanceof Schema<?> propertySchema) {
                 typedProperties.put(propertyName, propertySchema);
             } else {
-                throw new IllegalStateException("Expected a named Swagger Schema property");
+                throw new ExampleGeneratingException("Expected a named Swagger Schema property");
             }
         });
         return typedProperties;

@@ -17,13 +17,13 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import io.github.springwolf.core.fixtures.ClasspathUtil;
 import io.github.springwolf.core.fixtures.JsonMapperTestConfiguration;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Nullable;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.json.JsonMapper;

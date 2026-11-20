@@ -2,7 +2,7 @@
 package io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers;
 
 import io.swagger.v3.oas.models.media.Schema;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
@@ -28,6 +28,10 @@ public interface SchemaWalker<R> {
     boolean canHandle(String contentType);
 
     class ExampleGeneratingException extends RuntimeException {
+        public ExampleGeneratingException(String message, Throwable throwable) {
+            super(message, throwable);
+        }
+
         public ExampleGeneratingException(String message) {
             super(message);
         }

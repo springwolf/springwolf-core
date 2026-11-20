@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,16 +21,12 @@ public class AnnotationScannerUtil {
 
     /**
      * Find all annotated methods on an annotated class
-     * <p>
-     * Transform is only called if methods are found
      */
-    public static <C extends Annotation, M extends Annotation, R> Stream<R> findAnnotatedMethods(
-            Class<?> clazz,
-            Class<C> classAnnotationClass,
-            Class<M> methodAnnotationClass,
-            BiFunction<Class<?>, Set<MethodAndAnnotation<M>>, Stream<R>> transformer) {
+    public static <C extends Annotation, M extends Annotation, R> Set<MethodAndAnnotation<M>> findAnnotatedMethods(
+            Class<?> clazz, Class<C> classAnnotationClass, Class<M> methodAnnotationClass) {
         log.trace("Scanning class {} for @{} annotation", clazz.getName(), classAnnotationClass.getName());
-        Set<MethodAndAnnotation<M>> methods = Stream.of(clazz)
+
+        return Stream.of(clazz)
                 .filter(it -> AnnotationScannerUtil.isClassRelevant(it, classAnnotationClass))
                 .flatMap(it -> AnnotationScannerUtil.findAnnotatedMethods(it, methodAnnotationClass))
                 .peek(it -> log.debug(
@@ -39,12 +34,6 @@ public class AnnotationScannerUtil {
                         clazz.getName(),
                         it.method().getName()))
                 .collect(Collectors.toSet());
-
-        if (methods.isEmpty()) {
-            return Stream.empty();
-        }
-
-        return transformer.apply(clazz, methods);
     }
 
     static <A extends Annotation> boolean isClassRelevant(Class<?> clazz, Class<A> annotationClass) {
