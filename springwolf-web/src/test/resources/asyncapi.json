@@ -1,0 +1,16 @@
+{
+  "asyncapi": "3.1.0",
+  "id": "urn:io:github:springwolf:web:fixture",
+  "info": {
+    "title": "Info title was loaded from integration test annotation",
+    "version": "1.1.1",
+    "x-generator": "springwolf"
+  },
+  "defaultContentType": "application/json",
+  "channels": { },
+  "components": {
+    "schemas": { },
+    "messages": { }
+  },
+  "operations": { }
+}

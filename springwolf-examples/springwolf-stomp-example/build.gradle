@@ -15,6 +15,7 @@ dependencies {
     permitUnusedDeclared project(":springwolf-plugins:springwolf-stomp")
     permitUsedUndeclared project(":springwolf-bindings")
 
+    runtimeOnly project(":springwolf-web")
     runtimeOnly project(":springwolf-ui")
 
     annotationProcessor libs.lombok

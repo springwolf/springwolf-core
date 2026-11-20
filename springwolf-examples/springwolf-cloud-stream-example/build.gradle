@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
     runtimeOnly project(":springwolf-core")
+    runtimeOnly project(":springwolf-web")
 
     runtimeOnly project(":springwolf-plugins:springwolf-cloud-stream")
     implementation project(":springwolf-bindings")

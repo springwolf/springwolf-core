@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchema
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
@@ -35,18 +34,18 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
 
         GooglePubSubSchemaSettings.GooglePubSubSchemaSettingsBuilder schemaSettingsBuilder =
                 GooglePubSubSchemaSettings.builder();
-        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().encoding())) {
+        if (!bindingAnnotation.schemaSettings().encoding().isBlank()) {
             schemaSettingsBuilder.encoding(bindingAnnotation.schemaSettings().encoding());
         }
-        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().firstRevisionId())) {
+        if (!bindingAnnotation.schemaSettings().firstRevisionId().isBlank()) {
             schemaSettingsBuilder.firstRevisionId(
                     bindingAnnotation.schemaSettings().firstRevisionId());
         }
-        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().lastRevisionId())) {
+        if (!bindingAnnotation.schemaSettings().lastRevisionId().isBlank()) {
             schemaSettingsBuilder.lastRevisionId(
                     bindingAnnotation.schemaSettings().lastRevisionId());
         }
-        if (StringUtils.isNotBlank(bindingAnnotation.schemaSettings().name())) {
+        if (!bindingAnnotation.schemaSettings().name().isBlank()) {
             schemaSettingsBuilder.name(bindingAnnotation.schemaSettings().name());
         }
 
@@ -54,10 +53,10 @@ public class GooglePubSubChannelBindingProcessor implements ChannelBindingProces
                 GooglePubSubChannelBinding.builder()
                         .messageStoragePolicy(policyBuilder.build())
                         .schemaSettings(schemaSettingsBuilder.build());
-        if (StringUtils.isNotBlank(bindingAnnotation.messageRetentionDuration())) {
+        if (!bindingAnnotation.messageRetentionDuration().isBlank()) {
             bindingBuilder.messageRetentionDuration(bindingAnnotation.messageRetentionDuration());
         }
-        if (StringUtils.isNotBlank(bindingAnnotation.bindingVersion())) {
+        if (!bindingAnnotation.bindingVersion().isBlank()) {
             bindingBuilder.bindingVersion(bindingAnnotation.bindingVersion());
         }
 

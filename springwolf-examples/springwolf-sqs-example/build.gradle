@@ -15,6 +15,7 @@ dependencies {
     permitUnusedDeclared project(":springwolf-plugins:springwolf-sqs")
     permitUsedUndeclared project(":springwolf-bindings")
 
+    runtimeOnly project(":springwolf-web")
     annotationProcessor project(":springwolf-plugins:springwolf-sqs")
     runtimeOnly project(":springwolf-ui")
 
