@@ -21,7 +21,6 @@ import io.github.springwolf.core.configuration.docket.AsyncApiGroup;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashSet;
 import java.util.List;
@@ -187,18 +186,17 @@ public class GroupingService {
     }
 
     private void markSchemas(AsyncAPI fullAsyncApi, MarkingContext markingContext, Set<String> schemaIds) {
-        schemaIds.stream()
-                .map(schemaId -> Pair.of(
-                        schemaId, fullAsyncApi.getComponents().getSchemas().getOrDefault(schemaId, null)))
-                .filter(entry -> entry.getValue() != null)
-                .forEach(schemaEntry -> {
-                    markingContext.markedComponentSchemaIds.add(schemaEntry.getKey());
+        schemaIds.forEach(schemaId -> {
+            ComponentSchema schema = fullAsyncApi.getComponents().getSchemas().get(schemaId);
+            if (schema != null) {
+                markingContext.markedComponentSchemaIds.add(schemaId);
 
-                    Set<String> nestedSchemas = findUnmarkedNestedSchemas(markingContext, schemaEntry.getValue());
-                    if (!nestedSchemas.isEmpty()) {
-                        markSchemas(fullAsyncApi, markingContext, nestedSchemas);
-                    }
-                });
+                Set<String> nestedSchemas = findUnmarkedNestedSchemas(markingContext, schema);
+                if (!nestedSchemas.isEmpty()) {
+                    markSchemas(fullAsyncApi, markingContext, nestedSchemas);
+                }
+            }
+        });
     }
 
     /**

@@ -42,13 +42,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-asyncapi'
-                description = 'Springwolf implementation of the AsyncAPI specification'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-asyncapi'
+    description = 'Springwolf implementation of the AsyncAPI specification'
 }

@@ -10,6 +10,7 @@ import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
 import io.github.springwolf.web.controller.ActuatorController;
 import io.github.springwolf.web.controller.AsyncApiController;
 import io.github.springwolf.web.controller.UiConfigController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,7 @@ public class SpringwolfWebConfiguration {
     }
 
     @Bean
+    @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint")
     @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "true")
     @ConditionalOnMissingBean
     public ActuatorController actuatorAsyncApiController(

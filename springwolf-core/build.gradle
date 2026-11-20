@@ -1,5 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+
 plugins {
     id 'java-library'
 
@@ -34,7 +35,6 @@ dependencies {
     implementation libs.jspecify
     implementation libs.jakarta.validation.api
 
-    implementation libs.commons.lang3
     implementation libs.slf4j.api
 
     compileOnly libs.lombok
@@ -71,13 +71,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-core'
-                description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-core'
+    description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
 }
