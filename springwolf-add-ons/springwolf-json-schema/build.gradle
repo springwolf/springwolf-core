@@ -49,13 +49,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-json-schema'
-                description = 'Extends Springwolf schemas with json-schema'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-json-schema'
+    description = 'Extends Springwolf schemas with json-schema'
 }

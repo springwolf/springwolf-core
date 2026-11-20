@@ -51,13 +51,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-stomp'
-                description = 'Automated JSON API documentation for STOMP listeners (websocket) built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-stomp'
+    description = 'Automated JSON API documentation for STOMP listeners (websocket) built with Spring'
 }

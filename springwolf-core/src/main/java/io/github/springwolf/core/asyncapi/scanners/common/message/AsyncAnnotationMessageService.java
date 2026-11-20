@@ -18,7 +18,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import io.github.springwolf.core.asyncapi.schemas.SchemasService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -66,13 +66,13 @@ public class AsyncAnnotationMessageService {
 
     private String getDescription(AsyncOperation operationData, PayloadSchemaObject payloadSchema) {
         String description = operationData.message().description();
-        if (StringUtils.isBlank(description) && payloadSchema.payload() instanceof SchemaObject) {
+        if (!StringUtils.hasText(description) && payloadSchema.payload() instanceof SchemaObject) {
             String payloadDescription = ((SchemaObject) payloadSchema.payload()).getDescription();
-            if (StringUtils.isNotBlank(payloadDescription)) {
+            if (StringUtils.hasText(payloadDescription)) {
                 description = payloadDescription;
             }
         }
-        if (StringUtils.isNotBlank(description)) {
+        if (StringUtils.hasText(description)) {
             description = this.stringValueResolver.resolveStringValue(description);
             description = TextUtils.trimIndent(description);
         } else {

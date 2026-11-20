@@ -1,5 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+
 plugins {
     id 'java-library'
 
@@ -40,13 +41,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-common-model-converters'
-                description = 'Common model converters beans for Springwolf'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-common-model-converters'
+    description = 'Common model converters beans for Springwolf'
 }

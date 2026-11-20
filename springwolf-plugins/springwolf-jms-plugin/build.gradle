@@ -1,4 +1,3 @@
-import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -35,7 +34,7 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.core
     implementation libs.spring.jms
-    implementation libs.spring.web
+    compileOnly libs.spring.web
 
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
@@ -46,6 +45,28 @@ dependencies {
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    add("webTestImplementation", project())
+    add("webTestImplementation", project(":springwolf-asyncapi"))
+    add("webTestImplementation", project(":springwolf-core"))
+    add("webTestImplementation", project(":springwolf-web"))
+    add("webTestImplementation", libs.jackson.databind)
+    add("webTestImplementation", libs.jackson.annotations)
+    add("webTestImplementation", libs.spring.beans)
+    add("webTestImplementation", libs.spring.web)
+    add("webTestImplementation", libs.mockito.junit.jupiter)
+    add("webTestImplementation", libs.spring.test)
+    add("webTestImplementation", libs.spring.boot.test)
+    add("webTestImplementation", libs.spring.boot.webmvc.test)
+    add("webTestRuntimeOnly", libs.spring.boot.starter.webmvc)
+
+    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
+    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
+    add("permitWebTestUnusedDeclared", libs.jakarta.jms.api)
+    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
+    add("permitWebTestUnusedDeclared", libs.slf4j.api)
 }
 
 jar {
@@ -59,50 +80,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-jms'
-                description = 'Automated JSON API documentation for JMS Listeners built with Spring'
-            }
-        }
-    }
-}
-
-testing {
-    suites {
-        webTest(JvmTestSuite) {
-            useJUnitJupiter()
-            dependencies {
-                implementation project()
-                implementation project(":springwolf-asyncapi")
-                implementation project(":springwolf-core")
-                implementation project(":springwolf-web")
-
-                implementation libs.mockito.junit.jupiter
-                implementation libs.spring.test
-                implementation libs.spring.boot.test
-                implementation libs.spring.boot.webmvc.test
-                runtimeOnly libs.spring.boot.starter.webmvc
-            }
-        }
-    }
-}
-dependencies {
-    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
-    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
-    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
-    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
-    add("permitWebTestUnusedDeclared", libs.jakarta.jms.api)
-    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
-}
-tasks.named('check') {
-    dependsOn 'webTest'
-}
-configurations {
-    webTestImplementation.extendsFrom(testImplementation)
-    webTestRuntimeOnly.extendsFrom(testRuntimeOnly)
-    webTestCompileOnly.extendsFrom(testCompileOnly)
-    webTestAnnotationProcessor.extendsFrom(testAnnotationProcessor)
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-jms'
+    description = 'Automated JSON API documentation for JMS Listeners built with Spring'
 }

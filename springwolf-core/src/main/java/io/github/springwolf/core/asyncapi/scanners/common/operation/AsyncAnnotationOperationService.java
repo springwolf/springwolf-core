@@ -15,7 +15,7 @@ import io.github.springwolf.core.asyncapi.scanners.common.message.AsyncAnnotatio
 import io.github.springwolf.core.asyncapi.scanners.common.utils.TextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
@@ -54,14 +54,13 @@ public class AsyncAnnotationOperationService<Annotation extends java.lang.annota
                 channelId, this.asyncAnnotationProvider.getOperationType(), method.getName());
 
         String description = this.stringValueResolver.resolveStringValue(asyncOperation.description());
-        if (StringUtils.isBlank(description)) {
+        if (!StringUtils.hasText(description)) {
             description = "Auto-generated description";
         } else {
             description = TextUtils.trimIndent(description);
         }
 
-        String operationTitle =
-                StringUtils.joinWith("_", channelId, this.asyncAnnotationProvider.getOperationType().type);
+        String operationTitle = channelId + "_" + this.asyncAnnotationProvider.getOperationType().type;
 
         Map<String, OperationBinding> operationBinding =
                 AsyncAnnotationUtil.processOperationBindingFromAnnotation(method, operationBindingProcessors);

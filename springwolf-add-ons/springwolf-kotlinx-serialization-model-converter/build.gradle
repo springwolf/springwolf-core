@@ -48,13 +48,8 @@ kotlin {
     jvmToolchain(17)
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-kotlinx-serialization-model-converter'
-                description = 'Kotlinx serialization model converter beans for Springwolf'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-kotlinx-serialization-model-converter'
+    description = 'Kotlinx serialization model converter beans for Springwolf'
 }

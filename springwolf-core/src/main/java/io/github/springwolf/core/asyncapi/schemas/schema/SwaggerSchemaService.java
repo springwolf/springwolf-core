@@ -18,7 +18,7 @@ import io.swagger.v3.core.util.RefUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import tools.jackson.databind.JavaType;
 
 import java.lang.reflect.Field;
@@ -75,7 +75,7 @@ public class SwaggerSchemaService {
      */
     public ExtractedSchemas resolveSchema(Type type, String contentType) {
         String actualContentType =
-                StringUtils.isBlank(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
+                !StringUtils.hasText(contentType) ? properties.getDocket().getDefaultContentType() : contentType;
 
         // use swagger to resolve type to a swagger ResolvedSchema Object.
         ModelConverters converterToUse = modelConvertersRegisterer.getModelConverters();
@@ -174,7 +174,7 @@ public class SwaggerSchemaService {
         Class<?> clazz = javaType.getRawClass();
         if (payloadSchema != null) {
             var schemaAnnotation = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
-            if (schemaAnnotation != null && StringUtils.isNotBlank(schemaAnnotation.description())) {
+            if (schemaAnnotation != null && StringUtils.hasText(schemaAnnotation.description())) {
                 payloadSchema.setDescription(schemaAnnotation.description());
             }
         }

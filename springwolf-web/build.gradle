@@ -59,13 +59,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-web'
-                description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-web'
+    description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
 }

@@ -42,13 +42,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-bindings'
-                description = 'Automated JSON API documentation bindings'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-bindings'
+    description = 'Automated JSON API documentation bindings'
 }

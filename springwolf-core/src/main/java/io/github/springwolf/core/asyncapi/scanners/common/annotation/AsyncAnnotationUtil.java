@@ -47,8 +47,7 @@ public class AsyncAnnotationUtil {
             return AsyncHeadersNotDocumented.NOT_DOCUMENTED;
         }
 
-        String headerSchemaTitle;
-        headerSchemaTitle =
+        String headerSchemaTitle =
                 StringUtils.hasText(headers.schemaName()) ? headers.schemaName() : generateHeaderSchemaName(headers);
         String headerDescription = StringUtils.hasText(headers.description())
                 ? stringValueResolver.resolveStringValue(headers.description())

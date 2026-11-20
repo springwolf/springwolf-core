@@ -1,4 +1,3 @@
-import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -28,7 +27,7 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.messaging
     implementation libs.spring.core
-    implementation libs.spring.web
+    compileOnly libs.spring.web
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
@@ -45,6 +44,25 @@ dependencies {
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    add("webTestImplementation", project())
+    add("webTestImplementation", project(":springwolf-asyncapi"))
+    add("webTestImplementation", project(":springwolf-core"))
+    add("webTestImplementation", project(":springwolf-web"))
+    add("webTestImplementation", libs.jackson.databind)
+    add("webTestImplementation", libs.spring.beans)
+    add("webTestImplementation", libs.spring.web)
+    add("webTestImplementation", libs.spring.test)
+    add("webTestImplementation", libs.spring.boot.test)
+    add("webTestRuntimeOnly", libs.spring.boot.starter.webmvc)
+
+    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
+    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
+    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
+    add("permitWebTestUnusedDeclared", libs.slf4j.api)
+    add("permitWebTestUnusedDeclared", libs.spring.messaging)
 }
 
 jar {
@@ -58,47 +76,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-sqs'
-                description = 'Automated JSON API documentation for AWS SQS Listeners built with Spring'
-            }
-        }
-    }
-}
-
-testing {
-    suites {
-        webTest(JvmTestSuite) {
-            useJUnitJupiter()
-            dependencies {
-                implementation project()
-                implementation project(":springwolf-asyncapi")
-                implementation project(":springwolf-core")
-                implementation project(":springwolf-web")
-
-                implementation libs.spring.test
-                implementation libs.spring.boot.test
-                runtimeOnly libs.spring.boot.starter.webmvc
-            }
-        }
-    }
-}
-dependencies {
-    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
-    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
-    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
-    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
-    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
-}
-tasks.named('check') {
-    dependsOn 'webTest'
-}
-configurations {
-    webTestImplementation.extendsFrom(testImplementation)
-    webTestRuntimeOnly.extendsFrom(testRuntimeOnly)
-    webTestCompileOnly.extendsFrom(testCompileOnly)
-    webTestAnnotationProcessor.extendsFrom(testAnnotationProcessor)
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-sqs'
+    description = 'Automated JSON API documentation for AWS SQS Listeners built with Spring'
 }
