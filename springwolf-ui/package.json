@@ -47,7 +47,7 @@
     "jest-junit": "^17.0.0",
     "jest-preset-angular": "^17.0.3",
     "prettier": "^3.10.1",
-    "ts-json-schema-generator": "^2.9.0",
+    "ts-json-schema-generator": "^2.10.0",
     "typescript": "^6.0.3"
   },
   "jest-junit": {

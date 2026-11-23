@@ -103,8 +103,8 @@ importers:
         specifier: ^3.10.1
         version: 3.10.1
       ts-json-schema-generator:
-        specifier: ^2.9.0
-        version: 2.9.0
+        specifier: ^2.10.0
+        version: 2.10.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -902,6 +902,9 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
+
+  '@isaacs/nonrecursive-glob-match@1.1.0':
+    resolution: {integrity: sha512-GPm/Dbvk5RLmhRnxXIa7nTpK0xtl4E0wj0MslsuNiJ1FIROU+2+9lgUC/dgF7Ey4QCWhfEsgxilMRMCdHPfDfw==}
 
   '@istanbuljs/load-nyc-config@1.1.0':
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
@@ -2199,6 +2202,10 @@ packages:
   brace-expansion@2.1.1:
     resolution: {integrity: sha512-WR1cURNjuvBLMZBMbqM0UoE+WAfdUcEV1ccD8PVBVOI+Z3ND4+SZbN8RsfT2bMuG1qwz5RFvPukSZm5fF2D5eA==}
 
+  brace-expansion@5.0.13:
+    resolution: {integrity: sha512-Vh3dmFbc4wZeox7M9I/0L9GfFd83Su4+yCck/OF9Gi/P/dAHn0RT7X4K9R7gMNMhDck3DvhR6QXsnQdjjgwNvQ==}
+    engines: {node: 20 || >=22}
+
   brace-expansion@5.0.6:
     resolution: {integrity: sha512-kLpxurY4Z4r9sgMsyG0Z9uzsBlgiU/EFKhj/h91/8yHu0edo7XuixOIH3VcJ8kkxs6/jPzoI6U9Vj3WqbMQ94g==}
     engines: {node: 18 || 20 || >=22}
@@ -2672,6 +2679,10 @@ packages:
 
   glob@13.0.6:
     resolution: {integrity: sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==}
+    engines: {node: 18 || 20 || >=22}
+
+  glob@14.0.6:
+    resolution: {integrity: sha512-OwXjVP2svY5EyLY75Vek96C8qK43gqrt4xsZ+qSILdnaEiJPXkd62mcfUSNx/TQErQRdu5uM5kF67sfONragKw==}
     engines: {node: 18 || 20 || >=22}
 
   globalthis@1.0.4:
@@ -3323,6 +3334,10 @@ packages:
     resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
     engines: {node: 18 || 20 || >=22}
 
+  minimatch@11.0.9:
+    resolution: {integrity: sha512-KCFkfyjqerNlSstjlhIGNXIKZGA/6O4V4RlhZ+Dsr621SPPw0mzlypE9D9ZOoPiVefHID+j7/XuMMlqfD/F60Q==}
+    engines: {node: 20 || >=22}
+
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
 
@@ -3553,6 +3568,10 @@ packages:
 
   path-scurry@2.0.2:
     resolution: {integrity: sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg==}
+    engines: {node: 18 || 20 || >=22}
+
+  path-scurry@3.0.0:
+    resolution: {integrity: sha512-1pTbQqH1wIwMi/eleQ5leFTTCkzFsPcgXNjwOA8YGGW/W4/kHT3dssE7Z6NH+zuqNLOzOB0uaD61yl7cAcVhgg==}
     engines: {node: 18 || 20 || >=22}
 
   picocolors@1.1.1:
@@ -4116,8 +4135,8 @@ packages:
       jest-util:
         optional: true
 
-  ts-json-schema-generator@2.9.0:
-    resolution: {integrity: sha512-NR5ZE108uiPtBHBJNGnhwoUaUx5vWTDJzDFG9YlRoqxPU76n+5FClRh92dcGgysbe1smRmYalM9Saj97GW1J4Q==}
+  ts-json-schema-generator@2.10.0:
+    resolution: {integrity: sha512-cNa9NTcaY3HYsDGvW7jMs91XF+1UtZLvEx4MrxigXZ4wMBL0YazPWF4rpPnbs5qtCGUc0P5cS3xRW0Lq2l1u1A==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -4154,11 +4173,6 @@ packages:
   typed-array-length@1.0.8:
     resolution: {integrity: sha512-phPGCwqr2+Qo0fwniCE8e4pKnGu/yFb5nD5Y8bf0EEeiI5GklnACYA9GFy/DrAeRrKHXvHn+1SUsOWgJp6RO+g==}
     engines: {node: '>= 0.4'}
-
-  typescript@5.9.3:
-    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
 
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
@@ -5221,6 +5235,8 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+
+  '@isaacs/nonrecursive-glob-match@1.1.0': {}
 
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
@@ -6410,6 +6426,10 @@ snapshots:
     dependencies:
       balanced-match: 1.0.2
 
+  brace-expansion@5.0.13:
+    dependencies:
+      balanced-match: 4.0.4
+
   brace-expansion@5.0.6:
     dependencies:
       balanced-match: 4.0.4
@@ -6942,6 +6962,12 @@ snapshots:
       minimatch: 10.2.5
       minipass: 7.1.3
       path-scurry: 2.0.2
+
+  glob@14.0.6:
+    dependencies:
+      minimatch: 11.0.9
+      minipass: 7.1.3
+      path-scurry: 3.0.0
 
   globalthis@1.0.4:
     dependencies:
@@ -7843,6 +7869,11 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.6
 
+  minimatch@11.0.9:
+    dependencies:
+      '@isaacs/nonrecursive-glob-match': 1.1.0
+      brace-expansion: 5.0.13
+
   minimatch@3.1.5:
     dependencies:
       brace-expansion: 1.1.18
@@ -8073,6 +8104,11 @@ snapshots:
   path-scurry@2.0.2:
     dependencies:
       lru-cache: 11.5.1
+      minipass: 7.1.3
+
+  path-scurry@3.0.0:
+    dependencies:
+      lru-cache: 11.5.2
       minipass: 7.1.3
 
   picocolors@1.1.1: {}
@@ -8622,16 +8658,16 @@ snapshots:
       esbuild: 0.28.2
       jest-util: 30.5.1
 
-  ts-json-schema-generator@2.9.0:
+  ts-json-schema-generator@2.10.0:
     dependencies:
       '@types/json-schema': 7.0.15
       commander: 14.0.3
-      glob: 13.0.6
+      glob: 14.0.6
       json5: 2.2.3
       normalize-path: 3.0.0
       safe-stable-stringify: 2.5.0
       tslib: 2.9.1
-      typescript: 5.9.3
+      typescript: 6.0.3
 
   tslib@1.14.1: {}
 
@@ -8675,8 +8711,6 @@ snapshots:
       is-typed-array: 1.1.15
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
-
-  typescript@5.9.3: {}
 
   typescript@6.0.3: {}
 
