@@ -4398,12 +4398,6 @@ packages:
       '@yuku-toolchain/wasm':
         optional: true
 
-  zod@4.4.3:
-    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
-
-  zod@4.6.6:
-    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
-
   zod@4.6.7:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
@@ -4579,7 +4573,7 @@ snapshots:
       '@standard-schema/spec': 1.1.0
       rxjs: 7.8.2
       tslib: 2.9.1
-      zod: 4.4.3
+      zod: 4.6.7
 
   '@angular/material@22.3.0(c810a517c7c713cfe4c3c13a2eef1f6a)':
     dependencies:
@@ -5516,12 +5510,12 @@ snapshots:
 
   '@modelcontextprotocol/core@2.4.0':
     dependencies:
-      zod: 4.6.6
+      zod: 4.6.7
 
   '@modelcontextprotocol/server@2.4.0':
     dependencies:
       '@modelcontextprotocol/core': 2.4.0
-      zod: 4.6.6
+      zod: 4.6.7
 
   '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.4':
     optional: true
@@ -8913,10 +8907,6 @@ snapshots:
       '@yuku-toolchain/linux-x64': 0.27.0
       '@yuku-toolchain/win32-arm64': 0.27.0
       '@yuku-toolchain/win32-x64': 0.27.0
-
-  zod@4.4.3: {}
-
-  zod@4.6.6: {}
 
   zod@4.6.7: {}
 
