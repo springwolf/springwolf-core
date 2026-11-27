@@ -33,7 +33,7 @@ dependencies {
     implementation libs.spring.boot
     implementation libs.spring.context
     implementation libs.spring.messaging
-    runtimeOnly libs.spring.boot.starter.amqp
+    runtimeOnly libs.spring.boot.starter.rabbitmq
     runtimeOnly libs.spring.boot.starter.webmvc
 
     testImplementation libs.assertj.core
