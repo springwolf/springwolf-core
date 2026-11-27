@@ -1,9 +1,10 @@
 <p align="center">
   <a href="https://github.com/springwolf/springwolf-core/releases"><img src="https://img.shields.io/github/v/release/springwolf/springwolf-core" alt="Latest release"/></a>
-  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"/></a>
+  <a href="https://opensource.org/license/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"/></a>
   <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-core.yml/badge.svg" alt="Core build"/></a>
   <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-plugins.yml/badge.svg" alt="Plugins build"/></a>
   <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-ui.yml/badge.svg" alt="UI build"/></a>
+  <a href="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-web.yml"><img src="https://github.com/springwolf/springwolf-core/actions/workflows/springwolf-web.yml/badge.svg" alt="Web build"/></a>
 </p>
 
 <h1 align="center">
@@ -18,7 +19,7 @@
   <a href="https://www.springwolf.dev/docs/quickstart">Get started</a> ·
   <a href="https://demo.springwolf.dev/">Try the demo</a> ·
   <a href="springwolf-examples/springwolf-kafka-example/src/test/resources/asyncapi.json">View a generated AsyncAPI document</a> ·
-  <a href="https://www.springwolf.dev/docs">Read the documentation</a> ·
+  <a href="https://www.springwolf.dev/docs/configuration/">Read the documentation</a> ·
   <a href="https://discord.gg/HZYqd5RPTd">Join Discord</a>
 </p>
 
