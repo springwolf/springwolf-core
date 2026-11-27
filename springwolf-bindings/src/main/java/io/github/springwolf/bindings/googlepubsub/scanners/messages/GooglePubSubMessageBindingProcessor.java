@@ -6,7 +6,6 @@ import io.github.springwolf.asyncapi.v3.bindings.googlepubsub.GooglePubSubSchema
 import io.github.springwolf.bindings.googlepubsub.annotations.GooglePubSubAsyncMessageBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.MessageBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.messages.ProcessedMessageBinding;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
@@ -25,15 +24,15 @@ public class GooglePubSubMessageBindingProcessor implements MessageBindingProces
 
     private ProcessedMessageBinding mapToMessageBinding(GooglePubSubAsyncMessageBinding bindingAnnotation) {
         GooglePubSubSchema.GooglePubSubSchemaBuilder googlePubSubSchemaBuilder = GooglePubSubSchema.builder();
-        if (StringUtils.isNotBlank(bindingAnnotation.schema().name())) {
+        if (!bindingAnnotation.schema().name().isBlank()) {
             googlePubSubSchemaBuilder.name(bindingAnnotation.schema().name());
         }
         GooglePubSubMessageBinding.GooglePubSubMessageBindingBuilder bindingBuilder =
                 GooglePubSubMessageBinding.builder().schema(googlePubSubSchemaBuilder.build());
-        if (StringUtils.isNotBlank(bindingAnnotation.orderingKey())) {
+        if (!bindingAnnotation.orderingKey().isBlank()) {
             bindingBuilder.orderingKey(bindingAnnotation.orderingKey());
         }
-        if (StringUtils.isNotBlank(bindingAnnotation.bindingVersion())) {
+        if (!bindingAnnotation.bindingVersion().isBlank()) {
             bindingBuilder.bindingVersion(bindingAnnotation.bindingVersion());
         }
         return new ProcessedMessageBinding("googlepubsub", bindingBuilder.build());

@@ -12,7 +12,6 @@ import io.github.springwolf.core.configuration.properties.SpringwolfConfigProper
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificData;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Map;
@@ -40,8 +39,8 @@ class SwaggerSchemaServicePostProcessorExecutionTest {
     @Test
     void happyPath_AvroGamma_having_multiple_AvroDelta() {
         // when
-        var extractedSchema =
-                schemaService.resolveSchema(AvroTestClasses.AvroGamma.class, MediaType.APPLICATION_JSON_VALUE);
+        var extractedSchema = schemaService.resolveSchema(
+                AvroTestClasses.AvroGamma.class, SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE);
 
         // then
         var examplesBySchema = extractedSchema.referencedSchemas().entrySet().stream()
@@ -56,8 +55,8 @@ class SwaggerSchemaServicePostProcessorExecutionTest {
     @Test
     void unhappyPath_AvroAlpha_having_multiple_AvroBeta() {
         // when
-        var extractedSchema =
-                schemaService.resolveSchema(AvroTestClasses.AvroAlpha.class, MediaType.APPLICATION_JSON_VALUE);
+        var extractedSchema = schemaService.resolveSchema(
+                AvroTestClasses.AvroAlpha.class, SpringwolfConfigProperties.ConfigDocket.DEFAULT_CONTENT_TYPE);
 
         // then
         var examplesBySchema = extractedSchema.referencedSchemas().entrySet().stream()

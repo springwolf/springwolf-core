@@ -12,7 +12,7 @@ plugins {
 applyDotEnvFileAsGradleProperties()
 
 var addons = [
-        'springwolf-common-model-converters' ,
+        'springwolf-common-model-converters',
         'springwolf-json-schema',
         'springwolf-kotlinx-serialization-model-converter'
 ]
@@ -175,10 +175,11 @@ allprojects {
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
                     project.name == 'springwolf-bindings' ||
-            project.name == 'springwolf-core' ||
-            project.name == 'springwolf-ui' ||
-            addons.contains(project.name) ||
-            plugins.contains(project.name)
+                    project.name == 'springwolf-core' ||
+                    project.name == 'springwolf-ui' ||
+                    project.name == 'springwolf-web' ||
+                    addons.contains(project.name) ||
+                    plugins.contains(project.name)
     )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }

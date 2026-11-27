@@ -1,3 +1,4 @@
+import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -12,16 +13,18 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-bindings")
     permitUnusedDeclared project(":springwolf-bindings")
+    compileOnly project(":springwolf-web")
+    permitUsedUndeclared project(":springwolf-asyncapi")
+    permitUsedUndeclared project(":springwolf-core")
+    permitUsedUndeclared project(":springwolf-web")
 
     annotationProcessor libs.lombok
     compileOnly libs.lombok
 
     implementation libs.jakarta.jms.api
 
-    implementation libs.jspecify
+    compileOnly libs.jspecify
     implementation libs.slf4j.api
-
-    runtimeOnly libs.activemq.broker
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     annotationProcessor libs.spring.boot.configuration.processor
@@ -33,19 +36,9 @@ dependencies {
     implementation libs.spring.core
     implementation libs.spring.jms
     implementation libs.spring.web
-    testRuntimeOnly libs.spring.boot.starter.webmvc
-
-    testImplementation libs.jackson.annotations
-    testImplementation libs.jackson.databind
 
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
-    testImplementation libs.mockito.junit.jupiter
-
-    testImplementation libs.spring.beans
-    testImplementation libs.spring.test
-    testImplementation libs.spring.boot.test
-    testImplementation libs.spring.boot.webmvc.test
 
     testAnnotationProcessor libs.lombok
     testCompileOnly libs.lombok
@@ -75,4 +68,41 @@ publishing {
             }
         }
     }
+}
+
+testing {
+    suites {
+        webTest(JvmTestSuite) {
+            useJUnitJupiter()
+            dependencies {
+                implementation project()
+                implementation project(":springwolf-asyncapi")
+                implementation project(":springwolf-core")
+                implementation project(":springwolf-web")
+
+                implementation libs.mockito.junit.jupiter
+                implementation libs.spring.test
+                implementation libs.spring.boot.test
+                implementation libs.spring.boot.webmvc.test
+                runtimeOnly libs.spring.boot.starter.webmvc
+            }
+        }
+    }
+}
+dependencies {
+    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
+    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
+    add("permitWebTestUnusedDeclared", libs.jakarta.jms.api)
+    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
+}
+tasks.named('check') {
+    dependsOn 'webTest'
+}
+configurations {
+    webTestImplementation.extendsFrom(testImplementation)
+    webTestRuntimeOnly.extendsFrom(testRuntimeOnly)
+    webTestCompileOnly.extendsFrom(testCompileOnly)
+    webTestAnnotationProcessor.extendsFrom(testAnnotationProcessor)
 }

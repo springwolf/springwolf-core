@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: Apache-2.0
+package io.github.springwolf.web.configuration;
+
+import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.springwolf.core.asyncapi.AsyncApiService;
+import io.github.springwolf.core.asyncapi.components.ComponentsService;
+import io.github.springwolf.core.asyncapi.grouping.AsyncApiGroupService;
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties;
+import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
+import io.github.springwolf.web.controller.ActuatorController;
+import io.github.springwolf.web.controller.AsyncApiController;
+import io.github.springwolf.web.controller.UiConfigController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import tools.jackson.databind.json.JsonMapper;
+
+import static io.github.springwolf.core.configuration.properties.SpringwolfConfigConstants.SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED;
+
+/**
+ * Spring-Configuration defining the web controller beans.
+ */
+@Configuration(proxyBeanMethods = false)
+@Import(SpringwolfUiResourceConfiguration.class)
+public class SpringwolfWebConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "false", matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public AsyncApiController asyncApiController(
+            AsyncApiService asyncApiService, AsyncApiSerializerService asyncApiSerializerService) {
+        return new AsyncApiController(asyncApiService, asyncApiSerializerService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PublishingPayloadCreator publishingPayloadCreator(
+            ComponentsService componentsService, JsonMapper jsonMapper) {
+        return new PublishingPayloadCreator(componentsService, jsonMapper);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "true")
+    @ConditionalOnMissingBean
+    public ActuatorController actuatorAsyncApiController(
+            AsyncApiService asyncApiService, AsyncApiSerializerService asyncApiSerializerService) {
+        return new ActuatorController(asyncApiService, asyncApiSerializerService);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGWOLF_ENDPOINT_ACTUATOR_ENABLED, havingValue = "false", matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public UiConfigController uiConfigController(
+            AsyncApiGroupService asyncApiGroupService, SpringwolfConfigProperties configProperties) {
+        return new UiConfigController(asyncApiGroupService, configProperties);
+    }
+}

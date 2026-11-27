@@ -4,6 +4,8 @@ package io.github.springwolf.plugins.jms.configuration;
 import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
 import io.github.springwolf.plugins.jms.controller.SpringwolfJmsController;
 import io.github.springwolf.plugins.jms.publish.SpringwolfJmsPublisher;
+import io.github.springwolf.web.controller.publish.PublishingBaseController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +30,15 @@ public class SpringwolfJmsPublisherConfiguration {
         return new SpringwolfJmsPublisher(jmsTemplates);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SpringwolfJmsController springwolfJmsController(
-            PublishingPayloadCreator publishingPayloadCreator, SpringwolfJmsPublisher springwolfJmsPublisher) {
-        return new SpringwolfJmsController(publishingPayloadCreator, springwolfJmsPublisher);
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(PublishingBaseController.class)
+    public static class WebConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public SpringwolfJmsController springwolfJmsController(
+                PublishingPayloadCreator publishingPayloadCreator, SpringwolfJmsPublisher springwolfJmsPublisher) {
+            return new SpringwolfJmsController(publishingPayloadCreator, springwolfJmsPublisher);
+        }
     }
 }

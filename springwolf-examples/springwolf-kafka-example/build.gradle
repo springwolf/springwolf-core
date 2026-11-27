@@ -20,6 +20,7 @@ dependencies {
     permitUnusedDeclared project(":springwolf-plugins:springwolf-kafka")
     permitUsedUndeclared project(":springwolf-bindings")
 
+    runtimeOnly project(":springwolf-web")
     runtimeOnly project(":springwolf-add-ons:springwolf-common-model-converters")
     runtimeOnly project(":springwolf-add-ons:springwolf-json-schema")
     runtimeOnly project(":springwolf-ui")

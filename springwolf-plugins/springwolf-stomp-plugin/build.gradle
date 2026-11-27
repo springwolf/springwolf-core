@@ -17,9 +17,7 @@ dependencies {
     compileOnly libs.lombok
     testAnnotationProcessor libs.lombok
 
-    runtimeOnly libs.swagger.models
-
-    implementation libs.jspecify
+    compileOnly libs.jspecify
     implementation libs.slf4j.api
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
@@ -30,7 +28,6 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
-    testRuntimeOnly libs.spring.boot.starter.webmvc
     implementation libs.spring.core
     implementation libs.spring.messaging
 

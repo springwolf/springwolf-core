@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package io.github.springwolf.core.configuration;
 
+import io.github.springwolf.asyncapi.v3.jackson.AsyncApiSerializerService;
+import io.github.springwolf.asyncapi.v3.jackson.DefaultAsyncApiSerializerService;
 import io.github.springwolf.core.SpringwolfInitApplicationListener;
 import io.github.springwolf.core.asyncapi.AsyncApiCreator;
 import io.github.springwolf.core.asyncapi.AsyncApiCustomizer;
@@ -64,6 +66,12 @@ import java.util.List;
 @Configuration(proxyBeanMethods = false)
 @StandaloneConfiguration
 public class SpringwolfCoreConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncApiSerializerService asyncApiSerializerService() {
+        return new DefaultAsyncApiSerializerService();
+    }
 
     @Bean
     @ConditionalOnMissingBean

@@ -1,0 +1,71 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java-library'
+
+    alias libs.plugins.spring.boot
+    alias libs.plugins.cutterslade.analyze
+}
+
+dependencies {
+    api project(":springwolf-asyncapi")
+    api project(":springwolf-core")
+
+    implementation libs.jackson.core
+    implementation libs.jackson.databind
+
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+
+    implementation libs.spring.boot.autoconfigure
+    compileOnly libs.spring.boot.actuator
+    implementation libs.spring.context
+    implementation libs.spring.beans
+    implementation libs.spring.core
+    implementation libs.spring.web
+    compileOnly libs.spring.webmvc
+
+    implementation libs.slf4j.api
+    implementation libs.jspecify
+
+    compileOnly libs.lombok
+
+    annotationProcessor libs.lombok
+    testCompileOnly libs.lombok
+
+    testImplementation libs.assertj.core
+    testImplementation libs.spring.boot
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.test
+    testRuntimeOnly libs.spring.boot.starter.actuator
+    testRuntimeOnly libs.spring.boot.starter.webmvc
+    testRuntimeOnly project(":springwolf-ui")
+
+    testImplementation libs.junit.jupiter.api
+
+    testRuntimeOnly libs.junit.jupiter
+    testRuntimeOnly libs.junit.plattform.launcher
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+bootJar.enabled = false
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'springwolf-web'
+                description = 'Automated JSON API documentation for async APIs (Kafka etc.) interfaces built with Spring'
+            }
+        }
+    }
+}

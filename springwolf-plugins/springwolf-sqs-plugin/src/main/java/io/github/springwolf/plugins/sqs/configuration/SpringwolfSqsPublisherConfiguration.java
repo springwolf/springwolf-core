@@ -5,6 +5,8 @@ import io.awspring.cloud.sqs.operations.SqsTemplate;
 import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sqs.controller.SpringwolfSqsController;
 import io.github.springwolf.plugins.sqs.publish.SpringwolfSqsPublisher;
+import io.github.springwolf.web.controller.publish.PublishingBaseController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +30,15 @@ public class SpringwolfSqsPublisherConfiguration {
         return new SpringwolfSqsPublisher(sqsTemplates);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SpringwolfSqsController springwolfSqsController(
-            PublishingPayloadCreator publishingPayloadCreator, SpringwolfSqsPublisher springwolfSqsPublisher) {
-        return new SpringwolfSqsController(publishingPayloadCreator, springwolfSqsPublisher);
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(PublishingBaseController.class)
+    public static class WebConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public SpringwolfSqsController springwolfSqsController(
+                PublishingPayloadCreator publishingPayloadCreator, SpringwolfSqsPublisher springwolfSqsPublisher) {
+            return new SpringwolfSqsController(publishingPayloadCreator, springwolfSqsPublisher);
+        }
     }
 }

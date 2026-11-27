@@ -1,0 +1,2 @@
+io.github.springwolf.web.configuration.SpringwolfWebAutoConfiguration
+io.github.springwolf.web.configuration.SpringwolfWebResponseAdviceAutoConfiguration

@@ -7,6 +7,8 @@ import io.github.springwolf.plugins.kafka.controller.SpringwolfKafkaController;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaTemplateFromProperties;
 import io.github.springwolf.plugins.kafka.producer.SpringwolfKafkaTemplateProvider;
 import io.github.springwolf.plugins.kafka.publish.SpringwolfKafkaPublisher;
+import io.github.springwolf.web.controller.publish.PublishingBaseController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +26,6 @@ public class SpringwolfKafkaPublisherConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SpringwolfKafkaController springwolfKafkaController(
-            PublishingPayloadCreator publishingPayloadCreator, SpringwolfKafkaPublisher springwolfKafkaPublisher) {
-        return new SpringwolfKafkaController(publishingPayloadCreator, springwolfKafkaPublisher);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     public SpringwolfKafkaPublisher springwolfKafkaProducer(
             SpringwolfKafkaTemplateProvider springwolfKafkaTemplateProvider) {
         return new SpringwolfKafkaPublisher(springwolfKafkaTemplateProvider);
@@ -41,5 +36,17 @@ public class SpringwolfKafkaPublisherConfiguration {
     public SpringwolfKafkaTemplateFromProperties springwolfKafkaTemplateFromProperties(
             SpringwolfKafkaConfigProperties springwolfKafkaConfigProperties) {
         return new SpringwolfKafkaTemplateFromProperties(springwolfKafkaConfigProperties);
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(PublishingBaseController.class)
+    public static class WebConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public SpringwolfKafkaController springwolfKafkaController(
+                PublishingPayloadCreator publishingPayloadCreator, SpringwolfKafkaPublisher springwolfKafkaPublisher) {
+            return new SpringwolfKafkaController(publishingPayloadCreator, springwolfKafkaPublisher);
+        }
     }
 }
