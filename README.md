@@ -65,8 +65,8 @@ For a Spring Boot application using Spring Kafka, add the Springwolf Kafka plugi
 ```groovy
 dependencies {
     implementation 'io.github.springwolf:springwolf-kafka:<springwolf-version>'
-  
-    implementation 'io.github.springwolf:springwolf-ui:<springwolf-version>' // optional
+    implementation 'io.github.springwolf:springwolf-web:<springwolf-version>' // optional, exposes the AsyncAPI document
+    implementation 'io.github.springwolf:springwolf-ui:<springwolf-version>' // optional, requires springwolf-web
 }
 ```
 
@@ -98,6 +98,7 @@ Further artifacts apart from the integration plugins above:
 |---|---|
 | `io.github.springwolf:springwolf-asyncapi` | JVM model and builders for the AsyncAPI specification. |
 | `io.github.springwolf:springwolf-core` | Spring integration that scans endpoints and generates the AsyncAPI document. |
+| `io.github.springwolf:springwolf-web` | Exposes the generated AsyncAPI document via a REST controller. |
 | `io.github.springwolf:springwolf-ui` | Browser UI for viewing the generated document and example payloads. |
 | `io.github.springwolf:springwolf-bindings` | Annotations and models for protocol-specific AsyncAPI bindings. |
 | `io.github.springwolf:springwolf-common-model-converters` | Shared converters for mapping Java types to AsyncAPI schemas. |
@@ -145,7 +146,9 @@ For Maven, add the snapshot repository to your `pom.xml`:
 </repositories>
 ```
 
-For local builds, run the `publishToMavenLocal` Gradle task.
+### Local releases
+
+For local releases, run the `publishToMavenLocal` Gradle task.
 
 The current version number is set in the [`.env`](.env) file.
 
