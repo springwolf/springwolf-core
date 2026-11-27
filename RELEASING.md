@@ -15,7 +15,7 @@ The following checklist describes the steps necessary to release a new version.
    1. Add each new contributor: `npx all-contributors-cli add <username> code`
    2. Regenerate the list: `npx all-contributors-cli generate`
    3. Verify the list: `npx all-contributors-cli check`
-4. Create a new branch `release/2.<minor-version-number>.X`, remove the `-SNAPHSOT` postfix in `.env`, commit & push
+4. Create a new branch `release/3.<minor-version-number>.X`, remove the `-SNAPHSOT` postfix in `.env`, commit & push
 5. Run GitHub `Publish releases` pipeline from the newly created release branch
 6. Update the version number in `.env` for next snapshot on branch `main`, commit & push
 7. Update version number on website
