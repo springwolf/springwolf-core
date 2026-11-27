@@ -8,13 +8,7 @@ import mockSpringwolfSqs from "../../../springwolf-examples/springwolf-sqs-examp
 import mockSpringwolfStomp from "../../../springwolf-examples/springwolf-stomp-example/src/test/resources/asyncapi.json";
 
 type ExampleProject =
-  | "amqp"
-  | "cloud-stream"
-  | "kafka"
-  | "sns"
-  | "sqs"
-  | "jms"
-  | "stomp";
+  "amqp" | "cloud-stream" | "kafka" | "sns" | "sqs" | "jms" | "stomp";
 
 export function getExampleProject(): ExampleProject {
   return process.env.SPRINGWOLF_EXAMPLE || "kafka";

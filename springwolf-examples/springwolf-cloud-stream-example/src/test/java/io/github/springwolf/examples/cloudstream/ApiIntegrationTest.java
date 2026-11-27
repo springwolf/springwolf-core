@@ -4,16 +4,17 @@ package io.github.springwolf.examples.cloudstream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka
 @TestPropertySource(properties = {"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}"})
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 public class ApiIntegrationTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTestClient restTestClient;
 
     @Value("${spring.kafka.bootstrap-servers}")
     public String bootstrapServers;
@@ -34,7 +35,17 @@ public class ApiIntegrationTest {
     @Test
     void asyncApiResourceArtifactTest() throws Exception {
         String url = "/springwolf/docs";
-        String actual = restTemplate.getForObject(url, String.class);
+        String actual = Objects.requireNonNull(
+                restTestClient
+                        .get()
+                        .uri(url)
+                        .exchange()
+                        .expectStatus()
+                        .isOk()
+                        .expectBody(String.class)
+                        .returnResult()
+                        .getResponseBody(),
+                "Expected AsyncAPI response body");
         // When running with EmbeddedKafka, the kafka bootstrap server does run on random ports
         String actualPatched = actual.replace(bootstrapServers, "kafka:29092");
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actualPatched);

@@ -4,16 +4,12 @@ package io.github.springwolf.examples.sqs;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 @SpringBootTest(
         classes = {SpringwolfSqsExampleApplication.class},
@@ -21,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith({SqsTestContainerExtension.class})
 @TestPropertySource(
         properties = {"springwolf.path.base=/my-custom/springwolf/endpoint/test", "springwolf.path.docs=/apispec"})
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 class CustomPathConfigurationIntegrationTest {
 
     @DynamicPropertySource
@@ -30,29 +26,41 @@ class CustomPathConfigurationIntegrationTest {
     }
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTestClient restTestClient;
 
     @Test
     void getSpec() {
+        // given
         String url = "/my-custom/springwolf/endpoint/test/apispec";
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // when
+        RestTestClient.ResponseSpec response = restTestClient.get().uri(url).exchange();
+
+        // then
+        response.expectStatus().isOk();
     }
 
     @Test
     void canPublish() {
+        // given
         String url = "/my-custom/springwolf/endpoint/test/plugin/sqs/publish";
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // when
+        RestTestClient.ResponseSpec response = restTestClient.get().uri(url).exchange();
+
+        // then
+        response.expectStatus().isOk();
     }
 
     @Test
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() {
+        // given
         String url = "/my-custom/springwolf/endpoint/test/asyncapi-ui.html";
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // when
+        RestTestClient.ResponseSpec response = restTestClient.get().uri(url).exchange();
+
+        // then
+        response.expectStatus().isOk();
     }
 }
