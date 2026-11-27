@@ -9,7 +9,7 @@ import org.junit.jupiter.api.condition.DisabledIf;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class KafkaPublisherSystemTest {
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestClient restClient = RestClient.create();
     private static final String APP_NAME = "app";
     private static final int APP_PORT = 8080;
     private static final String KAFKA_NAME = "kafka";
@@ -89,7 +89,13 @@ public class KafkaPublisherSystemTest {
 
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // when
-            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+            ResponseEntity<String> response = restClient
+                    .post()
+                    .uri(url)
+                    .headers(requestHeaders -> requestHeaders.addAll(request.getHeaders()))
+                    .body(request.getBody())
+                    .retrieve()
+                    .toEntity(String.class);
 
             // then
             assertThat(response.getStatusCode().value()).isEqualTo(200);
@@ -122,7 +128,13 @@ public class KafkaPublisherSystemTest {
 
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // when
-            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+            ResponseEntity<String> response = restClient
+                    .post()
+                    .uri(url)
+                    .headers(requestHeaders -> requestHeaders.addAll(request.getHeaders()))
+                    .body(request.getBody())
+                    .retrieve()
+                    .toEntity(String.class);
 
             // then
             assertThat(response.getStatusCode().value()).isEqualTo(200);

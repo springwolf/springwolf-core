@@ -70,7 +70,7 @@ dependencies {
 
     testImplementation libs.spring.boot.restclient
     permitTestUnusedDeclared libs.spring.boot.restclient
-    testImplementation libs.spring.boot.restclient.test
+    testImplementation libs.spring.boot.resttestclient
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.test
     testImplementation libs.spring.web

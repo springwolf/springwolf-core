@@ -3,7 +3,7 @@ package io.github.springwolf.examples.sqs;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // @Ignore("Uncomment this line if you have issues running this test on your local machine.")
 public class ApiSystemTest {
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestClient restClient = RestClient.create();
     private static final String APP_NAME = "app";
     private static final int APP_PORT = 8080;
 
@@ -48,7 +48,7 @@ public class ApiSystemTest {
     @Test
     void asyncapiDocsShouldReturnTheCorrectJsonResponse() throws Exception {
         String url = baseUrl() + "/springwolf/docs";
-        String actual = restTemplate.getForObject(url, String.class);
+        String actual = restClient.get().uri(url).retrieve().body(String.class);
 
         String expected;
         try (InputStream s = this.getClass().getResourceAsStream("/asyncapi.json")) {

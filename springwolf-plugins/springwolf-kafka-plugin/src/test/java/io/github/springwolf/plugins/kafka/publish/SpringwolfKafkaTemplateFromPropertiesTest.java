@@ -44,12 +44,7 @@ class SpringwolfKafkaTemplateFromPropertiesTest {
     @Test
     void kafkaTemplateShouldBeCreatedWithProducerConfiguration() {
         // given
-        SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
-        SpringwolfKafkaConfigProperties.Publishing publishing = new SpringwolfKafkaConfigProperties.Publishing();
-        publishing.setEnabled(true);
-        publishing.setProducer(new KafkaProperties.Producer());
-
-        configProperties.setPublishing(publishing);
+        SpringwolfKafkaConfigProperties configProperties = configPropertiesWithProducer();
 
         // when
         SpringwolfKafkaTemplateFromProperties kafkaTemplateProvider =
@@ -60,6 +55,26 @@ class SpringwolfKafkaTemplateFromPropertiesTest {
 
         Map<String, Object> configurationProperties =
                 kafkaTemplateProvider.get("topic").get().getProducerFactory().getConfigurationProperties();
-        assertThat(configurationProperties).isEqualTo(new KafkaProperties.Producer().buildProperties());
+        assertThat(configurationProperties)
+                .containsEntry("acks", "all")
+                .containsEntry("security.protocol", "SSL")
+                .containsEntry("ssl.protocol", "TLSv1.3")
+                .containsEntry("custom.producer.property", "custom-value");
+    }
+
+    private SpringwolfKafkaConfigProperties configPropertiesWithProducer() {
+        KafkaProperties.Producer producer = new KafkaProperties.Producer();
+        producer.setAcks("all");
+        producer.getSecurity().setProtocol("SSL");
+        producer.getSsl().setProtocol("TLSv1.3");
+        producer.getProperties().put("custom.producer.property", "custom-value");
+
+        SpringwolfKafkaConfigProperties.Publishing publishing = new SpringwolfKafkaConfigProperties.Publishing();
+        publishing.setEnabled(true);
+        publishing.setProducer(producer);
+
+        SpringwolfKafkaConfigProperties configProperties = new SpringwolfKafkaConfigProperties();
+        configProperties.setPublishing(publishing);
+        return configProperties;
     }
 }

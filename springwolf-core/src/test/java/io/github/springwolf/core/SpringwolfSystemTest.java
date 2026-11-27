@@ -9,7 +9,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,11 +21,12 @@ class SpringwolfSystemTest {
     @LocalServerPort
     private int port;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestClient restClient = RestClient.create();
 
     @Test
     void asyncApiEndpointReturnsOk() {
-        ResponseEntity<String> response = restTemplate.getForEntity(url("/springwolf/docs"), String.class);
+        ResponseEntity<String> response =
+                restClient.get().uri(url("/springwolf/docs")).retrieve().toEntity(String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotBlank();
@@ -33,7 +34,11 @@ class SpringwolfSystemTest {
 
     @Test
     void unknownGroupReturnsNotFound() {
-        assertThatThrownBy(() -> restTemplate.getForEntity(url("/springwolf/docs/not-a-group"), String.class))
+        assertThatThrownBy(() -> restClient
+                        .get()
+                        .uri(url("/springwolf/docs/not-a-group"))
+                        .retrieve()
+                        .toEntity(String.class))
                 .isInstanceOf(HttpClientErrorException.NotFound.class)
                 .satisfies(exception -> assertThat(((HttpClientErrorException) exception).getStatusCode())
                         .isEqualTo(HttpStatus.NOT_FOUND));

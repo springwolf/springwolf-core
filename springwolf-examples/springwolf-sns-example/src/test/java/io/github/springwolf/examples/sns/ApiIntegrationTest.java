@@ -4,12 +4,11 @@ package io.github.springwolf.examples.sns;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = {SpringwolfSnsExampleApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith({SnsTestContainerExtension.class})
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 class ApiIntegrationTest {
 
     @DynamicPropertySource
@@ -31,15 +30,20 @@ class ApiIntegrationTest {
     }
 
     @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Value("${server.port}")
-    public Integer serverPort;
+    private RestTestClient restTestClient;
 
     @Test
     void asyncApiResourceArtifactTest() throws Exception {
         String url = "/springwolf/docs";
-        String actual = restTemplate.getForObject(url, String.class);
+        String actual = restTestClient
+                .get()
+                .uri(url)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
         Files.writeString(Path.of("src", "test", "resources", "asyncapi.actual.json"), actual);
 
         String expected;
