@@ -12,12 +12,14 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-bindings")
     permitUnusedDeclared project(":springwolf-bindings")
+    compileOnly project(":springwolf-web")
+    permitUsedUndeclared project(":springwolf-asyncapi")
+    permitUsedUndeclared project(":springwolf-core")
+    permitUsedUndeclared project(":springwolf-web")
 
-    implementation libs.swagger.models
-    permitUnusedDeclared libs.swagger.models
     implementation libs.kafka.clients
 
-    implementation libs.jspecify
+    compileOnly libs.jspecify
     implementation libs.slf4j.api
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
@@ -26,7 +28,7 @@ dependencies {
     implementation libs.spring.context
     implementation libs.spring.core
     implementation libs.spring.kafka
-    implementation libs.spring.web
+    compileOnly libs.spring.web
 
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
@@ -43,20 +45,37 @@ dependencies {
 
     testImplementation libs.jakarta.servlet.api
     permitTestUnusedDeclared libs.jakarta.servlet.api
-    testImplementation libs.jackson.annotations
-    testImplementation libs.jackson.databind
 
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
     testImplementation libs.mockito.junit.jupiter
 
-    testImplementation libs.spring.boot.test
-    testImplementation libs.spring.boot.webmvc.test
-    testImplementation libs.spring.test
-
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    add("webTestImplementation", project())
+    add("webTestImplementation", project(":springwolf-asyncapi"))
+    add("webTestImplementation", project(":springwolf-core"))
+    add("webTestImplementation", project(":springwolf-web"))
+    add("webTestImplementation", libs.jackson.databind)
+    add("webTestImplementation", libs.jackson.annotations)
+    add("webTestImplementation", libs.spring.web)
+    add("webTestImplementation", libs.spring.test)
+    add("webTestImplementation", libs.spring.boot.test)
+    add("webTestImplementation", libs.spring.boot.webmvc.test)
+    add("webTestRuntimeOnly", libs.spring.boot.starter.webmvc)
+
+    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
+    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
+    add("permitWebTestUnusedDeclared", libs.jakarta.servlet.api)
+    add("permitWebTestUnusedDeclared", libs.kafka.clients)
+    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
+    add("permitWebTestUnusedDeclared", libs.spring.boot.kafka)
+    add("permitWebTestUnusedDeclared", libs.spring.kafka)
+    add("permitWebTestUnusedDeclared", libs.slf4j.api)
 }
 
 jar {
@@ -70,13 +89,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-kafka'
-                description = 'Automated JSON API documentation for Kafka Listeners built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-kafka'
+    description = 'Automated JSON API documentation for Kafka Listeners built with Spring'
 }

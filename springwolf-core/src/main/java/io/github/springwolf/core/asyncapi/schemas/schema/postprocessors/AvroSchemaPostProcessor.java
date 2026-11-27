@@ -4,7 +4,6 @@ package io.github.springwolf.core.asyncapi.schemas.schema.postprocessors;
 import io.github.springwolf.asyncapi.v3.model.ReferenceUtil;
 import io.github.springwolf.core.asyncapi.schemas.schema.examples.walkers.SchemaWalker;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springframework.util.StringUtils;
 
 import java.util.Deque;
 import java.util.HashSet;
@@ -62,8 +61,8 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
             Object specificDataProperty = properties.get(SPECIFIC_DATA_PROPERTY);
             if (schemaProperty instanceof Schema<?> schemaPropertySchema
                     && specificDataProperty instanceof Schema<?> specificDataPropertySchema) {
-                if (StringUtils.endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
-                        && StringUtils.endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
+                if (endsWithIgnoreCase(schemaPropertySchema.get$ref(), SCHEMA_REF)
+                        && endsWithIgnoreCase(specificDataPropertySchema.get$ref(), SPECIFIC_DAT_REF)) {
                     properties.remove(SCHEMA_PROPERTY);
                     properties.remove(SPECIFIC_DATA_PROPERTY);
                 }
@@ -80,6 +79,18 @@ public class AvroSchemaPostProcessor implements SchemasPostProcessor {
     }
 
     private void removeSchemas(Map<String, Schema<?>> definitions) {
-        definitions.entrySet().removeIf(entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), SCHEMA_AVRO_PREFIX));
+        definitions.entrySet().removeIf(entry -> startsWithIgnoreCase(entry.getKey(), SCHEMA_AVRO_PREFIX));
+    }
+
+    private static boolean endsWithIgnoreCase(String value, String suffix) {
+        return value != null
+                && value.length() >= suffix.length()
+                && value.regionMatches(true, value.length() - suffix.length(), suffix, 0, suffix.length());
+    }
+
+    private static boolean startsWithIgnoreCase(String value, String prefix) {
+        return value != null
+                && value.length() >= prefix.length()
+                && value.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 }

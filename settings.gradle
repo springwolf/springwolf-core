@@ -1,6 +1,9 @@
 rootProject.name = 'springwolf'
 
 include(
+        'springwolf-add-ons:springwolf-common-model-converters',
+        'springwolf-add-ons:springwolf-json-schema',
+        'springwolf-add-ons:springwolf-kotlinx-serialization-model-converter',
         'springwolf-asyncapi',
         'springwolf-bindings',
         'springwolf-core',
@@ -20,9 +23,7 @@ include(
         'springwolf-examples:springwolf-sqs-example',
         'springwolf-examples:springwolf-stomp-example',
         'springwolf-ui',
-        'springwolf-add-ons:springwolf-common-model-converters',
-        'springwolf-add-ons:springwolf-json-schema',
-        'springwolf-add-ons:springwolf-kotlinx-serialization-model-converter',
+        'springwolf-web',
 )
 
 project(':springwolf-plugins:springwolf-amqp-plugin').name = 'springwolf-amqp'

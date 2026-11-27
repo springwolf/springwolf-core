@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.bindings.kafka.KafkaChannelTopicConfigur
 import io.github.springwolf.bindings.kafka.annotations.KafkaAsyncChannelBinding;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.AbstractChannelBindingProcessor;
 import io.github.springwolf.core.asyncapi.scanners.bindings.channels.ProcessedChannelBinding;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class KafkaChannelBindingProcessor extends AbstractChannelBindingProcesso
 
     protected ProcessedChannelBinding mapToChannelBinding(KafkaAsyncChannelBinding bindingAnnotation) {
         KafkaChannelBinding.KafkaChannelBindingBuilder bindingBuilder = KafkaChannelBinding.builder();
-        if (StringUtils.isNotBlank(bindingAnnotation.topic())) {
+        if (!bindingAnnotation.topic().isBlank()) {
             bindingBuilder.topic(resolveOrNull(bindingAnnotation.topic()));
         }
         if (bindingAnnotation.partitions() != KafkaAsyncChannelBinding.VALUE_NOT_SET) {

@@ -12,7 +12,7 @@ plugins {
 applyDotEnvFileAsGradleProperties()
 
 var addons = [
-        'springwolf-common-model-converters' ,
+        'springwolf-common-model-converters',
         'springwolf-json-schema',
         'springwolf-kotlinx-serialization-model-converter'
 ]
@@ -149,7 +149,6 @@ allprojects {
             exceptionFormat = 'full'
         }
     }
-
     tasks.register('updateAsyncApiJson') {
         group = 'verification'
         description = 'Update the AsyncAPI JSON files in the examples to match the current state of the plugin'
@@ -175,65 +174,61 @@ allprojects {
     var publishingEnabled = (
             project.name == 'springwolf-asyncapi' ||
                     project.name == 'springwolf-bindings' ||
-            project.name == 'springwolf-core' ||
-            project.name == 'springwolf-ui' ||
-            addons.contains(project.name) ||
-            plugins.contains(project.name)
+                    project.name == 'springwolf-core' ||
+                    project.name == 'springwolf-ui' ||
+                    project.name == 'springwolf-web' ||
+                    addons.contains(project.name) ||
+                    plugins.contains(project.name)
     )
     tasks.withType(PublishToMavenRepository).configureEach { it.enabled = publishingEnabled }
     tasks.withType(PublishToMavenLocal).configureEach { it.enabled = publishingEnabled }
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
+    MavenPublication mavenJava = publishing.publications.create('mavenJava', MavenPublication)
+    mavenJava.from components.java
 
-                artifactId = project.name
-                groupId = project.group
-                version = project.version
+    mavenJava.artifactId = project.name
+    mavenJava.groupId = project.group
+    mavenJava.version = project.version
 
-                pom {
-                    name = ''
-                    description = ''
-                    url = 'https://www.springwolf.dev'
+    mavenJava.pom {
+        name = ''
+        description = ''
+        url = 'https://www.springwolf.dev'
 
-                    licenses {
-                        license {
-                            name = 'The Apache License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id = 'stavshamir'
-                            name = 'Stav Shamir'
-                            email = 'shamir.stav@gmail.com'
-                        }
-
-                        developer {
-                            id = 'timonback'
-                            name = 'Timon Back'
-                            email = 'timon.back+springwolf@gmail.com'
-                        }
-
-                        developer {
-                            id = 'sam0r040'
-                            name = 'David Müller'
-                            email = 'david.mueller@codecentric.de'
-                        }
-
-                        developer {
-                            id = 'ctasada'
-                            name = 'Carlos Tasada'
-                            email = 'ctasada@gmail.com'
-                        }
-                    }
-
-                    scm {
-                        url = 'https://github.com/springwolf/springwolf-core'
-                    }
-                }
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
             }
+        }
+
+        developers {
+            developer {
+                id = 'stavshamir'
+                name = 'Stav Shamir'
+                email = 'shamir.stav@gmail.com'
+            }
+
+            developer {
+                id = 'timonback'
+                name = 'Timon Back'
+                email = 'timon.back+springwolf@gmail.com'
+            }
+
+            developer {
+                id = 'sam0r040'
+                name = 'David Müller'
+                email = 'david.mueller@codecentric.de'
+            }
+
+            developer {
+                id = 'ctasada'
+                name = 'Carlos Tasada'
+                email = 'ctasada@gmail.com'
+            }
+        }
+
+        scm {
+            url = 'https://github.com/springwolf/springwolf-core'
         }
     }
 
@@ -242,7 +237,13 @@ allprojects {
         def signingKey = project.findProperty("SIGNINGKEY") as String
         def signingPassword = project.findProperty("SIGNINGPASSWORD") as String
         useInMemoryPgpKeys(signingKey, signingPassword)
-        sign publishing.publications.mavenJava
+        sign mavenJava
+    }
+}
+subprojects {
+    if (plugins.contains(name)) {
+        apply from: rootProject.file('springwolf-plugins/web-test-suite.gradle')
+        configureWebTestSuite.call()
     }
 }
 

@@ -11,18 +11,21 @@ dependencies {
     api project(":springwolf-core")
     api project(":springwolf-bindings")
     permitUnusedDeclared project(":springwolf-bindings")
+    compileOnly project(":springwolf-web")
+    permitUsedUndeclared project(":springwolf-asyncapi")
+    permitUsedUndeclared project(":springwolf-core")
+    permitUsedUndeclared project(":springwolf-web")
 
-    implementation libs.jspecify
+    compileOnly libs.jspecify
     implementation libs.slf4j.api
 
     implementation libs.spring.cloud.aws.sns
-    runtimeOnly libs.spring.cloud.aws.starter.sns
 
     annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.spring.context
     implementation libs.spring.messaging
-    implementation libs.spring.web
+    compileOnly libs.spring.web
     implementation libs.spring.boot
     implementation libs.spring.boot.autoconfigure
 
@@ -33,19 +36,32 @@ dependencies {
 
     testAnnotationProcessor libs.lombok
 
-    testImplementation libs.jackson.databind
-
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
-
-    testImplementation libs.spring.boot.test
-    testImplementation libs.spring.beans
-    testImplementation libs.spring.core
-    testImplementation libs.spring.test
 
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter
     testRuntimeOnly libs.junit.plattform.launcher
+
+    add("webTestImplementation", project())
+    add("webTestImplementation", project(":springwolf-asyncapi"))
+    add("webTestImplementation", project(":springwolf-core"))
+    add("webTestImplementation", project(":springwolf-web"))
+    add("webTestImplementation", libs.jackson.databind)
+    add("webTestImplementation", libs.spring.beans)
+    add("webTestImplementation", libs.spring.core)
+    add("webTestImplementation", libs.spring.web)
+    add("webTestImplementation", libs.spring.test)
+    add("webTestImplementation", libs.spring.boot.test)
+    add("webTestRuntimeOnly", libs.spring.boot.starter.webmvc)
+
+    add("permitWebTestUsedUndeclared", project(":springwolf-asyncapi"))
+    add("permitWebTestUsedUndeclared", project(":springwolf-core"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-bindings"))
+    add("permitWebTestUnusedDeclared", project(":springwolf-web"))
+    add("permitWebTestUnusedDeclared", libs.junit.jupiter)
+    add("permitWebTestUnusedDeclared", libs.slf4j.api)
+    add("permitWebTestUnusedDeclared", libs.spring.messaging)
 }
 
 jar {
@@ -59,13 +75,8 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'springwolf-sns'
-                description = 'Automated JSON API documentation for AWS SNS Listeners built with Spring'
-            }
-        }
-    }
+MavenPublication mavenJava = publishing.publications.getByName('mavenJava')
+mavenJava.pom {
+    name = 'springwolf-sns'
+    description = 'Automated JSON API documentation for AWS SNS Listeners built with Spring'
 }

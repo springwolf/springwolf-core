@@ -5,6 +5,8 @@ import io.awspring.cloud.sns.core.SnsTemplate;
 import io.github.springwolf.core.controller.publish.PublishingPayloadCreator;
 import io.github.springwolf.plugins.sns.controller.SpringwolfSnsController;
 import io.github.springwolf.plugins.sns.publish.SpringwolfSnsPublisher;
+import io.github.springwolf.web.controller.publish.PublishingBaseController;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,14 +26,19 @@ public class SpringwolfSnsPublisherConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SpringwolfSnsController springwolfSnsController(
-            PublishingPayloadCreator publishingPayloadCreator, SpringwolfSnsPublisher springwolfSnsPublisher) {
-        return new SpringwolfSnsController(publishingPayloadCreator, springwolfSnsPublisher);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     public SpringwolfSnsPublisher springwolfSnsProducer(List<SnsTemplate> snsTemplate) {
         return new SpringwolfSnsPublisher(snsTemplate);
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(PublishingBaseController.class)
+    public static class WebConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public SpringwolfSnsController springwolfSnsController(
+                PublishingPayloadCreator publishingPayloadCreator, SpringwolfSnsPublisher springwolfSnsPublisher) {
+            return new SpringwolfSnsController(publishingPayloadCreator, springwolfSnsPublisher);
+        }
     }
 }

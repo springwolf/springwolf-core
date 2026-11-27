@@ -3,7 +3,7 @@ package io.github.springwolf.core.asyncapi.scanners.common.headers;
 
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaObject;
 import io.github.springwolf.asyncapi.v3.model.schema.SchemaType;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class HeaderSchemaObjectMerger {
                 continue;
             }
 
-            if (StringUtils.isBlank(description)) {
+            if (!StringUtils.hasText(description)) {
                 description = schema.getDescription();
             }
 
@@ -56,7 +56,7 @@ public class HeaderSchemaObjectMerger {
     }
 
     private static String generateTitle(SchemaObject initial, Map<String, Object> headerProperties) {
-        if (StringUtils.isBlank(initial.getTitle())) {
+        if (!StringUtils.hasText(initial.getTitle())) {
             return generateHeaderSchemaName(headerProperties);
         } else {
             return generateHeaderSchemaName(initial.getTitle(), headerProperties.hashCode());
